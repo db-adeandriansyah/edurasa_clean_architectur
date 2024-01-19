@@ -1,16 +1,34 @@
-import { UserRepositoriServices } from "../services/UserRepositoriServices";
-
-export class User extends UserRepositoriServices {
-    #ptk;
-    #siswa;
+/** Menggunakan mode Clean Architecture
+ * - di folder ini, Class-classnya dianggap sebagai Entity
+ * - Setiap Class, propertinya dibuat private
+ * - Selalu menggunakan Getter dan Setter
+ */
+class User{
+    // //tunggal
+    // #siswa;
+    // #gurukelas;
+    // #gurumapel;
+    // #ops;
+    // #staff;
+    // #kepsek;
+    // //jamak
+    // #siswaRombel;
+    // #ptk;
+    #currentUser;
     constructor(){
-        super();
-    }
-    get siswa (){
-        return this.#siswa;
-    }
-    set siswa (x){
-        return this.#siswa;
+        // this.#siswa         = '' ;
+        // this.#gurukelas     = '' ;
+        // this.#gurumapel     = '' ;
+        // this.#ops           = '' ;
+        // this.#staff         = '' ;
+        // this.#kepsek        = '' ;
+        // this.#siswaRombel   = [] ;
+        // this.#ptk           = [] ;
+        this.#currentUser   = '' ;
     }
     
+
+
 }
+
+export {User as default};
