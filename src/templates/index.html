@@ -1,12 +1,62 @@
 <!DOCTYPE html>
-<html lang="ID-id">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edurasa Clean Architecture</title>
+    <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
-    <h1>Hello World</h1>
-    
+    <progress class="prog-animation d-none" value="1" max="100"></progress>
+    <header id="header"></header>
+    <main class="min-vh-100 bg-white pt-0 pt-lg-5 bg">
+        <div class="container pt-0 pt-lg-5">
+            <div class="row flex-lg-row-reverse justify-content-between">
+                <div class="col-md-5 d-flex justify-content-center align-items-center multigon rounded" id="tesScroll">
+                    <div class="my-auto w-100 position-relative">
+                        <!-- <img src="https://drive.google.com/uc?export=view&id=1LSOYTPBUDEM2N0Gb3yJYA1uodQDMZhLk" class="d-block mx-auto rounded-circle" height="180px" alt="..."> -->
+                        <div class="text-bg-secondary text-center d-none d-lg-block mx-auto">Nama Guru</div>
+                    </div>
+                    <div class="my-auto w-100 position-relative d-none">
+                        <!-- <img src="https://drive.google.com/uc?export=view&id=1fWOIjfqvkLgL3i2QD5JQm-Me2fw-INfs" class="d-block mx-auto rounded-circle" height="180px" alt="..."> -->
+                        <div class="text-bg-secondary text-center d-none d-lg-block mx-auto">Nama Guru</div>
+                    </div>
+                    <div class="my-auto w-100 position-relative d-none">
+                        <!-- <img src="https://drive.google.com/uc?export=view&id=1LSOYTPBUDEM2N0Gb3yJYA1uodQDMZhLk" class="d-block mx-auto rounded-circle" height="180px" alt="..."> -->
+                        <div class="text-bg-secondary text-center d-none d-lg-block mx-auto">Nama Guru</div>
+                    </div>
+                </div>
+                <div class="col-md-6 rounded shadow-lg">
+                    <div class="d-flex flex-column justify-content-around align-items-stretch lh-sm" style="height:350px">
+                        <div class="fs-4 text-center text-light">Selamat Datang <span id="user"></span> di <strong class="brushScript fs-2">EDURASA</strong>, sebuah platform digital MBS<br>di SDN Ratujaya 1 - Kota Depok</div>
+                        <form class="border p-3 rounded neon-lite-transisi scrolled" style="width:300px;margin:0 auto;"><div class="form-floating"><input type="text" placeholder="masukkan NISN" class="form-control form-control-sm" name="tokensiswa" id="tokensiswa"><label for="tokensiswa">Masukkan NISN</label></div><div id="responseForm"></div><button type="submit" class="form-control btn btn-sm btn-success mt-2">Mulai Belajar</button></form>
+                        
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+    <section id="section1" class="min-vh-100 jacket d-flex justify-content-center align-items-center pt-5 pb-5 setanbg">
+        <div class="blur-box col-md-10 px-2">
+            <h3 class="text-center mt-5 fs-1 text-body-emphasis fw-bolder"><span class="neon-lite-transisi scrolled text-clip">EDURASA</span></h3>
+            <p class="text-center"><em>Edukasi SDN Ratujaya 1</em></p>
+            <p>
+                Edurasa adalah platform edukasi yang berbasis digitalisasi Manajemen Berbasis Sekolah. Platform ini merupakan perkembangan dari platform sebelumnya, <b>e-Lamaso</b> yang merupakan karya digital di SDN Ratujaya 1.
+            </p>
+            <p>
+                Platform ini merupakan bagian dari program literasi digital dari program sekolah yang menerapkan konsep "One Stop Service School"
+                dimana warga sekolah maupun stakeholder dapat merasakan pelayanan dari platform ini. Platform ini dapat digunakan oleh siswa, guru kelas, guru  mata pelajaran, kepala sekolah,
+                staff Tata Usaha, staff Operator Sekolah, bahkan kepada penjaga sekolah.
+            </p>
+            <p>
+                Manajemen Berbasis sekolah yang dapat didigitalisasi merupakan bagian dari fitur platform ini. Warga sekolah dapat membuat, mendokumentasikan, melaporkan, bahkan sampai kepada mengevaluasi pengadministrasian pelaksanaan pendidikan di sekolah.
+            </p>
+            <p>
+                Platform ini memungkinkan guru dapat menggabungkannya dengan platform Merdeka Belajar. Dimana penagihan assesmen di Merdeka Belajar dapat diembbed pada tagihan assesmen di platform Edura ini.
+            </p>
+        </div>
+    </section>
+    <section id="section2" class="min-vh-100 white-elegan" ></section>
+    <section id="section3" class="min-vh-100"></section>
 </body>
 </html>

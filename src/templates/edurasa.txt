@@ -1,0 +1,18 @@
+<div class="blur-box col-md-10 px-2">
+    <h3 class="text-center mt-5 fs-1 text-body-emphasis fw-bolder"><span class="neon-lite-transisi scrolled text-clip">EDURASA</span></h3>
+    <p class="text-center"><em>Edukasi SDN Ratujaya 1</em></p>
+    <p>
+        Edurasa adalah platform edukasi yang berbasis digitalisasi Manajemen Berbasis Sekolah. Platform ini merupakan perkembangan dari platform sebelumnya, <b>e-Lamaso</b> yang merupakan karya digital di SDN Ratujaya 1.
+    </p>
+    <p>
+        Platform ini merupakan bagian dari program literasi digital dari program sekolah yang menerapkan konsep "One Stop Service School"
+        dimana warga sekolah maupun stakeholder dapat merasakan pelayanan dari platform ini. Platform ini dapat digunakan oleh siswa, guru kelas, guru  mata pelajaran, kepala sekolah,
+        staff Tata Usaha, staff Operator Sekolah, bahkan kepada penjaga sekolah.
+    </p>
+    <p>
+        Manajemen Berbasis sekolah yang dapat didigitalisasi merupakan bagian dari fitur platform ini. Warga sekolah dapat membuat, mendokumentasikan, melaporkan, bahkan sampai kepada mengevaluasi pengadministrasian pelaksanaan pendidikan di sekolah.
+    </p>
+    <p>
+        Platform ini memungkinkan guru dapat menggabungkannya dengan platform Merdeka Belajar. Dimana penagihan assesmen di Merdeka Belajar dapat diembbed pada tagihan assesmen di platform Edura ini.
+    </p>
+</div>

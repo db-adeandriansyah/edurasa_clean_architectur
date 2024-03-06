@@ -1,25 +1,21 @@
-// import { CallServices } from "../services/CallServices";
+import "../sass/main.scss";
+import App from "../apps/Singleton.js";
+import { HomeController } from "../controllers/HomeController.js";
 
+import UserService from "../services/UserRepoServices.js";
 
+const Users = new UserService(App.UserApp)
+const Home = new HomeController(App);
+Home.index(Users);
 
-// const app = new CallServices();
-// app.datasiswa();
-
-// import { UserRepositoriServices } from "../services/UserRepositoriServices";
-// const entity = new UserRepositoriServices();
-// const data = await entity.SiswaAktif();
-// console.log(data);
-// import { User } from "../Models/User"
-// const entity = new User();
-// const data = await entity.SiswaAktif();
-// console.log(data);
-import { Siswa } from "../models/Siswa";
-import SiswaRepositories from "../repositories/SiswaRepositories";
-import { SiswaServices } from "../services/SiswaServices";
-const dbsiswa = new Siswa()
-const siswa = new SiswaRepositories(dbsiswa.Siswa);
-const servis = new SiswaServices(siswa);
-
-servis.showAllSiswa();
-console.log(dbsiswa.Siswa);
-
+// Home.loginSiswwa(async(e)=> {
+//         e.preventDefault();
+//         const token = document.getElementById('tokensiswa').value;
+//         const authenticated = await Users.SiswaLogin(token);
+//         console.log(authenticated)
+//         if(authenticated){
+//             // App.redirectToDashboard();
+//         }
+//         Home.warning_loginsiswa.innerHTML = `<div class="alert alert-danger mt-2 alert-dismissible fade show" role="alert" style="font-size:10px">Token Siswa Tidak dikenal<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`;
+//     }
+// );

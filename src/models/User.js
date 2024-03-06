@@ -1,34 +1,23 @@
-/** Menggunakan mode Clean Architecture
- * - di folder ini, Class-classnya dianggap sebagai Entity
- * - Setiap Class, propertinya dibuat private
- * - Selalu menggunakan Getter dan Setter
- */
-class User{
-    // //tunggal
-    // #siswa;
-    // #gurukelas;
-    // #gurumapel;
-    // #ops;
-    // #staff;
-    // #kepsek;
-    // //jamak
-    // #siswaRombel;
-    // #ptk;
-    #currentUser;
+export default class User{
+    #tokensiswa     ;
+    #ptkUserName    ;
+    #ptkPassword    ;
     constructor(){
-        // this.#siswa         = '' ;
-        // this.#gurukelas     = '' ;
-        // this.#gurumapel     = '' ;
-        // this.#ops           = '' ;
-        // this.#staff         = '' ;
-        // this.#kepsek        = '' ;
-        // this.#siswaRombel   = [] ;
-        // this.#ptk           = [] ;
-        this.#currentUser   = '' ;
+        this.#tokensiswa = '';
+        this.#ptkUserName='';
+        this.#ptkPassword = '';
     }
-    
 
-
+    get id(){
+        return 
+    }
+    // async cekSiswaLogin(token){
+    //     let data = null;
+    //     if(tokensiswa.length == 10){
+    //         data = await this.loginSiswaByNISN(token);
+    //     }else{
+    //         data = await this.loginSiswaByToken(token);
+    //     }
+    //     return data;
+    // }
 }
-
-export {User as default};

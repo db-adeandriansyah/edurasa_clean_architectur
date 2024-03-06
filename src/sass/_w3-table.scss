@@ -1,0 +1,106 @@
+.w3-table-responsive{
+    overflow-x: auto;
+}
+.w3-table,
+.w3-table-all {
+    border-collapse: collapse !important;
+    border-spacing: 0;
+    width: 100%;
+    display: table;
+    /**costum by Ade*/
+    font-size: 12px;
+}
+
+.w3-table-all {
+    /** color change to black, size line to .5pt*/
+    border: .5pt solid #000;
+}
+
+// .w3-bordered tr,
+// .w3-table-all tr {
+//     border-bottom: 1px solid #ddd
+// }
+
+.w3-striped tbody tr:nth-child(even) {
+    background-color: #f1f1f1
+}
+
+.w3-table-all tr:nth-child(odd) {
+    background-color: #fff
+}
+
+.w3-table-all tr:nth-child(even) {
+    background-color: #f1f1f1
+}
+
+.w3-hoverable tbody tr:hover,
+.w3-ul.w3-hoverable li:hover {
+    background-color: #ccc
+}
+
+.w3-centered tr td,
+.w3-centered tr th {
+    text-align: center;
+
+}
+
+.w3-table td,
+.w3-table th,
+.w3-table-all td,
+.w3-table-all th {
+    /** default:*/
+    padding: 8px 8px;
+    display: table-cell;
+    text-align: left;
+    vertical-align: top;
+    /** change uncoment before*/
+    border:.25pt solid #000;
+    
+}
+.w3-table-all tr th{
+    text-align: center!important;
+    vertical-align: middle!important;
+    background-color:gainsboro;
+    color:#000;
+    /* font-size: .9rem; */
+    text-transform: uppercase;
+    
+  }
+// .w3-table td:first-child,
+// .w3-table th:first-child,
+// .w3-table-all td:first-child,
+// .w3-table-all th:first-child {
+//     padding-left: 16px
+// }
+.w3-table-all tfoot{
+    display: table-row-group;
+  }
+  #wrapTabel{
+    overflow-x: auto;
+  }
+  #scrolltabel{
+    border: none 0px red;
+    overflow-x: scroll;
+    position:sticky;
+        position:-webkit-sticky;
+    top:44px;
+    cursor:all-scroll
+  } 
+
+.w3-left {
+    float: left!important;
+    
+    
+}
+.w3-badge, .w3-tag {
+    border-radius: 50%;
+    background-color: #000;
+    color: #fff;
+    display: inline-block;
+    padding-left: 8px;
+    padding-right: 8px;
+    text-align: center;
+}
+.w3-card-4, .w3-hover-shadow:hover {
+    box-shadow: 0 4px 10px 0 rgba(0,0,0,.2),0 4px 20px 0 rgba(0,0,0,.19);
+}

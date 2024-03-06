@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+</head>
+<body>
+    <progress class="prog-animation d-none" value="1" max="100"></progress>
+    <header id="header"></header>
+    <main class="min-vh-100 bg-white pt-0 pt-lg-5 bg">
+        <div class="container">
+            <div class="d-flex justify-content-center align-items-center">
+                <div class="h-50 rounded col col-md-5 mt-5 shadow-lg">
+                    <img src="../img/lamaso.webp" class="d-block mt-2 mx-auto img-thumbnail" width="100">
+                    <div class="shadow-lg m-3 p-2">
+                        <div class="form-floating mb-3">
+                            <input class="form-control form-control-sm" type="text" name="username" id="username" placeholder="User Name" autocomplete="off">
+                            <label for="username">email/username</label>
+                        </div>
+                        <div class="form-floating">
+                            <i class="bi bi-eye-slash position-absolute top-50 end-0 me-1 translate-middle fs-3" id="showPass" role="button"></i>
+                            <input class="form-control form-control-sm" type="password" name="password" id="password" placeholder="Password" autocomplete="off">
+                            <label for="password">Password</label>
+                        </div>
+                        <div id="responseForm">
+                        </div>
+                        <div class="mb-2 mt-3 text-center">
+                            <button class="btn neon-lite-transisi scrolled border-top-0 border-start-0 border-end-0 border-bottom-5 border-5 border-warning rounded-pill w-25 px-2 mb-3" type="submit"> Login </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

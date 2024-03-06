@@ -1,0 +1,74 @@
+// @use "../../node_modules/bootstrap/scss/bootstrap.scss";
+// @use "../../node_modules/bootstrap-icons/font/bootstrap-icons";
+// @import '../sass/styleBostrap.scss';
+// @import "../../node_modules/bootstrap/scss/bootstrap";
+@use "./coollink";
+@use "./bg";
+@use "./font";
+@use "./animate-keyframe";
+@use "./dashboarda";
+
+// @use "./scrollbar_global";
+@use "./scrollbar_overflow";
+// @use "./cubes";
+@use "./humberger";
+@use "./w3-sizing";
+@use "./w3-table";
+.prog-animation{
+    width:100%;
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+    
+};
+.font8{
+    font-size: 8px !important;
+    
+}
+
+.font10, .font10 *{
+    font-size: 10px !important;
+    }
+
+
+.font12,.font12 *{
+    font-size: 12px !important;
+    
+}
+.font14{
+    font-size: 14px !important;
+    
+}
+
+span.active{
+    background-color: aqua;
+    color:darkblue;
+    &:hover{
+        background-color: aquamarine;
+    }
+}
+.tnr{
+    font-family: 'Times New Roman', Times, serif;
+}
+.tnr-bold{
+    font-weight: 900;
+    font-stretch: expanded;
+}
+.containerIframe {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin:2px auto;
+    padding-top: 56.25%;
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%
+    }
+  }
+  
+  

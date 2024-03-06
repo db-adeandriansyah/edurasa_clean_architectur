@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+</head>
+<body>
+    <progress class="prog-animation d-none" value="1" max="100"></progress>
+    <header id="header"></header>
+    <main class="min-vh-100 bg-white pt-0 pt-lg-5"></main>
+    <iframe id="iframeprint" name="iframeprint" style="display:none" ></iframe>
+    
+    <div class="modal fade" id="modalDetail">
+        <div class="modal-dialog modal-lg" id="widthmodal">
+          <div class="modal-content rounded">
+            <div class="modal-header modal-header-sm neon-lite border-bottom">
+                <h3 class="modal-title fs-4 text-center py-0" id="judulmodal">Bank Soal</h3>
+                <button type="button" class="btn-close"  id="btnCloseModal" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="main-content modal-body">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet alias eos eum, recusandae harum obcaecati?
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+        </div>
+    </div>
+    <div class="modal domproperties shadow pb-2 neon-lite" id="domProperties">
+        <header class="neon-lite">
+            <h3 data-domprop="header">Properties</h3>
+            <button class="btn btn-close my-1" onclick="document.querySelector('#domProperties').style.display='none'"></button>
+        </header>
+        <div class="container bg-light mt-0 px-1 py-1" data-domprop="list-feature">
+            <!-- disini kontent tooltip table -->
+            <div class="accordion mx-0 pt-2 mb-2" id="accordionTooltipWrapper">
+                <div class="accordion-item" data-listfitur="mode_table">
+                    <h2 class="accordion-header neon-lite" id="tooltipheadingOneWrapp">
+                        <button class="accordion-button collapsed py-1"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseOneWrapp" 
+                            aria-expanded="false" 
+                            aria-controls="collapseOneWrapp">Pengaturan Tabel</button>
+                    </h2>
+                    <div id="collapseOneWrapp" class="accordion-collapse collapse" 
+                        aria-labelledby="tooltipheadingOneWrapp" data-bs-parent="#accordionTooltipWrapper">
+                        <div class="accordion-body pt-0 pe-0">
+                            <div class="accordion mx-0 pt-2 mb-2" id="accordionTooltip">
+                                <div class="accordion-item" data-listfitur="mode_table">
+                                    <h2 class="accordion-header" id="tooltipheadingOne">
+                                        <button class="accordion-button collapsed py-1" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseOne" 
+                                            aria-expanded="false" 
+                                            aria-controls="collapseOne">Mode Tabel
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="tooltipheadingOne" data-bs-parent="#accordionTooltip">
+                                        <div class="accordion-body">
+                                            <div class="container ms-1">
+                                                <div class="form-check form-switch form-control form-control-sm ps-5">
+                                                    <input type="checkbox" class="form-check-input" id="tableSetting">
+                                                    <label class="ms-1" for="tableSetting">Sesuaikan Lebar Tabel berdasarkan isi</label>
+                                                    <div class="input-group input-group-sm">
+                                                        <span class="input-group-text">Posisi Tabel</span>
+                                                        <button class="btn btn-sm py-0 border" title="Posisi kiri" id="kirikantabel" disabled><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-text-left" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+</svg></button>
+                                                        <button class="btn btn-sm py-0 border" title="Posisi Tengah" id="tengahkantabel" disabled><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-text-center" viewBox="0 0 16 16">
+                                                            <path fill-rule="evenodd" d="M4 12.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+                                                          </svg></button>
+                                                        <button class="btn btn-sm py-0 border" title="Posisi Kanan" id="kanankantabel" disabled><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-text-right" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-4-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm4-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-4-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+</svg></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item" data-listfitur="rows_cols">
+                                    <h2 class="accordion-header" id="tooltipheading2">
+                                        <button class="accordion-button collapsed py-1" type="button" data-bs-toggle="collapse" 
+                                            data-bs-target="#collapse2" 
+                                            aria-expanded="false" 
+                                            aria-controls="collapse2">Baris dan Kolom Tabel
+                                        </button>
+                                    </h2>
+                                    <div id="collapse2" class="accordion-collapse collapse" 
+                                        aria-labelledby="tooltipheading2" 
+                                        data-bs-parent="#accordionTooltip">
+                                        <div class="accordion-body">
+                                            <div class="container" style="font-size:10px">
+                                                Disini Anda dapat mengatur Jumlah Baris Header, Jumlah Kolom, dan footer
+                                            </div>
+                                            <div class="container ms-1">
+                                                <ul class="list-unstyled border rounded p-1">
+                                                    <li class="mb-1">
+                                                        <div class="input-group input-group-sm">
+                                                            <span class="input-group-text">Jumlah Kolom</span>
+                                                            <input type="number" class="form-control" min="2" value="5" id="btnKolomValue">
+                                                            <button class="btn btn-sm py-0 border" title="terapkan" id="btnKolomApply">&checkmark;</button>
+                                                        </div>
+                                                    </li>
+                                                    <li class="mb-1">
+                                                        <div class="input-group input-group-sm">
+                                                            <span class="input-group-text">Jumlah Baris Header</span>
+                                                            <input type="number" class="form-control" min="1" value="3" id="btnRowsHeaderValue">
+                                                            <button class="btn btn-sm py-0 border" id="btnRowsHeaderApply" title="terapkan">&checkmark;</button>
+                                                        </div>
+                                                    </li>
+                                                    <li class="mb-1">
+                                                        <div class="form-check form-switch form-control form-control-sm ps-5">
+                                                            <input type="checkbox" class="form-check-input" id="footerSetting">
+                                                            <label class="ms-1" for="footerSetting">Tampilkan Footer</label>
+                                                            <div class="input-group input-group-sm">
+                                                                <span class="input-group-text">Jumlah Baris</span>
+                                                                <input type="number" class="form-control"  min="1" value="1" id="rowsFooterValue" disabled>
+                                                                <button class="btn btn-sm py-0 border" title="terapkan" id="rowsFooterApply" disabled>&checkmark;</button>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item" data-listfitur="width_col">
+                                    <h2 class="accordion-header" id="tooltipheading10">
+                                        <button class="accordion-button collapsed py-1" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapse10" 
+                                            aria-expanded="false" 
+                                            aria-controls="collapse10">Lebar Kolom dan Tambah/Hapus Baris
+                                        </button>
+                                    </h2>
+                                    <div id="collapse10" 
+                                        class="accordion-collapse collapse" 
+                                        aria-labelledby="tooltipheading10" 
+                                        data-bs-parent="#accordionTooltip">
+                                        <div class="accordion-body">
+                                            <div class="container border rounded">
+                                                <div class="input-group input-group-sm">
+                                                    <span class="input-group-text py-0" id="tooltip_WidthCol">Lebar :</span>
+                                                    <input type="range" class="form-control form-range my-0" 
+                                                        title="set ukuran huruf" 
+                                                        min = "5"
+                                                        max = "1920"
+                                                        value = "30"
+                                                        aria-label="Geser untuk menambahkan ukuran font" 
+                                                        aria-describedby="tooltip_WidthCol"
+                                                        data-widthcol="range">
+                                                    <input type="number"
+                                                        class="col-2 py-0 border-0"
+                                                        style="font-size: 12px;"
+                                                        min="5"
+                                                        max="1920"
+                                                        value="30"
+                                                        aria-describedby="tooltip_WidthCol"
+                                                        data-widthcol="value">
+                                                    <span class="input-group-text py-0" data-widthcol="span">30 px</span> 
+                                                    <button class="form-control input-group-text py-0" id="sizeWidthColReset">Reset</button>
+                                                </div>
+                                                <div class="input-group input-group-text py-0">
+                                                    <button class="btn btn-sm border py-1" id="removeThisRow"><i class="fa fa-trash"></i> baris ini</button>
+                                                    <button class="btn btn-sm border py-1" id="addRowAfter" title="Tambah baris setelahnya"><i class="fa fa-plus"></i> Baris Setelahnya</button>
+                                                    <button class="btn btn-sm border py-1" id="addRowBefore" title="Tambah baris sebelumnya"><i class="fa fa-plus"></i> Baris Sebelumnya</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item" data-listfitur="merge">
+                                    <h2 class="accordion-header" id="tooltipheading5">
+                                        <button class="accordion-button collapsed py-1" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapse5" 
+                                            aria-expanded="false" 
+                                            aria-controls="collapse5">Merge Cells (Penggabungan Sel)
+                                        </button>
+                                    </h2>
+                                    <div id="collapse5" class="accordion-collapse collapse" 
+                                        aria-labelledby="tooltipheading5" 
+                                        data-bs-parent="#accordionTooltip">
+                                        <div class="accordion-body">
+                                            <div class="input-group input-group-sm mb-1">
+                                                <span class="input-group-text py-0" id="tooltip_mergeRow">Rows :</span>
+                                                <input type="number" 
+                                                    class="form-control" 
+                                                    title="Masukkan jumlah baris" 
+                                                    min="2"
+                                                    aria-label="masukkan jumlah baris" 
+                                                    aria-describedby="tooltip_mergeRow"
+                                                    data-mergerow="value">
+                                                <button class="form-control" data-mergerow="apply"><i class="fa fa-check"></i></button>
+                                                <button class="form-control" data-mergerow="remove" ><i class="fa fa-trash"></i></button>
+                                            </div>
+                                            <div class="input-group input-group-sm mb-1">
+                                                <span class="input-group-text py-0" id="tooltip_mergeCol">Columns :</span>
+                                                <input type="number" 
+                                                    class="form-control" 
+                                                    title="Masukkan jumlah kolom" 
+                                                    min="2"
+                                                    value=2
+                                                    aria-label="Masukkan jumlah kolom" 
+                                                    aria-describedby="tooltip_mergeCol"
+                                                    data-mergecol="value">
+                                                <button class="form-control" data-mergecol="apply"><i class="fa fa-check"></i></button>
+                                                <button class="form-control" data-mergecol="remove"><i class="fa fa-trash"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item" data-listfitur="align">
+                                    <h2 class="accordion-header" id="tooltipheading6">
+                                        <button class="accordion-button collapsed py-1" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapse6" 
+                                            aria-expanded="false" 
+                                            aria-controls="collapse6">Pensejajaran (Align)
+                                        </button>
+                                    </h2>
+                                    <div id="collapse6" 
+                                        class="accordion-collapse collapse" 
+                                        aria-labelledby="tooltipheading6" 
+                                        data-bs-parent="#accordionTooltip">
+                                        <div class="accordion-body">
+                                            <div class="form-check form-switch form-control form-control-sm ps-5">
+                                                <input type="checkbox" class="form-check-input" id="columnAlignApply">
+                                                <label class="ms-1" for="columnAlignApply">
+                                                    Terapkan untuk kolom ini
+                                                </label>
+                                                <div style="font-size:10px">Pensejajaran Horizontal</div>
+                                                <div class="input-group input-group-sm input-group-text">
+                                                    <button class="btn btn-sm border" data-alignsel='left' title="rata kiri"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-text-left" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+</svg></button>
+                                                    <button class="btn btn-sm border" data-alignsel='center' title="rata-tengah"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-text-center" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M4 12.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+</svg></button>
+                                                    <button class="btn btn-sm border" data-alignsel='right' title="rata kanan"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-text-right" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-4-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm4-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-4-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+</svg></button>
+                                                    <button class="btn btn-sm border" data-alignsel='justify' title="rata kiri-kanan"><i class="fa fa-align-justify"></i></button>
+                                                </div>
+                                                <div style="font-size:10px">Pensejajaran Vertikal</div>
+                                                <div class="input-group input-group-sm input-group-text">
+                                                    <button class="btn btn-sm border" data-valignsel='top' title="teks ke atas" style="transform: rotate(90deg);"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-text-left" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+</svg></button>
+                                                    <button class="btn btn-sm border" data-valignsel='middle' title="teks ke tengah" style="transform: rotate(90deg);"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-text-center" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M4 12.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+</svg></button>
+                                                    <button class="btn btn-sm border" data-valignsel='bottom' title="teks ke bawah" style="transform: rotate(90deg);"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-text-right" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-4-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm4-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-4-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+</svg></button>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item" data-listfitur="color">
+                                    <h2 class="accordion-header" id="tooltipheading7">
+                                        <button class="accordion-button collapsed py-1"
+                                            type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#collapse7" 
+                                            aria-expanded="false" 
+                                            aria-controls="collapse7">Warna
+                                        </button>
+                                    </h2>
+                                    <div id="collapse7" 
+                                        class="accordion-collapse collapse" 
+                                        aria-labelledby="tooltipheading7" 
+                                        data-bs-parent="#accordionTooltip">
+                                        <div class="accordion-body">
+                                            <div class="form-check form-switch form-control form-control-sm ps-5">
+                                                <input type="checkbox" class="form-check-input" id="colorAlignApply">
+                                                <label class="ms-1" for="colorAlignApply">Terapkan untuk kolom ini</label>
+                                                <div class="input-group input-group-sm input-group-text">
+                                                    <span class="input-group-text py-0" id="tooltip_backGround">Background :</span>
+                                                    <input type="color" 
+                                                        class="form-control" 
+                                                        title="Pilih warna Background" 
+                                                        aria-label="masukkan jumlah baris" 
+                                                        aria-describedby="tooltip_backGround"
+                                                        data-colorsel="background-color">
+                                                </div>
+                                                <div class="input-group input-group-sm input-group-text">
+                                                    <span class="input-group-text py-0" id="tooltip_fontGround">Warna Huruf :</span>
+                                                    <input type="color" 
+                                                        class="form-control" 
+                                                        title="Pilih warna huruf" 
+                                                        aria-label="masukkan jumlah baris" 
+                                                        aria-describedby="tooltip_fontGround"
+                                                        data-colorsel="color">
+                                                </div>
+                                                <div class="input-group input-group-sm input-group-text">
+                                                    <button class="btn btn-sm border-dark p-1" id="colorAlignReset">Reset</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item" data-listfitur="mode_kontenttable">
+                    <h2 class="accordion-header neon-lite" id="tooltipheadingOneKontent">
+                            <button class="accordion-button collapsed py-1"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseOneKontent" 
+                                aria-expanded="false" 
+                                aria-controls="collapseOneKontent">Pengaturan Konten
+                            </button>
+                    </h2>
+                    <div id="collapseOneKontent" class="accordion-collapse collapse" 
+                        aria-labelledby="tooltipheadingOneKontent" data-bs-parent="#accordionTooltipWrapper">
+                        <div class="accordion-body pt-0 pe-0">
+                            <div class="accordion mx-0 pt-2 mb-2" id="accordionTooltipTekskontent">
+                                <div class="accordion-item" data-listfitur="sumber_data">
+                                        <h2 class="accordion-header" id="tooltipheading3">
+                                            <button class="accordion-button collapsed py-1"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#collapse3" 
+                                                aria-expanded="false" 
+                                                aria-controls="collapse3">Sumber Data
+                                            </button>
+                                        </h2>
+                                        <div id="collapse3" 
+                                            class="accordion-collapse collapse" 
+                                            aria-labelledby="tooltipheading3" 
+                                            data-bs-parent="#accordionTooltipTekskontent">
+                                            <div class="accordion-body">
+                                                <div class="container" style="font-size:10px">
+                                                    Sumber data menentukan jumlah baris pada isi tabel Anda, data ini juga sebagai rujukan ketika Anda mengisi Kolom Otomatis:
+                                                </div>
+                                                <div class="container" id="sumberdatafilter" style="font-size:10px">
+                                                    Sumber data menentukan jumlah kolom pada isi tabel Anda:
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                                <div class="accordion-item" data-listfitur="isi_kolom">
+                                        <h2 class="accordion-header" id="tooltipheading4">
+                                            <button class="accordion-button collapsed py-1"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#collapse4" 
+                                                aria-expanded="false" 
+                                                aria-controls="collapse4">Isi Kolom
+                                            </button>
+                                        </h2>
+                                        <div id="collapse4" 
+                                            class="accordion-collapse collapse" 
+                                            aria-labelledby="tooltipheading4" 
+                                            data-bs-parent="#accordionTooltipTekskontent">
+                                                <div class="accordion-body">
+                                                    <div class="container bg-white p-2 border rounded">
+                                                        <ul class="list-unstyled">
+                                                            <li class="mb-1">
+                                                                <button class="btn btn-sm border py-0" id="autoincrementTable">No. Urut</button>
+                                                            </li>
+                                                            <li class="mb-1">
+                                                                <button class="btn btn-sm border py-0" id="emptykolom">Kosongkan Kolom</button>
+                                                            </li>
+                                                            <li class="mb-1">
+                                                                <div class="input-group input-group-sm">
+                                                                    <span class="input-group-text">Data</span>
+                                                                    <select id="selectfiltersumberdata" class="form-control py-0">
+                                                                        <option>Pilih Sumber Data dulu</option>
+                                                                    </select>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="tooltipSelEditable">
+                                        <button class="accordion-button collapsed py-1"
+                                            type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#selEditable"
+                                            aria-expanded="false"
+                                            aria-controls="selEditable">Edit Sel
+                                        </button>
+                                    </h2>
+                                    <div id="selEditable" 
+                                        class="accordion-collapse collapse" 
+                                        aria-labelledby="tooltipSelEditable"
+                                        data-bs-parent="#accordionTooltipTekskontent">
+                                        <div class="accordion-body">
+                                            <div class="form-check form-switch form-control form-control-sm ps-5">
+                                                <input class="form-check-input" type="checkbox" role="switch" id="editableContentApply">
+                                                <label class="form-check-label" for="editableContentApply">Terapkan untuk kolom ini</label>
+                                                <div class="input-group input-group-sm input-group-text">
+                                                    <input type="checkbox" class="form-check" id="editableContent">
+                                                    <label class="ms-1" for="editableContent">Sel bisa diedit</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item" data-listfitur="teks">
+                                    <h2 class="accordion-header" id="tooltipheading8">
+                                        <button class="accordion-button collapsed py-1"
+                                            type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#collapse8" 
+                                            aria-expanded="false" 
+                                            aria-controls="collapse8">Format Teks
+                                        </button>
+                                    </h2>
+                                    <div id="collapse8" 
+                                        class="accordion-collapse collapse" 
+                                        aria-labelledby="tooltipheading8" 
+                                        data-bs-parent="#accordionTooltipTekskontent">
+                                        <div class="accordion-body">
+                                            <div class="form-check form-switch form-control form-control-sm ps-5">
+                                                <input type="checkbox" class="form-check-input" id="sizeFontApply">
+                                                <label class="ms-1" for="sizeFontApply">Terapkan untuk kolom ini</label>
+                                                <div class="input-group input-group-sm input-group-text">
+                                                    <span class="input-group-text py-0" id="tooltip_textSize">Ukuran :</span>
+                                                    <input type="range" class="form-control form-range my-0" 
+                                                        title="set ukuran huruf" 
+                                                        min="8"
+                                                        max="36"
+                                                        value="16"
+                                                        aria-label="Geser untuk menambahkan ukuran font" 
+                                                        aria-describedby="tooltip_textSize"
+                                                        data-fontSize="range">
+                                                    <input type="number"
+                                                        class="col-2 py-0 border-0"
+                                                        style="font-size: 12px;"
+                                                        placholder="8"
+                                                        max="36"
+                                                        value="16"
+                                                        aria-describedby="tooltip_textSize"
+                                                        data-fontSize="value">
+                                                    <span class="input-group-text py-0" data-fontSize="span">16 px</span> 
+                                                </div>
+                                                <div class="input-group-text ps-5 py-0 my-1 d-inline-block">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="unCapitalizedProperties">
+                                                    <label class="form-check-label ms-1" for="unCapitalizedProperties">Huruf Kapital</label>
+                                                </div>
+                                                <div class="input-group-text ps-5 py-0 my-1 d-inline-block">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="btnBoldCell">
+                                                    <label class="form-check-label ms-1" for="btnBoldCell">Bold</label>
+                                                </div>
+                                                <div class="input-group-text ps-5 py-0 my-1 d-inline-block">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="btnUnderlineCell">
+                                                    <label class="form-check-label ms-1" for="btnUnderlineCell">Underline</label>
+                                                </div>
+                                                <div class="input-group-text ps-5 py-0 my-1 d-inline-block">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="btnItalicCell">
+                                                    <label class="form-check-label ms-1" for="btnItalicCell">Italic</label>
+                                                </div>
+                                                <div class="input-group-text py-0 my-1 d-inline-block">
+                                                    <button class="btn btn-sm border p-0" id="ResetFontStyle">Reset</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item" data-listfitur="date_number">
+                                    <h2 class="accordion-header" id="tooltipheading9">
+                                        <button class="accordion-button collapsed py-1" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapse9" 
+                                            aria-expanded="false" 
+                                            aria-controls="collapse9">Format Tanggal
+                                        </button>
+                                    </h2>
+                                    <div id="collapse9" class="accordion-collapse collapse" aria-labelledby="tooltipheading9" 
+                                        data-bs-parent="#accordionTooltipTekskontent">
+                                        <div class="accordion-body">
+                                            <div class="form-check form-switch form-control form-control-sm ps-5">
+                                                <input class="form-check-input" type="checkbox" role="switch" id="applyColumnFormatDate">
+                                                <label class="form-check-label" for="applyColumnFormatDate">Terapkan untuk kolom ini</label>
+                                                <div class="input-group input-group-sm input-group-text">
+                                                    <input type="radio" value="short" name="numdate" class="form-check" id="formatDate">
+                                                    <label class="ms-1" for="formatDate">01/07/21</label>
+                                                </div>
+                                                <div class="input-group input-group-sm input-group-text">
+                                                    <input type="radio" value="medium" name="numdate" class="form-check" id="formatDate2">
+                                                    <label class="ms-1" for="formatDate2">1 Jul 2021</label>
+                                                </div>
+                                                <div class="input-group input-group-sm input-group-text">
+                                                    <input type="radio" value="long" name="numdate" class="form-check" id="formatDate3">
+                                                    <label class="ms-1" for="formatDate3">1 Juli 2021</label>
+                                                </div>
+                                                <div class="input-group input-group-sm input-group-text">
+                                                    <input type="radio" value="full" name="numdate" class="form-check" id="formatDate4">
+                                                    <label class="ms-1" for="formatDate4">Kamis, 1 Juli 2021</label>
+                                                </div>
+                                                <div class="input-group input-group-sm input-group-text">
+                                                    <input type="radio" value="tahun" name="numdate" class="form-check" id="formatDate5">
+                                                    <label class="ms-1" for="formatDate5">Umur (Tahun)</label>
+                                                </div>
+                                                <div class="input-group input-group-sm input-group-text">
+                                                    <input type="radio" value="tahun,bulan" name="numdate" class="form-check" id="formatDate6">
+                                                    <label class="ms-1" for="formatDate6">Umur (Tahun, Bulan)</label>
+                                                </div>
+                                                <div class="input-group input-group-sm input-group-text">
+                                                    <input type="radio" value="tahun,bulan,hari" name="numdate" class="form-check" id="formatDate7">
+                                                    <label class="ms-1" for="formatDate7">Umur (Tahun, Bulan, Hari)</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- selesai kontent tooltip table -->
+        </div>
+    </div>
+    
+</body>
+</html>

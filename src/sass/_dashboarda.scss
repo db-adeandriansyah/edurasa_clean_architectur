@@ -1,0 +1,29 @@
+.menudashboard{
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+    -moz-user-select: none;
+    &__title{
+        position: absolute;
+        box-sizing: border-box;
+        bottom:-5.7rem;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin:2px;
+        padding:2px 4px;
+        transition: .5s ease;
+    }
+    &:hover &__title{
+        bottom: 0;
+        // transform: translate(-50,0%);    
+        transform: translate(-50%, -20%);
+    }
+}
+// @media (min-width: 768px) { 
+//     .menudashboard{
+//         &__title{
+//             width:100%
+
+//         }
+//     }
+// }

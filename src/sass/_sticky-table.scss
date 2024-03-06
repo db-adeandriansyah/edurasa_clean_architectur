@@ -1,0 +1,19 @@
+// SCSS untuk membuat header tabel menjadi tetap (sticky)
+thead.sticky-header {
+    th.sticky-column {
+      position: sticky;
+      top: 3rem;
+      z-index: 99999;
+      background-color: #f5f5f5;
+      font-weight: bold;
+      // Atur gaya teks lainnya sesuai preferensi Anda, misalnya ukuran teks, warna teks, dll.
+    }
+  }
+  
+  // SCSS untuk membuat kolom tetap (freeze)
+  td.sticky-column {
+    position: sticky;
+    left: 0;
+    background-color: #f5f5f5;
+  }
+  
