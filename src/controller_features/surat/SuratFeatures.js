@@ -6,7 +6,7 @@ import {default as DomainSuratMasuk}  from "../../domains/SuratMasuk";
 import { FormatTanggal, TableProperties } from "../../entries/vendor";
 import OrmSppd from "./OrmSppd";
 import OrmSuratKeluar from "./OrmSuratKeluar";
-import { boleanHtmlRefrensiSuratMasuk, checkBoxSiswa, checkBoxTargetPersonal, checkboxSppdPTK, createSuratKeluar, detailSppd, domSelectRombel, modalPtkDiperintah, modalSuratSiswa, modalViewSppd, modalViewSuratByTemplate, tabelSppd, tabelSuratKeluar, tabelSuratMasuk, vieModalKonfirmasiSebelumCreateSppd, viewFormulirSuratMasuk, viewResultCariSuratmasuk } from "./ViewSuratFeatures";
+import { boleanHtmlRefrensiSuratMasuk, checkBoxSiswa, checkBoxTargetPersonal, checkboxSppdPTK, createSuratKeluar, detailSppd, domSelectRombel, infoTambahanCreateSurat, modalPtkDiperintah, modalSuratSiswa, modalViewSppd, modalViewSuratByTemplate, tabelSppd, tabelSuratKeluar, tabelSuratMasuk, vieModalKonfirmasiSebelumCreateSppd, viewFormulirSuratMasuk, viewResultCariSuratmasuk } from "./ViewSuratFeatures";
 import OrmSuratMasuk from "./OrmSuratMasuk";
 
 export default class SuratFeature{
@@ -159,6 +159,47 @@ export default class SuratFeature{
 
         this.listenerDataShow(par,'showSuratKeteranganNISN',[...arguments]);
     }
+    showSuratKeteranganDiterima(){
+        const db = this.ormSuratkeluar() ;
+
+        let par = db.dbSuratKeluar.filter(s=>s.indekssurat =='Surat Keterangan Diterima');
+
+        if(arguments.length>0 && typeof(arguments[0])=='number'){
+            par= db.dbSuratKeluar.filter((s,i)=> i <  arguments[0] && s.indekssurat =='Surat Keterangan Diterima');
+        }else if(arguments.length>0 && (arguments[0] instanceof Date)){
+            par = db.dbSuratKeluar.filter(s=>new Date(s.tglsurat).getFullYear() == new Date(arguments[0]).getFullYear() && s.indekssurat =='Surat Keterangan Diterima' );
+        }
+        
+        let data = {db:par,judul:this.htmlJudul};
+        
+        this.workplace.innerHTML = tabelSuratKeluar(data);
+
+        let tb = new TableProperties(document.querySelector('#tabel-suratkeluar'));
+            tb.addScrollUpDown();
+
+        this.listenerDataShow(par,'showSuratKeteranganDiterima',[...arguments]);
+    }
+    
+    showSuratKeteranganPindahSekolah(){
+        const db = this.ormSuratkeluar() ;
+
+        let par = db.dbSuratKeluar.filter(s=>s.indekssurat =='Surat Keterangan Pindah');
+
+        if(arguments.length>0 && typeof(arguments[0])=='number'){
+            par= db.dbSuratKeluar.filter((s,i)=> i <  arguments[0] && s.indekssurat =='Surat Keterangan Pindah');
+        }else if(arguments.length>0 && (arguments[0] instanceof Date)){
+            par = db.dbSuratKeluar.filter(s=>new Date(s.tglsurat).getFullYear() == new Date(arguments[0]).getFullYear() && s.indekssurat =='Surat Keterangan Pindah' );
+        }
+        
+        let data = {db:par,judul:this.htmlJudul};
+        
+        this.workplace.innerHTML = tabelSuratKeluar(data);
+
+        let tb = new TableProperties(document.querySelector('#tabel-suratkeluar'));
+            tb.addScrollUpDown();
+
+        this.listenerDataShow(par,'showSuratKeteranganPindahSekolah',[...arguments]);
+    }
     showSuratMasuk(){
         const db = this.ormSuratMasuk();
 
@@ -178,7 +219,6 @@ export default class SuratFeature{
 
         this.listenerDataShow(par,'showSuratMasuk',[...arguments]);
     }
-    
     listenerDataShow(db,firstmethod,arg){
         const btns = document.querySelectorAll('[data-show]');
         
@@ -189,14 +229,14 @@ export default class SuratFeature{
                 let camelCase_atr = atr.replace(/(\s+)/g,'_');
                 let camelCase_atr_lower = camelCase_atr.toLocaleLowerCase();
                 let metod = 'lds_'+camelCase_atr_lower;
-                let arraySuratTemplate = ['Surat Keterangan Aktif','Surat Keterangan NISN']
+                let arraySuratTemplate = ['Surat Keterangan Aktif','Surat Keterangan NISN','Surat Keterangan Diterima','Surat Keterangan Pindah']
                 
                 if(this[metod]){
                     //untuk method yang dibuatkan methodnya
                     this[metod](db,idsuratkeluar,firstmethod,arg)
                 }else if(arraySuratTemplate.includes(atr)){
-                    // alert('Surat Keterangan Siswa by Template:' + atr);
                     this.surat_keterangan_siswa_template(db,idsuratkeluar,atr,firstmethod,arg)
+                    
                 }else{
                     alert('belum tersedia untuk '+ metod +'\r'+ atr)
                 }
@@ -384,8 +424,8 @@ export default class SuratFeature{
                     }
                 }else{
                     let sppdUpdate = this.service.dbSuratMasuk;
-                        let datasuratmasuk = sppdUpdate[sppdUpdate.length-1];
-                        let dataDefault = {
+                    let datasuratmasuk = sppdUpdate[sppdUpdate.length-1];
+                    let dataDefault = {
                             refrensi_suratmasuk:datasuratmasuk.idbaris,
                             tglsurat:new FormatTanggal(new Date(datasuratmasuk.tglsurat)).valueInputDate(),
                             idNamaFile:'indekssurat',
@@ -397,6 +437,7 @@ export default class SuratFeature{
                             createsppd:true,
                             needrefrensi:true,
                             namatarget:'target_ptk',
+                            needInfo:true,
                             arraypersonal : this.service.dbPtk.filter(s=>s.aktif == 'aktif'),
                             propertiImageController:{
                                 folder:'Surat Keluar',
@@ -404,54 +445,58 @@ export default class SuratFeature{
                                 // namafile:'Surat_Masuk_Lainnya_'+(new Date().getTime())+'_'+files.name
                             }
                         }
-                        let datas = Object.assign({},datasuratmasuk,dataDefault);
-                        let  view = this.formulirSuratKeluar(datas);
-                        this.Modal1.settingHeder('Data SPPD Telah Buat Surat Masuk');
-                        this.Modal1.showBodySaveButton(view);
+                    let datas = Object.assign({},datasuratmasuk,dataDefault);
+                    let  view = this.formulirSuratKeluar(datas);
+                    
+                    this.Modal1.settingHeder('Data SPPD Telah Buat Surat Masuk');
+                    this.Modal1.showBodySaveButton(view);
+                    this.eventFormulirSuratKeluar('Modal1');
+                    this.eventBuatSuratMasukInModal(datas);
+                    this.eventCariSuratMasuk(datas.refrensi_suratmasuk);
+                    let pesan ={
+                        alert:'danger',
+                        pesan:'Anda memilih telah membuat/mendaftar surat undangan SPPD sebelumnya, Anda harus memilih surat Undangan tersebut sebagai dasar rujukan SPPD.'
+                    }
+                    this.pesanModalFormulir(pesan)
+                    this.Modal1.show();
+                    this.Modal.toggle();
+                    const btnSaveSuratSPPD = document.getElementById('btn-modal-savebutton');
+                    btnSaveSuratSPPD.onclick = async()=>{
+                        let dataSuratKeluar = this.autoDetectedFormWithMultiple('data-formulircreate','name="checkboxpersonal"','target_ptk');
+                        let c = Object.values(dataSuratKeluar).filter(s=>s!=="").length;
                         
-                        
-                        this.eventFormulirSuratKeluar('Modal1')
-                        this.eventBuatSuratMasukInModal(datas);
-                        this.eventCariSuratMasuk(datas.refrensi_suratmasuk);
-                        this.Modal1.show();
-                        
-                        const btnSaveSuratSPPD = document.getElementById('btn-modal-savebutton');
-                        btnSaveSuratSPPD.onclick = async()=>{
-                            let dataSuratKeluar = this.autoDetectedFormWithMultiple('data-formulircreate','name="checkboxpersonal"','target_ptk');
-                            let c = Object.values(dataSuratKeluar).filter(s=>s!=="").length;
-                            
-                            if(c<=5){
-                                alert('Input tidak boleh kosong!');
-                                return ;
-                            }
-                        
-                            let conf = confirm('Anda yakin?');
-                        
-                            if(!conf) return;
-                            
-                            let dataUpdateSuratkeluar = new SuratKeluar(dataSuratKeluar).sanitize().data;
-                            dataUpdateSuratkeluar.oleh = this.user.namaUser;
-                            dataUpdateSuratkeluar.user = this.user.idUser;
-                            this.Modal1.toggle();
-                            this.Modal.settingHeder('Proses...');
-                            this.Modal.showBodyHtml(this.imgLoading +'Memproses surat keluar...')
-                            this.Modal.show();
-                        
-                            await this.service.saveSuratKeluar(dataUpdateSuratkeluar);
-                        
-                            let db = this.ormSuratkeluar().dbSuratKeluar;
-                            let last = db[0]; //data pertama karena di urutkan dari terakhir
-                            let combine = Object.assign({},dataSuratKeluar,last);
-                            let datasppd = this.persiapanKirimSppd(combine);
-                        
-                            this.Modal.showBodyHtml('Mengupdate SPPD ...' +this.imgLoading);
-                        
-                            await this.service.createOrUpdateMultipleSppd(datasppd);
-                            this.Modal.settingHeder('Selesai');
-                            this.Modal.showBodyHtml('Proses berhasil');
-                            this.Modal.toggle();
-                            this[firstmethod](...arg);
+                        if(c<=5){
+                            alert('Input tidak boleh kosong!');
+                            return ;
                         }
+                    
+                        let conf = confirm('Anda yakin?');
+                    
+                        if(!conf) return;
+                        
+                        let dataUpdateSuratkeluar = new SuratKeluar(dataSuratKeluar).sanitize().data;
+                        dataUpdateSuratkeluar.oleh = this.user.namaUser;
+                        dataUpdateSuratkeluar.user = this.user.idUser;
+                        this.Modal1.toggle();
+                        this.Modal.settingHeder('Proses...');
+                        this.Modal.showBodyHtml(this.imgLoading +'Memproses surat keluar...')
+                        this.Modal.show();
+                    
+                        await this.service.saveSuratKeluar(dataUpdateSuratkeluar);
+                    
+                        let db = this.ormSuratkeluar().dbSuratKeluar;
+                        let last = db[0]; //data pertama karena di urutkan dari terakhir
+                        let combine = Object.assign({},dataSuratKeluar,last);
+                        let datasppd = this.persiapanKirimSppd(combine);
+                    
+                        this.Modal.showBodyHtml('Mengupdate SPPD ...' +this.imgLoading);
+                    
+                        await this.service.createOrUpdateMultipleSppd(datasppd);
+                        this.Modal.settingHeder('Selesai');
+                        this.Modal.showBodyHtml('Proses berhasil');
+                        this.Modal.toggle();
+                        this[firstmethod](...arg);
+                    }
                 }
             }
         });
@@ -493,6 +538,7 @@ export default class SuratFeature{
         
         this.Modal.show();
     }
+
     new_showSuratKeteranganNISN(firstmethod,arg){
         let opsipersonal={
             label:'ceklis semua',
@@ -529,6 +575,111 @@ export default class SuratFeature{
     
     this.Modal.show();
     }
+    
+    new_showSuratKeteranganDiterima(firstmethod,arg){
+        let opsipersonal={
+            label:'ceklis semua',
+            value:'all',
+            id:'show-siswa-all'
+        }
+        
+    let  view = this.formulirSuratKeluar({'needInfo':true,'namatarget':'target_siswa','opsipersonal':opsipersonal,'indekssurat':'Surat Keterangan Diterima'});
+    let dataPindahan = this.siswa.filter(s=> s.aktif == 'aktif' && s.dapo_sekolahasal !=="");
+    this.Modal.settingHeder('Tambah Surat Keterangan Telah Diterima Di Sekolah');
+    this.Modal.showBodySaveButton(view);
+    this.eventFormulirSuratKeluar('Modal');
+
+    this.eventShowTargetSiswaPindahan('masuk');
+    const pesan = {
+        alert:'warning',
+        pesan:'Untuk dapat membuat surat keterangan diterima, pastikan data siswa yang akan dibuatkan surat ini telah diedit dan diisi data sekolah asalnya.'
+    };
+    this.pesanModalFormulir(pesan);
+    // const tempatPesan =document.getElementById('infopembuatansuratkeluar');
+    // tempatPesan.innerHTML = infoTambahanCreateSurat(pesan);
+
+    const btnSave = document.getElementById('btn-modal-savebutton');
+    btnSave.onclick = async()=>{
+        let data = this.autoDetectedFormWithMultiple('data-formulircreate','name="checkboxpersonal"','target_siswa');
+        let c = Object.values(data).filter(s=>s!=="").length;
+        
+        if(c<=5){
+            alert('Input tidak boleh kosong!');
+            return ;
+        }
+        let conf = confirm('Anda yakin?');
+        if(!conf) return;
+        
+        let dataUpdateSuratkeluar = new SuratKeluar(data).sanitize().data;
+        dataUpdateSuratkeluar.oleh = this.user.namaUser;
+        dataUpdateSuratkeluar.user = this.user.idUser;
+        
+        await this.service.saveSuratKeluar(dataUpdateSuratkeluar);
+        this.Modal.toggle();
+        this[firstmethod](...arg);
+        
+    }
+    
+    this.Modal.show();
+    }
+    
+    pesanModalFormulir(pesanReq){
+        const tempatPesan =document.getElementById('infopembuatansuratkeluar');
+        const pesan = {
+            alert:'warning',
+            pesan:'masukkan teks'
+        };
+        let merge = Object.assign({},pesan, pesanReq)
+        tempatPesan.innerHTML = infoTambahanCreateSurat(merge);
+
+    }
+    new_showSuratKeteranganPindahSekolah(firstmethod,arg){
+        let opsipersonal={
+            label:'ceklis semua',
+            value:'all',
+            id:'show-siswa-all'
+        }
+        
+    let  view = this.formulirSuratKeluar({'needInfo':true,'namatarget':'target_siswa','opsipersonal':opsipersonal,'indekssurat':'Surat Keterangan Pindah'});
+    let dataPindahan = this.siswa.filter(s=> s.aktif == 'aktif' && s.dapo_sekolahasal !=="");
+    this.Modal.settingHeder('Tambah Surat Keterangan Pindah Sekolah');
+    this.Modal.showBodySaveButton(view);
+    this.eventFormulirSuratKeluar('Modal');
+
+    this.eventShowTargetSiswaPindahan('keluar');
+    
+    const tempatPesan =document.getElementById('infopembuatansuratkeluar');
+    const pesan = {
+        alert:'warning',
+        pesan:'Untuk dapat membuat surat keterangan pindah, pastikan data siswa yang akan dibuatkan surat ini telah diedit dan dan berstatus pindah'
+    };
+    tempatPesan.innerHTML = infoTambahanCreateSurat(pesan);
+
+    const btnSave = document.getElementById('btn-modal-savebutton');
+    btnSave.onclick = async()=>{
+        let data = this.autoDetectedFormWithMultiple('data-formulircreate','name="checkboxpersonal"','target_siswa');
+        let c = Object.values(data).filter(s=>s!=="").length;
+        
+        if(c<=5){
+            alert('Input tidak boleh kosong!');
+            return ;
+        }
+        let conf = confirm('Anda yakin?');
+        if(!conf) return;
+        
+        let dataUpdateSuratkeluar = new SuratKeluar(data).sanitize().data;
+        dataUpdateSuratkeluar.oleh = this.user.namaUser;
+        dataUpdateSuratkeluar.user = this.user.idUser;
+        
+        await this.service.saveSuratKeluar(dataUpdateSuratkeluar);
+        this.Modal.toggle();
+        this[firstmethod](...arg);
+        
+    }
+    
+    this.Modal.show();
+    }
+    
     new_showSuratMasuk(firstmethod,arg){
         let data = {
             tglditerima_input:new FormatTanggal(new Date()).valueInputDate(),
@@ -851,7 +1002,6 @@ export default class SuratFeature{
 
         };
         let viewModal = modalSuratSiswa(data);
-        
         this.Modal.settingHeder(template);
         this.Modal.showBodyHtml(viewModal);
         this.Modal.showHideFooter(false);
@@ -1121,6 +1271,66 @@ export default class SuratFeature{
                 }
             }
         }
+    }
+    eventShowTargetSiswaPindahan(mutasi='masuk'){
+        const stage = document.getElementById('stage-pilih-personal');
+        const control = document.getElementById('wrapersuratkeluarpilihrombel');
+        const switchOn = document.getElementById('show-siswa-all');
+        
+        // control.innerHTML = domSelectRombel('1A');
+        // const btnTambah = document.getElementById('tambahtargetpersonalsiswa');
+        
+        //data pertama;
+        let dataBefore = [];
+        if(mutasi == 'masuk'){
+            dataBefore = this.siswa.filter(s=> s.aktif == 'aktif' && s.dapo_sekolahasal !=="");
+        }else if(mutasi == 'keluar'){
+            dataBefore = this.siswa.filter(s=> s.aktif=='pindah');
+        }
+
+        let view = checkBoxSiswa(dataBefore,false,false);
+        stage.innerHTML = view;
+       
+
+        // btnTambah.onclick =()=>{
+        //     let selectValue = document.getElementById('select_rombel_nonfloating').value;
+        //     let radiosChecked = document.querySelectorAll('[name="checkboxpersonal"]:checked');
+        //     let idsHasChecked = [];
+        //     let objHasChecked = [];
+        //     radiosChecked.forEach(n=>{
+        //         idsHasChecked.push(parseInt(n.value));
+        //         let siswa = this.siswa.filter(s=>s.id == n.value)[0];
+        //         objHasChecked.push(siswa);
+        //     })
+
+        //     let datasiswaBySelect = this.siswa.filter(s=>s.nama_rombel == selectValue && s.aktif =='aktif' && !idsHasChecked.includes(parseInt(s.id)) );
+        //     let html ="";
+        //     html+=checkBoxSiswa(objHasChecked,true,false);
+        //     html+=checkBoxSiswa(datasiswaBySelect,false,false);
+
+        //     stage.innerHTML = html;
+            const radioTargetPersonal = document.querySelector('input[name="createsuratpilihtarget"]');
+            radioTargetPersonal.onchange = (e)=>{
+                if(radioTargetPersonal.checked){
+                    let cbx = document.querySelectorAll('[name="checkboxpersonal"]');
+                    cbx.forEach(n=>{
+                        n.checked = true;
+                    });
+                    cbx.forEach(n=>{
+                        n.onchange = ()=>{
+                            if(!n.checked){
+                                radioTargetPersonal.checked = false;
+                            }
+                        }
+                    })
+                }else{
+                    let cbx = document.querySelectorAll('[name="checkboxpersonal"]');
+                    cbx.forEach(n=>{
+                        n.checked = false;
+                    })
+                }
+            }
+        // }
     }
 
     eventShowPtkYangDitugaskan(dataBefore){

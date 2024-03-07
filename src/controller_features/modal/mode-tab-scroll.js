@@ -306,7 +306,7 @@ const modePindah = (data=null,FormatTanggal)=>{
     let html =inputsElements.floatingDate('frm-keluar_tgl','Tanggal Pindah',isi,'data-updatedbsiswa="keluar_tgl"');
                     html+=inputsElements.floatingText('frm-pindah_ke','Pindah Ke',ke,'data-updatedbsiswa="pindah_ke"',true);
                     html+=inputsElements.floatingText('frm-kelas_keluar','Kelas yang ditinggalkan','','data-updatedbsiswa="kelas_keluar"');
-                    html+=inputsElements.floatingText('frm-alasan_keluar','Kelas yang ditinggalkan',alasan,'data-updatedbsiswa="alasan_keluar"');
+                    html+=inputsElements.floatingText('frm-alasan_keluar','Alasan Keluar',alasan,'data-updatedbsiswa="alasan_keluar"');
                     return html;
 }
 

@@ -1,8 +1,3 @@
-// import ControlSuratFeatures from "../controller_features/surat/ControlSuratFeatures";
-
-// import { ModalConfig, dataSiswaViews} from "../entries/vendor";
-
-// import SuratFeature from "../controller_features/surat/SuratFeatures";
 const SuratFeature = await import("../controller_features/surat/SuratFeatures").then(module=>  module.default  );
 import { ModalConfig} from "../entries/vendor";
 import { filteringSuratKeluarByTahun } from "../views/surat/controlSurat";
@@ -64,17 +59,7 @@ export class ArsipSuratController extends Fitur{
             'pdfPortraitDom'    : this.pdfPortraitDom,
             'excelDom'          : this.excelDom// parameter(dom,queryTabel,title='Export Excel')
         }]);
-        // this.suratFitur = new ControlSuratFeatures(
-            //     this.service,
-            //     this.Modal,
-            //     this.Modal1,
-            //     // tabelDom,
-            //     this.Auth,
-            //     this.App.LocalJson('ptk'),
-            //     this.#ptkalltime,
-            //     JSON.parse(window.localStorage.getItem('dbSiswa')),
-            //     this.fokusRombel
-            // )
+        
         await this.service.callDbAllSurat();
         this.suratFitur = new SuratFeature(
             this.service,
@@ -161,4 +146,18 @@ export class ArsipSuratController extends Fitur{
         this.listenerFilter_suratKeluar('showSuratKeteranganNISN');
     }
     
+    sk_diterimasekolah(){
+        this.settingHeaderPage('Daftar Surat Keterangan Telah Diterima di sekolah',false);
+        this.maincontrol.innerHTML = filteringSuratKeluarByTahun(this.service.dbSuratKeluar,true,'Surat Keterangan Diterima')
+        this.suratFitur.htmlJudul = this.#judulHalaman;
+        this.suratFitur.showSuratKeteranganDiterima();
+        this.listenerFilter_suratKeluar('showSuratKeteranganDiterima');
+    } 
+    sk_pindah(){
+        this.settingHeaderPage('Daftar Surat Keterangan Pindah sekolah',false);
+        this.maincontrol.innerHTML = filteringSuratKeluarByTahun(this.service.dbSuratKeluar,true,'Surat Pindah Sekolah')
+        this.suratFitur.htmlJudul = this.#judulHalaman;
+        this.suratFitur.showSuratKeteranganPindahSekolah();
+        this.listenerFilter_suratKeluar('showSuratKeteranganPindahSekolah');
+    }
 }

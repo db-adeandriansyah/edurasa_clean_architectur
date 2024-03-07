@@ -474,7 +474,7 @@ const Surat_Keterangan_Aktif = (data)=>{
     const {suratkeluar, identitas,logoSekolah,logokotadepok } = data;
     let html = "";
     
-    html+=`<div class="min-vh-100 shadow-sm mb-2 p-1 border tnr">`;
+    html+=`<div class="min-vh-100 shadow-sm mb-2 p-1  tnr">`;
         html+= kopsuratEdurasa.versi2(logokotadepok,identitas,logoSekolah);
         html+=`<h3 class="text-center text-decoration-underline fw-bolder mb-0 mt-3 text-uppercase">Surat Keterangan Siswa Aktif</h3>`;
         html+=`<h4 class="text-center mb-3 text-capitalize">No. ${suratkeluar.nosurat}</h4>`;
@@ -578,11 +578,223 @@ const Surat_Keterangan_Aktif = (data)=>{
     html+=`</div>`;
     return html;
 }
+const Surat_Keterangan_Diterima = (data)=>{
+    const {suratkeluar, identitas,logoSekolah,logokotadepok } = data;
+    let html = "";
+    
+    html+=`<div class="min-vh-100 shadow-sm mb-2 p-1 tnr">`;
+        html+= kopsuratEdurasa.versi2(logokotadepok,identitas,logoSekolah);
+        html+=`<h3 class="text-center text-decoration-underline fw-bolder mb-0 mt-5 text-uppercase">SURAT KETERANGAN PESERTA DIDIK PINDAHAN</h3>`;
+        html+=`<h4 class="text-center mb-3 text-capitalize">No. ${suratkeluar.nosurat}</h4>`;
+        html+=`<p class="mt-5" style="text-indent: 2em;">Yang bertanda tangan di bawah ini,  </p>`;
+        html+=`<div class="overflow-hidden">`;
+            html+=`<table class="table table-borderless ms-3 lh-sm">`;
+                html+=`<tbody>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0" style="width:200px">Nama Lengkap</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.kepsekbytgl.length===0?'-':data.kepsekbytgl[0].namaguru}</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">NIP</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.kepsekbytgl.length===0?'-':data.kepsekbytgl[0].nip}</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Jabatan</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">Kepala Sekolah</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Asal Sekolah</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${identitas.namasekolah}</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Telp./HP/WA</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.kepsekbytgl.length===0?'-':data.kepsekbytgl[0].akun.no_wa_user}</td>`;
+                    html+=`</tr>`;
+                html+=`</tbody>`;
+            html+=`</table>`;
+        html+=`</div>`;
+        html+=`<p style="text-indent: 2em;">Menerangkan telah menerima pindahan siswa berikut:</p>`
+        html+=`<div class="overflow-hidden">`;
+            html+=`<table class="table table-borderless ms-3 lh-sm">`;
+            html+=`<tbody>`;
+                
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0" style="width:200px">Nama</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.targetperson.pd_nama}</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Tempat, Tanggal lahir</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.targetperson.pd_tl}, ${new Date(data.targetperson.pd_tanggallahir).toLocaleString('id-ID',{dateStyle:'long'})}</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Nomor Induk Siswa</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.targetperson.nis}</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Nomor Induk Siswa Nasional</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.targetperson.nisn}</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Kelas</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.targetperson.jenjang} (${data.targetperson.nama_rombel})</td>`;
+                    html+=`</tr>`;
+                html+=`</tbody>`;
+            html+=`</table>`;
+        html+=`</div>`;
+        html+=`<p class="mt-2 mb-0" style="text-indent: 2em;">Sesuai dengan Surat Keterangan Pindah Sekolah yang Bapak/Ibu kirimkan kepada Kami.</p>`;
+        html+=`<p class="mb-3" style="text-indent: 2em;">Demikian Surat Keterangan ini dibuat, agar dapat dipergunakan sebagaimana mestinya</p>`;
+        html+=`<div class="d-flex justify-content-end mt-5">`;
+            html+=`<div class="col-6 text-center">`;
+            html+=`Depok, ${new Date(data.suratkeluar.tglsurat).toLocaleString('id-ID',{dateStyle:'long'})}<br/>`;
+            // html+=`<br/><br/><br/><br/><br/>`
+            html+=`Kepala <span class="sppdcreate_ttdnamasekolah">${identitas.namasekolah}</span>
+            <br><br><br><br>
+            <u><b>${data.kepsekbytgl.length===0?'-':data.kepsekbytgl[0].namaguru}</b></u><br>
+                    ${data.kepsekbytgl.length===0?'-':'NIP. '+data.kepsekbytgl[0].nip} `
+            html+=`</div>`;
+        html+=`</div>`;
+    html+=`</div>`;
+    return html;
+}
+const Surat_Keterangan_Pindah = (data)=>{
+    const {suratkeluar, identitas,logoSekolah,logokotadepok } = data;
+    let html = "";
+    
+    html+=`<div class="min-vh-100 shadow-sm mb-2 p-1 tnr">`;
+        html+= kopsuratEdurasa.versi2(logokotadepok,identitas,logoSekolah);
+        html+=`<h3 class="text-center text-decoration-underline fw-bolder mb-0 mt-5 text-uppercase">SURAT KETERANGAN PINDAH SEKOLAH</h3>`;
+        html+=`<h4 class="text-center mb-3 text-capitalize">No. ${suratkeluar.nosurat}</h4>`;
+        html+=`<p class="mt-5" style="text-indent: 2em;">Yang bertanda tangan di bawah ini,  </p>`;
+        html+=`<div class="overflow-hidden">`;
+            html+=`<table class="table table-borderless ms-3 lh-sm">`;
+                html+=`<tbody>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0" style="width:200px">Nama Lengkap</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.kepsekbytgl.length===0?'-':data.kepsekbytgl[0].namaguru}</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">NIP</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.kepsekbytgl.length===0?'-':data.kepsekbytgl[0].nip}</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Jabatan</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">Kepala Sekolah</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Asal Sekolah</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${identitas.namasekolah}</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Telp./HP/WA</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.kepsekbytgl.length===0?'-':data.kepsekbytgl[0].akun.no_wa_user}</td>`;
+                    html+=`</tr>`;
+                html+=`</tbody>`;
+            html+=`</table>`;
+        html+=`</div>`;
+        html+=`<p style="text-indent: 2em;">Menerangkan bahwa:</p>`
+        html+=`<div class="overflow-hidden">`;
+            html+=`<table class="table table-borderless ms-3 lh-sm">`;
+            html+=`<tbody>`;
+                
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0" style="width:200px">Nama</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.targetperson.pd_nama}</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Tempat, Tanggal lahir</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.targetperson.pd_tl}, ${new Date(data.targetperson.pd_tanggallahir).toLocaleString('id-ID',{dateStyle:'long'})}</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Nomor Induk Siswa</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.targetperson.nis}</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Nomor Induk Siswa Nasional</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.targetperson.nisn}</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Kelas</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.targetperson.jenjang} (${data.targetperson.nama_rombel})</td>`;
+                    html+=`</tr>`;
+                html+=`</tbody>`;
+            html+=`</table>`;
+        html+=`</div>`;
+        html+=`<p class="mt-2">Sesuai Surat Permohonan pindah sekolah oleh:</p>`;
+        /**start */
+        html+=`<div class="overflow-hidden">`;
+            html+=`<table class="table table-borderless ms-3 lh-sm">`;
+            html+=`<tbody>`;
+                
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0" style="width:200px">Nama</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.targetperson.pd_namaayah}</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Pekerjaan</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.targetperson.dapo_pekerjaanayah}</td>`;
+                    html+=`</tr>`;
+                    
+                html+=`</tbody>`;
+            html+=`</table>`;
+        html+=`</div>`;
+        /**end */
+        html+=`<p class="mt-2 mb-0" style="text-indent: 2em;">Telah mengajukan pindah ke <span class="border-bottom">${data.targetperson.pindah_ke}</span> dengan alasan <span class="border-bottom">${data.targetperson.alasan_keluar}</span></p>`;
+        html+=`<p class="mb-3" style="text-indent: 2em;">Demikian Surat Keterangan ini dibuat, agar dapat dipergunakan sebagaimana mestinya</p>`;
+        
+        html+=`<div class="d-flex justify-content-end mt-5">`;
+            html+=`<div class="col-6 text-center">`;
+            html+=`Depok, ${new Date(data.suratkeluar.tglsurat).toLocaleString('id-ID',{dateStyle:'long'})}<br/>`;
+            // html+=`<br/><br/><br/><br/><br/>`
+            html+=`Kepala <span class="sppdcreate_ttdnamasekolah">${identitas.namasekolah}</span>
+            <br><br><br><br>
+            <u><b>${data.kepsekbytgl.length===0?'-':data.kepsekbytgl[0].namaguru}</b></u><br>
+                    ${data.kepsekbytgl.length===0?'-':'NIP. '+data.kepsekbytgl[0].nip} `
+            html+=`</div>`;
+        html+=`</div>`;
+    html+=`</div>`;
+    return html;
+}
+const Surat_Keterangan_Pindah_lampiran = (data)=>{
+    let html ="";
+    html+=`<div class="min-vh-100">`;
+    html+=`Format Lampiran tidak tersedia`;
+    html+=`</div>`;
+    return html;
+}
+const Surat_Keterangan_Diterima_lampiran = (data)=>{
+    let html ="";
+    html+=`<div class="min-vh-100">`;
+    html+=`Format Lampiran tidak tersedia`;
+    html+=`</div>`;
+    return html;
+}
 const Surat_Keterangan_Aktif_lampiran = (data)=>{
     const {suratkeluar, identitas,logoSekolah,logokotadepok,targetpersonlampiran,kepsekbytgl } = data;
     let html = "";
     
-    html+=`<div class="min-vh-100 shadow-sm mb-2 p-1 border tnr">`;
+    html+=`<div class="min-vh-100 shadow-sm mb-2 p-1  tnr">`;
         html+= kopsuratEdurasa.versi2(logokotadepok,identitas,logoSekolah);
         html+=`<h3 class="text-center text-decoration-underline fw-bolder mb-0 mt-3 text-uppercase">Surat Keterangan Siswa Aktif</h3>`;
         html+=`<h4 class="text-center mb-3 text-capitalize">No. ${suratkeluar.nosurat}</h4>`;
@@ -674,7 +886,7 @@ const Surat_Keterangan_Aktif_lampiran = (data)=>{
             html+=`</div>`;
         html+=`</div>`;
     html+=`</div>`;
-    html+=`<div class="min-vh-100 shadow-sm mb-2 p-1 border tnr">`;
+    html+=`<div class="min-vh-100 shadow-sm mb-2 p-1  tnr">`;
         html+=`<table class="table table-sm font12 lh-1 table-borderless">`;
             html+=`<tbody>`;
                 html+=`<tr>`;
@@ -732,7 +944,7 @@ const Surat_Keterangan_Aktif_lampiran = (data)=>{
 const Surat_Keterangan_NISN = (data)=>{
     const {suratkeluar, identitas,logoSekolah,logokotadepok } = data;
     let html = "";
-    html+=`<div class="min-vh-100 shadow-sm mb-2 p-1 border tnr">`;
+    html+=`<div class="min-vh-100 shadow-sm mb-2 p-1  tnr">`;
         html+= kopsuratEdurasa.versi2(logokotadepok,identitas,logoSekolah);
         html+=`<h3 class="text-center text-decoration-underline fw-bolder mb-0 mt-3 text-uppercase">Surat Keterangan NISN</h3>`;
         html+=`<h4 class="text-center mb-3 text-capitalize">No. ${suratkeluar.nosurat}</h4>`;
@@ -823,7 +1035,7 @@ const Surat_Keterangan_NISN = (data)=>{
 const Surat_Keterangan_NISN_lampiran = (data)=>{
     const {suratkeluar, identitas,logoSekolah,logokotadepok,targetpersonlampiran,kepsekbytgl } = data;
     let html = "";
-    html+=`<div class="min-vh-100 shadow-sm mb-2 p-1 border tnr">`;
+    html+=`<div class="min-vh-100 shadow-sm mb-2 p-1  tnr">`;
         html+= kopsuratEdurasa.versi2(logokotadepok,identitas,logoSekolah);
         html+=`<h3 class="text-center text-decoration-underline fw-bolder mb-0 mt-3 text-uppercase">Surat Keterangan NISN</h3>`;
         html+=`<h4 class="text-center mb-3 text-capitalize">No. ${suratkeluar.nosurat}</h4>`;
@@ -912,7 +1124,7 @@ const Surat_Keterangan_NISN_lampiran = (data)=>{
             html+=`</div>`;
         html+=`</div>`;
     html+=`</div>`;
-    html+=`<div class="min-vh-100 shadow-sm mb-2 p-1 border tnr">`;
+    html+=`<div class="min-vh-100 shadow-sm mb-2 p-1  tnr">`;
         html+=`<table class="table table-sm font12 lh-1 table-borderless">`;
             html+=`<tbody>`;
                 html+=`<tr>`;
@@ -970,7 +1182,7 @@ const buildPageSppd = (data)=>{
     const {sppd, suratkeluar, logokotadepok,identitas } = data;
 
     //halaman1;
-    html+=`<div class="min-vh-100 shadow-sm mb-2 p-1 border d-flex flex-column justify-content-between tnr">`;
+    html+=`<div class="min-vh-100 shadow-sm mb-2 p-1  d-flex flex-column justify-content-between tnr">`;
         //kop
         html+=`<div class="row">`;
             html+=`<div class="col-2 d-flex justify-content-center align-items-center">`;
@@ -1256,6 +1468,9 @@ const createSurat = (data)=>{
                         );
                 }
             html+=`</div>`;
+        }
+        if(data.needInfo){
+            html+=`<div class="col-md-7"><div id="infopembuatansuratkeluar"></div></div>`
         }
         html+=`<div class="col-md-6">`;
         if(data.createsppd){
@@ -1577,7 +1792,11 @@ const sppdView={
     'viewFormulirSuratMasuk':viewFormulirSuratMasuk,
     'formInputCheckbox':formInputCheckbox,
     'floatingSelect':floatingSelect,
-    'viewModalSuratTemplate':viewModalSuratTemplate
+    'viewModalSuratTemplate':viewModalSuratTemplate,
+    'Surat_Keterangan_Diterima':Surat_Keterangan_Diterima,
+    'Surat_Keterangan_Diterima_lampiran':Surat_Keterangan_Diterima_lampiran,
+    'Surat_Keterangan_Pindah':Surat_Keterangan_Pindah,
+    'Surat_Keterangan_Pindah_lampiran':Surat_Keterangan_Pindah_lampiran
 }
 
 export default sppdView;

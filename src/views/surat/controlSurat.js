@@ -24,7 +24,7 @@ export const filteringSuratKeluarByTahun = (data,withCreate=false,title='Surat D
         if(withCreate){
             html+=`<div class="col-md-4">`;
                 html+=cardMenu('Buat Surat',
-                    `<div class="d-flex justify-content-center align-items-center"><button id="btn_new_surat" class="btn btn-sm btn-primary border-danger border-bottom border-4 rounded-pill border-start-0 border-end-0 border-top-0">Tambah ${title}</button></div>`
+                    `<div class="d-flex justify-content-center align-items-center"><button id="btn_new_surat" class="btn btn-sm btn-success border-danger border-bottom border-4 rounded-pill border-start-0 border-end-0 border-top-0">Tambah ${title}</button></div>`
                 ,false);
             html+=`</div>`;
 

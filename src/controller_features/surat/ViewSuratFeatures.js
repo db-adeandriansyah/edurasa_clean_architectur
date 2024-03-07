@@ -248,11 +248,18 @@ export const createSuratKeluar = (objek)=>{
         'opsipersonal':'',
         'needrefrensi':false,
         'createsppd':false,
+        'needInfo':false,
         'jumlahhari':1
     }
     let dataCreate = objek?Object.assign({},dataDefault,objek):dataDefault;
     
     return sppdView.createSurat(dataCreate);
+}
+export const infoTambahanCreateSurat = (data)=>{
+    const {alert,pesan} = data;
+    let html="";
+    html+=`<div class="alert alert-${alert} m-2 font12">${pesan}</div>`;
+    return html;
 }
 
 export const vieModalKonfirmasiSebelumCreateSppd = ()=>{
