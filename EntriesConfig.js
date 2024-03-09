@@ -5,6 +5,7 @@ const EntriePoint=  {
     'notfound'      :{import:'./src/entries/404.js'         ,dependOn:'app'},
     'datasiswa'     :{import:'./src/entries/datasiswa.js'   ,dependOn:['app','vendor','pdf']},
     'arsipsurat'     :{import:'./src/entries/arsipsurat.js'   ,dependOn:['app','vendor','pdf']},
+    'absensi'     :{import:'./src/entries/absensi.js'   ,dependOn:['app','vendor','pdf']},
     'app'           :'./src/apps/Singleton.js',//{import:'./src/apps/Singleton.js'},
     'vendor'        :'./src/entries/vendor.js',//{import:'./src/entries/vendor.js'},
     'style'         :'./src/entries/style.js' ,//{import:'./src/entries/style.js' },
@@ -67,7 +68,7 @@ const pagesConfig = [
         publicPath:'/'
     },
     {
-        title:'Data Siswa',
+        title:'Edurasa | Data Siswa',
         template:'./src/templates/fitur.html',
         //favicon:'./src/img/lamaso.ico',
         filename:'/data-siswa/index.html',
@@ -81,7 +82,7 @@ const pagesConfig = [
         publicPath:'/'
     },
     {
-        title:'Arsip Surat',
+        title:'Edurasa | Arsip Surat',
         template:'./src/templates/fitur.html',
         //favicon:'./src/img/lamaso.ico',
         filename:'/arsip-surat/index.html',
@@ -92,6 +93,20 @@ const pagesConfig = [
             'apple-mobile-web-app-status-bar':'#ffffff'
         },
         chunks:['style','arsipsurat','pdf','app','vendor'],
+        publicPath:'/'
+    },
+    {
+        title:'Edurasa | Absensi Siswa',
+        template:'./src/templates/fitur.html',
+        //favicon:'./src/img/lamaso.ico',
+        filename:'/absensi/index.html',
+        inject:"body",
+        meta: {
+            'description':'Aplikasi Manajemen Berbasis Sekolah SDN Ratujaya 1',
+            'theme-color': '#ffffff',
+            'apple-mobile-web-app-status-bar':'#ffffff'
+        },
+        chunks:['style','absensi','pdf','app','vendor'],
         publicPath:'/'
     }
 ];

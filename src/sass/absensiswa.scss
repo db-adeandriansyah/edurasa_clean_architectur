@@ -1,0 +1,102 @@
+// @import './_shake.scss';
+@import './sticky-table';
+@import './w3-table';
+.papantulis{
+    background-image: url('../img/papantulis.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-position-y: top;
+    background-blend-mode: lighten;
+    background-size:90% 85% ;//90% 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
+}
+// .meja-siswa{
+//     background-image: url('../img/kursisiswa.png');
+//     background-repeat: no-repeat;
+//     background-position: center;
+//     background-blend-mode: lighten;
+//     min-height: 100px;
+//     background-size: 98px;
+    
+// }
+.meja-guru{
+    background-image: url('../img/mejaguru.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-blend-mode: lighten;
+    min-height: 200px;
+    background-size: contain;
+    
+}
+.meja-siswa{
+    
+    // background-image: url('../img/kursisiswa.png');
+    background-image: url('../img/mejasiswa.webp');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-blend-mode: lighten;
+    min-height: 100px;
+    background-size: 98px;
+    // filter:blur(.51px);
+    // &:hover{
+    //     filter:blur(0)
+    // }
+    
+}
+.meja-siswanon{
+    // background-image: url('../img/kursisiswa.png');
+    // background-repeat: no-repeat;
+    // background-position: center;
+    // background-blend-mode: lighten;
+    min-height: 100px;
+    // background-size: 98px;
+    
+}
+.overlay {
+    position: absolute;
+    bottom: 100%;
+    left: 15%;
+    right: 15%;
+    background-color: #03ba0052;
+    background: -webkit-linear-gradient(to bottom, #b3ffab75,#6ee4f9);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #a2bddb,#6ee4f9); 
+    display:flex; 
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+    overflow: hidden;
+    width: 70%;
+    height:0;
+    transition: .5s ease;
+}
+.meja-siswanon:hover .overlay,.meja-siswa:hover .overlay {
+    bottom: 0;
+    height: 100%;
+  }
+.meja-siswanon>p,.meja-siswa>p{
+    background-color: rgb(182, 213, 138);
+    color: rgb(98, 52, 52);
+    padding: 2px 5px;
+    // z-index: 999
+}
+.glow {
+    font-size: 4.5rem;//80px;
+    color: #fff;
+    text-align: center;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+    // -webkit-animation: glow 1s ease-in-out infinite alternate;
+    // -moz-animation: glow 1s ease-in-out infinite alternate;
+    // animation: glow 1s ease-in-out infinite alternate;
+}
+
+//   @-webkit-keyframes glow {
+//     from {
+//       text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+//     }
+//     to {
+//       text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+//     }
+//   }

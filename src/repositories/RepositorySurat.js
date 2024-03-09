@@ -26,12 +26,6 @@ export class RepositorySurat extends CallHttp{
     }
 
     async callSiswa(){
-        // let p = {
-        //     'idss':this.appscript['ss_user'],
-        //     'action':'databaseakun',
-        // }
-        // const parameter = this.urilogin+new URLSearchParams(p).toString();
-        // return await this.get(parameter);
         let p = {
             'idss':this.appscript['ss_user'],
             'tab':'datasiswa',

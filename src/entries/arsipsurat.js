@@ -10,7 +10,7 @@ App.createTitle('Arsip Surat-Menyurat','Surat/SPPD');
 App.dataPermision({'canEdit':[2,8,14,21]});
 
 const repoSurat = new RepositorySurat();
-repoSurat.trial=true;
+repoSurat.trial=false;
 const serviceSurat = new ServiceSurat(repoSurat);
 const controller = new ArsipSuratController(App,serviceSurat);
 await controller.ensureLoadedRepo();

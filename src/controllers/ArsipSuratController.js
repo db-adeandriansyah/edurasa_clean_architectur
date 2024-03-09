@@ -102,18 +102,18 @@ export class ArsipSuratController extends Fitur{
         let judulsebelumnya = this.#judulHalaman;
         sele.onchange = (e)=>{
             if(e.target.value ==""){
-                
                 this.settingHeaderPage(judulsebelumnya, false);
                 this.suratFitur.htmlJudul = this.#judulHalaman;
                 this.suratFitur[fiturmethod]();
+                
                 return;
             }
                 this.settingHeaderPage(judulsebelumnya,'Tahun '+e.target.value, false);
                 this.suratFitur.htmlJudul = this.#judulHalaman;
                 this.suratFitur[fiturmethod](new Date(e.target.value,1,1));
-            
         }
     }
+        
     surat_masuk(){
         this.settingHeaderPage('Daftar Surat Masuk',false);
         this.suratFitur.htmlJudul = this.#judulHalaman;

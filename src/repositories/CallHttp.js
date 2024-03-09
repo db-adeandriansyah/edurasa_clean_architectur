@@ -90,7 +90,7 @@ export class CallHttp{
         return fd;
     }
     async post(uri,param){
-        if(!this.csrf()) return;
+        // if(!this.csrf()) return;
         const parameter = this.paramFormData(param);
         const f = await fetch(uri,{body:parameter,method:'post'});
         const t = await f.json();
@@ -139,7 +139,7 @@ export class CallHttp{
         return await this.post(this.crud,mergeParam);
     }
     async get(param){
-        if(!this.csrf()) return;
+        // if(!this.csrf()) return;
         
         const f = await fetch(param);
         const t = await f.json();

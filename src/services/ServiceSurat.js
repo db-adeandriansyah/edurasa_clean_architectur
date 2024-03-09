@@ -38,15 +38,16 @@ export class ServiceSurat{
     
     async callDbAllSurat(){
         this.repo.callWithProses();
-            
-            let respon=await this.repo.readDbAll();
-            
-            respon.forEach(db => {
-                this.#db[db.info.namaTab]=db.data;
-            });
-            
-            this.repo.stopProgressBar();
+        
+        let respon=await this.repo.readDbAll();
+        
+        respon.forEach(db => {
+            this.#db[db.info.namaTab]=db.data;
+        });
+        
+        this.repo.stopProgressBar();
     }
+
     async callSuratKeluar(){
         
         if(!this.isExist('suratkeluar')){

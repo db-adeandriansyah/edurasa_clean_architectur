@@ -15,7 +15,7 @@ App.dataPermision({'canEdit':[21]});
 const SiswaService = new SiswaRepoService(App.UserApp);
 await SiswaService.ensureLoadeRepo();
 const repoSurat = new RepositorySurat();
-repoSurat.trial=true;
+repoSurat.trial=false;
 const serviceSurat = new ServiceSurat(repoSurat);
 const datasiswa = new DataSiswaController(App,SiswaService);
 
