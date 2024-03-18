@@ -16,16 +16,3 @@ const controller = new ArsipSuratController(App,serviceSurat);
 await controller.ensureLoadedRepo();
 controller.exec_fitur(false);
 
-/**
-new ClassControlSuratFeatures(
-            serviceSurat,
-            this.dev.Modal,
-            this.dev.Modal2,
-            tabel,
-            this.Auth,
-            this.App.LocalJson('ptk'),
-            this.siswaService.ptkAll,
-            this.siswaService.allSiswa.filter(s=>s.aktif == 'aktif'),// && s.nama_rombel == this.fokusRombel)
-            this.fokusRombel
-    )
- */
