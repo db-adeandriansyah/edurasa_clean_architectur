@@ -6,6 +6,7 @@ export const absensiSidebar = [
             {value:'hari_ini',text:'Hari Ini',name:'menusidebar'},
             // {value:'harian',text:'Harian',name:'menusidebar'},
             {value:'perbulan',text:'Bulanan',name:'menusidebar'},
+            {value:'settingkaldik',text:'Pengaturan Kaldik',name:'menusidebar'},
             ]
     },
     {
@@ -19,7 +20,7 @@ export const absensiSidebar = [
         title:'Rekapitulasi Kehadiran',
         menu:[
                 {value:'rekap_sia_bulanan',text:'Bulanan',name:'menusidebar'},
-                {value:'rekap_sia_semester',text:'Per Semester',name:'menusidebar'},
+                // {value:'rekap_sia_semester',text:'Per Semester',name:'menusidebar'},
             ]
     },
     {

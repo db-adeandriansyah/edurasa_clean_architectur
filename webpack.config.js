@@ -198,4 +198,7 @@ module.exports = {
                 }),
         ],
     },
+    externals: {
+        charts: 'google.charts'  // or any other alias you want, can be a regex too! check Webpack's doc for more
+      }
 }

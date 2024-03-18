@@ -1,4 +1,4 @@
-import { PrintCetak,EdaToExcel,print2WordGlobal, FormatTanggal } from "../entries/vendor";
+import { PrintCetak,EdaToExcel,print2WordGlobal } from "../entries/vendor";
 import { Controller } from "./Controller";
 import {html2pdf} from "../entries/pdfku";
 import { ttd } from "../views/tandatangan/ttd";
@@ -377,7 +377,7 @@ export default class Fitur extends Controller{
                     this[e.target.value]();
                     this.ttdControl.dispatchEvent(new Event('change'));
                     // this.kopsControl.dispatchEvent(new Event('change'));
-                    // document.getElementById('header').scrollIntoView();
+                    document.getElementById('header').scrollIntoView();
                     initCanvasElement.hide();
                 }else{
                     let infoEnvironment = process.env.NODE_ENV ==='development'?`[${e.target.value}]`:"";
@@ -409,7 +409,7 @@ export default class Fitur extends Controller{
                     this.ttdControl.dispatchEvent(new Event('change'));
                     initCanvasElement.hide();
                     // this.kopsControl.dispatchEvent(new Event('change'));
-                    // document.getElementById('header').scrollIntoView();
+                    document.getElementById('header').scrollIntoView();
                     
                 }else{
                     let infoEnvironment = process.env.NODE_ENV ==='development'?`[${e.target.value}]`:"";
@@ -430,6 +430,39 @@ export default class Fitur extends Controller{
             // let m0 = (new Date().getMonth()+1).toString().padStart(2,'0');
             this.koleksiBulanAplikasi = arrayBulan.map(n=>({label:new Date(n).toLocaleString('id-ID',{'month':'long'})+' '+new Date(n).toLocaleString('id-ID',{'year':'numeric'}),value:n}));
         }
+        
+    }
+    semesterAplikasi(){
+        
+            let bulanAwal = new Date(this.setApp.tahunAwal,6,1);
+            let m_bulanawal = bulanAwal.getMonth()+1;
+            let y_bulanawal = bulanAwal.getFullYear();
+            
+            let bulanAkhir = new Date(this.setApp.tahunAkhir, 0,1);
+            let m_bulanakhir = bulanAkhir.getMonth()+1;
+            let y_bulanakhir = bulanAkhir.getFullYear();
+
+            let f_semester1 = `${y_bulanawal}-${String(m_bulanawal).padStart(2,'0')}-01`;
+            let f_semester2 = `${y_bulanakhir}-${String(m_bulanakhir).padStart(2,'0')}-01`;
+            
+
+
+            return [
+                {
+                    label:'Semester 1',
+                    value: f_semester1
+                },
+                {
+                    label:'Semester 2',
+                    value: f_semester2
+                },
+
+            ]
+            // let arrayBulan = this.arrayBulan(bulanAwal, bulanAkhir);
+            // let y = new Date().getFullYear();
+            // let m0 = (new Date().getMonth()+1).toString().padStart(2,'0');
+            // this.koleksiBulanAplikasi = arrayBulan.map(n=>({label:new Date(n).toLocaleString('id-ID',{'month':'long'})+' '+new Date(n).toLocaleString('id-ID',{'year':'numeric'}),value:n}));
+        
         
     }
     arrayBulan(bulanAwal, bulanAkhir){

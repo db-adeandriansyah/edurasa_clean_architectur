@@ -133,7 +133,7 @@ export class tabelDom{
                             })
                         }else{
                             if(key == "auto") {
-                                td.innerHTML = index++;
+                                td.innerHTML = (index++)+'.';
                                 td.setAttribute('class','text-center');
                             }else{
                                 

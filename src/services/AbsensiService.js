@@ -133,5 +133,21 @@ export default class AbsensiService{
         this.repo.stopProgressBar();
     }
 
+    uploadGambarAbsen(files,propertiImage,callback,options={}){
+        this.repo.uploadGambar(files,propertiImage,callback,options)
+    }
 
+    async SimpanAbsen(jenjang,param,mode){
+        this.repo.callWithProses();
+        
+        let findIndexDb = this.#db.dataAbsen.findIndex(s=> s.jenjang == jenjang);
+        let data = await this.repo.SimpanAbsen(jenjang,param,mode);
+        let objUpdate ={
+            jenjang:jenjang,
+            data: data.data
+        }
+        this.#db.dataAbsen.splice(findIndexDb,1,objUpdate);
+        
+        this.repo.stopProgressBar();
+    }
 }

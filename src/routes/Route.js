@@ -7,7 +7,7 @@ import ratujaya1 from "../img/ratujaya1.png";
 // import { headerNavigationAuto } from "../views/header-navigation";
 // import { menubar } from "./SidebarController";
 import { TopHeader } from "../views/header/TopHeader";
-import { Collapse } from "bootstrap";
+import { Collapse, Tooltip } from "bootstrap";
 import { cardMenu, radioMenu } from "../views/sidebar/cardSidebar";
 import { koleksiRombel } from "./settingApp";
 
@@ -257,8 +257,13 @@ export default class Route{
                 
             };
         }
+        this.tooltipkan();
     }
     
+    tooltipkan(){
+        let doms = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        [...doms].map(n=> new Tooltip(n))
+    }
     redirectHomePage() {
         window.location.href = "/";
     }
@@ -368,6 +373,21 @@ export default class Route{
         }
         html+= this.loopingMenu(arr);
         document.querySelector('.offcanvas-body').innerHTML = html;
+        const btns = document.querySelectorAll('.card-header>span');
+        btns.forEach(el=>{
+            el.onclick = (e)=>{
+                let span = e.target;
+                let div = span.closest('div');
+                let sbiling = div.nextElementSibling;
+                sbiling.classList.toggle('d-none');
+                if(span.innerHTML == '⇓'){
+                    span.innerHTML = '⇑';
+                }else{
+                    span.innerHTML = '⇓';
+                }
+            }
+        });
+        this.tooltipkan();
     }
     createTitle(long,short){
         document.getElementById('longTitleSidebar').innerHTML = long;

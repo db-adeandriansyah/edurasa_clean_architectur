@@ -97,7 +97,7 @@ const pagesConfig = [
     },
     {
         title:'Edurasa | Absensi Siswa',
-        template:'./src/templates/fitur.html',
+        template:'./src/templates/fiturGrapic.html',
         //favicon:'./src/img/lamaso.ico',
         filename:'/absensi/index.html',
         inject:"body",

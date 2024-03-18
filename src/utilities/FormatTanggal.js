@@ -276,7 +276,7 @@ export class FormatTanggal extends Date{
             const awal = new Date(tanggalAwal).getTime();
             const akhir = new Date(tanggalAkhir).getTime();
             
-            const satuHari = 1000 * 60 ; // Satu menit
+            const satuHari = 1000 * 60 * 60 * 24; // Satu menit
             const selisihWaktu = akhir - awal;
             
             const durasiHari = Math.ceil(selisihWaktu / satuHari)+1; // Menggunakan Math.ceil untuk memastikan pembulatan ke atas

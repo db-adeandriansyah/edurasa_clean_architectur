@@ -10,11 +10,11 @@ export default class KalenderService{
     };
 
     async hasDb(){
-        if(this.repo.hasLocal('kaldik')){
-            this.#db = this.repo.LocalJson('kaldik');
-        }else{
-            await this.callDb();
-        }
+        // if(this.repo.hasLocal('kaldik')){
+        //     this.#db = this.repo.LocalJson('kaldik');
+        // }else{
+        // }
+        await this.callDb();
     }
 
     async callDbWithLoading(){
@@ -28,7 +28,23 @@ export default class KalenderService{
         const db = await this.repo.callDb();
         this.repo.writeLocal('kaldik',JSON.stringify(db.data));
         this.#db = db.data;
+        return this;
     }
     
+    async addKalender(param){
+        this.repo.callWithProses();
+        const db = await this.repo.addKalender(param);
+        this.#db = db.data;
+        this.repo.stopProgressBar();
+        return this;
+    }
+    
+    async editKalender(param){
+        this.repo.callWithProses();
+        const db = await this.repo.editKalender(param);
+        this.#db = db.data;
+        this.repo.stopProgressBar();
+        return this;
+    }
     
 }
