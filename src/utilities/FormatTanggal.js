@@ -218,6 +218,20 @@ export class FormatTanggal extends Date{
         return d+""+m+""+y;
     }
     
+    idStringKaldik(){
+        // let tgl = new Date();
+        // let dtgl = this.getDate();
+        // let mtgl = tgl.getMonth() + 1;
+        // let nol = addZero(mtgl);
+        // let ytg = tgl.getFullYear();
+
+        // let idHariini = dtgl + "" + nol + "" + ytg;
+        let d = String(this.getDate()).padStart(2,'0');
+        let m = (this.getMonth()+1).toString().padStart(2,'0');
+        let y = this.getFullYear();
+        return y+"-"+m+"-"+d;
+    }
+    
     idStringAbsenBulan(){
         // let tgl = new Date();
         // let dtgl = this.getDate();

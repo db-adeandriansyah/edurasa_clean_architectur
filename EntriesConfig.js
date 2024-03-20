@@ -4,8 +4,10 @@ const EntriePoint=  {
     'dashboard'     :{import:'./src/entries/dashboard.js'   ,dependOn:'app'},
     'notfound'      :{import:'./src/entries/404.js'         ,dependOn:'app'},
     'datasiswa'     :{import:'./src/entries/datasiswa.js'   ,dependOn:['app','vendor','pdf']},
-    'arsipsurat'     :{import:'./src/entries/arsipsurat.js'   ,dependOn:['app','vendor','pdf']},
-    'absensi'     :{import:'./src/entries/absensi.js'   ,dependOn:['app','vendor','pdf']},
+    'arsipsurat'    :{import:'./src/entries/arsipsurat.js'   ,dependOn:['app','vendor','pdf']},
+    'absensi'       :{import:'./src/entries/absensi.js'   ,dependOn:['app','vendor','pdf']},
+    'kurikulum'     :{import:'./src/entries/kurikulum.js'   ,dependOn:['app','vendor','pdf']},
+    'kalender'     :{import:'./src/entries/kalender.js'   ,dependOn:['app','vendor','pdf']},
     'app'           :'./src/apps/Singleton.js',//{import:'./src/apps/Singleton.js'},
     'vendor'        :'./src/entries/vendor.js',//{import:'./src/entries/vendor.js'},
     'style'         :'./src/entries/style.js' ,//{import:'./src/entries/style.js' },
@@ -107,6 +109,34 @@ const pagesConfig = [
             'apple-mobile-web-app-status-bar':'#ffffff'
         },
         chunks:['style','absensi','pdf','app','vendor'],
+        publicPath:'/'
+    },
+    {
+        title:'Edurasa | Kurikulum',
+        template:'./src/templates/fitur.html',
+        //favicon:'./src/img/lamaso.ico',
+        filename:'/kurikulum/index.html',
+        inject:"body",
+        meta: {
+            'description':'Aplikasi Manajemen Berbasis Sekolah SDN Ratujaya 1',
+            'theme-color': '#ffffff',
+            'apple-mobile-web-app-status-bar':'#ffffff'
+        },
+        chunks:['style','kurikulum','pdf','app','vendor'],
+        publicPath:'/'
+    },
+    {
+        title:'Edurasa | Kalender Pendidikan',
+        template:'./src/templates/fitur.html',
+        //favicon:'./src/img/lamaso.ico',
+        filename:'/kalender/index.html',
+        inject:"body",
+        meta: {
+            'description':'Aplikasi Manajemen Berbasis Sekolah SDN Ratujaya 1',
+            'theme-color': '#ffffff',
+            'apple-mobile-web-app-status-bar':'#ffffff'
+        },
+        chunks:['style','kalender','pdf','app','vendor'],
         publicPath:'/'
     }
 ];

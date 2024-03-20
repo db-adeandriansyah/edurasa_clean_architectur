@@ -22,6 +22,7 @@ export default class Fitur extends Controller{
         this.koleksiBulanAplikasi = [];
         this.ttdControl = document.getElementById('formattd');
         this.kopsControl = document.getElementById('formatkop');
+        this.judulHalaman = '';
         
         this.createFirstArgumen();
     }
@@ -289,7 +290,7 @@ export default class Fitur extends Controller{
     tandatangan(impersonate=true){
         const ptk= this.App.LocalJson('ptk');
         const kepsek = ptk.filter(s=>s.kelas ==="Kepala Sekolah")[0];
-        
+
         let objekUserDefault= {
             nama_kepsek:kepsek.guru_namalengkap,//
             nip_kepsek:"NIP. "+kepsek.guru_nip,
@@ -313,6 +314,13 @@ export default class Fitur extends Controller{
             kiri+=`<br>`;
             
             let guru = ptk.filter(s=> s.kelas == this.fokusRombel)[0];
+            if(!impersonate){
+                guru =Object.assign({},objekUserDefault,{
+                    gurukelas_gmp:this.Auth.jabatanUser,
+                    kelas:this.Auth.tugasUser
+                });
+
+            }
             switch(e.target.value){
                 case "guru":
                     kanan="";
@@ -360,6 +368,7 @@ export default class Fitur extends Controller{
 
         }
     }
+    
     exec_fitur(impersonate=true){
         const btn = this.menus;
         const initCanvasElement = new Offcanvas(document.getElementById('offcanvassidebar'))
@@ -390,6 +399,8 @@ export default class Fitur extends Controller{
         btn[0].dispatchEvent(new Event('click'))
     }
 
+    
+    
     controlRombel(impersonate=true){//method_custom
         const btns = document.querySelectorAll('input[name="kelasampu"]');
         btns.forEach(el=>{

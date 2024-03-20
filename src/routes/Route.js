@@ -332,6 +332,23 @@ export default class Route{
         obj.menu = arraykelas;
         return obj;
     }
+    fiturJenjang(kelasampu){
+        let obj = {};
+        let arraykelas = [];
+        obj.title = 'Rombongan Belajar';
+        let arraykelasampu = kelasampu.replace(/\s+/,'').split(',').map(n=>parseInt(n)).filter((x,i,a)=>a.indexOf(x)==i);
+
+        for(let i = 0; i < arraykelasampu.length ; i++){
+            let obkelas = {
+            value:arraykelasampu[i],
+            text:'Kelas '+arraykelasampu[i],
+            name:'kelasampu'
+            }
+            arraykelas.push(obkelas)
+        };
+        obj.menu = arraykelas;
+        return obj;
+    }
     loopingMenu(arr){
         let html = "";
         html+=`<h5 class="text-muted">Menu</h5>`;
@@ -358,7 +375,7 @@ export default class Route{
             'menu':menu
         }]
     }
-    buildSidebarFitur(arr,fiturRombel=true){
+    buildSidebarFitur(arr,fiturRombel=true,fiturJenjang = false){
         let html = "";
         let arrayKelasAmpu = this.#User.kelasAmpu.split(',');
         
@@ -370,6 +387,9 @@ export default class Route{
             if(fiturRombel){
                 arr.unshift(this.fiturRombel(this.#User.kelasAmpu))
             }
+        }
+        if(fiturJenjang){
+            arr.unshift(this.fiturJenjang(this.#User.kelasAmpu))
         }
         html+= this.loopingMenu(arr);
         document.querySelector('.offcanvas-body').innerHTML = html;

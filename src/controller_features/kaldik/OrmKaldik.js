@@ -76,7 +76,7 @@ export default class OrmKaldik{
 
     }
     reInstansiance(dbkaldik){
-        let instans = new OrmKaldik(dbkaldik);
+        let instans = new OrmKaldik(dbkaldik).init();
         return instans;
     }
     cekboolean(bol){
@@ -190,6 +190,7 @@ export default class OrmKaldik{
         while (currentDate <= last) {
             const year = currentDate.getFullYear();
             const month = currentDate.getMonth();// + 1;
+            const bulan  = this.internationalDate(currentDate);
             const date = currentDate.getDate();
             const day = currentDate.getDay();
             
@@ -243,12 +244,42 @@ export default class OrmKaldik{
                 title:title,
                 tgl:new Date(year, month,date),
                 he:isHe,
+                bulan:bulan,
+                tahun:year,
                 heb:isHeb,
                 libur:isLibur
             }
             dataKalender.push(obj)
             // currentDate.setMonth(currentDate.getMonth() + 1);
             currentDate.setDate(currentDate.getDate() + 1);
+        }
+        return dataKalender;
+    }
+
+    dataKalenderSemester(bulanawal,tagSabtu=false){
+        let first = new Date(bulanawal)
+        let last = new Date(bulanawal);
+        last.setMonth(last.getMonth()+6);
+        last.setDate(0);
+        
+        const dataKalender = [];
+        // detectedKaldik = [];
+        let currentDate = first;
+    
+        while (currentDate <= last) {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();// + 1;
+            const date = currentDate.getDate();
+            const day = currentDate.getDay();
+            let bulan = this.internationalDate(currentDate);
+            let dataCurrent = this.dataTanggalan(currentDate,tagSabtu);
+            let obj = {
+                'bulan':bulan,
+                'tahun':year,
+                'data':dataCurrent
+            }
+            dataKalender.push(obj);
+            currentDate.setMonth(currentDate.getMonth() + 1);
         }
         return dataKalender;
     }
@@ -359,5 +390,68 @@ export default class OrmKaldik{
         });
         
         return filteredData;
+    }
+    dataHariEfektifPerSemester(thAwal,sabtu=false){
+        let data = this.dataSemesteran(thAwal,sabtu);
+        
+        let test = Object.groupBy(data,({bulan})=>bulan);
+        
+        let tahun = new Date(thAwal).getFullYear();
+        let newData = [];
+        Object.entries(test).forEach(([k,v])=>{
+            let jumlah = v.filter(s=>new Date(s.tgl).getDay()!=0 && s.he == true).length;
+            let jumlahTanpaSabtu = v.filter(s=>new Date(s.tgl).getDay()!=0 && new Date(s.tgl).getDay()!=6 && s.he == true).length;
+            let senin = v.filter(s=> new Date(s.tgl).getDay()==1 && s.he == true).length;
+            let selasa = v.filter(s=> new Date(s.tgl).getDay()==2 && s.he == true).length;
+            let rabu = v.filter(s=> new Date(s.tgl).getDay()==3 && s.he == true).length;
+            let kamis = v.filter(s=> new Date(s.tgl).getDay()==4 && s.he == true).length;
+            let jumat = v.filter(s=> new Date(s.tgl).getDay()==5 && s.he == true).length;
+            let sabtu = v.filter(s=> new Date(s.tgl).getDay()==6 && s.he == true).length;
+
+            let jumlah_heb = v.filter(s=>new Date(s.tgl).getDay()!=0 && s.heb == true).length;
+            let jumlahTanpaSabtu_heb = v.filter(s=>new Date(s.tgl).getDay()!=0 && new Date(s.tgl).getDay()!=6 && s.heb == true).length;
+            
+            
+            let senin_heb = v.filter(s=> new Date(s.tgl).getDay()==1 && s.heb == true).length;
+            let selasa_heb = v.filter(s=> new Date(s.tgl).getDay()==2 && s.heb == true).length;
+            let rabu_heb = v.filter(s=> new Date(s.tgl).getDay()==3 && s.heb == true).length;
+            let kamis_heb = v.filter(s=> new Date(s.tgl).getDay()==4 && s.heb == true).length;
+            let jumat_heb = v.filter(s=> new Date(s.tgl).getDay()==5 && s.heb == true).length;
+            let sabtu_heb = v.filter(s=> new Date(s.tgl).getDay()==6 && s.heb == true).length;
+            
+            let ob = {
+                'bulan':k,
+                'bulan_tahun':k+' '+tahun,
+                'jumlah':jumlah,
+                'jumlah_heb':jumlah_heb,
+                'jumlah_jeb':jumlah_heb*7,
+                'jumlahTanpaSabtu':jumlahTanpaSabtu,
+                'jumlahTanpaSabtu_heb':jumlahTanpaSabtu_heb,
+                'jumlahTanpaSabtu_jeb':jumlahTanpaSabtu_heb*7,
+                'senin':senin,
+                'selasa':selasa,
+                'rabu':rabu,
+                'kamis':kamis,
+                'jumat':jumat,
+                'sabtu':sabtu,
+
+                'senin_heb':senin_heb,
+                'selasa_heb':selasa_heb,
+                'rabu_heb':rabu_heb,
+                'kamis_heb':kamis_heb,
+                'jumat_heb':jumat_heb,
+                'sabtu_heb':sabtu_heb,
+
+                'senin_jeb':senin_heb*7,
+                'selasa_jeb':selasa_heb*7,
+                'rabu_jeb':rabu_heb*7,
+                'kamis_jeb':kamis_heb*7,
+                'jumat_jeb':jumat_heb*7,
+                'sabtu_jeb':sabtu_heb*7
+            }
+            newData.push(ob);
+        });
+        return newData;
+
     }
 }

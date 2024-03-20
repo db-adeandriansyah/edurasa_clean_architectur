@@ -71,11 +71,18 @@ export const contenModalTambahKaldik=(bulan='bulan',tahun='tahun')=>{
 }
 
 export const cardKalender=(bulan="title",tahun="tahun",slot="",atribut=null)=>{
-    let at = atribut?Object.assign({},{card:'',header:'justify-content-between',body:''},atribut):{card:'',header:'justify-content-between',body:''};
+    let at = atribut?Object.assign({},{card:'',header:'justify-content-between',body:'',bodyAttr:''},atribut):{card:'',header:'justify-content-between',body:'',bodyAttr:''};
     return `
 <div class="card border-0 mt-1 ${at.card}">
     <div class="card-header d-flex  ${at.header}"><span>${bulan}</span> <span>${tahun}</span></div>
-    <div class="card-body ${at.body} px-1 pt-0 ">
+    <div ${at.bodyAttr} class="card-body ${at.body} px-1 pt-0">
         ${slot}
     </div>
 </div>`}
+
+export const wrapperKalender = (slot)=>{
+    return rowCols.rows('mt-5',slot);
+}
+export const wrapperCardKalender = (slot)=>{
+    return rowCols.cols('col-4 col-md-4 px-1',slot);
+}

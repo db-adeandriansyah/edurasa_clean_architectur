@@ -35,7 +35,7 @@ const modeSabtuLibur = (withMarked=true)=>{
             </div>`;
 }
 const modeShowHadir = ()=>{
-    return `<div class="row my-3 rounded-pill justify-content-center" id="propertiesbulanini">
+    return `<div class="row my-3 rounded-pill justify-content-center">
                 <div class="col-md-4 border rounded accord-bg">
                     <div class="input-group">
                         <div class="form-check form-switch">
@@ -88,6 +88,7 @@ const controls = {
     'sorterDataSiswa':sorterDataSiswa,
     'koleksiSemester':koleksiSemester,
     'grafikMode':grafikMode,
+    'modeSabtuLibur':modeSabtuLibur,
     'koleksiSemesterGrafik':koleksiSemesterGrafik
 }
 export default controls;

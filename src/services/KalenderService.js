@@ -28,6 +28,7 @@ export default class KalenderService{
         const db = await this.repo.callDb();
         this.repo.writeLocal('kaldik',JSON.stringify(db.data));
         this.#db = db.data;
+        
         return this;
     }
     

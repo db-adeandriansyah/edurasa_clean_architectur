@@ -2,8 +2,9 @@
 import Kalender from "../../domains/Kalender";
 import { FormatTanggal } from "../../utilities/FormatTanggal";
 import { TableProperties } from "../../utilities/tableProperties";
+import { cardKalender, wrapperCardKalender, wrapperKalender } from "../../views/kaldik/viewKaldik";
 import { tableKalender } from "./tableKalender";
-import { htmlFormulirIsianKaldik, htmlTabelSettingKaldik, nameToHex } from "./viewKaldik";
+import { hariEfektif, hariEfektifbelajar, hariEfektifbelajarjam, htmlFormulirIsianKaldik, htmlTabelSettingKaldik, nameToHex } from "./viewKaldik";
 
 export default class KaldikFitur{
     constructor(kaldikservice,ormKaldik, Modal, Modal1,currentUser,tooltipkan){
@@ -32,6 +33,7 @@ export default class KaldikFitur{
     
     show_tabel_setting(){
         let dataketerangan =  this.ormKaldik.dataKeteranganKaldik();
+        
         this.workplace.innerHTML = this.headerPage + htmlTabelSettingKaldik(dataketerangan);
         this.register_event_button_tabel_setting(dataketerangan);
 
@@ -72,7 +74,7 @@ export default class KaldikFitur{
                 };
                 
                 if(atr == 'hapus'){
-                    let conf = confirm('Anda yakin ingin menghapus kalender ini?'+dataId);
+                    let conf = confirm('Anda yakin ingin menghapus kalender ini?');
                     
                     if(!conf) return;
                     let datasiap = new Kalender(dataketerangan[0]).sanitize().data;
@@ -86,6 +88,7 @@ export default class KaldikFitur{
                     if(this.relationalFitur){
                         this.relationalFitur.ormKaldik = this.ormKaldik.init();
                     }
+                    dataketerangan =  this.ormKaldik.dataKeteranganKaldik();
                     this.show_tabel_setting();
                     return;
 
@@ -156,7 +159,6 @@ export default class KaldikFitur{
         }
     }
     event_element_formulirKeteranganKalender(dataketerangan,modal){
-        
         const eventLiburTidak = document.querySelectorAll('[name="liburtidak"]');
         const eventEditTanggal = document.querySelectorAll('[data-api]');
         const btnSave = document.getElementById('btn-modal-savebutton');
@@ -242,8 +244,8 @@ export default class KaldikFitur{
             if(dataketerangan.length==0){
                 datasiap.time_stamp = new FormatTanggal(new Date()).stringForDateTimeLocal();
                 let cek = await this.kaldikservice.addKalender(datasiap);
-            
-                this.ormKaldik = this.ormKaldik.reInstansiance(cek.data);
+                
+                this.ormKaldik = this.ormKaldik.reInstansiance(this.kaldikservice.data);
                 if(this.relationalFitur){
                     this.relationalFitur.ormKaldik = this.ormKaldik.init();
                 }
@@ -252,14 +254,12 @@ export default class KaldikFitur{
                 datasiap.time_stamp = new FormatTanggal(new Date()).stringForDateTimeLocal();
                 datasiap.idbaris = dataketerangan[0].idbaris;
                 let cek = await this.kaldikservice.editKalender(datasiap)
-                
-                this.ormKaldik = this.ormKaldik.reInstansiance(cek.data);
-                
+                this.ormKaldik = this.ormKaldik.reInstansiance(this.kaldikservice.data);
                 if(this.relationalFitur){
                     this.relationalFitur.ormKaldik = this.ormKaldik.init();
                 }
             }
-
+            dataketerangan = this.ormKaldik.dataKeteranganKaldik();
             this.show_tabel_setting();
         }
     }
@@ -359,7 +359,7 @@ export default class KaldikFitur{
     }
     createSingleKalender(start_tgl,end_tgl,valueinput_strt_tgl){
         let ta = new Date(start_tgl);
-        let dd = valueinput_strt_tgl;
+        let dd = valueinput_strt_tgl; //format 2024-04-11
         let takh = new Date(end_tgl);
         let tgLastTakh = new Date(takh.getFullYear(),takh.getMonth()+1,0).getDate();
         
@@ -375,4 +375,127 @@ export default class KaldikFitur{
                 );
                 // .stringTable();
     }
+
+    // createMultipleKalender(start_tgl,end_tgl,valueinput_strt_tgl){
+    createMultipleKalender(start_tgl,end_tgl,indeks){
+        let ta = new Date(start_tgl);
+        let dd = start_tgl;//valueinput_strt_tgl; //format 2024-04-11
+        let takh = new Date(end_tgl);
+        let tgLastTakh = new Date(takh.getFullYear(),takh.getMonth()+1,0).getDate();
+        
+        return new tableKalender(this.ormKaldik.dataKeteranganKaldik())
+                .arrayBulan(new Date(ta.getFullYear(),ta.getMonth(),1),new Date(takh.getFullYear(),takh.getMonth(),tgLastTakh))
+                .init(
+                    {atributTable:[
+                        {style:'border-collapse:separate;margin:0 auto;width:100%;font-size:12px;border-bottom:.5pt solid #eee'},
+                        {id:'tabelkalenderbulanan'+indeks},
+                        {class:'tabelkalender'+indeks},
+                        {'data-date':dd},
+                    ],}
+                );
+                // .stringTable();
+    }
+
+    show_kalender_pendidikan(thAwal){
+        let bulanAkhir = new Date(thAwal);
+        
+        bulanAkhir.setMonth(thAwal.getMonth()+5);
+
+        let current = thAwal;
+        let html = '';
+        let indeks = 0;
+
+        while(current <= bulanAkhir){
+            let formatDate = new FormatTanggal(current).idStringKaldik();
+            let bulan = this.ormKaldik.internationalDate(current)
+            let tahun = current.getFullYear();
+
+            html += wrapperCardKalender(cardKalender(bulan,tahun,`<div id="cardKalender${indeks}"></div>`,{card:'mb-0',header:'bg-info-subtle justify-content-between title-header font14',body:`body-card-kalender border rounded-bottom`,bodyAttr:`data-refdate="${formatDate}"`}));
+            current.setMonth(current.getMonth() + 1);
+            indeks++;
+        }
+        
+        this.workplace.innerHTML = this.headerPage + wrapperKalender(html);
+
+        let domse = document.querySelectorAll('[data-refdate]');
+        domse.forEach((card,indeks)=>{
+            let atr = card.getAttribute('data-refdate');
+            let tb = this.createMultipleKalender(new Date(atr),new Date(atr),indeks);
+                tb.createTable(card);
+                    tb.fillDate('tabelkalender'+indeks);
+                    tb.addKeteranganOnKalender(card,'tabelkalender'+indeks);
+        });
+    }
+    show_kalender_pendidikanTahun(thAwal){
+        let bulanAkhir = new Date(thAwal);
+        bulanAkhir.setMonth(thAwal.getMonth()+11);
+
+        let current = thAwal;
+        let html = '';
+        let indeks = 0;
+        while(current <= bulanAkhir){
+            let formatDate = new FormatTanggal(current).idStringKaldik();
+            let bulan = this.ormKaldik.internationalDate(current)
+            let tahun = current.getFullYear();
+            let bg = 'bg-info-subtle';
+            if(indeks>5){
+                bg = 'bg-danger-subtle';
+            }
+
+            html += wrapperCardKalender(cardKalender(bulan,tahun,`<div id="cardKalender${indeks}"></div>`,{card:'mb-0',header:bg +' justify-content-between title-header font14',body:`body-card-kalender border rounded-bottom`,bodyAttr:`data-refdate="${formatDate}"`}));
+            current.setMonth(current.getMonth() + 1);
+            indeks++;
+        }
+        this.workplace.innerHTML = this.headerPage + wrapperKalender(html);
+
+        let domse = document.querySelectorAll('[data-refdate]');
+        domse.forEach((card,indeks)=>{
+            let atr = card.getAttribute('data-refdate');
+            let tb = this.createMultipleKalender(new Date(atr),new Date(atr),indeks);
+                tb.createTable(card);
+                    tb.fillDate('tabelkalender'+indeks);
+                    tb.addKeteranganOnKalender(card,'tabelkalender'+indeks);
+        });
+    }
+    show_hari_efektif(thAwal){
+        let sabtu = document.getElementById('switchsabtu');
+
+        sabtu.onchange = (e)=>{
+            
+            let data = this.ormKaldik.dataHariEfektifPerSemester(thAwal,e.target.checked);
+            this.workplace.innerHTML = this.headerPage + hariEfektif(data,e.target.checked);
+        }
+        
+        sabtu.dispatchEvent(new Event('change'));
+        
+        
+    }
+    
+    show_hari_efektif_belajar(thAwal){
+        let sabtu = document.getElementById('switchsabtu');
+
+        sabtu.onchange = (e)=>{
+            
+            let data = this.ormKaldik.dataHariEfektifPerSemester(thAwal,e.target.checked);
+            this.workplace.innerHTML = this.headerPage + hariEfektifbelajar(data,e.target.checked);
+        }
+        
+        sabtu.dispatchEvent(new Event('change'));
+        
+        
+    }
+    show_jam_efektif_belajar(thAwal){
+        let sabtu = document.getElementById('switchsabtu');
+
+        sabtu.onchange = (e)=>{
+            
+            let data = this.ormKaldik.dataHariEfektifPerSemester(thAwal,e.target.checked);
+            this.workplace.innerHTML = this.headerPage + hariEfektifbelajarjam(data,e.target.checked);
+        }
+        
+        sabtu.dispatchEvent(new Event('change'));
+        
+        
+    }
+    
 }
