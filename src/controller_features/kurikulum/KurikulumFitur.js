@@ -548,7 +548,7 @@ export default class KurikulumFitur{
         })
     }
     fitur_taksonomibloom(){
-        console.log(this.kurikulumService.data.taksonomibloom);
+        
         this.settingHeaderPage('Taksonomi Bloom',false);
         this.workplace.innerHTML = htmlTaksonomiBloom(this.kurikulumService.data.taksonomibloom);
         let ob={
@@ -563,7 +563,7 @@ export default class KurikulumFitur{
         btns.forEach(btn=>{
             btn.onclick = async(e)=>{
                 let tipeaksi = btn.getAttribute('data-aksi');
-                console.log('aksi: ',tipeaksi);
+                
                 let row = btn.closest('tr');
                 let lrow = btn.getAttribute('data-ref');
                 let objekAsal = this.kurikulumService.data[prop].filter(s=> s.idbaris == lrow)[0];
@@ -577,7 +577,7 @@ export default class KurikulumFitur{
                 
                 const mergeObjek = Object.assign({},objekAsal,objekUpdate);
                 const datasiap = new Taksonomibloom(mergeObjek).sanitize().data;
-                console.log(datasiap)
+                
                 
                 let konfirmasi = confirm('Anda yakin?');
                 if(!konfirmasi) return;
