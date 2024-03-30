@@ -1,7 +1,7 @@
 import iconhadir from "../../img/hadir.png";
 import OrmAbsen from "./OrmAbsen";
 import UrlImg from "../../controllers/UrlImg";
-import { htmldenah, tabelabsenRekapperbulan, tabelabsenperbulan, templatingCardSingle, templatingCardSingleLarge, viewFormulir, viewTableAbsenPerbulanWithCalculation, viewTableRekapAbsenPerSemesterWithCalculation, viewTableRekapAbsenPerbulanWithCalculation, viewTableRekapSemester, viewTableRootAbsenPerbulanWithCalculation } from "./viewAbsen";
+import { htmldenah, templatingCardSingle, templatingCardSingleLarge, viewFormulir, viewTableAbsenPerbulanWithCalculation, viewTableRekapAbsenPerSemesterWithCalculation, viewTableRekapAbsenPerbulanWithCalculation, viewTableRekapSemester, viewTableRootAbsenPerbulanWithCalculation } from "./viewAbsen";
 import { TableProperties }  from "../../entries/vendor";
 import AbsensiSiswa from "../../domains/AbsensiSiswa";
 import GrafikChart from "../grafik/GrafikChart";

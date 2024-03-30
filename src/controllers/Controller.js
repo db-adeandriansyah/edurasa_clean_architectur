@@ -27,6 +27,9 @@ export class Controller{
     get fokusRombel(){
         return this.#rombelActive;
     }
+    get fokusJenjang(){
+        return parseInt(this.#rombelActive);
+    }
     set fokusMenu(x){
         this.#methodActive = x;
     }

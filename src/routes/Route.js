@@ -389,7 +389,9 @@ export default class Route{
             }
         }
         if(fiturJenjang){
-            arr.unshift(this.fiturJenjang(this.#User.kelasAmpu))
+            if(this.#User.typeUser!=='Guru Kelas'){
+                arr.unshift(this.fiturJenjang(this.#User.kelasAmpu))
+            }
         }
         html+= this.loopingMenu(arr);
         document.querySelector('.offcanvas-body').innerHTML = html;
