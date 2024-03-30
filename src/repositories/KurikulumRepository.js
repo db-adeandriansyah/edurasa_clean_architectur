@@ -198,6 +198,32 @@ export default class KurikulumRepository extends CallHttp{
         }
         return await this.post(this.crud, d);
     }
+    async update_kkmkktp(param){
+        let d = { 
+            idss:this.ss_must_call,
+            tab:'kkmkktp',
+            action:'update',
+            'byRow':parseInt(param.idbaris),
+            'formData':JSON.stringify(param),
+            'autoId':'idbaris',
+            
+            // filter:JSON.stringify({'hapus':''})
+        }
+        return await this.post(this.crud, d);
+    }
+    async update_taksonomibloom(param){
+        let d = { 
+            idss:this.ss_must_call,
+            tab:'taksonomibloom',
+            action:'update',
+            'byRow':parseInt(param.idbaris),
+            'formData':JSON.stringify(param),
+            'autoId':'idbaris',
+            
+            // filter:JSON.stringify({'hapus':''})
+        }
+        return await this.post(this.crud, d);
+    }
     
     async tambah_k2kelas3(param){
         let d = { 
@@ -213,6 +239,20 @@ export default class KurikulumRepository extends CallHttp{
         }
         return await this.post(this.crud, d);
     }
+    async tambah_taksonomibloom(param){
+        let d = { 
+            idss:this.ss_must_call,
+            tab:'taksonomibloom',
+            action:'create',
+            'formData':JSON.stringify(param),
+            'autoId':'idbaris',
+            
+            // stringFormat:JSON.stringify([])
+            // filter:JSON.stringify({'hapus':''})
+        }
+        return await this.post(this.crud, d);
+    }
+
     
     
     

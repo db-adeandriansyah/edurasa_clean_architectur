@@ -234,4 +234,25 @@ export default class KurikulumService{
         
         this.repo.stopProgressBar();
     }
+    async update_kkmkktp(data){
+        this.repo.callWithProses();
+        const n= await this.repo.update_kkmkktp(data);
+        this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
+        
+        this.repo.stopProgressBar();
+    }
+    async update_taksonomibloom(data){
+        this.repo.callWithProses();
+        const n= await this.repo.update_taksonomibloom(data);
+        this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
+        
+        this.repo.stopProgressBar();
+    }
+    async tambah_taksonomibloom(data){
+        this.repo.callWithProses();
+        const n= await this.repo.tambah_taksonomibloom(data);
+        this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
+        
+        this.repo.stopProgressBar();
+    }
 }

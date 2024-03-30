@@ -1,6 +1,8 @@
 import OrmKaldik from '../controller_features/kaldik/OrmKaldik';
-import AbsensiFitur from "../controller_features/absensi/AbsensiFitur";
-import KaldikFitur from "../controller_features/kaldik/KaldikFitur";
+// import AbsensiFitur from "../controller_features/absensi/AbsensiFitur";
+// import KaldikFitur from "../controller_features/kaldik/KaldikFitur";
+const AbsensiFitur=import( "../controller_features/absensi/AbsensiFitur").then(module=>  module.default  );;
+const KaldikFitur =import("../controller_features/kaldik/KaldikFitur").then(module=>  module.default  );;
 import { ModalConfig } from "../entries/vendor";
 import controls from "../views/controls/controls";
 

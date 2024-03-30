@@ -332,10 +332,36 @@ export default class OrmKurkulum{
                 .data;
     }
     
-    get faseA(){
-        let dbElemen = this.#kurikulumService.elemencp;
-        
+    properti_kkmkktp(v){
+        let data = this.#kurikulumService['kkmkktp'];
+        let objekmapel = Object.keys(v.koleksimapel);
+        let user = v.user;
+        return new CollectionsEdu(data)
+            .simpleFilter({jenjang:v.jenjang})
+            .customFilter((n)=>{
+                return objekmapel.includes(n.kodemapel);
+            })
+            .addProperty('_mapelteks',(n)=>v.koleksimapel[n.kodemapel])
+            .addProperty('_htmlkkm',(n)=>`<input type="number" class="form-control m-0 border-0 text-center bg-transparent" data-update="kkm" value="${n.kkm}">`)
+            .addProperty('_htmlpengayaan',(n)=>`<input type="number" class="form-control m-0 border-0 text-center bg-transparent" data-update="pengayaan" value="${n.pengayaan}">`)
+            .addProperty('_aksi',(n)=>{
+                let html="";
+                if(user.typeUser =='Guru Mapel'){
+                    if(user.tugasUser == n.kodemapel){
+                        html = `<button data-aksi="edit" data-dataproperti="${n.idbaris}" class="btn btn-sm text-bg-primary"><i class="bi-floppy-fill"></i></button>`
+                    }
+                }else{
+                    html = `<button data-aksi="edit" data-dataproperti="${n.idbaris}" class="btn btn-sm text-bg-primary"><i class="bi-floppy-fill"></i></button>`
+                }
+                return html;
+            })
+            .data;
     }
+
+    taksonomibloom(){
+        return this.#kurikulumService.taksonomibloom;
+    }
+
     
     
     

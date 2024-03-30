@@ -1,4 +1,6 @@
-import KurikulumFitur from "../controller_features/kurikulum/KurikulumFitur";
+// import KurikulumFitur from "../controller_features/kurikulum/KurikulumFitur";
+const KurikulumFitur = await import("../controller_features/kurikulum/KurikulumFitur").then(module=>  module.default  );
+//const SuratFeature = await import("../controller_features/surat/SuratFeatures").then(module=>  module.default  );
 import { menuPropertiMapel } from "../views/kurikulum/controlKurikulum";
 import Fitur from "./Fitur";
 
@@ -37,8 +39,8 @@ export default class KurikulumController extends Fitur{
         // console.log(this.kurikulumFitur.shortKurikulum);
     }
     async item_kurikulum(){
-        this.settingHeaderPage('Kalender Pendidikan',this.Auth.namaSekolah,'Tahun Pelajaran ' + this.Auth.tapel,false);
-        this.kurikulumFitur.headerPage = this.#judulHalaman;
+        // this.settingHeaderPage('Kalender Pendidikan',this.Auth.namaSekolah,'Tahun Pelajaran ' + this.Auth.tapel,false);
+        // this.kurikulumFitur.headerPage = this.#judulHalaman;
         
         this.kurikulumFitur.settingJenjang(this.fokusJenjang)
         
@@ -47,7 +49,7 @@ export default class KurikulumController extends Fitur{
             arraySelect:this.kurikulumFitur.labelingSelectMapel,
             deskripsi:'Jenjang kelas ini menerapkan '+this.kurikulumFitur.longKurikulum,
             properti:this.kurikulumFitur.labelingPropertiKurikulum,
-            ValuePertama:this.Auth.typeUser=='Guru Mapel'?this.Auth.jabatanUser:''
+            ValuePertama:this.Auth.typeUser=='Guru Mapel'?this.Auth.tugasUser:''
         }
         this.maincontrol.innerHTML = menuPropertiMapel(data);
         
@@ -57,6 +59,13 @@ export default class KurikulumController extends Fitur{
         // console.log(this.kurikulumFitur.ormKurikulum.db);
         
 
+    }
+    kkmkktp_kurikulum(){
+        this.kurikulumFitur.settingJenjang(this.fokusJenjang);
+        this.kurikulumFitur.fitur_kkmkktp_kurikulum();
+    }
+    taksonomibloom(){
+        this.kurikulumFitur.fitur_taksonomibloom();
     }
 
 }

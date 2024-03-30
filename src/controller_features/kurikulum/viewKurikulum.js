@@ -464,6 +464,112 @@ export const viewHTMLk = (k, data)=>{
     }
     return new tabelDom(config).init()
 }
+export const viewHTMLKKMKKTP = (data,kkmkktp)=>{
+    let config = {
+        tableAtribut:{
+            id:'tabel_properti_kurikulum',
+            class:'w3-table-all toExcel table-sm mt-5 font12',
+        },
+        db:data,
+        
+        atributeColumn:{
+            'auto':{class:'text-center'},
+            'kodemapel':{class:'text-center'},
+            '_htmlkkm':{class:'p-0'},
+            '_htmlpengayaan':{class:'p-0'},
+            '_aksi':{class:'print-hide'}
+            // 'html_kode_elemen':{class:'p-0 align-middle'},
+            // 'html_aksiedit':{class:'text-center align-middle print-hide'}
+            
+        },
+        headers:[
+            {
+                columns:[
+                    {label:'No'},
+                    {label:'Kode Mapel'},
+                    {label:'Nama Mapel'},
+                    {label:kkmkktp},
+                    {label:'Pengayaan'},
+                    {label:'Aksi'}
+                ]
+            }
+        ],
+        body:[
+            'auto','kodemapel','_mapelteks','_htmlkkm','_htmlpengayaan','_aksi'
+        ],
+        // footer:()=>{
+        //     let html = "";
+        //     html+=`<tr title="Form untuk menambahkan Properti Elemen dan CP" class="print-hide">`;
+        //                 html+=`<td class="p-0 bg-info-subtle"><textarea data-update="elemen" data-baris="" class="form-control border-0 bg-transparent m-0 rounded-0"></textarea></td>`;
+        //                 html+=`<td class="p-0 bg-info-subtle"><textarea data-update="cp_utama" data-baris="" class="form-control border-0 bg-transparent m-0 rounded-0"></textarea></td>`;
+        //                 html+=`<td class="p-0 bg-info-subtle align-middle"><input type="number" min="1" data-update="kode_elemen" data-baris="" value="${data.length+1}" class="form-control border-0 bg-transparent m-0 border-0 rounded-0 text-center p-2"/></td>`;
+        //                 html+=`<td class="text-center bg-info-subtle align-middle print-hide" title="Tambah">
+        //                 <span class="btn btn-outline-success shadow-lg py-0" role="button"  data-aksi="tambah" data-dataproperti="" ><i class="bi bi-patch-plus"></i></span>
+        //                 </td>`;
+        //             html+=`</tr>`;
+        //     return stringToDom(html);
+        // }
+    }
+    return new tabelDom(config).init()
+}
+export const htmlTaksonomiBloom = (data)=>{
+    const lk = [... new Set(data.map(n=>n.levelkognitif))];
+
+    let html ="";
+    html+=`<h3 class="text-center">Taksonomi Bloom</h3>`;
+    html+=`<div class="table-responsive">`;
+    html+=`<table class="table table-sm table-bordered">`;
+        html+=`<thead>`;
+            html+=`<tr>`;
+                html+=`<th class="text-center align-middle">Level Kognitif (Kode)</th>`;
+                html+=`<th class="text-center align-middle">Taksonomi Kognitif (tipe C)</th>`;
+                html+=`<th class="text-center align-middle">Kata Kerja Operasional (KKO)</th>`;
+                html+=`<th class="text-center align-middle">Aksi</th>`;
+            html+=`</tr>`;
+        html+=`</thead>`;
+        html+=`<tbody>`;
+        lk.forEach((lk,i)=>{
+            let c = data.filter(s=>s.levelkognitif == lk);
+            let uniq_c = [... new Set(c.map(s=>s.tipe))];
+            html+=`<tr>`;
+                html+=`<td rowspan="${c.length+uniq_c.length}" class="text-center">${lk}</td>`;
+                uniq_c.forEach((uc,j)=>{
+                    let dataC = data.filter(s=>s.levelkognitif == lk && s.tipe== uc);
+                    html+=`<td rowspan="${dataC.length+1}" class="text-center">${uc}</td>`;
+                    dataC.forEach((kko,k)=>{
+                        
+                        // html+=`<td>${kko.kko}</td>`;
+                        html+=`<td class="p-0">`;
+                            html+=`<input type="text" class="form-control bg-transparent m-0 border-0" data-update="kko" value="${kko.kko}" data-ref="${kko.idbaris}"/>`;
+                        html+=`</td>`;
+
+                        html+=`<td>`;
+                            html+=`<button class="btn btn-sm text-bg-info" data-aksi="edit" data-ref="${kko.idbaris}"><i class="bi-pencil"></i></button>`;
+                        html+=`</td>`;
+                        if(k < dataC.length-1){
+                            html+=`</tr><tr>`;
+                        }
+                    })
+                    if(j < uniq_c.length){
+                        html+=`<tr>`;
+                        html+=`<td class="text-bg-info p-0">`;
+                            html+=`<input type="text" class="form-control bg-transparent m-0" data-update="kko" data-ref="${dataC[dataC.length-1].idbaris}"/>`;
+                        html+=`</td>`;
+                        html+=`<td class="text-bg-info p-0">`;
+                        html+=`<button class="btn btn-sm text-bg-success" data-aksi="tambah" data-ref="${dataC[dataC.length-1].idbaris}"><i class="bi-floppy-fill"></i></button>`;
+                        html+=`</td>`;
+                        html+=`</tr><tr>`;
+                    }
+
+                });
+            html+=`</tr>`;
+        })
+        
+        html+=`</tbody>`;
+    html+=`</table>`;
+    html+=`</div>`;
+    return html;
+}
 export const viewPropertiKurkulum = (data)=>{
     const {tipe,orm,kelasFase} = data;
     if(tipe =='properti_elemencp'){
@@ -488,6 +594,8 @@ export const viewPropertiKurkulum = (data)=>{
         return viewHTMLk(3,orm);
     }else if(tipe == 'properti_k4'){
         return viewHTMLk(4,orm);
+    }else if(tipe == 'properti_kkmkktp'){
+        return viewHTMLKKMKKTP(orm,kelasFase);
     }else{
         return 'Fitur dalam tahap pengembangan untuk '+tipe;
     }

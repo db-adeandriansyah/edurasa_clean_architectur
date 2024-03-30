@@ -67,8 +67,9 @@ const radioPropertiKurikulum = (data)=>{
 }
 export const menuPropertiMapel= (data)=>{
         const {judul,arraySelect, deskripsi,ValuePertama} = data;
-        let slot = radioPropertiKurikulum(data)
-        let elemenselect = inputsElements.floatingSelect('idselectmapel','Pilih Mapel',arraySelect,ValuePertama);
+        let slot = radioPropertiKurikulum(data);
+        let enab = ValuePertama==''?'':' disabled ';
+        let elemenselect = inputsElements.floatingSelect('idselectmapel','Pilih Mapel',arraySelect,ValuePertama,enab);
         return `<div class="row rounded blur p-3 m-2 text-center justify-content-between">
                     <h3 class="col-md-12 text-center mb-0">${judul}</h3>
                     <p class="col-md-12 mt-0 p-0 mb-3">${deskripsi}</p>

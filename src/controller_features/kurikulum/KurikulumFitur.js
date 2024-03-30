@@ -5,9 +5,11 @@ import Tpatp from "../../domains/Tpatp";
 import FaseDomain from "../../domains/faseDomain";
 import properti_k3 from "../../domains//properti_k3";
 import mapelkdcp_kurikulum from "../../models/mapel";
-import { JenisKurikulum, faseAbjadKarakter, faseKey } from "../../routes/settingApp";
+import { JenisKurikulum, faseKey } from "../../routes/settingApp";
 import OrmKurkulum from "./OrmKurikulum";
-import { viewHTMLElemenCp, viewPropertiKurkulum } from "./viewKurikulum";
+import { htmlTaksonomiBloom, viewPropertiKurkulum } from "./viewKurikulum";
+import Kkmkktp from "../../domains/Kkmkktp";
+import Taksonomibloom from "../../domains/Taksonomibloom";
 
 
 export default class KurikulumFitur{
@@ -487,6 +489,112 @@ export default class KurikulumFitur{
         
 
     }
+    async fitur_kkmkktp_kurikulum(){
+        await this.isExist('kkmkktp');
+        await this.settingOrm();
 
+        let teksKKMKKTP = this.shortKurikulum=='kurmer'?'KKTP':'KKM';
+        
+        this.settingHeaderPage(teksKKMKKTP+' Kelas '+this.jenjang,'Tahun Pelajaran '+this.user.tapel,false);
+        
+        let v = {
+            jenjang:this.jenjang,
+            koleksimapel:this.currentMapelOnClassRoom,
+            user:this.user
+        }
+        
+        let ob={
+            tipe:'properti_kkmkktp',
+            properti:'kkmkktp',
+            prop:'kkmkktp',
+            orm:this.ormKurikulum.properti_kkmkktp(v),
+            kelasFase:teksKKMKKTP,
+            
+        }
+        this.workplace.innerHTML = this.#judulHalaman + viewPropertiKurkulum(ob);
+        this.listener_kkmkktp_kurikulum(ob)
+        
+        
+    }
+    listener_kkmkktp_kurikulum(ob){
+        const {prop}=ob;
+        const btns = document.querySelectorAll('[data-aksi="edit"]');
+        let tahan = true;
+        btns.forEach(btn=>{
+            btn.onclick = async(e)=>{
+                let row = btn.closest('tr');
+                let lrow = btn.getAttribute('data-dataproperti');
+                let objekAsal = this.kurikulumService.data[prop].filter(s=> s.idbaris == lrow)[0];
+                let formulir = row.querySelectorAll('[data-update]');
+                let objekUpdate = {};
+                
+                formulir.forEach(el=>{
+                    let key = el.getAttribute('data-update');
+                    objekUpdate[key] = el.value;
+                })
+                
+                const mergeObjek = Object.assign({},objekAsal,objekUpdate);
+                const datasiap = new Kkmkktp(mergeObjek).sanitize().data;
+                
+                let konfirmasi = confirm('Anda yakin?');
+                if(!konfirmasi) return;
+
+                tahan=false;
+                await this.kurikulumService.update_kkmkktp(datasiap);
+                tahan = true;
+                this.fitur_kkmkktp_kurikulum()
+
+            }
+        })
+    }
+    fitur_taksonomibloom(){
+        console.log(this.kurikulumService.data.taksonomibloom);
+        this.settingHeaderPage('Taksonomi Bloom',false);
+        this.workplace.innerHTML = htmlTaksonomiBloom(this.kurikulumService.data.taksonomibloom);
+        let ob={
+            prop:'taksonomibloom'
+        }
+        this.listener_fitur_taksonomiboom(ob)
+    }
+    listener_fitur_taksonomiboom(ob){
+        const {prop}=ob;
+        const btns = document.querySelectorAll('[data-aksi]');
+        let tahan = true;
+        btns.forEach(btn=>{
+            btn.onclick = async(e)=>{
+                let tipeaksi = btn.getAttribute('data-aksi');
+                console.log('aksi: ',tipeaksi);
+                let row = btn.closest('tr');
+                let lrow = btn.getAttribute('data-ref');
+                let objekAsal = this.kurikulumService.data[prop].filter(s=> s.idbaris == lrow)[0];
+                let formulir = row.querySelectorAll('[data-update]');
+                let objekUpdate = {};
+                
+                formulir.forEach(el=>{
+                    let key = el.getAttribute('data-update');
+                    objekUpdate[key] = el.value;
+                })
+                
+                const mergeObjek = Object.assign({},objekAsal,objekUpdate);
+                const datasiap = new Taksonomibloom(mergeObjek).sanitize().data;
+                console.log(datasiap)
+                
+                let konfirmasi = confirm('Anda yakin?');
+                if(!konfirmasi) return;
+
+                tahan=false;
+                if(tipeaksi == 'edit'){
+                    await this.kurikulumService.update_taksonomibloom(datasiap);
+                }else{
+                    
+                    await this.kurikulumService.tambah_taksonomibloom(datasiap);
+                }
+                // await this.kurikulumService.update_kkmkktp(datasiap);
+                tahan = true;
+                this.fitur_taksonomibloom()
+
+            }
+        })
+    }
 
 }
