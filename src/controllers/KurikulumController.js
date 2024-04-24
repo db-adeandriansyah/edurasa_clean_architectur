@@ -12,7 +12,7 @@ export default class KurikulumController extends Fitur{
         this.kurikulumService = kurikulumService;
         this.kurikulumFitur = null;
         this.controlRombel(false);
-        this.#judulHalaman;
+        this.#judulHalaman="";
         
     }
     

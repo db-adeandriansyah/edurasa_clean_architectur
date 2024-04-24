@@ -12,6 +12,7 @@ App.registerUrlPermission('/arsip-surat', ['Guru Kelas','Guru Mapel','Kepala Sek
 App.registerUrlPermission('/absensi', ['Guru Kelas','Guru Mapel','Kepala Sekolah','admin','Staff'] );
 App.registerUrlPermission('/kurikulum', ['Guru Kelas','Guru Mapel','Kepala Sekolah','admin','Staff'] );
 App.registerUrlPermission('/kalender', ['Guru Kelas','Guru Mapel','Kepala Sekolah','admin','Staff'] );
+App.registerUrlPermission('/banksoal', ['Guru Kelas','Guru Mapel','Kepala Sekolah','admin','Staff'] );
 App.init();
 
 export {App as default}
