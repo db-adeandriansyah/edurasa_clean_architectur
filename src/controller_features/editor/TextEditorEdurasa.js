@@ -250,7 +250,7 @@ export default class TextEditorEdurasa{
                         e.preventDefault();
                         return;
                     };
-                    console.log(el.getAttribute('data-aksi'), 'tunggu aja nanti')
+                    
                 }
             }
         });
@@ -340,7 +340,7 @@ export default class TextEditorEdurasa{
         }
 
         this.request.bentuksoal = this.praDesain.bentuksoal =='Essay'?'Isian':this.praDesain.bentuksoal;
-        console.log('praDesain',this.praDesain);
+        
         debounce(this.btnActivity());
         debounce(this.domActivity());
         
@@ -596,7 +596,7 @@ export default class TextEditorEdurasa{
                     dom.append(selection.getRangeAt(i).cloneContents());
                 }
         if(dom.childNodes.length>1 && dom.childNodes[0].nodeType !==3) this.unwrap(dom.childNodes[0]);
-        //console.log(dom.innerHTML);
+        
         let data = {
             idbaris:'',
             tipe:'',

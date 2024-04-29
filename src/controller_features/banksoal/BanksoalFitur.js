@@ -1,12 +1,12 @@
 import mapelkdcp_kurikulum from "../../models/mapel";
 import { JenisKurikulum, faseKey } from "../../routes/settingApp";
-import { FormatTanggal } from "../../utilities/FormatTanggal";
+
 import controlbanksoal from "../../views/banksoal/controlBankSoal";
+import { CanvasFabricEditor } from "../editor/CavasFabricEditor";
 import CustomTextEditor from "../editor/CustomTextEditor";
 import TextEditorEdurasa from "../editor/TextEditorEdurasa";
-// import { createTemplatePerItemBankSoal } from "../editor/viewTextEditorEdurasa";
 import OrmKurikulumSoal from "./OrmKurikulumSoal";
-import { controlFiturBuatPerItemSoal, previewBentukSoal, previewSoalPilihanGandaWithProperty, previewSoalWithProperty } from "./viewBankSoal";
+import { canvasEditor, controlFiturBuatPerItemSoal, previewSoalWithProperty, tabelResultCanvasEditor } from "./viewBankSoal";
 
 export default class BanksoalFitur{
     #jenjangActive;
@@ -199,26 +199,26 @@ export default class BanksoalFitur{
                 otomatis:false,
                 carakoreksi:'Manual'
             },
-            {
-                id:'fc_pgkomplek',
-                bentuksoalspesifik:'Essay',
-                bentuksoal:'Isian',
-                editorinput:'editorpgkompleks',
-                teks:'PG Kompleks',
-                value:'PG Kompleks',
-                otomatis:true,
-                carakoreksi:'Otomatis'
-            },
-            {
-                id:'fc_benarsalah',
-                bentuksoalspesifik:'BenarSalah',
-                bentuksoal:'BenarSalah',
-                editorinput:'editorbenarsalah',
-                teks:'Benar Salah',
-                value:'BenarSalah',
-                otomatis:true,
-                carakoreksi:'Otomatis'
-            },
+            // {
+            //     id:'fc_pgkomplek',
+            //     bentuksoalspesifik:'Essay',
+            //     bentuksoal:'Isian',
+            //     editorinput:'editorpgkompleks',
+            //     teks:'PG Kompleks',
+            //     value:'PG Kompleks',
+            //     otomatis:true,
+            //     carakoreksi:'Otomatis'
+            // },
+            // {
+            //     id:'fc_benarsalah',
+            //     bentuksoalspesifik:'BenarSalah',
+            //     bentuksoal:'BenarSalah',
+            //     editorinput:'editorbenarsalah',
+            //     teks:'Benar Salah',
+            //     value:'BenarSalah',
+            //     otomatis:true,
+            //     carakoreksi:'Otomatis'
+            // },
             {
                 id:'fc_menjodohkan',
                 bentuksoalspesifik:'Menjodohkan',
@@ -308,7 +308,7 @@ export default class BanksoalFitur{
             '_htmlkoleksimapel':this.labelingSelectMapel,
             'kurikulum':this.ormKurikulum
         }
-        console.log(needData);
+        
         this.maincontrol.innerHTML = controlFiturBuatPerItemSoal(needData);//controlbanksoal.wrapermenu(teksInfo);
         this.workplace.innerHTML = "";//controlbanksoal.templateCreatePerItemBankSoal();
         this.listener_fitur_item_soal(needData);
@@ -329,7 +329,7 @@ export default class BanksoalFitur{
             }else if(el.type=='select-one'){
                 datadesain[el.getAttribute('data-pradesain')]=el.value;
                 
-                console.log(this.currentMapelOnClassRoom)
+                
                 datadesain['tekskodemapel']=this.currentMapelOnClassRoom[el.value];
             }
         });
@@ -341,19 +341,53 @@ export default class BanksoalFitur{
         elemencek.forEach(el=>{
             el.onchange = (e)=>{
                 let pradesain = this.cek_fitur_pradesain();
-                
+                console.log(pradesain.editor)
                 if(pradesain.mode =='bycopast' && pradesain.editor == 'editor'){
-                    console.log('mode pradesain', pradesain.mode)
+                    
                     this.workplace.innerHTML = controlbanksoal.templateCreatePerItemBankSoal();
                     this.createTextEditor(pradesain);
-                }else{
+                }else if(pradesain.mode =='bycopast' && pradesain.editor == 'canvas'){
+                    
                     this.workplace.innerHTML = controlbanksoal.templateCreatePerItemBankSoal();
+                    this.createCanvas(pradesain);
+                }else{
+                    this.workplace.innerHTML = "";//controlbanksoal.templateCreatePerItemBankSoal();
                 }
             }
         });
         elemencek[0].dispatchEvent(new Event('change'));
 
     }
+    createCanvas(pradesain){
+        
+        let lingkupmateri = this.banksoalservice.data.lingkupmateri.filter(s=> s.kodemapel == pradesain.kodemapel);
+        document.getElementById('divTextEditor').innerHTML = canvasEditor();
+
+        document.getElementById('realtimeInputTextEditor').innerHTML = tabelResultCanvasEditor(lingkupmateri);
+        new CanvasFabricEditor(this.banksoalservice,pradesain).init();
+        
+    }
+    // async uploadCanvasToPng(canvas){
+    //     let srcCanvas = canvas.toDataURL('png')
+    //     /**
+    //      * let param = src.replace(/^.*,/, '');
+    //             let tipe = src.match(/^.*(?=;)/)[0];
+    //      */
+    //     let params = {
+    //         action:'uploadFile',
+    //         folder:'GAMBAR MENJODOHKAN',
+    //         // subfolder:,
+    //         // namafile:namafileinput.replace(/[^\w\s.-]/g, "_"),
+    //         "namafile":'gambarmenjodohkan'+new Date().getTime()+'.png',
+    //         "base64":srcCanvas.replace(/^.*,/, ''),//.replace(/^.*,/, '');
+    //         "mimeType":srcCanvas.match(/^.*(?=;)/)[0],//dataURL.match(/^.*(?=;)/)[0],//
+    //     }
+
+    //     const respon = await this.banksoalservice.simpanImage(params);
+    //     console.log(respon)
+    //     let src = new UrlImg(respon.idfile).urlImg;//"https://lh3.googleusercontent.com/d/"+respon.data.idfile;
+    //     return src;
+    // }
     createTextEditorBankSoal(parentSelector='#divTextEditor',idiframe='iframeTextEditor',contectMenu = 'PG'){
         let testWrap = new CustomTextEditor(
             {
@@ -370,19 +404,16 @@ export default class BanksoalFitur{
     }
     createTextEditor(){
         const TE = new TextEditorEdurasa(this.cek_fitur_pradesain(),'#divTextEditor').addService(this.banksoalservice).addRespons(this.respontekseditor).init();
-        console.log(TE.service.data.taksonomibloom);
+        
     }
     respontekseditor(test){
         
         let teksInptu = document.getElementById('sorotUpdate_tampilansoal');
-        console.log(test);
+        
         teksInptu.innerHTML = previewSoalWithProperty(test);//test.pertanyaan?test.pertanyaan:'belum ada data';
         let simpan = document.getElementById('simpanItemSoal');
         let reset = document.getElementById('resetItemSoal');
         simpan.onclick = async()=>{
-            console.log(test);
-
-            console.log(this.service.simpanItemSoal);
             let bol = true ;
             if(test.bentuksoal === 'Pilihan Ganda'){
                 let cek = Object.keys(test).filter(k=>['indikatorsoal','pertanyaan','opsiA','opsiB','opsiC','materi','levelkognitif','ruanglingkup','kuncijawaban','penskoran'].includes(k))
@@ -400,7 +431,7 @@ export default class BanksoalFitur{
                 return;
             }
             await this.service.simpanItemSoal(test);
-            console.log(this.service.data);
+            
         }
         reset.onclick = ()=>{
             Object.entries(test).forEach(([k,v])=> {
@@ -409,7 +440,7 @@ export default class BanksoalFitur{
                 }
                 
             });
-            console.log(test);
+            
         }
     }
     

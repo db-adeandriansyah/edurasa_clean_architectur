@@ -28,4 +28,10 @@ export default class BanksoalService{
         this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
         this.repo.stopProgressBar();
     }
+    async simpanImage(par){
+        this.repo.callWithProses();
+        const res = await this.repo.saveImage(par);
+        this.repo.stopProgressBar();
+        return res;
+    }
 }

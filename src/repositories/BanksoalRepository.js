@@ -53,4 +53,7 @@ export default class BanksoalRepository extends CallHttp{
         }
         return await this.post(this.crud,para)
     }
+    async saveImage(param){
+        return this.post(this.crud,param)
+    }
 }
