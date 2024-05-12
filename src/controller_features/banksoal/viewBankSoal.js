@@ -22,11 +22,11 @@ export const controlFiturBuatPerItemSoal = (data)=>{
                 title_tab:'Properti Kurikulum',
                 body_html:controlbanksoal.menuPilihPropertiKurikulum(shortKurikulum,kurikulum.simpleFilter({'kodemapel':isGuruMapel?mapelAjar:'PAI'}).data)
             },
-            {
-                id:'tab_pilihmode',
-                title_tab:'Mode',
-                body_html:controlbanksoal.switchRadioModeCreateSoal()
-            }
+            // {
+            //     id:'tab_pilihmode',
+            //     title_tab:'Mode',
+            //     body_html:controlbanksoal.switchRadioModeCreateSoal()
+            // }
         ],
         'shortKurikulum':shortKurikulum,
         'longKurikulum':longKurikulum,
@@ -86,11 +86,15 @@ const propertiItemSoal = (data)=>{
             <td class="border-bottom text-start">${data.kuncijawaban?data.kuncijawaban:`<span class="text-warning fw-bold">Belum Terisi</span>`}</td>
         </tr>`;
     }
-    // if(data.levelkognitif && data.levelkognitif.levelkognitif){
-    //     levelkognitif = `${data.levelkognitif.levelkognitif} (${data.levelkognitif.levelkognitif_definisi})`;
-    // }
+
+    
     if(data.levelkognitif){
-        levelkognitif = `${data.levelkognitif} (${data.taksonomibloom})`;
+        
+        if(data.taksonomibloom){
+            levelkognitif = `${data.levelkognitif} (${data.taksonomibloom})`;
+        }else{
+            levelkognitif = `${data.levelkognitif}`;
+        }
     }
     let html = `<div class="border rounded container">
     <table class="table table-borderless font8">
@@ -150,8 +154,6 @@ export const canvasEditor = ()=>` <div class="min-vh-100 border border-2 p-1 bg-
     <div class="text-center p-2"><button class="btn btn-sm py-0 font12 accord-bg rounded-pill" id="selesaiDesainCanvas">Selesai Desain</button></div>
 </div>`;
 export const tabelResultCanvasEditor =(lingkupmateri)=>{
-    
-    console.log(lingkupmateri);
     
     let html="";
     html=`<table class="table table-sm font12"><tbody>`;

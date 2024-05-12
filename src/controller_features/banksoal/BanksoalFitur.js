@@ -4,6 +4,7 @@ import { JenisKurikulum, faseKey } from "../../routes/settingApp";
 import controlbanksoal from "../../views/banksoal/controlBankSoal";
 import { CanvasFabricEditor } from "../editor/CavasFabricEditor";
 import CustomTextEditor from "../editor/CustomTextEditor";
+import { FormulirBankSoal } from "../editor/FormulirBankSoal";
 import TextEditorEdurasa from "../editor/TextEditorEdurasa";
 import OrmKurikulumSoal from "./OrmKurikulumSoal";
 import { canvasEditor, controlFiturBuatPerItemSoal, previewSoalWithProperty, tabelResultCanvasEditor } from "./viewBankSoal";
@@ -12,15 +13,23 @@ export default class BanksoalFitur{
     #jenjangActive;
     #judulHalaman;
     #mapelAplikasi;
-    constructor(banksoalserv,Modal, Modal1,currentUser,tooltipkan){
+    constructor(
+            banksoalserv,
+            printarea, 
+            bartoolarea,
+            currentUser,
+            tooltipkan)
+    {
         this.banksoalservice = banksoalserv;
-        this.Modal = Modal;
-        this.Modal1 = Modal1;
+        //ga kepake
+        // this.Modal = Modal;
+        // this.Modal1 = Modal1;
+        //------------
         this.user = currentUser;
         this.tooltipkan = tooltipkan;
-        this.workplace =document.getElementById('printarea');
+        this.workplace =printarea;//document.getElementById('printarea');
         this.footerarea =document.getElementById('footerarea');
-        this.maincontrol =document.getElementById('maincontrol');
+        this.maincontrol =bartoolarea;//document.getElementById('maincontrol');
         this.#judulHalaman = '';
         this.#jenjangActive = 1;
         // this.relationalFitur = null;
@@ -130,7 +139,7 @@ export default class BanksoalFitur{
     get currentMapelOnClassRoom(){
         let tinggiRendah = this.jenjang>3?'tinggi':'rendah';;
         let teks = 'mapel'+this.shortKurikulum + tinggiRendah;;
-        let dataAsal = {};
+        
         return  this.#mapelAplikasi[teks]();
         
     }
@@ -199,26 +208,26 @@ export default class BanksoalFitur{
                 otomatis:false,
                 carakoreksi:'Manual'
             },
-            // {
-            //     id:'fc_pgkomplek',
-            //     bentuksoalspesifik:'Essay',
-            //     bentuksoal:'Isian',
-            //     editorinput:'editorpgkompleks',
-            //     teks:'PG Kompleks',
-            //     value:'PG Kompleks',
-            //     otomatis:true,
-            //     carakoreksi:'Otomatis'
-            // },
-            // {
-            //     id:'fc_benarsalah',
-            //     bentuksoalspesifik:'BenarSalah',
-            //     bentuksoal:'BenarSalah',
-            //     editorinput:'editorbenarsalah',
-            //     teks:'Benar Salah',
-            //     value:'BenarSalah',
-            //     otomatis:true,
-            //     carakoreksi:'Otomatis'
-            // },
+            {
+                id:'fc_pgkomplek',
+                bentuksoalspesifik:'PG Kompleks',
+                bentuksoal:'PG Kompleks',
+                editorinput:'editorpgkompleks',
+                teks:'PG Kompleks',
+                value:'PG Kompleks',
+                otomatis:true,
+                carakoreksi:'Otomatis'
+            },
+            {
+                id:'fc_benarsalah',
+                bentuksoalspesifik:'BenarSalah',
+                bentuksoal:'BenarSalah',
+                editorinput:'editorbenarsalah',
+                teks:'Benar Salah',
+                value:'BenarSalah',
+                otomatis:true,
+                carakoreksi:'Otomatis'
+            },
             {
                 id:'fc_menjodohkan',
                 bentuksoalspesifik:'Menjodohkan',
@@ -226,6 +235,15 @@ export default class BanksoalFitur{
                 editorinput:'canvas',
                 teks:'Menjodohkan',
                 value:'Menjodohkan',
+                otomatis:false,
+                carakoreksi:'Manual'
+            },{
+                id:'fc_menulisrapih',
+                bentuksoalspesifik:'Menulis Rapih',
+                bentuksoal:'Menulis Rapih',
+                editorinput:'none',
+                teks:'Menulis Rapih',
+                value:'Menulis Rapih',
                 otomatis:false,
                 carakoreksi:'Manual'
             },
@@ -281,7 +299,9 @@ export default class BanksoalFitur{
     }
     async callMultipe(){
         if(this.ar.length>0){
+            console.log(this.ar)
             await this.banksoalservice.callPropertiMultiple(this.ar);
+            console.log(this.banksoalservice.data);
         }
 
         return this;
@@ -289,6 +309,52 @@ export default class BanksoalFitur{
     async init(){
         await this.settingKurikulum().callMultipe();
         this.ormKurikulum = new OrmKurikulumSoal(this.banksoalservice,this.#jenjangActive,this.currentMapelOnClassRoom).settingKurikulum(this.shortKurikulum).init().collection;
+        
+        return this;
+    }
+    settingDesain(jenjang){
+        let ar = [
+            {
+                'idss': this.banksoalservice.repo.ss_banksoal_must_call,
+                'tab':'banksoal',
+            },
+            {
+                'idss': this.banksoalservice.repo.ss_banksoal_must_call,
+                'tab':'simpandesainsoal',
+            },
+            {
+                'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                'tab':this.callKDorTP,
+            },
+            {
+                'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                'tab':'taksonomibloom',
+            },
+            {
+                'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                'tab':'kkmkktp',
+            },
+            {
+                'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                'tab':'lingkupmateri',
+            },
+        ];
+        if(this.shortKurikulum == 'kurmer'){
+            let arTambahan = [
+                {
+                    'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                    'tab':'faseTPATP',
+                },
+                {
+                    'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                    'tab':'elemencp',
+                }
+            ];
+            ar.push(...arTambahan);
+        }
+        ar = ar.filter(n=>!this.banksoalservice.isExist(n.tab));
+        this.ar = ar;
+        
         
         return this;
     }
@@ -335,22 +401,36 @@ export default class BanksoalFitur{
         });
         return datadesain;
     }
+    createNew(){
+        this.workplace.innerHTML = controlbanksoal.templateCreatePerItemBankSoal();
+            this.createTextEditor();
+    }
     listener_fitur_item_soal(){
         let elemencek = document.querySelectorAll('[data-pradesain]');
-        
+        let divMode = document.getElementById('modecanvas');
         elemencek.forEach(el=>{
             el.onchange = (e)=>{
                 let pradesain = this.cek_fitur_pradesain();
-                console.log(pradesain.editor)
+                
                 if(pradesain.mode =='bycopast' && pradesain.editor == 'editor'){
-                    
                     this.workplace.innerHTML = controlbanksoal.templateCreatePerItemBankSoal();
                     this.createTextEditor(pradesain);
-                }else if(pradesain.mode =='bycopast' && pradesain.editor == 'canvas'){
-                    
+                    divMode.classList.remove('d-none');
+                }else if(pradesain.mode =='formulir' && pradesain.editor == 'editor'){
                     this.workplace.innerHTML = controlbanksoal.templateCreatePerItemBankSoal();
+                    divMode.classList.remove('d-none');
+                    let te = new FormulirBankSoal(pradesain,this.banksoalservice);
+                    te.imageLoading = this.user.barloading;
+                    te.createForm();
+                    te.addRespons(this.respontekseditor);
+                    te.init()
+                    
+                }else if(pradesain.mode =='bycopast' && pradesain.editor == 'canvas'){
+                    this.workplace.innerHTML = controlbanksoal.templateCreatePerItemBankSoal();
+                    divMode.classList.add('d-none');
                     this.createCanvas(pradesain);
                 }else{
+                    divMode.classList.remove('d-none');
                     this.workplace.innerHTML = "";//controlbanksoal.templateCreatePerItemBankSoal();
                 }
             }
@@ -359,35 +439,15 @@ export default class BanksoalFitur{
 
     }
     createCanvas(pradesain){
-        
         let lingkupmateri = this.banksoalservice.data.lingkupmateri.filter(s=> s.kodemapel == pradesain.kodemapel);
+        
         document.getElementById('divTextEditor').innerHTML = canvasEditor();
-
         document.getElementById('realtimeInputTextEditor').innerHTML = tabelResultCanvasEditor(lingkupmateri);
+
         new CanvasFabricEditor(this.banksoalservice,pradesain).init();
         
     }
-    // async uploadCanvasToPng(canvas){
-    //     let srcCanvas = canvas.toDataURL('png')
-    //     /**
-    //      * let param = src.replace(/^.*,/, '');
-    //             let tipe = src.match(/^.*(?=;)/)[0];
-    //      */
-    //     let params = {
-    //         action:'uploadFile',
-    //         folder:'GAMBAR MENJODOHKAN',
-    //         // subfolder:,
-    //         // namafile:namafileinput.replace(/[^\w\s.-]/g, "_"),
-    //         "namafile":'gambarmenjodohkan'+new Date().getTime()+'.png',
-    //         "base64":srcCanvas.replace(/^.*,/, ''),//.replace(/^.*,/, '');
-    //         "mimeType":srcCanvas.match(/^.*(?=;)/)[0],//dataURL.match(/^.*(?=;)/)[0],//
-    //     }
-
-    //     const respon = await this.banksoalservice.simpanImage(params);
-    //     console.log(respon)
-    //     let src = new UrlImg(respon.idfile).urlImg;//"https://lh3.googleusercontent.com/d/"+respon.data.idfile;
-    //     return src;
-    // }
+    
     createTextEditorBankSoal(parentSelector='#divTextEditor',idiframe='iframeTextEditor',contectMenu = 'PG'){
         let testWrap = new CustomTextEditor(
             {
@@ -403,11 +463,17 @@ export default class BanksoalFitur{
         testWrap.initWraper(true);
     }
     createTextEditor(){
-        const TE = new TextEditorEdurasa(this.cek_fitur_pradesain(),'#divTextEditor').addService(this.banksoalservice).addRespons(this.respontekseditor).init();
+        const TE = new TextEditorEdurasa(this.cek_fitur_pradesain(),'#divTextEditor','editorcustom',this.user.barloading).addService(this.banksoalservice).addRespons(this.respontekseditor).init();
+        console.log(TE);
+    }
+    
+    createTextEditorModal(pradesain){
+        return new TextEditorEdurasa(pradesain,'#divTextEditor','editorcustom',this.user.barloading).addService(this.banksoalservice);//
         
+        //.addRespons(this.respontekseditor).init();
     }
     respontekseditor(test){
-        
+        console.log(test)
         let teksInptu = document.getElementById('sorotUpdate_tampilansoal');
         
         teksInptu.innerHTML = previewSoalWithProperty(test);//test.pertanyaan?test.pertanyaan:'belum ada data';
@@ -422,9 +488,10 @@ export default class BanksoalFitur{
                 }
             }else{
                 let cek = Object.keys(test).filter(k=>['indikatorsoal','pertanyaan','materi','levelkognitif','ruanglingkup','penskoran'].includes(k))
-                if(cek.length !==9){
+                if(cek.length !==6){
                     bol = false;
                 }
+                
             }
             if(!bol) {
                 alert('Ada yang belum dipilih');

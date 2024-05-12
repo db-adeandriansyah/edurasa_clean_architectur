@@ -25,10 +25,16 @@ export class CanvasFabricEditor{
         if(this.praDesain.namakurikulum == 'kurmer'){
             orm = this.praDesain.ormkurikulum.filter(s=> s.idbaris == this.praDesain.kd)[0];
             tekskd = orm.atp;
+            
+            
+            this.request.elemen = orm.elemen;
+            this.request.tp = orm.tp;
+            this.request.atp = orm.atp;
         }else{
             orm = this.praDesain.ormkurikulum.filter(s=> (s.kd3 == this.praDesain.kd || s.kd4 ==this.praDesain.kd) && s.mapel == this.praDesain.kodemapel)[0];
             tekskd = orm.kd3+' '+orm.indikatorkd3;
         }
+        this.request.bentuksoal=this.praDesain.bentuksoal;
         this.request.bentuksoalspesifik=this.praDesain.bentuksoal;
         this.request.tekskd = tekskd ;
         this.request.kurikulum = this.praDesain.namakurikulum ;
@@ -42,8 +48,6 @@ export class CanvasFabricEditor{
             this.request.tampilanpg = 'BIASA';
         }
 
-        console.log(this.request)
-        
         const btns = document.querySelectorAll('[data-canvasControl]');
         const btnsC = document.querySelectorAll('[data-canvasCopyPaste]');
         const inputFile = document.getElementById('uploadCanvas');
@@ -119,6 +123,7 @@ export class CanvasFabricEditor{
                 });
             }
         });
+
         let _clipboard = fabric.util.object;
         btnsC.forEach(btn=>{
             btn.onclick = ()=>{
@@ -179,8 +184,21 @@ export class CanvasFabricEditor{
             fCanvas.discardActiveObject().requestRenderAll();
             const data = await this.uploadCanvasToPng(fCanvas);
             console.log(data);
-            document.querySelector('#sorotUpdate_tampilansoal').innerHTML = `<img src="${data}" class="img-fluid">`;
+            document.querySelector('[data-soalcanvas="pertanyaan"]').innerHTML = `<img src="${data}" class="img-fluid">`;
             
+        }
+        simpanSoal.onclick = async() =>{
+            let domdata = document.querySelectorAll('[data-soalcanvas]');
+            domdata.forEach(n=>{
+                let value = n.value;
+                if(n.nodeName =='TD'|| n.nodeName =='td'){
+                    value = n.innerHTML;
+                }
+                let key = n.getAttribute('data-soalcanvas');
+                this.request[key]=value;
+            })
+            
+            await this.banksoalservice.simpanItemSoal(this.request);
         }
     }
     async uploadCanvasToPng(canvas){
@@ -200,7 +218,7 @@ export class CanvasFabricEditor{
         }
 
         const respon = await this.banksoalservice.simpanImage(params);
-        console.log(respon)
+        
         let src = new UrlImg(respon.idfile).urlImg;//"https://lh3.googleusercontent.com/d/"+respon.data.idfile;
         return src;
     }

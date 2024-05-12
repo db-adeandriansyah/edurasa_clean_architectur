@@ -298,6 +298,18 @@ export class FormatTanggal extends Date{
             return durasiHari;
         
     }
+    static durasiMenit(tanggalAwal, tanggalAkhir){
+        
+        const awal = new Date(tanggalAwal).getTime();
+        const akhir = new Date(tanggalAkhir).getTime();
+        
+        const satuHari = 1000 * 60 ; // Satu menit
+        const selisihWaktu = akhir - awal;
+        
+        const durasiHari = Math.ceil(selisihWaktu / satuHari); // Menggunakan Math.ceil untuk memastikan pembulatan ke atas
+        
+        return durasiHari;
+    }
 }
 export const durasiMenit=(tanggalAwal, tanggalAkhir)=>{
         

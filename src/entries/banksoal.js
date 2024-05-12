@@ -14,7 +14,7 @@ App.createTitle('Bank Soal','Soal');
 App.dataPermision({'canEdit':[2]});
 
 const banksoalRepo = new BanksoalRepository();
-// banksoalRepo.trial = true;
+banksoalRepo.trial = true;
 const banksoalServ = new BanksoalService(banksoalRepo);
 const controller = new BanksoalController(App,banksoalServ);
 

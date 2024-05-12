@@ -1930,7 +1930,7 @@ export default class CustomTextEditor{
                         menuTanpaToolbar+=`<li class="list-group-item d-flex justify-content-between"><div>${d.title[0]}</div><div>${d.title[1]}</div></li>`;
                     })
                     menuTanpaToolbar+=`</ul>`;
-                menuTanpaToolbar+=`</li>`
+                menuTanpaToolbar+=`</li>`;
             })
         }
         const matematikaContextMenu = `

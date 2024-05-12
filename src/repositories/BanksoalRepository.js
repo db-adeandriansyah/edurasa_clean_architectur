@@ -23,6 +23,12 @@ export default class BanksoalRepository extends CallHttp{
     get ss_kurikulum_must_call(){
         return this.trial?this.ssTrial:this.ss_kurikulum;
     }
+    get ss_banksoal_must_call(){
+        return this.trial?this.ssTrial:this.appscript['ss_kalender'];
+    }
+    get ss_materi(){
+        return this.trial?this.ssTrial:this.appscript['materi'];
+    }
     async callPropertiMultiple(ars){
         let e_param = {
             'action':'readMultipleTab',
@@ -36,7 +42,7 @@ export default class BanksoalRepository extends CallHttp{
         let tab='';
         if(this.#istrial){
             idss=this.ssTrial;
-            tab="banksoaltest_";
+            tab="banksoal";
         }else{
             idss=this.appscript['ss_kalender'];
             tab="banksoal";
