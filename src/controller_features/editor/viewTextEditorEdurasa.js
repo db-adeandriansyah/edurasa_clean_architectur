@@ -283,6 +283,7 @@ function contextMenu(idIframe,data){
                                     <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle" data-aksicontext="refrensi" role="button">Refrensi</li>
                                     <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle" data-aksicontext="levelkognitif" role="button">Level Kognitif (Cek KKO)</li>
                                     <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle d-flex justify-content-between font10" role="button">
+                                    
                                         <div class="dropdown">
                                             <button class="btn btn-light dropdown-toggle p-0 show" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             </button>
@@ -290,7 +291,7 @@ function contextMenu(idIframe,data){
                                             ${listlingkupmateri}
                                             </ul>
                                         </div>
-                                    Lingkup Materi
+                                        Lingkup Materi
                                     </li>
                                 </ul>
                             </li>`;

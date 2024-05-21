@@ -183,7 +183,7 @@ export class CanvasFabricEditor{
         selesaiDesainCanvas.onclick=async(e)=>{
             fCanvas.discardActiveObject().requestRenderAll();
             const data = await this.uploadCanvasToPng(fCanvas);
-            console.log(data);
+            
             document.querySelector('[data-soalcanvas="pertanyaan"]').innerHTML = `<img src="${data}" class="img-fluid">`;
             
         }

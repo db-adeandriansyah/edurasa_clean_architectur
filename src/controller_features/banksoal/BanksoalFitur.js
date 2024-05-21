@@ -11,6 +11,7 @@ import { canvasEditor, controlFiturBuatPerItemSoal, previewSoalWithProperty, tab
 
 export default class BanksoalFitur{
     #jenjangActive;
+    #rombelActive;
     #judulHalaman;
     #mapelAplikasi;
     constructor(
@@ -32,6 +33,8 @@ export default class BanksoalFitur{
         this.maincontrol =bartoolarea;//document.getElementById('maincontrol');
         this.#judulHalaman = '';
         this.#jenjangActive = 1;
+        this.#rombelActive ='1A'        
+
         // this.relationalFitur = null;
         this.ormKurikulum = null;
         this.#mapelAplikasi=mapelkdcp_kurikulum;
@@ -71,7 +74,12 @@ export default class BanksoalFitur{
     set jenjang(x){
         this.#jenjangActive = x;;
     }
-    
+    set rombel(x){
+        this.#rombelActive = x;
+    }
+    get rombel(){
+        return this.#rombelActive;
+    }
     get jenjang(){
         return this.#jenjangActive.toString();;
     }
@@ -299,17 +307,14 @@ export default class BanksoalFitur{
     }
     async callMultipe(){
         if(this.ar.length>0){
-            console.log(this.ar)
             await this.banksoalservice.callPropertiMultiple(this.ar);
-            console.log(this.banksoalservice.data);
         }
-
+        
         return this;
     }
     async init(){
-        await this.settingKurikulum().callMultipe();
+        await this.callMultipe();
         this.ormKurikulum = new OrmKurikulumSoal(this.banksoalservice,this.#jenjangActive,this.currentMapelOnClassRoom).settingKurikulum(this.shortKurikulum).init().collection;
-        
         return this;
     }
     settingDesain(jenjang){
@@ -355,6 +360,54 @@ export default class BanksoalFitur{
         ar = ar.filter(n=>!this.banksoalservice.isExist(n.tab));
         this.ar = ar;
         
+        
+        return this;
+    }
+    settingArsipNaskah(){
+        let ar = [ {
+                'idss': this.banksoalservice.repo.ss_banksoal_must_call,
+                'tab':'banksoal',
+            },
+            {
+                'idss': this.banksoalservice.repo.ss_banksoal_must_call,
+                'tab':'simpandesainsoal',
+            },
+            {
+                'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                'tab':this.callKDorTP,
+            },
+            {
+                'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                'tab':'taksonomibloom',
+            },
+            {
+                'idss':  this.banksoalservice.repo.ss_kurikulum_must_call,
+                'tab':'datamateri',
+            },
+            {
+                'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                'tab':'kkmkktp',
+            },
+            {
+                'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                'tab':'lingkupmateri',
+            },
+        ];
+        if(this.shortKurikulum == 'kurmer'){
+            let arTambahan = [
+                {
+                    'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                    'tab':'faseTPATP',
+                },
+                {
+                    'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                    'tab':'elemencp',
+                }
+            ];
+            ar.push(...arTambahan);
+        }
+        
+        this.ar = ar.filter(n=>!this.banksoalservice.isExist(n.tab));;
         
         return this;
     }
@@ -464,7 +517,7 @@ export default class BanksoalFitur{
     }
     createTextEditor(){
         const TE = new TextEditorEdurasa(this.cek_fitur_pradesain(),'#divTextEditor','editorcustom',this.user.barloading).addService(this.banksoalservice).addRespons(this.respontekseditor).init();
-        console.log(TE);
+        
     }
     
     createTextEditorModal(pradesain){
@@ -473,7 +526,7 @@ export default class BanksoalFitur{
         //.addRespons(this.respontekseditor).init();
     }
     respontekseditor(test){
-        console.log(test)
+        
         let teksInptu = document.getElementById('sorotUpdate_tampilansoal');
         
         teksInptu.innerHTML = previewSoalWithProperty(test);//test.pertanyaan?test.pertanyaan:'belum ada data';
@@ -481,6 +534,7 @@ export default class BanksoalFitur{
         let reset = document.getElementById('resetItemSoal');
         simpan.onclick = async()=>{
             let bol = true ;
+            
             if(test.bentuksoal === 'Pilihan Ganda'){
                 let cek = Object.keys(test).filter(k=>['indikatorsoal','pertanyaan','opsiA','opsiB','opsiC','materi','levelkognitif','ruanglingkup','kuncijawaban','penskoran'].includes(k))
                 if(cek.length !==10){

@@ -142,8 +142,9 @@ export default class TextEditorEdurasa{
         const dom = this.iframeDom;
         const spanFormat = this.targetDom.querySelectorAll('[data-keycmd]');
         const domContext = document.querySelector(`#menucontext_${this.idIframe}`);
+        const check = document.querySelector('#checkdesainmagicsoal_' +this.idIframe);
         dom.oninput = (e)=>{
-            console.log('dominput');
+            
             let cekImgs = dom.querySelectorAll('.resizer');
             cekImgs.forEach((img)=>{
                 if(img.firstChild){
@@ -162,6 +163,48 @@ export default class TextEditorEdurasa{
             
             this.resspon(this.request);
         }
+
+        dom.onpaste = (e)=>{
+            const type = e.clipboardData.types;
+            if(type.includes('Files')){
+                const selection = dom.getSelection();
+                let teks = e.clipboardData.getData('text/plain');
+                let parser = new DOMParser();
+                    let htmldoc = parser.parseFromString(teks,'text/html');
+                    let div = document.createDocumentFragment();
+                    while (htmldoc.body.childNodes.length > 0){
+                        div.appendChild(htmldoc.body.childNodes[0]);
+                    }
+                    selection.deleteFromDocument();
+                    selection.getRangeAt(0).insertNode(div);
+                    selection.collapseToEnd()
+                
+                // this.onmouseup(e);
+            }else{
+
+                let teks = e.clipboardData.getData('text/plain');
+                const selection = dom.getSelection();
+                if(check.checked){
+                    teks = this.CleanWordFormatting(teks);
+                    selection.deleteFromDocument();
+                    selection.getRangeAt(0).insertNode(document.createTextNode(teks));
+                    selection.collapseToEnd();
+                }else{
+                    teks = this.CleanWordFormatting(teks);
+                    let parser = new DOMParser();
+                    let htmldoc = parser.parseFromString(teks,'text/html');
+                    let div = document.createDocumentFragment();
+                    while (htmldoc.body.childNodes.length > 0){
+                        div.appendChild(htmldoc.body.childNodes[0]);
+                    }
+                    selection.deleteFromDocument();
+                    selection.getRangeAt(0).insertNode(div);
+                    selection.collapseToEnd();
+                }
+                e.preventDefault();
+            }
+        }
+
         dom.onkeyup = dom.onmouseup = (e)=>{
             if(!domContext.classList.contains('d-none')){
                 domContext.classList.add('d-none');
@@ -337,6 +380,12 @@ export default class TextEditorEdurasa{
             }
         }
     }
+    CleanWordFormatting(input) {
+        let output = input.replace(/(<[^>]*>)|\t+/gm, ' ');
+        //ganti semua breakline
+        output = output.replace(/\r?\n|\r/g,'<br>');
+        return output;
+    }
     btnActivity(){
         const formatHTML = document.querySelector('#checkdesainmagicsoal_' +this.idIframe);
         const dom = this.iframeDom;
@@ -425,7 +474,7 @@ export default class TextEditorEdurasa{
                     e.preventDefault();
                     return;
                 };
-                console.log('color change', e.target.value,e.target.getAttribute('data-cmd'));
+                
                 this.iframeDom.execCommand(e.target.getAttribute('data-cmd'),false,e.target.value);
                 this.iframeDom.body.focus();
             };
@@ -497,7 +546,14 @@ export default class TextEditorEdurasa{
             this.request.tp = orm.tp;
             this.request.atp = orm.atp;
         }else{
-            orm = this.praDesain.ormkurikulum.filter(s=> (s.kd3 == this.praDesain.kd || s.kd4 ==this.praDesain.kd) && s.mapel == this.praDesain.kodemapel)[0];
+            if(this.praDesain.mode=='modal'){
+                orm = this.praDesain.ormkurikulum.filter(s=> s.baris == this.praDesain.kd)[0];
+
+            }else{
+                orm = this.praDesain.ormkurikulum.filter(s=> (s.kd3 == this.praDesain.kd || s.kd4 ==this.praDesain.kd) && s.mapel == this.praDesain.kodemapel)[0];
+
+            }
+            
             tekskd = orm.kd3+' '+orm.indikatorkd3;
         }
         this.request.bentuksoalspesifik=this.praDesain.bentuksoal;
@@ -1014,14 +1070,15 @@ export default class TextEditorEdurasa{
                     "base64":src.replace(/^.*,/, ''),//.replace(/^.*,/, '');
                     "mimeType":src.match(/^.*(?=;)/)[0],//dataURL.match(/^.*(?=;)/)[0],//
                 }
-                console.log('before',document.querySelector('#'+this.idIframe).style.height);
+                
                 const respon = await this.service.simpanImage(params);
                 
                 let rsrc = new UrlImg(respon.idfile).urlImg;//"https://lh3.googleusercontent.com/d/"+respon.data.idfile;
                 
                 this.iframeDom.execCommand("insertImage",false,rsrc);
+                
                 document.querySelector('#'+this.idIframe).style.height = this.iframeDom.body.scrollHeight + 'px';
-                // console.log('after',document.querySelector('#'+this.idIframe).style.height);
+                
                 this.iframeDom.body.focus();
                 
             })

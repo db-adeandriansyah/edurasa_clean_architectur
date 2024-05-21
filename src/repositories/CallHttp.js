@@ -34,11 +34,18 @@ export class CallHttp{
         return access;
     }
     callWithProses(){
+        if(this.animationProgress){
+            this.animationProgress.stopProses;
+        }
+
         this.animationProgress = new ProsesBar(0);
         
     }
     stopProgressBar(){
-        this.animationProgress.stopProses;
+        if(this.animationProgress){
+            this.animationProgress.stopProses;
+        }
+
         this.animationProgress = null;
     }
     set appscript(x){

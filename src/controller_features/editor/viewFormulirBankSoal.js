@@ -102,6 +102,86 @@ const html_table_formulir = (data,lingkupmateri)=>{
     html+=`</div>`;
     return stringToDom(html);
 }
+const html_table_formulirEdit = (data,lingkupmateri)=>{
+    let currLingkupMateri = lingkupmateri.filter(s=> s.kodemapel == data.kodemapel);
+    let ar = [
+        {key:'ilustrasi',title:'Ilustrasi'},
+        {key:'pertanyaan',title:'Pertanyaan'},
+    ];
+    let opsi = [
+        {key:'opsiA',title:'Opsi A'},
+        {key:'opsiB',title:'Opsi B'},
+        {key:'opsiC',title:'Opsi C'},
+        {key:'opsiD',title:'Opsi D'},
+    ];
+    let keyopsi = [
+        {key:'A',title:'A'},
+        {key:'B',title:'B'},
+        {key:'C',title:'C'},
+        {key:'D',title:'D'},
+    ];
+    let opsijawaban = [
+        {key:'kuncijawaban',title:'Kunci Jawaban',aray:keyopsi}
+    ]
+    let arWajib = [
+        {key:'penskoran',title:'Pembahasan'},
+        {key:'indikatorsoal',title:'Indikator Soal'},
+        {key:'materi',title:'Materi Pokok'},
+    ];
+    let level=[
+        {key:'L1',title:'L1/LK1/Pengetahuan Pemahaman'},
+        {key:'L2',title:'L2/LK2/Aplikasi'},
+        {key:'L3',title:'L3/LK3/Penalaran'},
+    ]
+    let arSelect = [
+        {key:'levelkognitif',title:'Level Kognitif',aray:level},
+        {key:'ruanglingkup',title:'Lingkup Materi',aray:currLingkupMateri.map(n=>({'key':n.lingkupmateri, 'title':n.lingkupmateri}))},
+    ]
+    let html = "";
+    html+=`<div class="tabel-responsive" id="wrapertabel">`;
+        html+=`<table class="table table-sm font10">`;
+            html+=`<thead>`;
+                html+=`<tr>`;
+                    html+=`<th style="width:180px">Properti</th>`;
+                    html+=`<th colspan="2">Value Edit</th>`
+                html+=`</tr>`;
+            html+=`</thead>`;
+            html+=`<tbody>`;
+            html+=`<tr><td>ID</td><td colspan="2"><input type="number" data-keyformulir="idbaris" disabled class="form-control m-0 text-center" value="${data.idbaris}"></td></tr>`
+            ar.forEach(n=>{
+                html+=tdFormulir(n);
+            });
+            if(data.bentuksoal == 'Pilihan Ganda'){
+                opsi.forEach(n=>{
+                    html+=tdFormulir(n)
+                });
+                opsijawaban.forEach(n=>{
+                    html+=selectFormulir(n);
+                })
+            }
+            if(data.bentuksoal == 'Menjodohkan'){
+                html+=`<tr><td class="text-end border-bottom border-top-0 border-end border-start-0">Jumlah Soal</td><td colspan="2"><input type="number" data-keyformulir="jumlahsoalmenjodohkan" class="form-control m-0 text-center" value="${data.jumlahsoalmenjodohkan}"></td></tr>`
+            }
+            arWajib.forEach(n=>{
+                html+=tdFormulir(n);
+            });
+            arSelect.forEach(n=>{
+                html+=selectFormulir(n);
+            })
+
+                // html+=`<tr>`;
+                //     html+=`<td class="text-end border-bottom border-top-0 border-end border-start-0">Pertanyaan</td>`;
+                //     html+=`<td contenteditable="true"  class="vw-100 text-start border-bottom border-top-0 border-end-0 border-start-0" data-keyformulir="pertanyaan"></td>`;
+                //     html+=`<td>`;
+                //         html+=`<input class="form-check-input" type="checkbox" role="switch" onchange="(this.checked)?document.querySelector('[data-keyformulir=pertanyaan]').textContent= document.querySelector('[data-keyformulir=pertanyaan]').innerHTML:document.querySelector('[data-keyformulir=pertanyaan]').innerHTML=document.querySelector('[data-keyformulir=pertanyaan]').textContent">`;
+                //     html+=`</td>`;
+                // html+=`</tr>`;
+
+            html+=`</tbody>`;
+        html+=`</table>`;
+    html+=`</div>`;
+    return stringToDom(html);
+}
 const html_contextmenu_table_formulir = ()=>{
     let html = `<ul class="list-group position-absolute" style="display:none"  id="contextMenuDivEditorEditing">
     <li  data-divEditor="pecahan" role="button" class="bg-secondary-subtle list-group-item d-flex font10 justify-content-between align-items-center border-bottom border-white"><span>Pecahan</span> <div class="p-0 mx-1 d-inline-flex flex-column align-items-center font10" title="pecahan"><span class="border-bottom border-dark">⬚</span><span>⬚</span></div> </li> 
@@ -114,7 +194,8 @@ return stringToDom(html);
 }
 const viewFormulirBankSoal = {
     'html_table_formulir':html_table_formulir,
-    'html_contextmenu_table_formulir':html_contextmenu_table_formulir
+    'html_table_formulirEdit':html_table_formulirEdit,
+    'html_contextmenu_table_formulir':html_contextmenu_table_formulir,
 }
 
 export default viewFormulirBankSoal;

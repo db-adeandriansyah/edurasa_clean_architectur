@@ -18,6 +18,7 @@ export const banksoalSidebar= [
     title:'Arsip Naskah Soal',
     menu:[
         {value:'arsip_naskah',text:'Arsip Naskah Soal',name:'menusidebar'},
+        {value:'arsip_naskah_us',text:'Arsip Naskah US',name:'menusidebar'},
     ]
     },
     {
@@ -28,10 +29,10 @@ export const banksoalSidebar= [
         {value:'Bank_soal_kurmer',text:'Bank Soal KurMer',name:'menusidebar'},
         ]
     },
-    {
-    title:'Blueprint US',
-    menu:[
-        {value:'blueprint_us',text:'Blueprint US',name:'menusidebar'},
-    ]
-    },
+    // {
+    // title:'Blueprint US',
+    // menu:[
+    //     {value:'blueprint_us',text:'Blueprint US',name:'menusidebar'},
+    // ]
+    // },
 ];

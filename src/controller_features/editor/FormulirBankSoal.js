@@ -25,6 +25,14 @@ export class FormulirBankSoal{
         this.wraperTabel = document.getElementById('wrapertabel');
         // this.init();
     }
+    createFormEdit(){
+        this.div.classList.add('position-relative');
+        this.div.appendChild(viewFormulirBankSoal.html_table_formulirEdit(this.datadesain, this.lingkupmateri()));
+        this.div.appendChild(viewFormulirBankSoal.html_contextmenu_table_formulir());
+        this.contextMenu = document.getElementById('contextMenuDivEditorEditing');
+        this.wraperTabel = document.getElementById('wrapertabel');
+        // this.init();
+    }
     init(){
         let k = document.querySelectorAll('[data-keyformulir]');
         let tekskd = '';
@@ -37,7 +45,12 @@ export class FormulirBankSoal{
             this.request.tp = orm.tp;
             this.request.atp = orm.atp;
         }else{
-            orm = this.datadesain.ormkurikulum.filter(s=> (s.kd3 == this.datadesain.kd || s.kd4 ==this.datadesain.kd) && s.mapel == this.datadesain.kodemapel)[0];
+            if(this.datadesain.mode == 'modal'){
+                orm = this.datadesain.ormkurikulum.filter(s=> s.baris == this.datadesain.kd)[0];
+            }else{
+                orm = this.datadesain.ormkurikulum.filter(s=> (s.kd3 == this.datadesain.kd || s.kd4 ==this.datadesain.kd) && s.mapel == this.datadesain.kodemapel)[0];
+            }
+
             tekskd = orm.kd3+' '+orm.indikatorkd3;
         }
         this.request.bentuksoalspesifik=this.datadesain.bentuksoal;
