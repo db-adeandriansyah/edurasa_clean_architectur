@@ -144,6 +144,35 @@ export default class PropertiNaskahSoal{
         this.owner = user;
         return this;
     }
+    desainFromSpreadSheetKBM(data,user){
+        
+
+        let datadom={
+            "idbaris"           : data.obj_desainnaskah[0].idbaris,
+            "kop"               : data.obj_desainnaskah[0].kop,
+            "judulnaskah"       : data.obj_desainnaskah[0].juduldesain,
+            "kelas"             : data.obj_desainnaskah[0].jenjang,
+            "start_waktu"       : new Date(data.idtgl),//"2024-05-14T23:11"
+            "end_waktu"         : new Date(data.idtglend),
+            "kopsoal"           : this.domNaskah.querySelector('#naskah_kop')?true:false,
+            "identitassoal"     : this.domNaskah.querySelector('#naskah_identitas')?true:false,
+            "tabelnilai"        : this.domNaskah.querySelector('#naskah_tabelnilai')?true:false,
+            "petunjukumum"      : this.domNaskah.querySelector('#naskah_petunjukumum')?true:false,
+            "mapel"             : data.obj_desainnaskah[0].mapel,
+            "tekskodemapel"     : this.currentMapelOnClassRoom[data.obj_desainnaskah[0].mapel],
+            "petunjuknilai"     : this.domNaskah.querySelector('#naskah_sebarankd')?true:false,//naskah_sebarankd
+            "penomoransoal"     : false,
+            // "propertikd"        : data.propertikurikulum,
+            "kerangka"          : data.obj_desainnaskah[0].kerangka,//[{ "bentuksoal": "Pilihan Ganda", "jumlah": "2" }],//{ "bentuksoal": "Pilihan Ganda", "jumlah": "2" },
+            // "namakurikulum"     : data.namakurikulum,//kurmer|kurtilas
+            "mapeltema"         : [],//"PKN", "BINDO", "MTK", "SBDP", "PJOK",
+            "jenjang"           : data.idtoken,
+            "isUN"              : data.ujiansekolah==''?false:data.ujiansekolah,
+        }
+        this.desain = Object.assign(this.desain,datadom);
+        this.owner = user;
+        return this;
+    }
     muatanPelajaranNaskah(judul){
         let muatan = '';
         let datasoaldom = this.datasoaldaridom().datasoal;
@@ -292,10 +321,9 @@ export default class PropertiNaskahSoal{
         let onlyHasSoal = datasoaldom.filter(s=>s.hassoal);
         let mapingMapel = [...new Set(onlyHasSoal.map(n=>n.kodemapel))];
         let arrayResult = [];
-        
         mapingMapel.forEach(n=>{
-            let itemsSoalCurrentMapel = onlyHasSoal.filter(s=>s.kodemapel == n);
             
+            let itemsSoalCurrentMapel = onlyHasSoal.filter(s=>s.kodemapel == n);
             let itemsKds = []; 
             let objmapel = {};
             let arraysoal = [];
@@ -314,9 +342,9 @@ export default class PropertiNaskahSoal{
                 });
                 
             }else{
-                itemsKds =  [... new Set(itemsSoalCurrentMapel.map(n=>n.propertikurikulum.baris))];
+                itemsKds =  [... new Set(itemsSoalCurrentMapel.map(nn=>nn.propertikurikulum.baris))];
+                
                 itemsKds.forEach(id=>{
-
                     let objsoal = {};
                     let iSoal = itemsSoalCurrentMapel.filter(s=>s.propertikurikulum.baris == id && s.kodemapel == n);
                     

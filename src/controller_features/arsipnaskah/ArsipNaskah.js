@@ -129,8 +129,26 @@ export default class ArsipNaskah{
                 return result;
             })
             .sortByProperty('waktu2','desc');
+            let totallkey_nosoal = Object.keys(this.banksoal.banksoalservice.data.simpandesainsoal[0]).length - 20;
+            let apibanksoal = this.banksoal.banksoalservice.data.banksoal;
+            let apiblanko = this.banksoal.banksoalservice.data.blangko_banksoal;
+            for(let i = 0 ; i < totallkey_nosoal ; i++){
+                let keybanksoal = 'banksoal_'+(i+1);
+                data.addProperty(keybanksoal,(item)=>{
+                    if(item['no_'+(i+1)]!==""){
+                        let filter_api =  apibanksoal.filter(s=>s.idbaris == item['no_'+(i+1)])
+                        if(filter_api.length>0){
+                            return filter_api[0];
+                        }else{
+                            return apiblanko;
+                        }
+                    }
+                    return "";
+                })
+            }
             
         this.#orm = data.data;
+        return this;
     }
     createOrmUs(){
         let datanaskah = this.banksoal.banksoalservice.data.simpandesainsoal;
@@ -225,7 +243,7 @@ export default class ArsipNaskah{
             
         this.#orm = data.data;
     }
-    async init(){
+    init(){
         
         this.Modal1.showHideFooter(false);
 
@@ -236,10 +254,20 @@ export default class ArsipNaskah{
         }else{
             data = this.ormArsipNaskah;
         }
+        
         this.toolbar.innerHTML = viewArsipNaskah.toolbar(this.jenjang);
         this.workplace.innerHTML = viewArsipNaskah.htmlTabelNaskah(data);
         this.banksoal.tooltipkan();
         this.registerButtons();
+    }
+    dataOrmNaskah(){
+        let data = [];
+        if(this.isGuruMapel){
+            data = this.ormArsipNaskah.filter(s=>s.mapel == this.mapelAjar);
+        }else{
+            data = this.ormArsipNaskah;
+        }
+        return data;
     }
     async initus(){
         
@@ -418,15 +446,16 @@ export default class ArsipNaskah{
     }
     configPublikasi(propertinaskah,html){
         let prop                = propertinaskah.datakisikisi();
+        console.log(prop);
         let datasoal            = prop.datadom.datasoal;
         let desain              = propertinaskah.desain;
         let domElemen           = this.ketersedianElemenNaskahHtml(desain);
         let pelaksanaan         = this.pelaksanaanNaskahHtml(desain);
-        let kuncikd             = this.ObjekSebaranKDdanSoalnya(prop.generate);
+        let kuncikd             = this.ObjekSebaranKDdanSoalnya(prop.generate,false);
         let kuncipg             = this.kuncipg(datasoal);
-        let htmlkuncijawaban = viewArsipNaskah.viewTabelKunciJawabanPraPublikasi(datasoal,this.banksoal.shortKurikulum);
+        let htmlkuncijawaban    = viewArsipNaskah.viewTabelKunciJawabanPraPublikasi(datasoal,this.banksoal.shortKurikulum);
         let string_kuncipg = kuncipg.length>0?'_KUNCI-PG_'+kuncipg.join(','):'';
-
+        console.log('string_kuncipg',string_kuncipg);
         return {
             judulnaskah         : desain.judulnaskah,
             kop                 : desain.kop,
@@ -434,8 +463,8 @@ export default class ArsipNaskah{
             pelaksanaan         : pelaksanaan,
             ob_kuncikd          : kuncikd,
             kuncikd             : JSON.stringify(kuncikd),
-            kuncipg             : string_kuncipg,
             stringkuncikd       : '_KUNCI-KD_'+Object.keys(kuncikd).map(m => m+ ":" +kuncikd[m]).join("<||>"),
+            kuncipg             : string_kuncipg,
             idkurikulum         : this.banksoal.shortKurikulum,
             arrayRombel         : this.banksoal.user.koleksiRombel[this.banksoal.jenjang],
             jenjang             : this.banksoal.jenjang,
@@ -456,6 +485,7 @@ export default class ArsipNaskah{
         let pilihkelastertentu = document.querySelectorAll('input[name="rombeltertentu"]');
         let btnFinal = document.getElementById('btnServerPublikasi');
         let previewNaskah = document.getElementById('previewHTMLShow');
+        let preview_kuncikd = document.getElementById('preview_kuncikd');
         let htmlsoal =document.getElementById('htmlsoal');
         // let idmateri_judul =document.getElementById('idmapel');
         let isKop = desainAwal.ketersediaan.filter(s=>s.id == 'ketersediaan_kop').length>0;
@@ -576,6 +606,30 @@ export default class ArsipNaskah{
             n.onchange = (e)=>{
                 if(n.checked){
                     tabmateri.addItem('jenistagihan',e.target.value);
+                    if(['kpraktik','kproduk','kproyek','uspraktek'].includes(e.target.value)){
+                        let kisikis = dataSimpanNaskah.datakisikisi();
+                        let kuncikd = this.ObjekSebaranKDdanSoalnya(kisikis.generate,true);
+                        console.log('prop kuncikd update',e.target.value,kuncikd);
+                        desainperubahan.ob_kuncikd          = kuncikd;
+                        desainperubahan.kuncikd= JSON.stringify(kuncikd);
+                        desainperubahan.stringkuncikd  = '_KUNCI-KD_'+Object.keys(kuncikd).map(m => m+ ":" +kuncikd[m]).join("<||>");
+
+                        preview_kuncikd.value = desainperubahan.kuncikd;
+                        htmlsoal.value= previewNaskah.innerHTML+`\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n${desainperubahan.kuncipg} \r\n${desainperubahan.stringkuncikd}`;
+
+                        tabmateri.addItem('kuncikd',desainperubahan.kuncikd);
+                    }else{
+                        let kisikis = dataSimpanNaskah.datakisikisi();
+                        let kuncikd = this.ObjekSebaranKDdanSoalnya(kisikis.generate,false);
+
+                        desainperubahan.ob_kuncikd          = kuncikd;
+                        desainperubahan.kuncikd= JSON.stringify(kuncikd);
+                        desainperubahan.stringkuncikd  = '_KUNCI-KD_'+Object.keys(kuncikd).map(m => m+ ":" +kuncikd[m]).join("<||>");
+
+                        htmlsoal.value= previewNaskah.innerHTML+`\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n${desainperubahan.kuncipg} \r\n${desainperubahan.stringkuncikd}`;
+                        preview_kuncikd.value = desainperubahan.kuncikd;
+                        tabmateri.addItem('kuncikd',desainperubahan.kuncikd);
+                    }
                 }
             }
         })
@@ -617,17 +671,26 @@ export default class ArsipNaskah{
         return datasoal.filter(s=> s.bentuksoal == 'Pilihan Ganda').map(n=>n.nosoal+n.itemsoal.kuncijawaban);
         
     }
-    ObjekSebaranKDdanSoalnya(propertiNaskah){
+    ObjekSebaranKDdanSoalnya(propertiNaskah,praktek=false){
         let kisikisiByNaskah = propertiNaskah;//.datakisikisi().generate;
         let result = {};
         kisikisiByNaskah.forEach(n=>{
             let mapel = n.kodemapel; //kodemapel
             let kd = n.data; // array;
+            
             kd.forEach(kd=>{
                 let mapel_kd = mapel;
                 let propertikurikulum = kd.objekproperti;
                 if(n.kurikulum == 'kurmer'){
                     mapel_kd = mapel+'_'+propertikurikulum.idbaris;
+                }else{
+                    if(praktek){
+                        console.log(praktek, n.kurikulum)
+                        mapel_kd = mapel+'_'+propertikurikulum.kd4;
+                    }else{
+                        mapel_kd = mapel+'_'+propertikurikulum.kd3;
+                    }
+
                 }
                 result[mapel_kd] = kd.arraysoal.map(n=>n.nosoal);
             })
@@ -707,6 +770,7 @@ export default class ArsipNaskah{
     }
     
     at_editpublikasi(datamateri){
+        
         //view tampilan di modal
         let pelaksanaan = this.checkBoxRadioPelaksanaanKBM(datamateri);
         let arrayRombel = this.banksoal.user.koleksiRombel[this.jenjang];

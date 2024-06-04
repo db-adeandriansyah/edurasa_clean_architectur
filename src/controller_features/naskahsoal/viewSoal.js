@@ -821,8 +821,11 @@ const tabelkisikisidansoal = (datakonfigurasi,datasoal)=>{
             headerKey = ['no','tekskodemapel','tekskd','ruanglingkup','materi','levelkognitif','indikatorsoal','bentuksoalspesifik','nobybentuk'];
         }else{
             mode = 'kurtilas';
-            headerTitle = ['No','Kompetensi Dasar','Lingkup Materi','Materi Pokok','Level Kognitif','Indikator Soal','Bentuk Soal','No. Soal'];
-            headerKey = ['tekskd','levelkognitif','indikatorsoal','bentuksoalspesifik','nobybentuk'];
+            headerTitle = ['Kompetensi Dasar','Lingkup Materi','Materi Pokok','Level Kognitif','Indikator Soal','Bentuk Soal','No. Soal'];
+            headerKey = ['tekskd','ruanglingkup','materi','levelkognitif','indikatorsoal','bentuksoalspesifik','nobybentuk'];
+        
+            // headerTitle = ['Kompetensi Dasar','Lingkup Materi','Materi Pokok','Level Kognitif','Indikator Soal','Bentuk Soal','No. Soal'];
+            // headerKey = ['tekskd','levelkognitif','indikatorsoal','bentuksoalspesifik','nobybentuk'];
 
         }
         
@@ -879,6 +882,30 @@ const htmlkisikisi = (identitas,datasoal,withsoal=false)=>{
 
     
     html+=`<div class="fixed-bottom text-center mb-3">`;
+        html +=`<button id="btncetaknaskah" class="btn btn-sm border-bottom border-5 border-primary border-top-0 border-start-0 border-end-0 neon-lite-top rounded-pill rounded py-0" title="Cetak"><i class="bi-printer"></i></button>`;
+        html +=`<button id="btncetakword" class="btn btn-sm border-bottom border-5 border-primary border-top-0 border-start-0 border-end-0 neon-lite-top rounded-pill rounded py-0" title="Simpan ke Ms. Word"><i class="bi-file-word"></i></button>`
+        html +=`<button id="btncetakpdf" class="btn btn-sm border-bottom border-5 border-primary border-top-0 border-start-0 border-end-0 neon-lite-top rounded-pill rounded py-0" title="Simpan ke pdf"><i class="bi-file-pdf"></i></button>`
+    html+=`</div>`;
+    return html;
+}
+const htmlkisikisiModal1 = (identitas,datasoal,withsoal=false)=>{
+    let html = '';
+    html+=`<div id="print-area-modal">`;
+        html+=titlekisikisi(identitas);
+        html+=`<div class="table-responsive">`;
+            html+=tabelidentitaskisi(identitas);
+            if(withsoal){
+                html+=tabelkisikisidansoal(identitas,datasoal)
+
+            }else{
+                html+=tabelkisikisi(identitas,datasoal)
+            }
+        html+=`</div>`;
+    html+='</div>';
+
+    
+    html+=`<div class="fixed-bottom text-center mb-3">`;
+    html +=`<button id="btnback" class="btn btn-sm border-bottom border-5 border-primary border-top-0 border-start-0 border-end-0 neon-lite-top rounded-pill rounded py-0" title="Kembali"><i class="bi-arrow-return-left"></i></button>`;
         html +=`<button id="btncetaknaskah" class="btn btn-sm border-bottom border-5 border-primary border-top-0 border-start-0 border-end-0 neon-lite-top rounded-pill rounded py-0" title="Cetak"><i class="bi-printer"></i></button>`;
         html +=`<button id="btncetakword" class="btn btn-sm border-bottom border-5 border-primary border-top-0 border-start-0 border-end-0 neon-lite-top rounded-pill rounded py-0" title="Simpan ke Ms. Word"><i class="bi-file-word"></i></button>`
         html +=`<button id="btncetakpdf" class="btn btn-sm border-bottom border-5 border-primary border-top-0 border-start-0 border-end-0 neon-lite-top rounded-pill rounded py-0" title="Simpan ke pdf"><i class="bi-file-pdf"></i></button>`
@@ -963,6 +990,27 @@ const htmlkuncijawaban = (identitas,datasoal)=>{
     return html;
 
 }
+const htmlkuncijawabanModal1 = (identitas,datasoal)=>{
+    let html = '';
+    html+=`<div id="print-area-modal">`;
+        html+=titlekuncijawaban(identitas);
+        html+=`<div class="table-responsive">`;
+            html+=tabelidentitaskisi(identitas);
+            html+=tabelkuncijawaban(datasoal)
+            
+        html+=`</div>`;
+    html+='</div>';
+
+    
+    html+=`<div class="fixed-bottom text-center mb-3">`;
+        html +=`<button id="btnback" class="btn btn-sm border-bottom border-5 border-primary border-top-0 border-start-0 border-end-0 neon-lite-top rounded-pill rounded py-0" title="Kembali"><i class="bi-arrow-return-left"></i></button>`;
+        html +=`<button id="btncetaknaskah" class="btn btn-sm border-bottom border-5 border-primary border-top-0 border-start-0 border-end-0 neon-lite-top rounded-pill rounded py-0" title="Cetak"><i class="bi-printer"></i></button>`;
+        html +=`<button id="btncetakword" class="btn btn-sm border-bottom border-5 border-primary border-top-0 border-start-0 border-end-0 neon-lite-top rounded-pill rounded py-0" title="Simpan ke Ms. Word"><i class="bi-file-word"></i></button>`
+        html +=`<button id="btncetakpdf" class="btn btn-sm border-bottom border-5 border-primary border-top-0 border-start-0 border-end-0 neon-lite-top rounded-pill rounded py-0" title="Simpan ke pdf"><i class="bi-file-pdf"></i></button>`
+    html+=`</div>`;
+    return html;
+
+}
 const viewSoal = {
     'tabelNilai' : viewTabelNilai,
     'petunjukUmum':viewPetunjukUmum,
@@ -972,7 +1020,9 @@ const viewSoal = {
     'htmlkisikisi':htmlkisikisi,
     'viewIdentitas':viewIdentitas,
     'viewIsiNaskahSoalDraft':viewIsiNaskahSoalDraft,
-    'htmlkuncijawaban':htmlkuncijawaban
+    'htmlkuncijawaban':htmlkuncijawaban,
+    'htmlkisikisiModal1':htmlkisikisiModal1,
+    'htmlkuncijawabanModal1':htmlkuncijawabanModal1
 }
 
 export default viewSoal;

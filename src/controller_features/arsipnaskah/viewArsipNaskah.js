@@ -296,11 +296,12 @@ const viewTabelKunciJawabanPraPublikasi = (data,kurikulum)=>{
             html+=`</tr>`;
         html+=`</thead>`;
         html+=`<tbody>`;
-            data.forEach((n,i)=>{
+            data.filter(s=>s.hassoal).forEach((n,i)=>{
                 html+=`<tr>`;
                     html+=`<td class="text-center">${i+1}</td>`;
                     html+=`<td class="text-center">${n.nosoal}</td>`;
                     html+=`<td class="text-center">${n.kodemapel}</td>`;
+                    
                     html+=`<td class="text-center">${kurikulum=='kurmer'?n.propertikurikulum.idbaris:n.propertikurikulum.kd3+'<hr class="m-0 p-0"/>'+n.propertikurikulum.kd4}</td>`;
                     html+=`<td>`
                         if(n.bentuksoal == 'Pilihan Ganda'){
@@ -340,7 +341,7 @@ const viewEditPublikasiKbm  = (data)=>{
             title_tab:'Publikasi dan Simpan',
             body_html:rowCols.rowCols2(
                 cardMenu2('Dilaksanakan di Kelas',checkboxPilihKelas(data),false),
-                cardMenu2('Aksi Server',`<div class="text-center">Jika Anda ingin menghapus publikasinya:<br><button class="btn btn-sm text-bg-danger" id="btnServerHapustPublikasi"><i class="bi bi-trash"></i></button><hr><button class="btn btn-sm border-bottom border-5 border-primary neon-lite-top border-top-0 border-start-0 border-end-0 rounded-pill rounded" id="btnServerEditPublikasi">Simpan Perubahan</button></div>`,false)
+                cardMenu2('Aksi Server',`<div class="text-center">Jika Anda ingin menghapus publikasi semua kelas yang sedang melaksanakan:<br><button class="btn btn-sm text-bg-danger" id="btnServerHapustPublikasi"><i class="bi bi-trash"></i></button><hr><button class="btn btn-sm border-bottom border-5 border-primary neon-lite-top border-top-0 border-start-0 border-end-0 rounded-pill rounded" id="btnServerEditPublikasi">Simpan Perubahan</button><hr><div class="font8">Gunakan Simpan Perubahan jika Anda hanya ingin menghubah kelas yang mengikuti kbm ini</div></div>`,false)
             )
         },
         
@@ -349,7 +350,7 @@ const viewEditPublikasiKbm  = (data)=>{
 
     return tabs.wraperMainControl(menus);
 }
-const viewModal = (htmlapi)=>{
+const viewModal = (htmlapi,btnback=false)=>{
     let html = '';
     html+=`<div id="print-area-modal">`;
         html+=htmlapi;
@@ -357,6 +358,10 @@ const viewModal = (htmlapi)=>{
 
     
     html+=`<div class="fixed-bottom text-center mb-3">`;
+    if(btnback){
+        html +=`<button id="btnback" class="btn btn-sm border-bottom border-5 border-primary border-top-0 border-start-0 border-end-0 neon-lite-top rounded-pill rounded py-0" title="Kembali"><i class="bi-arrow-return-left"></i></button>`;
+    }
+
         html +=`<button id="btncetaknaskah" class="btn btn-sm border-bottom border-5 border-primary border-top-0 border-start-0 border-end-0 neon-lite-top rounded-pill rounded py-0" title="Cetak"><i class="bi-printer"></i></button>`;
         html +=`<button id="btncetakword" class="btn btn-sm border-bottom border-5 border-primary border-top-0 border-start-0 border-end-0 neon-lite-top rounded-pill rounded py-0" title="Simpan ke Ms. Word"><i class="bi-file-word"></i></button>`
         html +=`<button id="btncetakpdf" class="btn btn-sm border-bottom border-5 border-primary border-top-0 border-start-0 border-end-0 neon-lite-top rounded-pill rounded py-0" title="Simpan ke pdf"><i class="bi-file-pdf"></i></button>`

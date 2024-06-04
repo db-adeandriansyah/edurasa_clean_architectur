@@ -128,6 +128,24 @@ export default class TextEditorEdurasa{
             el.classList.add(leftMenuContextFormating);
         })
         
+        //maslaah over;
+        const listover = document.querySelectorAll('[data-aksimouse]');
+        listover.forEach(lis=>{
+            lis.onmouseover = (e)=>{
+                let id = lis.getAttribute('data-aksimouse');
+                let sibling = lis.querySelector('#'+id);
+                sibling.classList.remove('d-none');
+                
+            };
+            lis.onmouseout = (e)=>{
+                let id = lis.getAttribute('data-aksimouse');
+                let sibling = lis.querySelector('#'+id);
+                sibling.classList.add('d-none');
+                // setTimeout(()=>{
+                // },500)
+                
+            };
+        })
     }
     createToolbar(){
         return ToolbarEditor(this.idIframe);

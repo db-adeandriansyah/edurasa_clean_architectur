@@ -61,6 +61,7 @@ export default class OrmKurikulumSoal{
         return new CollectionsEdu(this.dataService.data['kelas'+this.jenjang])
         .exceptFilter({'indikatorkd3':''})
         .addProperty('kodemapel',(item)=>item.mapel)
+        .addProperty('kodemapel_teks',(item)=>this.koleksimapel[item.kodemapel])
         .addProperty('kkm',(item)=>kkmkktp.filter(s=> s.kodemapel == item.mapel && s.jenjang == jenjang)[0].kkm)
         .addProperty('pengayaan',(item)=>kkmkktp.filter(s=> s.kodemapel == item.mapel && s.jenjang == jenjang)[0].pengayaan)
 

@@ -14,6 +14,7 @@ export default class BanksoalFitur{
     #rombelActive;
     #judulHalaman;
     #mapelAplikasi;
+    //service,printarea,maincontrol,user,siswa
     constructor(
             banksoalserv,
             printarea, 

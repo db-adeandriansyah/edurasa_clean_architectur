@@ -9,7 +9,7 @@ import ratujaya1 from "../img/ratujaya1.png";
 import { TopHeader } from "../views/header/TopHeader";
 import { Collapse, Tooltip } from "bootstrap";
 import { cardMenu, radioMenu } from "../views/sidebar/cardSidebar";
-import { koleksiRombel } from "./settingApp";
+import { koleksiRombel ,riwayatApiTapel} from "./settingApp";
 
 
 export default class Route{
@@ -19,6 +19,7 @@ export default class Route{
     #fnPermision;
     #objPermision;
     #allowedByUserTypes;
+    #keyApp;
     constructor(){
         this.routes = {};
         this.#User = {};
@@ -29,6 +30,15 @@ export default class Route{
         this.#allowedByUserTypes=[]
         this.checkUserType();
         this.initializeUser();
+        this.riwayatApi = riwayatApiTapel;
+        this.#keyApp='';
+    }
+    get RiwayatApi(){
+        return this.riwayatApi;
+        
+    }
+    get key(){
+        return this.#keyApp;
     }
     set UserApp(x){
         this.#User = x;
@@ -69,6 +79,7 @@ export default class Route{
         let tahunAkhir = thAkhir.toString();
         // let currentCode =  't_'+tahunAwal.slice(2,4)+tahunAkhir.slice(2,4)+'_s_'+semester;
         let teksTitle = ' Tapel '+ tahunAwal+'/'+tahunAkhir +' Semester ' + semester;
+        this.#keyApp ='t_'+tahunAwal.slice(2,4)+tahunAkhir.slice(2,4)+'_s_'+semester;
         this.#User =  {
                 logo                        : logo,
                 barloading                  : barloading,
@@ -262,7 +273,7 @@ export default class Route{
     
     tooltipkan(){
         let doms = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-        [...doms].map(n=> new Tooltip(n))
+        [...doms].map(n=> new Tooltip(n,{trigger:'hover'}))
     }
     redirectHomePage() {
         window.location.href = "/";

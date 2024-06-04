@@ -213,87 +213,93 @@ function styleIframe(){
     return createElement('style', { type: 'text/css' }, `body{font-family:arial; font-size:14px;background-color:#fff;border:2px solid #ddd;padding:1rem;margin:0;}; a{cursor: pointer}; `);
 }
 function contextMenu(idIframe,data){
-        const matematikaContextMenu = `<li class="list-group-item position-relative  bg-secondary-subtle font10 py-1 border-bottom border-white" onpointerover="this.querySelector('ul').classList.remove('d-none')" onpointerleave="this.querySelector('ul').classList.add('d-none')"> <span>Matematika</span> 
-        <ul id="menucontextoverlaymatematika_${idIframe}" class="list-group position-absolute start-100 top-0 d-none w-100 font10 d-none"> 
-            <li  data-aksicontext="pecahan" data-targettabel="testEditor1" role="button"  class="bg-secondary-subtle list-group-item d-flex font12 justify-content-between align-items-center border-bottom border-white"> <span>Pecahan</span> <div class="p-0 mx-1 d-inline-flex flex-column align-items-center font10" title="pecahan"><span class="border-bottom border-dark">⬚</span><span>⬚</span></div> </li> 
-            <li  data-aksicontext="akarkuadrat" role="button"  class="bg-secondary-subtle list-group-item d-flex font12 justify-content-between border-bottom border-white"> <span>Akar Kuadrat</span> <span class="p-0 mx-1" title="Akar Kuadrat">√</span> </li> 
-            <li  data-aksicontext="akarkubik" role="button"  class="bg-secondary-subtle list-group-item d-flex font12 justify-content-between border-bottom border-white"> <span>Akar Kubik</span> <span class="p-0 mx-1" title="Buat Tabel">∛</span> </li> 
-        </ul> </li>`;
-        const formating =`<li class="list-group-item position-relative font10 bg-secondary-subtle py-1 border-bottom border-white" onpointerover="this.querySelector('ul').classList.remove('d-none')" onpointerleave="this.querySelector('ul').classList.add('d-none')">
-                    <span>Formating</span>
-                    <ul class="list-group position-absolute font10 top-0 start-100 d-none w-100 submenucontext">
-                        <li class="list-group-item d-flex justify-content-between py-1 border-bottom border-white bg-secondary-subtle" data-aksicontext="insertOrderedList"  ><div>Numbering</div><div>🔢</div></li>
-                        <li class="list-group-item d-flex justify-content-between py-1 border-bottom border-white bg-secondary-subtle" data-aksicontext="insertunOrderedList"><div>Bulleting</div><div>⏺</div></li>
-                    </ul>
+        const matematikaContextMenu = `<li  data-aksimouse="menucontextoverlaymatematika_${idIframe}" class="list-group-item position-relative  bg-secondary-subtle font10 py-1 border-bottom border-white d-flex justify-content-between"> <span>Matematika</span>
+                <ul id="menucontextoverlaymatematika_${idIframe}" class="list-group dropdown-menu position-absolute start-100 top-0 d-none w-100 font10"> 
+                    <li  data-aksicontext="pecahan" data-targettabel="testEditor1" role="button"  class="bg-secondary-subtle list-group-item d-flex font12 justify-content-between align-items-center border-bottom border-white"> <span>Pecahan</span> <div class="p-0 mx-1 d-inline-flex flex-column align-items-center font10" title="pecahan"><span class="border-bottom border-dark">⬚</span><span>⬚</span></div> </li> 
+                    <li  data-aksicontext="akarkuadrat" role="button"  class="bg-secondary-subtle list-group-item d-flex font12 justify-content-between border-bottom border-white"> <span>Akar Kuadrat</span> <span class="p-0 mx-1" title="Akar Kuadrat">√</span> </li> 
+                    <li  data-aksicontext="akarkubik" role="button"  class="bg-secondary-subtle list-group-item d-flex font12 justify-content-between border-bottom border-white"> <span>Akar Kubik</span> <span class="p-0 mx-1" title="Buat Tabel">∛</span> </li> 
+                </ul> 
+            </div>
+        </li>`;
+        const formating =`<li  data-aksimouse="ctxm_formating" class="list-group-item position-relative font10 bg-secondary-subtle py-1 border-bottom border-white d-flex justify-content-between">
+        <span>Formating</span>
+                        <ul id="ctxm_formating" class="list-group d-none position-absolute font10 top-0 start-100 w-100 submenucontext">
+                            <li class="list-group-item d-flex justify-content-between py-1 border-bottom border-white bg-secondary-subtle" data-aksicontext="insertOrderedList"  ><div>Numbering</div><div>🔢</div></li>
+                            <li class="list-group-item d-flex justify-content-between py-1 border-bottom border-white bg-secondary-subtle" data-aksicontext="insertunOrderedList"><div>Bulleting</div><div>⏺</div></li>
+                        </ul>
+                    </div>
                 </li>
                 `;
-        let convertKBM=`<li class="list-group-item position-relative bg-secondary-subtle font10 py-1 border-bottom border-white opsijawaban" onpointerover="this.querySelector('ul').classList.remove('d-none')" onpointerleave="this.querySelector('ul').classList.add('d-none')"><span>Konversi</span>
-                    <ul class="list-group position-absolute w-100 start-100 top-0 font-10 d-none submenucontext">
-                        <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle" role="button" data-aksicontext="convertABC">Konversi ABC</li>
-                        <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle" role="button" data-aksicontext="convertABCD">Konversi ABCD</li>
-                    </ul>
+        let convertKBM=`<li data-aksimouse="ctxm_konversi" class="list-group-item position-relative bg-secondary-subtle font10 py-1 border-bottom border-white opsijawaban d-flex justify-content-between">`;// onpointerover="this.querySelector('ul').classList.remove('d-none')" onpointerleave="this.querySelector('ul').classList.add('d-none')"><span>Konversi</span>
+            convertKBM+=`<span>Konversi</span>
+                            <ul id="ctxm_konversi" class="list-group d-none position-absolute w-100 start-100 top-0 font-10 submenucontext">
+                                <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle" role="button" data-aksicontext="convertABC">Konversi ABC</li>
+                                <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle" role="button" data-aksicontext="convertABCD">Konversi ABCD</li>
+                            </ul>
+                        
                 </li>`;
-        let sorotTampilanSoal = `<li class="list-group-item position-relative font10 bg-secondary-subtle py-1 border-bottom border-white" onpointerover="this.querySelector('ul').classList.remove('d-none')" onpointerleave="this.querySelector('ul').classList.add('d-none')">
-                                <span>Tampilan Soal</span>
-                                <ul class="list-group position-absolute w-100 start-100 top-0 font10 d-none submenucontext">
-                                    <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle d-flex justify-content-between" data-aksicontext="ilustrasi" role="button"><span>Ilustrasi</span></li>
-                                    <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle d-flex justify-content-between" data-aksicontext="pertanyaan" role="button"><span>Pertanyaan</span></li>
-                                    <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle d-flex justify-content-between opsijawaban"data-aksicontext="allpg" role="button"><span>Deteksi PG</span></li>
-                                    <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle d-flex justify-content-between font10 opsijawaban">
-                                        <div class="dropdown">
-                                            <button class="btn btn-light dropdown-toggle p-0 show" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            </button>
-                                                <ul class="dropdown-menu bg-secondary-subtle dropdown-menu-end" data-popper-placement="bottom-end">
-                                                    <li class="border-bottom border-white mx-1 font10" data-aksicontext="headerpg" role="button">Header Opsi</li>
-                                                    <li class="border-bottom border-white mx-1 font10 d-flex justify-content-between" data-aksicontext="opsiA" role="button"><span>Opsi A</span></li>
-                                                    <li class="border-bottom border-white mx-1 font10 d-flex justify-content-between" data-aksicontext="opsiB" role="button"><span>Opsi B</span></li>
-                                                    <li class="border-bottom border-white mx-1 font10 d-flex justify-content-between" data-aksicontext="opsiC" role="button"><span>Opsi C</span></li>
-                                                    <li class="border-bottom border-white mx-1 font10 d-flex justify-content-between" data-aksicontext="opsiD" role="button"><span>Opsi D</span></li>
-                                                    
-                                                </ul>
-                                        </div>
-                                        <div>Opsi Jawaban</div>
-                                    </li>
-                                    <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle d-flex justify-content-between font10 opsijawaban">
-                                        <div class="dropdown">
-                                            <button class="btn btn-light dropdown-toggle p-0 show" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            </button>
-                                                <ul class="dropdown-menu bg-secondary-subtle dropdown-menu-end" data-popper-placement="bottom-end">
-                                                    <li class="border-bottom border-white mx-1 font10 d-flex justify-content-between" data-aksicontext="kuncijawabanAbjad" role="button">A</li>
-                                                    <li class="border-bottom border-white mx-1 font10 d-flex justify-content-between" data-aksicontext="kuncijawabanAbjad" role="button">B</li>
-                                                    <li class="border-bottom border-white mx-1 font10 d-flex justify-content-between" data-aksicontext="kuncijawabanAbjad" role="button">C</li>
-                                                    <li class="border-bottom border-white mx-1 font10 d-flex justify-content-between" data-aksicontext="kuncijawabanAbjad" role="button">D</li>
-                                                    
-                                                </ul>
-                                        </div>
-                                        <div>Kunci Jawaban PG</div>
-                                    </li>
-                                </ul>
+        let sorotTampilanSoal = `<li data-aksimouse="ctxm_tampilansoal" class="list-group-item position-relative font10 bg-secondary-subtle py-1 border-bottom border-white d-flex justify-content-between"><span>Tampilan Soal</span>`;
+        // onpointerover="this.querySelector('ul').classList.remove('d-none')" onpointerleave="this.querySelector('ul').classList.add('d-none')">
+            sorotTampilanSoal+=`<ul id="ctxm_tampilansoal" class="list-group dropdown-menu d-none position-absolute w-100 start-100 top-0 font10 submenucontext">
+                                        <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle d-flex justify-content-between" data-aksicontext="ilustrasi" role="button"><span>Ilustrasi</span></li>
+                                        <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle d-flex justify-content-between" data-aksicontext="pertanyaan" role="button"><span>Pertanyaan</span></li>
+                                        <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle d-flex justify-content-between opsijawaban"data-aksicontext="allpg" role="button"><span>Deteksi PG</span></li>
+                                        <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle d-flex justify-content-between font10 opsijawaban">
+                                            <div class="dropdown">
+                                                <button class="btn btn-light dropdown-toggle p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                </button>
+                                                    <ul class="dropdown-menu bg-secondary-subtle dropdown-menu-end" data-popper-placement="bottom-end">
+                                                        <li class="border-bottom border-white mx-1 font10" data-aksicontext="headerpg" role="button">Header Opsi</li>
+                                                        <li class="border-bottom border-white mx-1 font10 d-flex justify-content-between" data-aksicontext="opsiA" role="button"><span>Opsi A</span></li>
+                                                        <li class="border-bottom border-white mx-1 font10 d-flex justify-content-between" data-aksicontext="opsiB" role="button"><span>Opsi B</span></li>
+                                                        <li class="border-bottom border-white mx-1 font10 d-flex justify-content-between" data-aksicontext="opsiC" role="button"><span>Opsi C</span></li>
+                                                        <li class="border-bottom border-white mx-1 font10 d-flex justify-content-between" data-aksicontext="opsiD" role="button"><span>Opsi D</span></li>
+                                                        
+                                                    </ul>
+                                            </div>
+                                            <div>Opsi Jawaban</div>
+                                        </li>
+                                        <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle d-flex justify-content-between font10 opsijawaban">
+                                            <div class="dropdown">
+                                                <button class="btn btn-light dropdown-toggle p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                </button>
+                                                    <ul class="dropdown-menu bg-secondary-subtle dropdown-menu-end" data-popper-placement="bottom-end">
+                                                        <li class="border-bottom border-white mx-1 font10 d-flex justify-content-between" data-aksicontext="kuncijawabanAbjad" role="button">A</li>
+                                                        <li class="border-bottom border-white mx-1 font10 d-flex justify-content-between" data-aksicontext="kuncijawabanAbjad" role="button">B</li>
+                                                        <li class="border-bottom border-white mx-1 font10 d-flex justify-content-between" data-aksicontext="kuncijawabanAbjad" role="button">C</li>
+                                                        <li class="border-bottom border-white mx-1 font10 d-flex justify-content-between" data-aksicontext="kuncijawabanAbjad" role="button">D</li>
+                                                        
+                                                    </ul>
+                                            </div>
+                                            <div>Kunci Jawaban PG</div>
+                                        </li>
+                                    </ul>
                             </li>`;
         let listlingkupmateri ="";
         data.forEach(n=>{
             listlingkupmateri+=`<li class="border-bottom border-white mx-1 font10 d-flex justify-content-between" data-aksicontext="lingkupmateri" role="button">${n.lingkupmateri}</li>`;
         })
-        let sorotProperti = `<li class="list-group-item position-relative font10 bg-secondary-subtle py-1 border-bottom border-white" onpointerover="this.querySelector('ul').classList.remove('d-none')" onpointerleave="this.querySelector('ul').classList.add('d-none')">
+        let sorotProperti = `<li data-aksimouse="ctxm_propertisoal" class="list-group-item position-relative font10 bg-secondary-subtle py-1 border-bottom border-white d-flex justify-content-between">
                                 <span>Properti Soal</span>
-                                <ul class="list-group position-absolute w-100 start-100 bottom-0 font10 d-none submenucontext">
-                                    <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle" data-aksicontext="indikatorsoal" role="button">Indikator Soal</li>
-                                    <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle" data-aksicontext="materi" role="button">Materi Pokok</li>
-                                    <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle" data-aksicontext="penskoran" role="button">Pembahasan/penskoran</li>
-                                    <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle" data-aksicontext="refrensi" role="button">Refrensi</li>
-                                    <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle" data-aksicontext="levelkognitif" role="button">Level Kognitif (Cek KKO)</li>
-                                    <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle d-flex justify-content-between font10" role="button">
-                                    
-                                        <div class="dropdown">
-                                            <button class="btn btn-light dropdown-toggle p-0 show" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            </button>
-                                            <ul class="dropdown-menu bg-secondary-subtle dropdown-menu-end" data-popper-placement="bottom-end">
-                                            ${listlingkupmateri}
-                                            </ul>
-                                        </div>
-                                        Lingkup Materi
-                                    </li>
-                                </ul>
+                                    <ul id="ctxm_propertisoal" class="list-group d-none position-absolute w-100 start-100 bottom-0 font10 submenucontext">
+                                        <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle" data-aksicontext="indikatorsoal" role="button">Indikator Soal</li>
+                                        <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle" data-aksicontext="materi" role="button">Materi Pokok</li>
+                                        <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle" data-aksicontext="penskoran" role="button">Pembahasan/penskoran</li>
+                                        <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle" data-aksicontext="refrensi" role="button">Refrensi</li>
+                                        <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle" data-aksicontext="levelkognitif" role="button">Level Kognitif (Cek KKO)</li>
+                                        <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle d-flex justify-content-between font10" role="button">
+                                        
+                                            <div class="dropdown">
+                                                <button class="btn btn-light dropdown-toggle p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                </button>
+                                                <ul class="dropdown-menu bg-secondary-subtle dropdown-menu-end" data-popper-placement="bottom-end">
+                                                ${listlingkupmateri}
+                                                </ul>
+                                            </div>
+                                            Lingkup Materi
+                                        </li>
+                                    </ul>
+                                
                             </li>`;
 
         // contexMenu.appendChild(stringToDom(sorotTampilanSoal));

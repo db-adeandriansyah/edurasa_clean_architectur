@@ -29,6 +29,20 @@ export default class BanksoalRepository extends CallHttp{
     get ss_materi(){
         return this.trial?this.ssTrial:this.appscript['ss_materi'];
     }
+    async callSiswa(){
+        let p = {
+            'idss':this.appscript['ss_user'],
+            'tab':'datasiswa',
+            'action':'read'
+        }
+        return await this.post(this.crud,p);
+    }
+    ss_nilai_jenjang(jenjang){
+        return this.trial?this.ssTrial:this.appscript['ss_nilai_'+jenjang];
+    }
+    ss_nilai_namatab(namatab,jenjang){
+        return this.trial?namatab+'_'+jenjang:namatab;
+    }
     async callPropertiMultiple(ars){
         let e_param = {
             'action':'readMultipleTab',
@@ -129,13 +143,7 @@ export default class BanksoalRepository extends CallHttp{
     }
 
     async simpanDataMateriKbm(par,media){
-        let idss='';
         let obchange = {'basetxt':'fileUrl', 'idmateri':'idfile'}
-        // if(this.#istrial){
-        //     idss=this.ssTrial;
-        // }else{
-        //     idss=this.appscript['ss_datamateri'];
-        // }
         let param = {
             action:'createIncludeMedia',
             spreadsheet:JSON.stringify({
@@ -166,13 +174,71 @@ export default class BanksoalRepository extends CallHttp{
 
     async simpanEditMateriKbm(arg){
         
-        let idss='';
+        let idss=this.ss_materi;
         let tab="datamateri";
+        // if(this.#istrial){
+        //     idss=this.ssTrial;
+        // }else{
+        //     idss=this.appscript['ss_kalender'];
+        // }
+
+        let para={
+            'action':'update',
+            'tab':tab,
+            'idss':idss,
+            'formData':JSON.stringify(arg),
+            // 'createTabEmpty':1,
+            'autoId':'idbaris',
+            'byRow':parseInt(arg.idbaris),
+            stringFormat:JSON.stringify(["crtToken"]),
+        }
+
+        return await this.post(this.crud,para);
+    }
+    async kirimSingleNilaiLJK(tabrespon,tabtagihan,mediaHTML,create=1){
+        let idss = this.ss_nilai_jenjang(tabrespon.idtoken);
+        let tagihan = tabtagihan.jenistagihan;
+        let rombel = tabrespon.idkelas;
+        let param = {
+            // idss:'1VdqHgZ67-TqOwXe3Am-_rhpCsNG10hpmGS91rHvkN6g',
+            idss: idss,
+            tab:    tagihan,
+            autoId:'idbaris',
+            action:'kirimnilai',
+            datarespon:JSON.stringify(tabrespon),
+            datatabutama:JSON.stringify(tabtagihan),
+            creatorupdate_respon:create, //1 = create, 0 = update;
+            ideditrespon:'html_jawaban',
+            media:JSON.stringify({
+                folder      :'Koleksi LJK Siswa 2324',
+                subfolder   : rombel,
+                namafile    :'id_kbm_'+tabrespon.matericode+'_idsiswa_'+tabrespon.tokensiswa+'_'+new Date().getTime(),
+                base64      : mediaHTML,
+                mimeType    :'text/plain',
+            })
+        }
+        return await this.post(this.crud,param)
+    }
+    async editLJKTabResponTabTagihan (tabrespon,tabtagihan){
+        let source = [
+            //tab respon
+            {
+                tab:'',
+                idss:'',
+                formData:'',
+                byRow:''
+            }
+        ]
+    }
+    async editLJKTabResponSingle(arg){
+        
+        let idss = this.ss_nilai_jenjang(arg.idtoken);
+        let tab="respon";
         if(this.#istrial){
             idss=this.ssTrial;
-        }else{
-            idss=this.appscript['ss_kalender'];
+            tab="respon_"+arg.idtoken;
         }
+        
 
         let para={
             'action':'update',
@@ -189,5 +255,39 @@ export default class BanksoalRepository extends CallHttp{
     }
     async showTextHTML(paramUI){
         return await this.get(this.crud+paramUI);
+    }
+
+    async kirimDataMasalWithoutIndexbaris(data,properti={idss:'1VdqHgZ67-TqOwXe3Am-_rhpCsNG10hpmGS91rHvkN6g',tab:'p',refHeader:'no'}){
+        // let idss = this.ss_nilai_jenjang(parseInt(data.idkelas));
+        // let tab = data.jenistagihan;
+        // let refHeader = 'tokensiswa';
+        const {idss, tab, refHeader} = properti;
+
+        let param = {
+            idss:idss,
+            tab:tab,
+            key:refHeader,
+            action:'createOrUpdate',
+            data:JSON.stringify(data)
+        }
+        return await this.post(this.crud,param);
+    }
+
+    async kirimDataMasalImportKoreksian (data,kelas,tab){
+        
+            const idss       = this.ss_nilai_jenjang(parseInt(kelas));
+            const refHeader = 'tokensiswa';
+            
+        
+        
+
+        let param = {
+            idss:idss,
+            tab:tab,
+            key:refHeader,
+            action:'createOrUpdate',
+            data:JSON.stringify(data)
+        }
+        return await this.post(this.crud,param);
     }
 }
