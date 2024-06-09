@@ -112,6 +112,7 @@ export default class KbmController extends Fitur{
         this.ormMapel.createLabelMapel();
         this.maincontrol.innerHTML = viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="groupBy_PH_nilai" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
         this.ormMapel.init();
+        console.log(this.ormMapel.collectionsSiswa)
         this.ormMapel.selectingMapel('groupBy_PH_nilai');
     }
     
@@ -144,6 +145,25 @@ export default class KbmController extends Fitur{
         this.maincontrol.innerHTML = viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="rapor_sementara" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
         this.ormMapel.init();
         this.ormMapel.selectingMapelRapor();
+        console.log(this.ormMapel.collectionsSiswa.data)
+    }
+    async new_rekapraportketerampilan(){
+        
+        this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
+        this.arrayReload.forEach(n=>clearInterval(n));
+        this.kbmFitur.settingRombel(this.fokusRombel)
+        await this.kbmFitur.init_kbmonline();
+        // this.ormMapel.createLabelMapel().createNilaiMapelonCurrentSiswaRombel().init()
+        this.ormMapel.createLabelMapel();
+        this.ormMapel.init();
+        
+            if(this.ormMapel.isKurmer){
+                this.workplace.innerHTML = "HANYA UNTUK KURIKULUM 2013";
+                return;
+            }
+        this.maincontrol.innerHTML = viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="rapor_sementara" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        this.ormMapel.selectingMapelRaporKeterampilan();
+        console.log(this.ormMapel.collectionsSiswa.data)
     }
     sampulraport(){
         this.arrayReload.forEach(n=>clearInterval(n));

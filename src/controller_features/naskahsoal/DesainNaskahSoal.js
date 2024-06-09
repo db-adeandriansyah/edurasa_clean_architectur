@@ -527,6 +527,7 @@ export default class DesainNaskahSoal{
     eventKlikReplacingItemSoal(data){
         
         let propsNaskah = new PropertiNaskahSoal(data.banksoalservice.banksoalservice.data.banksoal);
+        // let propsNaskah = new PropertiNaskahSoal(this.banksoal.banksoalservice.data.banksoal);
         let propKisikisi = propsNaskah.desainFromPraDesain(data.pradesain,data.banksoalservice.user).datakisikisi();
         let kisikisi = propKisikisi.generate;
         
@@ -613,7 +614,7 @@ export default class DesainNaskahSoal{
             this.praDesain.Modal.hide();
             await this.service.simpanItemSoal(test);
             let data = this.service.data.banksoal;
-            
+            console.log('data soal baru',data);
             let last = data.length;
             let itemsoal = data[last-1];
             

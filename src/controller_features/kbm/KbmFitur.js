@@ -317,6 +317,66 @@ export default class KbmFitur extends BanksoalFitur{
         })
         return ar;
     }
+    get arraySsRapor(){
+        let ttm = {
+            'idss':  this.service.spreadsheet_nilai,
+            'tab':'titimangsa_rapor',
+            'tabdb':'titimangsa_rapor'
+        };
+        let absensiasli = {
+            'idss':  this.service.repo.ss_Absensi(this.jenjang),
+            'tab':'responses',
+            'tabdb':'responses_'+this.jenjang
+        };
+        if(this.jenjang == 6){
+
+            ttm = {
+                'idss':  this.service.spreadsheet_nilai,
+                'tab':'titimangsa_rapor',
+                'tabdb':'titimangsa_rapor'
+            }
+        }
+        return [
+            ttm,
+            {
+                idss:this.service.spreadsheet_nilai,
+                tab: 'nilai_raport_'+this.rombel,
+                tabdb: 'nilai_raport_'+this.rombel
+            },            {
+                idss:this.service.repo.ss_kurikulum_must_call,
+                tab: 'k1kelas'+this.jenjang,
+                tabdb: 'k1kelas'+this.jenjang,
+            },{
+                idss:this.service.spreadsheet_nilai,
+                tab: 'nilai_sikap_raport_'+this.rombel,
+                tabdb: 'nilai_sikap_raport_'+this.rombel,
+            },{
+                idss:this.service.repo.ss_kurikulum_must_call,
+                tab: 'k2kelas'+this.jenjang,
+                tabdb: 'k2kelas'+this.jenjang,
+            },
+            {
+                idss:this.service.spreadsheet_nilai,
+                //'tab':'rekap_absen_'+this.fokusRombel+'_semester_'+this.setApp.semester
+                tab: 'rekap_absen_'+this.rombel+'_semester_'+this.user.semester,
+                tabdb: 'rekap_absen_'+this.rombel+'_semester_'+this.user.semester,
+            },
+            {
+                idss:this.service.spreadsheet_nilai,
+                tab: 'rekap_absen_'+this.rombel+'_semester_'+this.jenjang,
+                tabdb:'rekap_absen_'+this.rombel+'_semester_'+this.jenjang,
+            },
+            absensiasli,
+            {
+                idss:this.service.spreadsheet_nilai,
+                // //
+                // 'tab':'perkembangan_raport_'+this.fokusRombel
+                tab: 'perkembangan_raport_'+this.rombel,
+                tabdb: 'perkembangan_raport_'+this.rombel
+            },
+            
+    ]
+    }
     get siswaRombel(){
         return this.siswa.filter(s=> s.nama_rombel== this.rombel)
     }
@@ -347,6 +407,248 @@ export default class KbmFitur extends BanksoalFitur{
         let tagihanapi  = this.arrayTagihanPerJenjang;
         let banksoal    = this.arrayBankSoal;
         let api = [...kurikulumapi, ...datamateri,...tagihanapi,...banksoal];
+        let loadedApi = api.filter(s=>!this.service.isExist(s.tabdb));
+        if(loadedApi.length>0){
+            await this.service.callPropertiMultipleWithPrefik(loadedApi);
+        }
+        
+       
+            let totallkey_nosoal = Object.keys(this.service.data.simpandesainsoal[0]).length - 20;
+            
+            this.ormKurikulum = new OrmKurikulumSoal(this.service,this.jenjang,this.currentMapelOnClassRoom).settingKurikulum(this.shortKurikulum).init().collection;
+            
+            let apibanksoal = this.service.data.banksoal;
+            let apiblanko = this.service.data.blangko_banksoal;
+            let apidatamateri = this.service.data.datamateri;
+            let kurikulum = this.ormKurikulum.data;
+            let isKurmer = (this.service.shortKurikulum=='kurmer');
+            let isAdmin = this.isAdmin;
+            let owner = this.user.idUser; 
+            
+            this.ormDesainNaskah = new CollectionsEdu(this.service.data.simpandesainsoal)
+                            // .addProperty('datamateri',(item)=>{
+                            //     return apidatamateri.filter(s=>s.id_desainnaskah == item.idbaris);
+                            // })
+                            .addProperty('propertikurikulum',(item)=>{
+                                let ar = []
+                                for(let i = 0 ; i < 50; i++){
+                                    let key = 'no_'+(i+1);
+                                    let val = item[key];
+                                    if(val!==''){
+                                        let soal = apibanksoal.filter(s=>s.idbaris == val);
+                                        // ar.push({[key]:soal})
+                                        if(soal[0]){
+                                            if(isKurmer){
+                                                let kurikulumitemsoal = kurikulum.filter(s=> s.idbaris == soal[0].kd);
+
+                                                if(kurikulumitemsoal.length>0){
+                                                    ar.push(kurikulumitemsoal[0]);
+                                                }
+
+                                            }else{
+                                                let kurikulumitemsoal = kurikulum.filter(s=> s.kd3 == soal[0].kd && s.mapel == soal[0].kodemapel);
+                                                
+                                                if(kurikulumitemsoal.length>0){
+                                                    ar.push(kurikulumitemsoal[0]);
+                                                }
+
+                                            }
+                                        };
+                                    }
+                                }
+                                // return ar;
+                                let finalResult = [];
+                                if(isKurmer){
+                                    finalResult = new CollectionsEdu(ar).uniqueByProperty('idbaris').data;
+                                }else{
+                                    finalResult = new CollectionsEdu(ar).uniqueByProperty('baris').data;
+                                }
+                                return finalResult;
+                            })
+                            .addProperty('tanggalnaskah',(item)=>{
+                                return new FormatTanggal(item.waktu2).formatFull();
+                            })
+                            .addProperty('owner',(item)=>{
+                                return !isAdmin?item.idguru==owner:true;
+                            })
+                            .addProperty('banksoal',(item)=>{
+                                let ar = [];
+                                for(let i = 0 ; i < 50; i++){
+                                    let key = 'no_'+(i+1);
+                                    let val = item[key];
+                                    if(val!==''){
+                                        let obj = {};
+                                        let soal = apibanksoal.filter(s=>s.idbaris == val);
+                                        if(soal.length>0){
+                                            obj.datasoal=soal[0];
+                                            obj.bentuksoalspesifik = soal[0].bentuksoalspesifik;
+                                            obj.nosoal = (i+1);
+                                            ar.push(obj)
+                                        }
+                                    }
+                                }
+                                return ar
+                            })
+                            .addProperty('namakurikulum',(item)=>{
+                                return item.kurikulum
+                            })
+                            .addProperty('kerangka',(item)=>{
+                                let itembanksoal = item.banksoal;
+                                let uniq = new CollectionsEdu(itembanksoal).uniqueByProperty('bentuksoalspesifik').selectProperties(['bentuksoalspesifik']).data;
+                                let result = [];
+                                uniq.forEach(n=>{
+                                    let ob = {};
+                                    let filtersoal = itembanksoal.filter(s=>s.bentuksoalspesifik == n.bentuksoalspesifik);
+                                    ob.bentuksoal = n.bentuksoalspesifik;
+                                    ob.jumlah = filtersoal.length;
+                                    ob.datasoal = filtersoal;//.map(n=>Object.fromEntries(Object.entries(n).map()));
+                                    result.push(ob);
+                                })
+                                return result;
+                            })
+                            .sortByProperty('waktu2','desc');
+                for(let i = 0 ; i < 50 ; i++){
+                    let keybanksoal = 'banksoal_'+(i+1);
+                    this.ormDesainNaskah.addProperty(keybanksoal,(item)=>{
+                        if(item['no_'+(i+1)]!==""){
+                            let filter_api =  apibanksoal.filter(s=>s.idbaris == item['no_'+(i+1)])
+                            if(filter_api.length>0){
+                                return filter_api[0];
+                            }else{
+                                return apiblanko;
+                            }
+                        }
+                        return "";
+                    })
+                }
+                    
+            
+        
+        
+        const api_datamateri = this.service.data.datamateri.slice();
+        const api_tabrespon = this.service.data['respon_'+this.jenjang];
+        const jenjang = this.jenjang;
+        const rombel = this.rombel;
+        const kurikulumAkitif = this.shortKurikulum;
+        const siswaRombel = this.siswaRombel;
+        const intIdSiswaRombel = siswaRombel.map(n=> parseInt(n.id));
+        const orm_desainnaskah = this.ormDesainNaskah;
+        
+        this.ormKBM = new CollectionsEdu(api_datamateri)
+            .simpleFilter({'idtoken':jenjang})
+            .customFilter((item)=>item.arraykelas.indexOf(rombel)>-1)
+            .customFilter((item)=>this.isGuruMapel?item.kuncikd.indexOf(this.mapelAjar)>-1:true)
+            .addProperty('objek_kuncikd',(item)=>JSON.parse(item.kuncikd))
+            .addProperty('namakurikulum',()=>kurikulumAkitif)
+            .addProperty('isFromDesain',(item)=>item.id_desainnaskah !=="")
+            .addProperty('api_respon',(item)=>{
+                let ar = [];
+                if(item.isFromDesain){
+                    let respon_jenjang = this.service.data['respon_'+this.jenjang];
+                    // ar = respon_jenjang.filter(s=> s.matericode == item.idbaris && s.crtToken.toString().indexOf('dihapus')==-1 && intIdSiswaRombel.includes(parseInt(s.tokensiswa)));
+                    ar = respon_jenjang.filter(s=> s.matericode == item.idbaris && s.crtToken == item.crtToken && intIdSiswaRombel.includes(parseInt(s.tokensiswa)));
+                }
+                return ar;
+            })
+            .addProperty('hasResponDuplicate',(item)=>(item.api_respon.length!==0 && item.api_respon.length > intIdSiswaRombel.length))
+            .addProperty('cast_jenistagihan',(item)=>{
+                let string = item.jenistagihan;
+                if(item.jenistagihan =='PH') string = 'Penilaian Harian';
+                if(item.jenistagihan == 'PTS' && kurikulumAkitif =='kurmer') string = 'STS';
+                if(item.jenistagihan == 'PAS' && kurikulumAkitif == 'kurmer') string ='SAS';
+                if(item.jenistagihan == 'PAK' && kurikulumAkitif == 'kurmer') string ='SAS';
+                return string;
+            })
+            .addProperty('pelaksanaan',(item)=>new Date(item.idtgl).toLocaleString('id-ID',{dateStyle:'full',timeStyle:'long'}))
+            .addProperty('pelaksanaanakhir',(item)=>new Date(item.idtglend).toLocaleString('id-ID',{dateStyle:'full',timeStyle:'long'}))
+            .addProperty('soal_otomatis',(item)=>{
+                let count = 0;
+                
+                if(item['Pilihan Ganda']!==""){
+                    count+=item['Pilihan Ganda'];
+                };
+                
+                if(item.hasOwnProperty('PG Kompleks')){
+                    if(item['PG Kompleks']!==""){
+                        count+=item['PG Kompleks'];
+                    };
+                }
+
+                if(item.hasOwnProperty('BenarSalah')){
+                    if(item['BenarSalah']!==""){
+                        count+=item['BenarSalah'];
+                    };
+                    
+                }
+                return count;
+            }).addProperty('soal_manual',(item)=>{
+                let count = 0;
+                
+                if(item['Isian']!==""){
+                    count+=item['Isian'];
+                };
+                if(item['Essay']!==""){
+                    count+=item['Essay'];
+                };
+                if(item['Menjodohkan']!==""){
+                    count+=item['Menjodohkan'];
+                };
+                
+                if(item.hasOwnProperty('Menulis Rapih')){
+                    if(item['Menulis Rapih']!==""){
+                        count+=item['Menulis Rapih'];
+                    };
+                }
+                return count;
+            })
+            .addProperty('obj_desainnaskah',(item)=>{
+                let ar =[];
+                if(item.isFromDesain){
+                    ar = orm_desainnaskah.simpleFilter({'idbaris':item.id_desainnaskah}).data;
+
+                };
+                return ar;
+            })
+            .addProperty('objek_mapelkd',(item)=>Object.keys(item.objek_kuncikd).map(n=>Object.assign({},{
+                'mapel'             : n.split('_')[0],
+                'mapelteks'         : this.currentMapelOnClassRoom[n.split('_')[0]],
+                'kd'                : n.split('_')[1],
+                'atp'               : n.split('_')[1],
+                'tp'                : (kurikulumAkitif=='kurmer')?this.ormKurikulum.data.filter(s=> s.idbaris==n.split('_')[1])[0].foreignkey_tp:this.ormKurikulum.data.filter(s=> s.mapel == n.split('_')[0] && (s.kd3 == n.split('_')[1]||s.kd4 == n.split('_')[1])),
+                'elemen'            : (kurikulumAkitif=='kurmer')?this.ormKurikulum.data.filter(s=> s.idbaris==n.split('_')[1])[0].foreignkey_elemencp:this.ormKurikulum.data.filter(s=> s.mapel == n.split('_')[0] && (s.kd3 == n.split('_')[1]||s.kd4 == n.split('_')[1])),
+                'kurikulum'         : kurikulumAkitif,
+                'idkbm'             : item.idbaris,
+                'crtToken'          : item.crtToken,
+                'jenistagihan'      : item.jenistagihan,
+                'no_soal'           : item.objek_kuncikd[n],
+                'no_soal_banksoal'  : item.objek_kuncikd[n].length>0?item.objek_kuncikd[n].map(bs=>Object.assign({},{'nosoal':bs,'datasoal':item.obj_desainnaskah[0]['banksoal_'+bs]})):[],
+                'key_tagihan'       : item.idbaris+'_'+item.jenistagihan+'_'+item.crtToken+'_'+n,
+                'mapel_kd'          : n,
+                'objek_kd'          : (kurikulumAkitif=='kurmer')?this.ormKurikulum.data.filter(s=> s.idbaris==n.split('_')[1]):this.ormKurikulum.data.filter(s=> s.mapel == n.split('_')[0] && (s.kd3 == n.split('_')[1]||s.kd4 == n.split('_')[1])),
+            })))
+            .addProperty('mapel_desain',(item)=>item.obj_desainnaskah[0].mapel)
+            .addProperty('kodeteks_mapel',(item)=>{
+                let teksmapel = "";
+                if(item.mapel_desain.indexOf('Tema ')>-1 || item.mapel_desain.indexOf('TEMA ')>-1){
+                    teksmapel = item.mapel_desain+'<br>'+item.objek_mapelkd.map(mp=>mp.mapelteks).filter((x,i,a)=>a.indexOf(x)==i).join(',<br/>');
+                    
+                }else{
+                    teksmapel = this.currentMapelOnClassRoom[item.mapel_desain];
+                }
+                return teksmapel;
+            })
+            .sortByProperty('idtgl','desc');
+            
+
+    }
+    async init_raport(){
+        //data yang dibutuhkan
+        let kurikulumapi   = this.arrayKurikulum;
+        let datamateri  = this.arrayDataMateri;
+        let tagihanapi  = this.arrayTagihanPerJenjang;
+        let banksoal    = this.arrayBankSoal;
+        let spreadsheetTabRapor = this.arraySsRapor;
+        let api = [...kurikulumapi, ...datamateri,...tagihanapi,...banksoal,...spreadsheetTabRapor];
         let loadedApi = api.filter(s=>!this.service.isExist(s.tabdb));
         if(loadedApi.length>0){
             await this.service.callPropertiMultipleWithPrefik(loadedApi);
@@ -623,6 +925,13 @@ export default class KbmFitur extends BanksoalFitur{
             result = [array_datapredikat[array_datapredikat.length-1]];
         }else{
             result = array_datapredikat.filter(s=> s.min < nilai && s.maks >= nilai);
+            if(result.length==0){
+                result = [ {
+                    min         :   0,
+                    maks         :  0,
+                    predikat    : 'Cukup'
+                }]
+            };
         }
 
         return result[0];

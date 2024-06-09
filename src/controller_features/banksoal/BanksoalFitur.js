@@ -459,13 +459,19 @@ export default class BanksoalFitur{
         this.workplace.innerHTML = controlbanksoal.templateCreatePerItemBankSoal();
             this.createTextEditor();
     }
-    listener_fitur_item_soal(){
+    listener_fitur_item_soal(needData){
         let elemencek = document.querySelectorAll('[data-pradesain]');
         let divMode = document.getElementById('modecanvas');
         elemencek.forEach(el=>{
             el.onchange = (e)=>{
                 let pradesain = this.cek_fitur_pradesain();
-                
+                if(el.getAttribute('data-pradesain')=='kodemapel'){
+                    let divwrap = document.getElementById('resultefekpilihmapel');
+                    let html = controlbanksoal.menuPilihPropertiKurikulum(needData.shortKurikulum,needData.kurikulum.simpleFilter({'kodemapel':e.target.value}).data)
+                    divwrap.innerHTML = html;
+                    pradesain = this.cek_fitur_pradesain();
+                }
+                console.log('pradesain',pradesain);
                 if(pradesain.mode =='bycopast' && pradesain.editor == 'editor'){
                     this.workplace.innerHTML = controlbanksoal.templateCreatePerItemBankSoal();
                     this.createTextEditor(pradesain);
@@ -486,6 +492,7 @@ export default class BanksoalFitur{
                 }else{
                     divMode.classList.remove('d-none');
                     this.workplace.innerHTML = "";//controlbanksoal.templateCreatePerItemBankSoal();
+
                 }
             }
         });

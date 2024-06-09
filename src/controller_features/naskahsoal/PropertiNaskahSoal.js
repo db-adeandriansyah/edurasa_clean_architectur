@@ -266,6 +266,7 @@ export default class PropertiNaskahSoal{
                 if(sel.hasAttribute('data-simpanannaskahguru')){
                     
                     let idsoal = sel.getAttribute('data-simpanannaskahguru');
+                    console.log(sel, idsoal, this.dbsoal);
                     let itemsoal = this.dbsoal.filter(s=>s.idbaris == idsoal)[0];
                     let kd = itemsoal.kd;
                     let mapel = itemsoal.kodemapel;

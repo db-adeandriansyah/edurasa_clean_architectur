@@ -16,6 +16,7 @@ export const kbmSidebar = (arrriwayat=[])=> [
             {value:'new_tengahsemester',text:'Tengah Semester',name:'menusidebar'},
             {value:'new_akhirsemester',text:'Akhir Semester',name:'menusidebar'},
             {value:'new_rekapraport',text:'Rekap Raport',name:'menusidebar'},
+            {value:'new_rekapraportketerampilan',text:'Rekap Raport Keterampilan',name:'menusidebar'},
             
             {value:'sampulraport',text:'Sampul Raport',name:'menusidebar'}
             

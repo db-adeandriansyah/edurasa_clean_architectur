@@ -48,6 +48,9 @@ export class CallHttp{
 
         this.animationProgress = null;
     }
+    otherMacro(x){
+        return this.#macro[x]
+    }
     set appscript(x){
         this.#apitapel = this.#macro[x];
     }
@@ -78,6 +81,9 @@ export class CallHttp{
     }
     get crud (){
         return `https://script.google.com/macros/s/${this.appscript['exec_crud']}/exec`; 
+    }
+    otherCrud (idcrud){
+        return `https://script.google.com/macros/s/${idcrud}/exec`; 
     }
     get urilogin (){
         return `https://script.google.com/macros/s/${this.appscript['exec_user']}/exec?`; 

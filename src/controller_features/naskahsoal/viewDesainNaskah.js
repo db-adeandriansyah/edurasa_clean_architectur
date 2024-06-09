@@ -301,7 +301,7 @@ const menuDraftItem = (draft)=>{
             html+=buttonEdu.primary(' id="btndraft"','Mulai Desain');
         html+=`</div>`;
     }else{
-        html ="Tidak ada Draft Naskah yang Anda disimpan di Perangkat ini."
+        html +="Tidak ada Draft Naskah yang Anda disimpan di Perangkat ini."
     }
     html+=`</div>`
         return cardMenu2('Data Draft',html,false);

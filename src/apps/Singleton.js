@@ -14,6 +14,7 @@ App.registerUrlPermission('/kurikulum', ['Guru Kelas','Guru Mapel','Kepala Sekol
 App.registerUrlPermission('/kalender', ['Guru Kelas','Guru Mapel','Kepala Sekolah','admin','Staff'] );
 App.registerUrlPermission('/banksoal', ['Guru Kelas','Guru Mapel','Kepala Sekolah','admin','Staff'] );
 App.registerUrlPermission('/kbm', ['Guru Kelas','Guru Mapel','Kepala Sekolah','admin','Staff'] );
+App.registerUrlPermission('/rapor', ['Guru Kelas','Guru Mapel','Kepala Sekolah','admin','Staff'] );
 App.init();
 
 export {App as default}

@@ -20,6 +20,9 @@ export default class BanksoalRepository extends CallHttp{
     get ss_kurikulum(){
         return this.appscript['ss_materi'];
     }
+    ss_Absensi(jenjang){
+        return this.trial?this.ssTrial:this.appscript['ss_absen_'+jenjang];
+    }
     get ss_kurikulum_must_call(){
         return this.trial?this.ssTrial:this.ss_kurikulum;
     }
@@ -289,5 +292,46 @@ export default class BanksoalRepository extends CallHttp{
             data:JSON.stringify(data)
         }
         return await this.post(this.crud,param);
+    }
+
+    async postOtherMacro(crud,param){
+        return await this.post(crud,param);
+    }
+    async saveNilaiRaporMasal (data,kelas,tab,refHeader){
+        
+        const idss       = this.ss_nilai_jenjang(parseInt(kelas));
+        // const refHeader = 'tokensiswa';
+        
+    
+    
+
+    let param = {
+        idss:idss,
+        tab:tab,
+        key:refHeader,
+        action:'createOrUpdate',
+        data:JSON.stringify(data)
+    }
+    return await this.post(this.crud,param);
+    }
+    async createOrUpdate (idss,data,tab,refHeader){
+        
+        // const idss       = this.ss_nilai_jenjang(parseInt(kelas));
+        
+    let param = {
+        idss:idss,
+        tab:tab,
+        key:refHeader,
+        action:'createOrUpdate',
+        data:JSON.stringify(data)
+    }
+    return await this.post(this.crud,param);
+    }
+
+    async createOrUpdate_deskripsi_predikat(data,jenjang){
+        let idss = this.ss_materi;
+        let tab = 'predikat_'+jenjang;
+        let refHeader = 'id';
+        return await this.createOrUpdate(idss,data,tab,refHeader);
     }
 }

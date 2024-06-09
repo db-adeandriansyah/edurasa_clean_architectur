@@ -20,7 +20,7 @@ export const controlFiturBuatPerItemSoal = (data)=>{
             {
                 id:'tab_pilihproperti',
                 title_tab:'Properti Kurikulum',
-                body_html:controlbanksoal.menuPilihPropertiKurikulum(shortKurikulum,kurikulum.simpleFilter({'kodemapel':isGuruMapel?mapelAjar:'PAI'}).data)
+                body_html:'<div id="resultefekpilihmapel">'+controlbanksoal.menuPilihPropertiKurikulum(shortKurikulum,kurikulum.simpleFilter({'kodemapel':isGuruMapel?mapelAjar:'PAI'}).data)+'</div>'
             },
             // {
             //     id:'tab_pilihmode',

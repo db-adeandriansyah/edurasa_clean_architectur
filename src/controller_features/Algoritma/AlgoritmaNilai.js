@@ -112,7 +112,10 @@ export default class AlgoritmaNilai {
             groupBy_PASPAK_nilai,
             propertikurikulummapel,
             predikatMax,
-            predikatMin
+            predikatMin,
+            groupBy_KETERAMPILAN,
+            groupBy_KETERAMPILAN_nilai,
+            jenjang
         } = refrensi;
         // result.test = fn(80)
         result.kkm = propertikurikulummapel[0].kkm;
@@ -201,8 +204,8 @@ export default class AlgoritmaNilai {
                     let ubahTipe = onlyNilai.map(n=>Number(n));
                     let cariMax = Math.max(...ubahTipe);
                     let cariMin = Math.min(...ubahTipe);
-                    let predikat = fn(cariMax).predikat;
-                    let predikatMin = fn(cariMin).predikat;
+                    let predikat    = fn(cariMax).predikat;//?fn.predikat:'Baik';
+                    let predikatMin = fn(cariMin).predikat;//?fn.predikat:'Cukup';
                     let cariIndex = onlyNilai.findIndex(s=> s == cariMax);
                     let cariIndexMin = onlyNilai.findIndex(s=> s == cariMin);
                     // let dataKdMax = dataAllKbm_unique_nilai[cariIndex];
@@ -210,7 +213,7 @@ export default class AlgoritmaNilai {
                     let dataKdMax = avoid[cariIndex];
                     let dataKdMin = avoid[cariIndexMin];
     
-                    if(predikat == 'Perlu Bimbingan' || predikat == 'Cukup'){
+                    if(predikat == "Perlu Bimbingan" || predikat == "Cukup"){
                         predikat = 'Baik';
                     }
                     if(predikatMin == 'Perlu Bimbingan'){
@@ -220,7 +223,7 @@ export default class AlgoritmaNilai {
     
                     if(dataKdMax.kd == dataKdMin.kd){
                         notDuplicate = false;
-                        dataKdMin = propertikurikulummapel.filter((s,i)=>i!== cariIndex)[0];
+                        dataKdMin = propertikurikulummapel.filter((s,i)=>i!= cariIndex)[0];
                     }
                     
                     result.raporAsli_nilaiMaks_number = cariMax;
@@ -308,13 +311,22 @@ export default class AlgoritmaNilai {
         }else{ // kurtilas
             let uniqKD =[];
             let allkds = dataAllKbm_unique_nilai.map(n=>n.kd);
-
+            let kdMaksKeterampilan = null;
+            let kdMinKeterampilan = null;
             if(isGanjil){
                 result.raporAsli_kdMax_object = propertikurikulummapel[1];
                 result.raporAsli_kdMin_object = propertikurikulummapel[0];
+                kdMaksKeterampilan = propertikurikulummapel[1];
+                kdMinKeterampilan = propertikurikulummapel[0];
+                result.raporAsliKeterampilan_kdMax_object = propertikurikulummapel[1];
+                result.raporAsliKeterampilan_kdMin_object = propertikurikulummapel[0];
             }else{
                 result.raporAsli_kdMax_object = propertikurikulummapel[propertikurikulummapel.length-1];
                 result.raporAsli_kdMin_object = propertikurikulummapel[propertikurikulummapel.length-2];
+                result.raporAsliKeterampilan_kdMax_object = propertikurikulummapel[propertikurikulummapel.length-1];
+                result.raporAsliKeterampilan_kdMin_object = propertikurikulummapel[propertikurikulummapel.length-2];
+                kdMaksKeterampilan = propertikurikulummapel[propertikurikulummapel.length-1];
+                kdMinKeterampilan  = propertikurikulummapel[propertikurikulummapel.length-2];
             }
             allkds.forEach(kd=>{
                 let pembagi = 0;
@@ -395,8 +407,10 @@ export default class AlgoritmaNilai {
                 result._indexFindMin = indexFindMin;
                 result.raporAsli_kdMax_object = indexFindMax[0].kode_kd_objek;
                 result.raporAsli_kdMin_object = indexFindMin[0].kode_kd_objek;
-                result.raporAsli_kdMax_predikat_string = fn(findMax).predikat
-                result.raporAsli_kdMin_predikat_string = fn(findMin).predikat
+
+                result.raporAsli_kdMax_predikat_string = (fn(findMax).predikat=="Perlu Bimbingan"||fn(findMax).predikat =="Cukup")?"Baik":fn(findMax).predikat
+                result.raporAsli_kdMin_predikat_string = (fn(findMin).predikat=="Perlu Bimbingan")?"Cukup":fn(findMin).predikat;
+                
                 if(indexFindMax[0].kode_kd == indexFindMin[0].kode_kd){
                     //define sisa;
                     indexFindMin = uniqKD.filter(s=>s.nilaiKd != findMax);
@@ -412,10 +426,99 @@ export default class AlgoritmaNilai {
                 let predikatrapor = fn(rerata).predikat;
                 result.raporAsli_nilaiRapor = rerata;
                 if(predikatrapor == 'Perlu Bimbingan' || predikatrapor == 'Cukup'){
-                    predikatrapor = predikatMin;
+                    predikatrapor = predikatMax;
                 }
-                result.raporAsli_nilaiRapor_predikat = fn(rerata).predikat;
+                result.raporAsli_nilaiRapor_predikat = predikatrapor;;//fn(rerata).predikat;
+            }else{
+                result.raporAsli_kdMax_predikat_string ="Baik";
+                result.raporAsli_kdMin_predikat_string = "Cukup";
+                result.predikatMaks ="Baik";
+                result.predikatMin = "Cukup";
+                result.nilaiRapor_asli = "";
+                result.nilaiRapor_asli_predikat = "Cukup";
             }
+
+            
+            let kdKeterampilan = [];
+            let nilaiKeterampilan =0;
+            let nilaiKeterampilanPembagi =1;
+            let objekKdMaks = 
+            //raporAsli_kdMax_predikat_string;
+            result.raporAsliKeterampilan_kdMax_string = 'Baik';
+            result.raporAsliKeterampilan_kdMin_string = 'Cukup';
+            if(groupBy_KETERAMPILAN_nilai.length>0){
+                let dataPraktek = [];
+                let dataProduk = [];
+                let dataProyek = [];
+                let ob = {};
+                let pembagi = 0;
+                if(!isGanjil && jenjang == 6){
+                    dataPraktek = groupBy_KETERAMPILAN_nilai.filter(s=> s.jenistagihan == 'kpraktik'|| s.jenistagihan == 'uspraktek');
+                }else{
+                    dataPraktek = groupBy_KETERAMPILAN_nilai.filter(s=> s.jenistagihan == 'kpraktik');
+
+                }
+                dataProduk =  groupBy_KETERAMPILAN_nilai.filter(s=> s.jenistagihan == 'kproduk');
+                dataProyek =  groupBy_KETERAMPILAN_nilai.filter(s=> s.jenistagihan == 'kproyek');
+
+                //menentukan nilai maksimal dari praktek;
+                let mapingNilaiPraktek = dataPraktek.map(n=>n.nilai==""?0:Number(n.nilai));
+                let cekMapingPraktek = mapingNilaiPraktek.length>0;
+                let nilaiPrakek = cekMapingPraktek?Math.max(...mapingNilaiPraktek):0;
+                if(cekMapingPraktek){
+                    pembagi+=1
+                }
+                
+                //menentukan nilai maksimal dari produk;
+                let mapingNilaiProduk = dataProduk.map(n=>n.nilai==""?0:Number(n.nilai));
+                let cekMapingProduk = mapingNilaiProduk.length>0;
+                let nilaiProduk = cekMapingProduk?Math.max(...mapingNilaiProduk):0;
+                if(cekMapingProduk){
+                    pembagi+=1
+                }
+                
+                
+                //menentukan nilai maksimal dari proyek;
+                let mapingNilaiProyek = dataProyek.map(n=>n.nilai==""?0:Number(n.nilai));
+                let cekMapingProyek = mapingNilaiProyek.length>0;
+                let nilaiProyek = cekMapingProyek?Math.max(...mapingNilaiProyek):0;
+                
+                if(cekMapingProyek){
+                    pembagi+=1
+                }
+                
+                
+                ob.group = groupBy_KETERAMPILAN_nilai;
+                ob.dataPraktek = dataPraktek;
+                ob.dataPraktek_nilai = nilaiPrakek
+                ob.dataProyek = dataProyek;
+                ob.dataProyek_nilai = nilaiProyek
+                ob.dataProduk = dataProduk;
+                ob.dataProduk_nilai = nilaiProduk;
+                ob.nilaiRaportKeterampilan = (nilaiPrakek+nilaiProduk+nilaiProyek)/pembagi;
+                nilaiKeterampilan = ((nilaiPrakek+nilaiProduk+nilaiProyek)/pembagi);
+
+                kdKeterampilan.push(ob);
+                if(groupBy_KETERAMPILAN_nilai.length==1){
+                    kdMaksKeterampilan = groupBy_KETERAMPILAN_nilai[0].objek_kd[0];
+                }else{
+                    kdMaksKeterampilan = groupBy_KETERAMPILAN_nilai[groupBy_KETERAMPILAN_nilai.length-1].objek_kd[0];
+                    kdMinKeterampilan = groupBy_KETERAMPILAN_nilai[0].objek_kd[0];
+
+                }
+
+            }
+            result.raporAsliKeterampilan_nilaiRapor = nilaiKeterampilan;
+            result.raporAsliKeterampilan_nilaiRapor_predikat = (fn(nilaiKeterampilan).predikat=="Perlu Bimbingan"||fn(nilaiKeterampilan).predikat=="Cukup")?"Baik":fn(nilaiKeterampilan).predikat;
+            
+            result.raporAsliKeterampilan_kdMax_object = kdMaksKeterampilan
+            result.raporAsliKeterampilan_kdMin_object = kdMinKeterampilan;
+
+            result.raporAsliKeterampilan_kdMax_predikat_string ="Baik";
+            result.raporAsliKeterampilan_kdMin_predikat_string ="Cukup";
+
+            // /raporAsli_nilaiRapor_predikat
+            result.raporAsliKeterampilan_olah = kdKeterampilan;
         }
         return result;
     }
