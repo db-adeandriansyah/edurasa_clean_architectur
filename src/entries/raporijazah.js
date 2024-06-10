@@ -5,10 +5,6 @@ import { raporSidebar } from "../controller_menus/raporijazahSidebar.js";
 import BanksoalRepository from "../repositories/BanksoalRepository.js";
 import KbmService from "../services/KbmService.js";
 import RaporIjazahController from "../controllers/RaporIjazahController.js";
-// import { kalenderSidebar } from "../controller_menus/kalenderSidebar.js";
-// import KalenderRepository from "../repositories/KalenderRepository.js";
-// import KalenderService from "../services/KalenderService.js";
-// import KalenderController from "../controllers/KalenderController.js";
 
 const apisidebar = App.RiwayatApi;
 const appCurrent = apisidebar.filter(s=>s.api != App.key).sort((a,b)=>b.tapel.localeCompare(a.tapel));

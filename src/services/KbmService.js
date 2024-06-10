@@ -201,6 +201,17 @@ export default class KbmService{
         this.#db = Object.assign(this.#db, {[prefix+n.info.namaTab]:n.data,[prefix+'blangko_'+n.info.namaTab]:n.info.objKosong});
         this.repo.stopProgressBar();
     }
+    async callMultipleOtherMacro(crud,param,prefix=''){
+        
+        this.repo.callWithProses();
+        let respon = await this.repo.callPropertiMultipleOtherCrud(crud,param);
+        respon.forEach(n=>{
+            this.#db = Object.assign(this.#db, {[prefix+n.info.namaTab]:n.data,[prefix+'blangko_'+n.info.namaTab]:n.info.objKosong});
+
+        })
+        
+        this.repo.stopProgressBar();
+    }
     async saveNilaiRaporMasal (data,kelas,tab,refHeader){
         
         this.repo.callWithProses();

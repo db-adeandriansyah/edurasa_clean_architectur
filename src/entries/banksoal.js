@@ -2,8 +2,6 @@ import "../sass/main.scss";
 import App from "../apps/Singleton.js";
 
 import { banksoalSidebar } from "../controller_menus/banksoalSidebar.js";
-// import KurikulumRepository from "../repositories/KurikulumRepository.js";
-// import KurikulumService from "../services/KurikulumService.js";
 import BanksoalRepository from "../repositories/BanksoalRepository.js";
 import BanksoalController from "../controllers/BanksoalController.js";
 import BanksoalService from "../services/BanksoalService.js";

@@ -54,6 +54,14 @@ export default class BanksoalRepository extends CallHttp{
         };
         return await this.post(this.crud,e_param)
     }
+    async callPropertiMultipleOtherCrud(crudOther,ars){
+        let e_param = {
+            'action':'readMultipleTab',
+            'source':JSON.stringify(ars),
+            
+        };
+        return await this.post(crudOther,e_param)
+    }
     async simpanItemSoal(arg,mode='create'){
         let idss='';
         let tab='';

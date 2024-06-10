@@ -3,13 +3,10 @@ import logo from "../img/lamaso.webp";
 import barloading from "../img/barloading.gif"
 import kotadepok from "../img/kotadepok.webp";
 import ratujaya1 from "../img/ratujaya1.png";
-// import { images } from "../assets/assetFunction";
-// import { headerNavigationAuto } from "../views/header-navigation";
-// import { menubar } from "./SidebarController";
 import { TopHeader } from "../views/header/TopHeader";
 import { Collapse, Tooltip } from "bootstrap";
 import { cardMenu, radioMenu } from "../views/sidebar/cardSidebar";
-import { koleksiRombel ,riwayatApiTapel} from "./settingApp";
+import { koleksiRombel ,riwayatApiTapel, riwayatApiTapelReal} from "./settingApp";
 
 
 export default class Route{
@@ -31,6 +28,7 @@ export default class Route{
         this.checkUserType();
         this.initializeUser();
         this.riwayatApi = riwayatApiTapel;
+        this.riwayatApiReal = riwayatApiTapelReal;
         this.#keyApp='';
     }
     get RiwayatApi(){

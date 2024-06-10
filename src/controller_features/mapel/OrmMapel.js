@@ -1335,7 +1335,18 @@ export default class OrmMapel{
     createDeskripsiRaporKeterampilan(data){
         let html = "";
         const {objek_maks,objek_min,predikat_maks,predikat_min} = data;
-       
+        if(this.isKurmer){
+            html+='Ananda sudah ';
+            html+= predikat_maks;
+            html+=' dalam '
+            html+= objek_maks.atp;
+            html+= '<hr class="my-0">'
+            
+            html+='Ananda masih ';
+            html+= predikat_min;
+            html+=' dalam '
+            html+= objek_min.atp;
+        }else{
             html+='Ananda sudah ';
             html+= predikat_maks??'Baik';
             html+=' dalam '
@@ -1344,6 +1355,8 @@ export default class OrmMapel{
             html+= predikat_min??'Cukup';
             html+=' dalam '
             html+= objek_min.indikatorkd4;
+
+        }
         
         return html;
     }

@@ -491,7 +491,7 @@ const view_nilai_peralgoritma = (data)=>{
 const view_nilai_perbentuksoal = (data)=>{
     let html = "";
     const {nilai_pertagihan} = data;
-        html+=`<div class="row row-cols-4 g-2">`;
+        html+=`<div class="row row-cols-md-4 g-2">`;
             nilai_pertagihan.forEach(m=>{
                 html+=`<div class="col">`;
                     html+=cardMenu2(m.bentuksoalspesifik,`<div class="d-flex justify-content-center align-align-items-center font16 fw-bold">${m.nilai}</div>`,false);
@@ -508,14 +508,14 @@ const viewLJK = (identitas,data,modekoreksi=false)=>{
             html+=identitasljk(identitas);
         html+=`</div>`;
         if(data.hasOtomatis && data.hasManual){
-            html+=`<div class="col-4">`;
+            html+=`<div class="col-md-4">`;
                 data.kerangka.forEach(n=>{
                     if(['Pilihan Ganda','PG Kompleks','BenarSalah'].includes(n.bentuksoal)){
                         html+=viewIsianLjkMenurutTagihan(n.bentuksoal,n,modekoreksi,data)
                     }
                 })
             html+=`</div>`;
-            html+=`<div class="col-8">`;
+            html+=`<div class="col-md-8">`;
                 data.kerangka.forEach(n=>{
                     if(['Isian','Essay','Menjodohkan','Menulis Rapih'].includes(n.bentuksoal)){
                         html+=viewIsianLjkMenurutTagihan(n.bentuksoal,n,modekoreksi,data)

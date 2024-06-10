@@ -45,15 +45,15 @@ export const faseAbjadKarakter = {
 }
 export const riwayatApiTapel = [ // riwayatApiTapel Lamaso
   {'tapel':'2021','semester':2,'label':'2020/2021','api':'t_2021_s_2','kurmer':[],'kurtilas':[1,2,3,4,5,6]},
-  {'tapel':'2122','semester':2,'label':'2021/2022','api':'t_2122_s_2','kurmer':[],'kurtilas':[1,2,3,4,5,6]},
   {'tapel':'2122','semester':1,'label':'2021/2022','api':'t_2122_s_1','kurmer':[],'kurtilas':[1,2,3,4,5,6]},
-  {'tapel':'2223','semester':2,'label':'2022/2023','api':'t_2223_s_2','kurmer':[1,4],'kurtilas':[2,3,5,6]},
+  {'tapel':'2122','semester':2,'label':'2021/2022','api':'t_2122_s_2','kurmer':[],'kurtilas':[1,2,3,4,5,6]},
   {'tapel':'2223','semester':1,'label':'2022/2023','api':'t_2223_s_1','kurmer':[1,4],'kurtilas':[2,3,5,6]},
+  {'tapel':'2223','semester':2,'label':'2022/2023','api':'t_2223_s_2','kurmer':[1,4],'kurtilas':[2,3,5,6]},
   {'tapel':'2324','semester':1,'label':'2023/2024','api':'t_2324_s_1','kurmer':[1,2,4,5],'kurtilas':[3,6]},
   {'tapel':'2324','semester':2,'label':'2023/2024',   'api':'t_2324_s_2','kurmer':[1,2,4,5],       'kurtilas':[3,6]},
 
 ];
-export const riwayatApiTapelReal = [
+export const riwayatApiTapelReal = [ 
   {'tapel':'1314','semester':2,'label':'2013/2014',   'api':'t_1314_s_2',      'kurikulum':['k2006'],                      'k2006':[1,2,3,4,5,6],   'kurmer':[],              'kurtilas':[]},
   {'tapel':'1415','semester':1,'label':'2014/2015',   'api':'t_1415_s_1',      'kurikulum':['k2006'],                      'k2006':[1,2,3,4,5,6],   'kurmer':[],              'kurtilas':[]},
   {'tapel':'1415','semester':2,'label':'2014/2015',   'api':'t_1415_s_2',      'kurikulum':['k2006'],                      'k2006':[1,2,3,4,5,6],   'kurmer':[],              'kurtilas':[]},

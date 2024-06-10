@@ -73,8 +73,61 @@ const tabelRekapRapor = (data)=>{
     html+=`</div>`;
     return html;
 }
+const tabelDataRapoIjazah = (fokusmapel, db)=>{
+    let html="";
+    let dataijazah = db[0].olah_ijazah;
+    html+=`<table class="table table-sm table-bordered bordere-dark font12">`;
+        html+=`<thead>`;
+            html+=`<tr>`;
+                html+=`<th rowspan="4" class="text-center align-middle text-bg-secondary" style="width:20px">No</td>`;
+                html+=`<th rowspan="4" class="text-center align-middle text-bg-secondary" style="width:20px">Token Siswa</td>`;
+                html+=`<th rowspan="4" class="text-center align-middle text-bg-secondary">Nama Siswa</td>`;
+                
+                html+=`<th colspan="12" class="text-center align-middle text-bg-secondary">Data Tiap Kelas</td>`;
+                html+=`<th rowspan="4" class="text-center align-middle text-bg-secondary">Nilai Ijazah</td>`;
+            html+=`</tr>`;
+            html+=`<tr>`;
+                html+=`<th colspan="6" class="text-center align-middle text-bg-secondary">Kelas 5</th>`;
+                html+=`<th colspan="6" class="text-center align-middle text-bg-secondary">Kelas 6</th>`;
+            html+=`</tr>`;
+            html+=`<tr>`;
+                html+=`<th colspan="3" class="text-center align-middle text-bg-secondary">Semester 1</th>`;
+                html+=`<th colspan="3" class="text-center align-middle text-bg-secondary">Semester 2</th>`;
+                html+=`<th colspan="3" class="text-center align-middle text-bg-secondary">Semester 1</th>`;
+                html+=`<th colspan="3" class="text-center align-middle text-bg-secondary">Semester 2</th>`;
+            html+=`</tr>`;
+            html+=`<tr>`;
+                html+=`<th class="text-center align-middle text-bg-secondary">KD 3</th>`;
+                html+=`<th class="text-center align-middle text-bg-secondary">KD 4</th>`;
+                html+=`<th class="text-center align-middle text-bg-secondary">Rerata</th>`;
+                html+=`<th class="text-center align-middle text-bg-secondary">KD 3</th>`;
+                html+=`<th class="text-center align-middle text-bg-secondary">KD 4</th>`;
+                html+=`<th class="text-center align-middle text-bg-secondary">Rerata</th>`;
+                html+=`<th class="text-center align-middle text-bg-secondary">KD 3</th>`;
+                html+=`<th class="text-center align-middle text-bg-secondary">KD 4</th>`;
+                html+=`<th class="text-center align-middle text-bg-secondary">Rerata</th>`;
+                html+=`<th class="text-center align-middle text-bg-secondary">KD 3</th>`;
+                html+=`<th class="text-center align-middle text-bg-secondary">KD 4</th>`;
+                html+=`<th class="text-center align-middle text-bg-secondary">Rerata</th>`;
+            html+=`</tr>`;
+        html+=`</thead>`;
+    html+=`</table>`;
+    return html;
+}
+const tabelIjazahOlah = (data,db)=>{
+    
+    let html = "";
+    html+=`<h3 class="text-center mb-0">Pengolahan Nilai Ijazah</h3>`;
+    html+=`<h4 class="text-center mb-0">${data.fokusmapel_teks}</h4>`;
+    html+=`<h4 class="text-center mb-3">Tahun Pelajaran ${data.tapel}</h4>`;
+    html+=`<div class="table-responsive">`;
+        html+=tabelDataRapoIjazah(data.fokusmapel, db);
+    html+=`</div>`;
+    return html;
+}
 const viewRaporFiturRapor = {
-    'tabelRekapRapor':tabelRekapRapor
+    'tabelRekapRapor':tabelRekapRapor,
+    'tabelIjazahOlah':tabelIjazahOlah
 }
 
 export default viewRaporFiturRapor;

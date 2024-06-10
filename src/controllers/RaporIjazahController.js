@@ -1,19 +1,14 @@
-import ArsipNaskah from "../controller_features/arsipnaskah/ArsipNaskah";
-import CreateKbmFromDesignOrArsip from "../controller_features/kbm/CreateKbmFromDesignOrArsip";
+import IjazahFitur from "../controller_features/ijazah/IjazahFitur";
 import KbmFitur from "../controller_features/kbm/KbmFitur";
 import OrmMapel from "../controller_features/mapel/OrmMapel";
 import viewOrmMapel from "../controller_features/mapel/viewOrmMapel";
-import DesainNaskahSoal from "../controller_features/naskahsoal/DesainNaskahSoal";
-import OlahNilaiKbm from "../controller_features/olahnilai/OlahNilaiKbm";
 import { StatistikRangking } from "../controller_features/rapor/StatistikRangking";
-
 import viewRapor from "../controller_features/raport/viewRapor";
 import { ImportControllerMultipleHeader } from "../controller_features/uploadCsv/ImportControllerMultipleHeader";
 import { FormatTanggal, ModalConfig, TableProperties } from "../entries/vendor";
 import garuda from "../img/garuda_pancasila.svg";
-// import garuda from "../img/gar"
 import tut_wuri_handayani from '../img/tut_wuri_handayani_higher_resolutions.png';
-
+import kopsuratEdurasa from "../views/surat/kopsurat";
 import Fitur from "./Fitur";
 
 export default class RaporIjazahController extends Fitur{
@@ -663,7 +658,7 @@ export default class RaporIjazahController extends Fitur{
         this.conditionalSubemenu();
         await this.kbmFitur.init_raport();
         this.ormMapel.createLabelMapel();
-        this.maincontrol.innerHTML = 'rekap nilai asli';// viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="rapor_sementara" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        // this.maincontrol.innerHTML = 'rekap nilai asli';// viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="rapor_sementara" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
         this.ormMapel.init();
         this.ormMapel.ormSiswaOnlyRaporAsli();
         this.ormMapel.withNilaiRaporSiap();
@@ -826,7 +821,7 @@ export default class RaporIjazahController extends Fitur{
         this.conditionalSubemenu();
         await this.kbmFitur.init_raport();
         this.ormMapel.createLabelMapel();
-        this.maincontrol.innerHTML = 'rekap nilai asli';// viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="rapor_sementara" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        // this.maincontrol.innerHTML = 'rekap nilai asli';// viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="rapor_sementara" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
         this.ormMapel.init();
         this.ormMapel.ormSiswaOnlyRaporAsli();
         this.ormMapel.withNilaiRaporSiap();
@@ -850,8 +845,8 @@ export default class RaporIjazahController extends Fitur{
         this.maincontrol.innerHTML = viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="selection-mapel" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
         
         this.workplace.innerHTML = viewRapor.html_setting_deskripi(identitas,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',false);
-        const selecting = document.querySelector('[data-pradesain="selection-mapel"]');
         const domTabel = document.getElementById('predikat_rapor')
+        const selecting = document.querySelector('[data-pradesain="selection-mapel"]');
         selecting.onchange = (e)=>{
             this.workplace.innerHTML = viewRapor.html_setting_deskripi(identitas,e.target.value,false);
         }
@@ -1855,7 +1850,8 @@ export default class RaporIjazahController extends Fitur{
         this.saveToNilaiRapor(btnSave,'setting_perkembangan',this.fokusMenu,'data-key');
 
     }
-    dataolahijazah(){
+    async dataolahijazah(){
+        this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
         if(this.fokusJenjang == 6 && this.setApp.semester == 1){
             this.workplace.innerHTML = 'Hanya bisa diakses di semester 2';
             return;
@@ -1865,8 +1861,618 @@ export default class RaporIjazahController extends Fitur{
                 return;
             }
         }
-        this.workplace.innerHTML = 'Siap Olah Ijazah';
-        alert('boleh akses');
+        this.kbmFitur.settingRombel(this.fokusRombel)
+        this.conditionalSubemenu();
+        await this.kbmFitur.init_raport();
+        this.ormMapel.createLabelMapel();
+        // this.maincontrol.innerHTML = 'rekap nilai asli';// viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="rapor_sementara" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        this.ormMapel.init();
+        this.ormMapel.ormSiswaOnlyRaporAsli();
+        this.ormMapel.withNilaiRaporSiap();
+        this.maincontrol.innerHTML = viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="selection-mapel" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        this.workplace.innerHTML = this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
+        //
+        // panggil semua data;
+        
+        let _kelas5semester1 = this.defineSemesterSemesterSebelumnya(3);
+        console.log('k5s1',_kelas5semester1);
+        let _kelas5semester1_prefik     = 'kelas5semester1_';
+        let _kelas5semester1_rombel     = _kelas5semester1.rombelMundur;
+        let _kelas5semester1_tabnilai    ='newRekapRaport_'+_kelas5semester1.rombelMundur +'_k3_'+_kelas5semester1.rombelMundur;
+        let _kelas5semester1_tabnilai2   ='newRekapRaport_'+_kelas5semester1.rombelMundur+'_k4_'+_kelas5semester1.rombelMundur;
+        let _kelas5semester1_ss         = 'ss_nilai_'+_kelas5semester1.jenjangMundur;
+        let _kelas5semester1_api        = this.service.repo.otherMacro(_kelas5semester1.api.api);
+        let _kelas5semester1_crud       = this.service.repo.otherCrud(_kelas5semester1_api.exec_crud);
+        
+        let param_k5s1 = [
+            {
+            idss    : _kelas5semester1_api[_kelas5semester1_ss],
+            tab     : _kelas5semester1_tabnilai,
+            },
+            {
+            idss    : _kelas5semester1_api[_kelas5semester1_ss],
+            tab     : _kelas5semester1_tabnilai2,
+            },
+        ];
+            console.log(_kelas5semester1_api)
 
+
+        await this.service.callMultipleOtherMacro(_kelas5semester1_crud,param_k5s1,_kelas5semester1_prefik);
+
+        let _kelas5semester2 = this.defineSemesterSemesterSebelumnya(2);
+        console.log('k5s2',_kelas5semester2);
+        let _kelas5semester2_prefik = 'kelas5semester2_';
+        let _kelas5semester2_rombel     = _kelas5semester2.rombelMundur;
+        let _kelas5semester2_tabnilai   =  'newRekapRaport_k3_'+_kelas5semester2.rombelMundur;
+        let _kelas5semester2_tabnilai2   =  'newRekapRaport_K4_'+_kelas5semester2.rombelMundur;
+        let _kelas5semester2_ss         = 'ss_nilai_'+_kelas5semester2.jenjangMundur;
+        let _kelas5semester2_api        = this.service.repo.otherMacro(_kelas5semester2.api.api);
+        let _kelas5semester2_crud       = this.service.repo.otherCrud(_kelas5semester2_api.exec_crud);
+        let param_k5s2 = [
+            {
+            idss    : _kelas5semester2_api[_kelas5semester2_ss],
+            tab     : _kelas5semester2_tabnilai,
+            },
+            {
+            idss    : _kelas5semester2_api[_kelas5semester2_ss],
+            tab     : _kelas5semester2_tabnilai2,
+            },
+        ];
+        console.log(_kelas5semester2_api);
+        await this.service.callMultipleOtherMacro(_kelas5semester2_crud,param_k5s2,_kelas5semester2_prefik);
+        
+        
+        let _kelas6semester1 = this.defineSemesterSemesterSebelumnya(1);
+        console.log('k6s1',_kelas6semester1)
+        let _kelas6semester1_prefik = 'kelas6semester1_';
+        let _kelas6semester1_rombel     = _kelas6semester1.rombelMundur;
+        let _kelas6semester1_tabnilai   = 'nilai_raport_'+_kelas6semester1.rombelMundur;
+        let _kelas6semester1_ss         = 'ss_nilai_'+_kelas6semester1.jenjangMundur;
+        let _kelas6semester1_api        = this.service.repo.otherMacro(_kelas6semester1.api.api);
+        let _kelas6semester1_crud       = this.service.repo.otherCrud(_kelas6semester1_api.exec_crud);
+        let param_k6s1 = {
+            idss    : _kelas6semester1_api[_kelas6semester1_ss],
+            tab     : _kelas6semester1_tabnilai,
+            action  : 'read'
+        }
+        console.log(_kelas6semester1);
+        await this.service.nilaiRaporOtherMacro(_kelas6semester1_crud,param_k6s1,_kelas6semester1_prefik);
+        
+        
+
+        console.log(this.service.data);
+        const ijazah = new IjazahFitur(this.service,this.ormMapel.collectionsSiswa).init();
+        const testSiswa = this.ormMapel.collectionsSiswa.data;
+        console.log(testSiswa);
+        const selecting = document.querySelector('[data-pradesain="selection-mapel"]');
+        selecting.onchange = (e)=>{
+            let identitas = {
+                fokusmapel_teks : e.target.options[e.target.selectedIndex].text,
+                fokusmapel      : ['PAI','PKRIS','PKATO'].includes(e.target.value)?'AGAMA':e.target.value,
+                tapel           : this.setApp.tapel
+            }
+            this.workplace.innerHTML = viewRapor.tabelIjazahOlah(identitas,testSiswa);
+        }
+        selecting.dispatchEvent(new Event('change'));
+    }
+    async ijazahAll(){
+        this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
+        if(this.fokusJenjang == 6 && this.setApp.semester == 1){
+            this.workplace.innerHTML = 'Hanya bisa diakses di semester 2';
+            return;
+        }else{
+            if(this.fokusJenjang!=6){
+                this.workplace.innerHTML = 'Hanya bisa diakses oleh guru kelas 6';
+                return;
+            }
+        }
+        // let cekapi =this.service.repo.otherMacro(satuSemesterSebelumnya.api.api);
+        // let httpOtherCrud = this.service.repo.otherCrud(cekapi.exec_crud);
+        this.conditionalSubemenu();
+        this.kbmFitur.settingRombel(this.fokusRombel);
+        await this.kbmFitur.init_raport();
+        
+        this.ormMapel.createLabelMapel();
+        this.ormMapel.init();
+        this.ormMapel.ormSiswaOnlyRaporAsli();
+        this.ormMapel.withNilaiRaporSiap();
+        this.maincontrol.innerHTML = viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.kbmFitur.labelingSelectMapel,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="selection-mapel" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        const mapelNonAgama = this.ormMapel.labelNonAgamaIncludeMulok;
+        let macros_2324_s2 = this.service.repo.otherMacro('t_2324_s_2');
+        let macros_2324_s1 = this.service.repo.otherMacro('t_2324_s_1');
+        let macros_2223_s2 = this.service.repo.otherMacro('t_2223_s_2');
+        let macros_2223_s1 = this.service.repo.otherMacro('t_2223_s_1');
+        let siswa = this.siswa;
+        
+        //kelas 5 semester 1;
+        //'newRekapRaport_'+_kelas5semester1.rombelMundur +'_k3_'+_kelas5semester1.rombelMundur;
+        let crud_5_1 = this.service.repo.otherCrud(macros_2223_s1['exec_crud']);
+        let param_5_1 = [
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5A_k3_5A'//
+            },
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5B_k3_5B'//
+            },
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5C_k3_5C'//
+            },
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5A_k4_5A'//
+            },
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5B_k4_5B'//
+            },
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5C_k4_5C'//
+            },
+        ];
+
+        let crud_5_2 = this.service.repo.otherCrud(macros_2223_s2['exec_crud']);
+        let param_5_2 = [
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_k3_5A'
+            },
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_k3_5B'
+            },
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_k3_5C'
+            },
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_K4_5A'
+            },
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_K4_5B'
+            },
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_K4_5C'
+            },
+        ];
+//kelas6semester1_
+        let crud_6_1 = this.service.repo.otherCrud(macros_2324_s1['exec_crud']);
+        let param_6_1 = [
+            {
+                idss : macros_2324_s1['ss_nilai_6'],
+                tab :'nilai_raport_6A'
+            },
+            {
+                idss : macros_2324_s1['ss_nilai_6'],
+                tab : 'nilai_raport_6B'
+            },
+            {
+                idss : macros_2324_s1['ss_nilai_6'],
+                tab : 'nilai_raport_6C'
+            }
+        ]
+
+        let crud_6_2 = this.service.repo.crud;
+        let param_6_2 = [
+            {
+                idss : macros_2324_s2['ss_nilai_6'],
+                tab : 'nilai_raport_6A'
+            },
+            {
+                idss : macros_2324_s2['ss_nilai_6'],
+                tab : 'nilai_raport_6B'
+            },
+            {
+                idss : macros_2324_s2['ss_nilai_6'],
+                tab : 'nilai_raport_6C'
+            }
+        ]
+
+        await this.service.callMultipleOtherMacro(crud_5_1,param_5_1,'kelas5semester1_');
+        await this.service.callMultipleOtherMacro(crud_5_2,param_5_2,'kelas5semester2_');
+        await this.service.callMultipleOtherMacro(crud_6_1,param_6_1,'kelas6semester1_');
+        await this.service.callMultipleOtherMacro(crud_6_2,param_6_2,'');
+
+
+        console.log(this.service.data);
+        console.log(macros_2324_s2);
+        console.log(macros_2324_s1);
+        console.log(macros_2223_s2);
+        console.log(macros_2223_s1);
+
+        console.log(siswa);
+        let data = new IjazahFitur(this.service,siswa).allInit(this.kbmFitur.collectionClass,mapelNonAgama);
+        console.log(data);
+        const selecting = document.querySelector('[data-pradesain="selection-mapel"]');
+        selecting.onchange = (e)=>{
+            let identitas = {
+                fokusmapel_teks : e.target.options[e.target.selectedIndex].text,
+                fokusmapel      : ['PAI','PKRIS','PKATO'].includes(e.target.value)?'AGAMA':e.target.value,
+                tapel           : this.setApp.tapel
+            }
+            this.workplace.innerHTML = viewRapor.tabelIjazahOlah(identitas,data,true);
+        }
+        selecting.dispatchEvent(new Event('change'));
+    }
+    async cetakskl(){
+        if(this.fokusJenjang == 6 && this.setApp.semester == 1){
+            this.workplace.innerHTML = 'Hanya bisa diakses di semester 2';
+            return;
+        }else{
+            if(this.fokusJenjang!=6){
+                this.workplace.innerHTML = 'Hanya bisa diakses oleh guru kelas 6';
+                return;
+            }
+        }
+        const logo=this.setApp.logoDepok,logosekolah=this.setApp.logoSekolah;
+                let objKetSurat = {
+                    judul:'PEMERINTAH DAERAH KOTA DEPOK',
+                    judul2:'DINAS PENDIDIKAN',
+                    namasekolah:this.setApp.namaSekolah,
+                    alamat:'Jl. SMP Ratujaya No. 41, RT 05/RW 03, Kel. Ratujaya',
+                    alamat2:'NPSN: 20228914 | Email: uptdsdnratujaya1@gmail.com, web: www.sdnratujaya1.net',
+                    tapelsemester:'TAHUN PELAJARAN '+this.setApp.tapel,
+                    judul3:'NASKAH SOAL',
+                    alamat3:'kecamatan Cipayung'
+                }
+                let crDom = document.createElement('div');
+                crDom.setAttribute('class','kops mb-3');
+                crDom.innerHTML =  kopsuratEdurasa['versi2'](logo, objKetSurat,logosekolah);
+                let htmlkop = crDom.outerHTML;
+                this.workplace.innerHTML = viewRapor.skl(this.siswa.filter(s=>s.jenjang ==6),htmlkop);
+                const btnPrint = document.getElementById('btnPrintKelulusan');
+                const targetSiswa = document.getElementById('selectTargetSiswa');
+                targetSiswa.onchange = (e)=>{
+                    let datasiswa = this.siswa.filter(s=> s.id == e.target.value)[0];
+                    let domskl = document.querySelectorAll('[data-skl]');
+                    domskl.forEach(el=>{
+                        let atr = el.getAttribute('data-skl');
+                        if(atr=='pd_tanggallahir'){
+                            el.innerHTML = new Date(datasiswa.pd_tanggallahir).toLocaleString('id-ID',{dateStyle:'long'});
+                        }else if(atr=='index'){
+                            el.innerHTML = (e.target.selectedIndex+1);
+                        }else{
+                            el.innerHTML = datasiswa[atr]??'';
+                        }
+                    })
+
+                }
+                targetSiswa.dispatchEvent(new Event('change'));
+                btnPrint.onclick = ()=>{
+                    this.printPortraitDom(this.workplace)
+                }
+    }
+    async cetakskl2(){
+        if(this.fokusJenjang == 6 && this.setApp.semester == 1){
+            this.workplace.innerHTML = 'Hanya bisa diakses di semester 2';
+            return;
+        }else{
+            if(this.fokusJenjang!=6){
+                this.workplace.innerHTML = 'Hanya bisa diakses oleh guru kelas 6';
+                return;
+            }
+        }
+        // let cekapi =this.service.repo.otherMacro(satuSemesterSebelumnya.api.api);
+        // let httpOtherCrud = this.service.repo.otherCrud(cekapi.exec_crud);
+        this.conditionalSubemenu();
+        this.kbmFitur.settingRombel(this.fokusRombel);
+        await this.kbmFitur.init_raport();
+        
+        this.ormMapel.createLabelMapel();
+        this.ormMapel.init();
+        this.ormMapel.ormSiswaOnlyRaporAsli();
+        this.ormMapel.withNilaiRaporSiap();
+        
+        const mapelNonAgama = this.ormMapel.labelNonAgamaIncludeMulok;
+        let macros_2324_s2 = this.service.repo.otherMacro('t_2324_s_2');
+        let macros_2324_s1 = this.service.repo.otherMacro('t_2324_s_1');
+        let macros_2223_s2 = this.service.repo.otherMacro('t_2223_s_2');
+        let macros_2223_s1 = this.service.repo.otherMacro('t_2223_s_1');
+        let siswa = this.siswa;
+        
+        //kelas 5 semester 1;
+        //'newRekapRaport_'+_kelas5semester1.rombelMundur +'_k3_'+_kelas5semester1.rombelMundur;
+        let crud_5_1 = this.service.repo.otherCrud(macros_2223_s1['exec_crud']);
+        let param_5_1 = [
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5A_k3_5A'//
+            },
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5B_k3_5B'//
+            },
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5C_k3_5C'//
+            },
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5A_k4_5A'//
+            },
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5B_k4_5B'//
+            },
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5C_k4_5C'//
+            },
+        ];
+
+        let crud_5_2 = this.service.repo.otherCrud(macros_2223_s2['exec_crud']);
+        let param_5_2 = [
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_k3_5A'
+            },
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_k3_5B'
+            },
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_k3_5C'
+            },
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_K4_5A'
+            },
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_K4_5B'
+            },
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_K4_5C'
+            },
+        ];
+//kelas6semester1_
+        let crud_6_1 = this.service.repo.otherCrud(macros_2324_s1['exec_crud']);
+        let param_6_1 = [
+            {
+                idss : macros_2324_s1['ss_nilai_6'],
+                tab :'nilai_raport_6A'
+            },
+            {
+                idss : macros_2324_s1['ss_nilai_6'],
+                tab : 'nilai_raport_6B'
+            },
+            {
+                idss : macros_2324_s1['ss_nilai_6'],
+                tab : 'nilai_raport_6C'
+            }
+        ]
+
+        let crud_6_2 = this.service.repo.crud;
+        let param_6_2 = [
+            {
+                idss : macros_2324_s2['ss_nilai_6'],
+                tab : 'nilai_raport_6A'
+            },
+            {
+                idss : macros_2324_s2['ss_nilai_6'],
+                tab : 'nilai_raport_6B'
+            },
+            {
+                idss : macros_2324_s2['ss_nilai_6'],
+                tab : 'nilai_raport_6C'
+            }
+        ]
+
+        await this.service.callMultipleOtherMacro(crud_5_1,param_5_1,'kelas5semester1_');
+        await this.service.callMultipleOtherMacro(crud_5_2,param_5_2,'kelas5semester2_');
+        await this.service.callMultipleOtherMacro(crud_6_1,param_6_1,'kelas6semester1_');
+        await this.service.callMultipleOtherMacro(crud_6_2,param_6_2,'');
+
+
+        console.log(this.service.data);
+        console.log(macros_2324_s2);
+        console.log(macros_2324_s1);
+        console.log(macros_2223_s2);
+        console.log(macros_2223_s1);
+
+        console.log(siswa);
+        let data = new IjazahFitur(this.service,siswa).allInit(this.kbmFitur.collectionClass,mapelNonAgama);
+        console.log(data);
+        const logo=this.setApp.logoDepok,logosekolah=this.setApp.logoSekolah;
+                let objKetSurat = {
+                    judul:'PEMERINTAH DAERAH KOTA DEPOK',
+                    judul2:'DINAS PENDIDIKAN',
+                    namasekolah:this.setApp.namaSekolah,
+                    alamat:'Jl. SMP Ratujaya No. 41, RT 05/RW 03, Kel. Ratujaya',
+                    alamat2:'NPSN: 20228914 | Email: uptdsdnratujaya1@gmail.com, web: www.sdnratujaya1.net',
+                    tapelsemester:'TAHUN PELAJARAN '+this.setApp.tapel,
+                    judul3:'NASKAH SOAL',
+                    alamat3:'kecamatan Cipayung'
+                }
+                let crDom = document.createElement('div');
+                crDom.setAttribute('class','kops mb-3');
+                crDom.innerHTML =  kopsuratEdurasa['versi2'](logo, objKetSurat,logosekolah);
+                let htmlkop = crDom.outerHTML;
+                this.workplace.innerHTML = viewRapor.skl(data,htmlkop,true);
+                const btnPrint = document.getElementById('btnPrintKelulusan');
+                const targetSiswa = document.getElementById('selectTargetSiswa');
+                targetSiswa.onchange = (e)=>{
+                    let datasiswa = this.siswa.filter(s=> s.id == e.target.value)[0];
+                    let domskl = document.querySelectorAll('[data-skl]');
+                    domskl.forEach(el=>{
+                        let atr = el.getAttribute('data-skl');
+                        if(atr=='pd_tanggallahir'){
+                            el.innerHTML = new Date(datasiswa.pd_tanggallahir).toLocaleString('id-ID',{dateStyle:'long'});
+                        }else if(atr=='index'){
+                            el.innerHTML = (e.target.selectedIndex+1);
+                        }else if(atr == 'tabelbody_skl'){
+                            el.innerHTML = viewRapor.viewSkl(datasiswa.olah_ijazah);
+                        }else{
+                            el.innerHTML = datasiswa[atr]??'';
+                        }
+                    })
+
+                }
+                targetSiswa.dispatchEvent(new Event('change'));
+                btnPrint.onclick = ()=>{
+                    this.printPortraitDom(this.workplace)
+                }
+    }
+    async rekapijazah(){
+        if(this.fokusJenjang == 6 && this.setApp.semester == 1){
+            this.workplace.innerHTML = 'Hanya bisa diakses di semester 2';
+            return;
+        }else{
+            if(this.fokusJenjang!=6){
+                this.workplace.innerHTML = 'Hanya bisa diakses oleh guru kelas 6';
+                return;
+            }
+        }
+        // let cekapi =this.service.repo.otherMacro(satuSemesterSebelumnya.api.api);
+        // let httpOtherCrud = this.service.repo.otherCrud(cekapi.exec_crud);
+        this.conditionalSubemenu();
+        this.kbmFitur.settingRombel(this.fokusRombel);
+        await this.kbmFitur.init_raport();
+        
+        this.ormMapel.createLabelMapel();
+        this.ormMapel.init();
+        this.ormMapel.ormSiswaOnlyRaporAsli();
+        this.ormMapel.withNilaiRaporSiap();
+        
+        const mapelNonAgama = this.ormMapel.labelNonAgamaIncludeMulok;
+        let macros_2324_s2 = this.service.repo.otherMacro('t_2324_s_2');
+        let macros_2324_s1 = this.service.repo.otherMacro('t_2324_s_1');
+        let macros_2223_s2 = this.service.repo.otherMacro('t_2223_s_2');
+        let macros_2223_s1 = this.service.repo.otherMacro('t_2223_s_1');
+        let siswa = this.siswa;
+        
+        //kelas 5 semester 1;
+        //'newRekapRaport_'+_kelas5semester1.rombelMundur +'_k3_'+_kelas5semester1.rombelMundur;
+        let crud_5_1 = this.service.repo.otherCrud(macros_2223_s1['exec_crud']);
+        let param_5_1 = [
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5A_k3_5A'//
+            },
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5B_k3_5B'//
+            },
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5C_k3_5C'//
+            },
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5A_k4_5A'//
+            },
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5B_k4_5B'//
+            },
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5C_k4_5C'//
+            },
+        ];
+
+        let crud_5_2 = this.service.repo.otherCrud(macros_2223_s2['exec_crud']);
+        let param_5_2 = [
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_k3_5A'
+            },
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_k3_5B'
+            },
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_k3_5C'
+            },
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_K4_5A'
+            },
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_K4_5B'
+            },
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_K4_5C'
+            },
+        ];
+//kelas6semester1_
+        let crud_6_1 = this.service.repo.otherCrud(macros_2324_s1['exec_crud']);
+        let param_6_1 = [
+            {
+                idss : macros_2324_s1['ss_nilai_6'],
+                tab :'nilai_raport_6A'
+            },
+            {
+                idss : macros_2324_s1['ss_nilai_6'],
+                tab : 'nilai_raport_6B'
+            },
+            {
+                idss : macros_2324_s1['ss_nilai_6'],
+                tab : 'nilai_raport_6C'
+            }
+        ]
+
+        let crud_6_2 = this.service.repo.crud;
+        let param_6_2 = [
+            {
+                idss : macros_2324_s2['ss_nilai_6'],
+                tab : 'nilai_raport_6A'
+            },
+            {
+                idss : macros_2324_s2['ss_nilai_6'],
+                tab : 'nilai_raport_6B'
+            },
+            {
+                idss : macros_2324_s2['ss_nilai_6'],
+                tab : 'nilai_raport_6C'
+            }
+        ]
+
+        await this.service.callMultipleOtherMacro(crud_5_1,param_5_1,'kelas5semester1_');
+        await this.service.callMultipleOtherMacro(crud_5_2,param_5_2,'kelas5semester2_');
+        await this.service.callMultipleOtherMacro(crud_6_1,param_6_1,'kelas6semester1_');
+        await this.service.callMultipleOtherMacro(crud_6_2,param_6_2,'');
+
+
+        console.log(this.service.data);
+        console.log(macros_2324_s2);
+        console.log(macros_2324_s1);
+        console.log(macros_2223_s2);
+        console.log(macros_2223_s1);
+
+        console.log(siswa);
+        let data = new IjazahFitur(this.service,siswa).allInit(this.kbmFitur.collectionClass,mapelNonAgama);
+        console.log(data);
+        this.workplace.innerHTML = viewRapor.rekapIjazah(data);
+        let arrayIndex = [2]; // start kolom3;
+        let arrayImport = ['id','namasiswa'];
+        mapelNonAgama.forEach((colmp, i_colmp)=>{
+            arrayIndex.push((i_colmp+3));
+            arrayImport.push(colmp.value);
+        });
+        arrayImport.push('rerata');
+        arrayImport.push('rangking');
+        let datarangking = new StatistikRangking(data)
+                    .FromTable(document.getElementById('rekapijazah'))
+                    .fromIndexRerata(arrayIndex)
+                    .calculateRerata()
+                    .calculateRangking();
+        datarangking.fillRerataInIndexColoumn(arrayIndex.length+2);
+        datarangking.fillRangkinInIndexColoumn(arrayIndex.length+3);
+        let tb = new TableProperties(document.querySelector('#rekapijazah'));
+            tb.freezeColumn([1]);
+            tb.addScrollUpDown();
+        
     }
 }

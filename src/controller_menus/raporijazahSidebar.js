@@ -45,9 +45,12 @@ export const raporSidebar = (arrriwayat=[])=> [
     },{
     title:'Ijazah',
     menu:[
-        {value:'dataolahijazah',text:'Olah Ijazah',name:'menusidebar'},
+        {value:'dataolahijazah',text:'Ijazah Kelas',name:'menusidebar'},
+        {value:'ijazahAll',text:'Ijazah Jenjang',name:'menusidebar'},
+        {value:'rekapijazah',text:'Rekap Ijazah',name:'menusidebar'},
         {value:'cetakijazah',text:'Cetak Ijazah',name:'menusidebar'},
         {value:'cetakskl',text:'Surat Kelulusan',name:'menusidebar'},
+        {value:'cetakskl2',text:'Surat Kelulusan (+nilai)',name:'menusidebar'},
         
     ]
     },
