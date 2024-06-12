@@ -1,3 +1,4 @@
+import buttonEdu from "../../views/components/buttons";
 import inputsElements from "../../views/components/input-elements";
 import rowCols from "../../views/components/row-cols";
 import { cardMenu2 } from "../../views/sidebar/cardSidebar";
@@ -275,6 +276,13 @@ const cardMapel = (arg)=>{
     return rowCols.rows('mt-1 justify-content-center',
         rowCols.cols('col-md-6',
             cardMenu2('Mata Pelajaran',inputsElements.floatingSelect(arg[0],arg[1],arg[2],arg[3],arg[4]),false)
+        ) 
+    ) 
+}
+const tombolCetakIjazah =()=>{
+    return rowCols.rows('mt-1 justify-content-center',
+        rowCols.cols('col-md-6 text-center',
+            `<div class="shadow-lg border p-4 rounded">`+buttonEdu.primary('id="iddetailijazah"','Detail Ijazah')+buttonEdu.primary('id="idprintijazah"','Cetak Ijazah')+`</div>`
         ) 
     ) 
 }
@@ -782,7 +790,8 @@ const viewOrmMapel = {
     'viewRekap'                 : viewRekapPH,
     'viewRekapKurtilas'         : viewRekapKurtilas,
     'viewRekapRaporSementara'   : viewRekapRaporSementara,
-    'viewRekapRaporSementaraKeterampilan' : viewRekapRaporSementaraKeterampilan
+    'viewRekapRaporSementaraKeterampilan' : viewRekapRaporSementaraKeterampilan,
+    'tombolCetakIjazah'         : tombolCetakIjazah
 
 }
 export default viewOrmMapel;

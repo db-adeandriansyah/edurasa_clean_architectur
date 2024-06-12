@@ -51,6 +51,14 @@ export default class IjazahFitur{
     kelas6semester2(rombel){
         return this.service.data['nilai_raport_'+rombel];
     }
+    titleCase(str){
+        return str.replace(
+            /\w\S*/g,
+            function(txt) {
+              return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            }
+          );
+    }
     init(){
         this.ormSiswa.addProperty('olah_ijazah',(item)=>{
             let sebaranMapel = item.sebaran_mapel;
@@ -130,10 +138,19 @@ export default class IjazahFitur{
             return result;
         })
     }
+    
     allInit(collection,mapelnonagama){
         let result = new collection(this.ormSiswa)
         .simpleFilter({'jenjang':6})
         .setProperty('pd_agama',(item)=>item==""?"ISLAM":item)
+        .addProperty('ortu_di_ijazah',(item)=>item.pd_namaayah)
+        .addProperty('tempat_tanggal_lahir',(item)=>{
+            let text = '';
+            text +=this.titleCase(item.pd_tl);
+            text +=`, `
+            text += item.pd_tanggallahir==""?"":new Date(item.pd_tanggallahir).toLocaleString('id-ID',{dateStyle:'long'})
+            return text;
+        })
         .addProperty('mapel_agama_kode',(item)=>this.definisiMapelSiswa[item.pd_agama].kodemapel)
         .addProperty('mapel_agama_kode_teks',(item)=>this.definisiMapelSiswa[item.pd_agama].mapelteks)
         .addProperty('olah_ijazah',(item)=>{

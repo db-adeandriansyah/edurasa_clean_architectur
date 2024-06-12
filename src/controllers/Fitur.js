@@ -400,7 +400,11 @@ export default class Fitur extends Controller{
         btn[0].dispatchEvent(new Event('click'))
     }
 
-    
+    cekLog(){
+        if(process.env.NODE_ENV=='development'){
+            console.log(...arguments);
+        }
+    }
     
     controlRombel(impersonate=true){//method_custom
         const btns = document.querySelectorAll('input[name="kelasampu"]');

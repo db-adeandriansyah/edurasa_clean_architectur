@@ -266,6 +266,64 @@ export default class RaporIjazahController extends Fitur{
             }
         })
     }
+    
+    get predikatDefault (){
+        return  [
+            {
+                min         : 90,
+                maks         : 100,
+                predikat    : 'Sangat Baik'
+            },{
+                min         : 80,
+                maks         : 90,
+                predikat    : 'Baik'
+            },
+            {
+                min         : 70,
+                maks         : 80,
+                predikat    : 'Cukup'
+            },  
+            {
+                min         : 0,
+                maks        : 70,
+                predikat    : 'Perlu Bimbingan'
+            },
+            
+        ]
+    }
+    findPredikatByNilai (nilai){
+            this.kbmFitur.refrensi_predikatraport = this.service.data['predikat_'+this.fokusJenjang];
+            let array_datapredikat = this.kbmFitur.refrensi_predikatraport;
+            let result = [];
+            
+            if(this.kbmFitur.refrensi_predikatraport.length == 0){
+                array_datapredikat = this.predikatDefault;
+            }
+            
+            if(nilai == 0){
+                result = [array_datapredikat[array_datapredikat.length-1]];
+            }else if(nilai >100){
+                result = [array_datapredikat[0]];
+            }else if(isNaN(nilai)){
+                result = [array_datapredikat[array_datapredikat.length-1]];
+            }else if(nilai == undefined){
+                result = [array_datapredikat[array_datapredikat.length-1]];
+            }else{
+                result = array_datapredikat.filter(s=> s.min < nilai && s.maks >= nilai);
+                if(result.length==0){
+                    result = [ {
+                        min         :   0,
+                        maks         :  0,
+                        predikat    : 'Cukup'
+                    }]
+                };
+            }
+    
+            return result[0];
+            //item.predikatDefault.filter(s=>s.min < parseFloat(max_onlytabtagihan) && s.max >= parseFloat(max_onlytabtagihan));
+    
+        
+    }
     configButtonsImportExport(idtabel='tabelnilairapor',keytabel,data,arrayIndex,methodreturn){
         const btnExport = document.querySelector('[data-klik="exportExcel"]');
         const importXl = document.getElementById('importModal');
@@ -312,7 +370,8 @@ export default class RaporIjazahController extends Fitur{
                         if(td.nodeName == 'TD'){
                             objSiswa[key] = td.innerHTML;
                         }else{
-                            let predikat = this.kbmFitur.findPredikatByNilai(td.value);
+                            let predikat = this.findPredikatByNilai(parseFloat(td.value));
+                            console.log(typeof td.value,td.value, predikat);
                             objSiswa[key] = td.value;
                             objSiswa[key+'_P_PREDIKAT'] = (predikat.predikat=="Perlu Bimbingan"||predikat.predikat=="Cukup")?"Baik":predikat.predikat;
 
@@ -376,7 +435,8 @@ export default class RaporIjazahController extends Fitur{
                         if(td.nodeName == 'TD'){
                             objSiswa[key] = td.innerHTML;
                         }else{
-                            let predikat = this.kbmFitur.findPredikatByNilai(td.value);
+                            let predikat = this.findPredikatByNilai(parseFloat(td.value));
+                            console.log(td.value, typeof td.value, mapel, predikat)
                             objSiswa[key] = td.value;
                             objSiswa[mapel+'_K_PREDIKAT'] = (predikat.predikat=="Perlu Bimbingan"||predikat.predikat=="Cukup")?"Baik":predikat.predikat;
 
@@ -1715,11 +1775,14 @@ export default class RaporIjazahController extends Fitur{
                 return find[k];
             });
             if(['PAI','PKRIS','PKATO'].includes(k)){
+                
                 this.ormMapel.collectionsSiswa.addProperty('kkmkktp_agama',(item)=>{
-                    let find = kkmkktp.filter(s=> s.jenjang == this.fokusJenjang && s.kodemapel == k);
                     let result = ''
-                    if(find.length>0){
-                        result = find[0].kkm;
+                    if(k == item.mapel_kode_agama){
+                        let find = kkmkktp.filter(s=> s.jenjang == this.fokusJenjang && s.kodemapel == k);
+                        if(find.length>0){
+                            result = find[0].kkm;
+                        }
                     }
                     // console.log(k);
                     // console.log(v);
@@ -1727,19 +1790,33 @@ export default class RaporIjazahController extends Fitur{
                     return result
                 }).addProperty('nilairaport_P_agama',(item)=>{
                     if(item.hasOwnProperty(k)){
-                        return item[k]
+                        if(k == item.mapel_kode_agama){
+                            return item[k];
+                        }else{
+                            return ''
+                        }
                     }else{
                         return '';
                     }
                 }).addProperty('nilairaport_K_agama',(item)=>{
                     if(item.hasOwnProperty(k+'_NILAI_KETERAMPILAN')){
-                        return item[k+'_NILAI_KETERAMPILAN']
+                        if(k == item.mapel_kode_agama){
+                            // return item[k];
+                            return item[k+'_NILAI_KETERAMPILAN'];
+                        }else{
+                            return ''
+                        }
                     }else{
                         return '';
                     }
                 }).addProperty('P_DESKRIPSI_agama',(item)=>{
                     if(item.hasOwnProperty(k+'_P_DESKRIPSI')){
-                        return item[k+'_P_DESKRIPSI']
+                        if(k == item.mapel_kode_agama){
+                            // return item[k];
+                            return item[k+'_P_DESKRIPSI']
+                        }else{
+                            return ''
+                        }
                     }else{
                         return '';
                     }
@@ -1762,8 +1839,10 @@ export default class RaporIjazahController extends Fitur{
                         return '';
                     }
                 });
+                    
+            
             }
-            if(['PKN','BINDO','MTK','IPA','IPS','IPAS','RUPA','PJOK','BSUND'].includes(k)){
+            if(['PKN','BINDO','MTK','IPA','IPS','IPAS','RUPA','PJOK','BSUND','SBDP'].includes(k)){
                 this.ormMapel.collectionsSiswa.addProperty('kkmkktp_'+k,(item)=>{
                     let find = kkmkktp.filter(s=> s.jenjang == this.fokusJenjang && s.kodemapel == k);
                     let result = ''
@@ -1781,17 +1860,20 @@ export default class RaporIjazahController extends Fitur{
         })
         let data = this.ormMapel.collectionsSiswa.data;//selectProperties(keyFormat).data;
         console.log(data);
-        //
-        const btnNext = document.getElementById('btnRight');
-        const btnPrev = document.getElementById('btnLeft');
+
+        
         const selectName =document.getElementById('selectTargetSiswa');
         console.log(selectName.value);
+        let tag = 0;
         selectName.onchange = (e)=>{
+            tag = e.target.selectedIndex;
+            console.log(tag);
             let val = e.target.value;
             let current = data.filter(s=>s.id == val)[0];
             console.log(current)
             Object.entries(current).forEach(([k,v])=>{
                 let domTarget = document.querySelector(`[data-nilairapor="${k}"]`);
+                let agamasiswa = current['mapel_agama_kode'];
 
                 if(domTarget){
                     if(k=='TITIMANGSA_RAPORT'){
@@ -1800,6 +1882,26 @@ export default class RaporIjazahController extends Fitur{
                     }else if(k=='mapel_agama_kode'){
                         let kodemapel = current[k];
                         domTarget.innerHTML = current[kodemapel];
+                    }else if(k=='kkmkktp_agama'){
+                        let result='';
+                        let find = kkmkktp.filter(s=> s.jenjang == this.fokusJenjang && s.kodemapel == agamasiswa);
+                        if(find.length>0){
+                            result = find[0].kkm;
+                        }
+                        domTarget.innerHTML = result;
+                    }else if(k=='nilairaport_P_agama'){
+                        domTarget.innerHTML = current[agamasiswa]
+                    }else if(k=='nilairaport_K_agama'){
+                        domTarget.innerHTML = current[agamasiswa+'_NILAI_KETERAMPILAN']
+                    }else if(k=='P_PREDIKAT_agama'){
+                        domTarget.innerHTML = current[agamasiswa+'_P_PREDIKAT'];
+
+                    }else if(k=='K_PREDIKAT_agama'){
+                        domTarget.innerHTML = current[agamasiswa+'_K_PREDIKAT']
+                    }else if(k=='P_DESKRIPSI_agama'){
+                        domTarget.innerHTML = current[agamasiswa+'_P_DESKRIPSI']
+                    }else if(k=='K_DESKRIPSI_agama'){
+                        domTarget.innerHTML = current[agamasiswa+'_K_DESKRIPSI']
                     }else{
                         domTarget.innerHTML = v;
 
@@ -1810,6 +1912,30 @@ export default class RaporIjazahController extends Fitur{
         }
         
         selectName.dispatchEvent(new Event('change'));
+        const btnPrint = document.getElementById('btnPrintKelulusan');
+        btnPrint.onclick = ()=>{
+            this.printPortraitDom(this.workplace)
+        }
+        
+        const btnRight = document.getElementById('btnRight');
+        const btnLeft = document.getElementById('btnLeft');
+        btnRight.onclick = ()=>{
+            tag++;
+            if(tag >= data.length-1){
+                tag = data.length-1;
+            }
+            selectName.selectedIndex = tag;
+            selectName.dispatchEvent(new Event('change'));
+        }
+        btnLeft.onclick = ()=>{
+            tag--;
+            if(tag<0){
+                tag=0
+            };
+            selectName.selectedIndex = tag;
+            selectName.dispatchEvent(new Event('change'));
+        }
+
     }
     async kenaikankelas(){
         if(this.setApp.semester == 1){
@@ -1976,7 +2102,7 @@ export default class RaporIjazahController extends Fitur{
         this.ormMapel.init();
         this.ormMapel.ormSiswaOnlyRaporAsli();
         this.ormMapel.withNilaiRaporSiap();
-        this.maincontrol.innerHTML = viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.kbmFitur.labelingSelectMapel,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="selection-mapel" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        // this.maincontrol.innerHTML = viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.kbmFitur.labelingSelectMapel,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="selection-mapel" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
         const mapelNonAgama = this.ormMapel.labelNonAgamaIncludeMulok;
         let macros_2324_s2 = this.service.repo.otherMacro('t_2324_s_2');
         let macros_2324_s1 = this.service.repo.otherMacro('t_2324_s_1');
@@ -2474,5 +2600,184 @@ export default class RaporIjazahController extends Fitur{
             tb.freezeColumn([1]);
             tb.addScrollUpDown();
         
+    }
+    async loadIjazahIfNeeded(){
+        
+        // let cekapi =this.service.repo.otherMacro(satuSemesterSebelumnya.api.api);
+        // let httpOtherCrud = this.service.repo.otherCrud(cekapi.exec_crud);
+        
+        const mapelNonAgama = this.ormMapel.labelNonAgamaIncludeMulok;
+        let macros_2324_s2 = this.service.repo.otherMacro('t_2324_s_2');
+        let macros_2324_s1 = this.service.repo.otherMacro('t_2324_s_1');
+        let macros_2223_s2 = this.service.repo.otherMacro('t_2223_s_2');
+        let macros_2223_s1 = this.service.repo.otherMacro('t_2223_s_1');
+        let siswa = this.siswa;
+        
+        //kelas 5 semester 1;
+        //'newRekapRaport_'+_kelas5semester1.rombelMundur +'_k3_'+_kelas5semester1.rombelMundur;
+        let crud_5_1 = this.service.repo.otherCrud(macros_2223_s1['exec_crud']);
+        let param_5_1 = [
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5A_k3_5A'//
+            },
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5B_k3_5B'//
+            },
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5C_k3_5C'//
+            },
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5A_k4_5A'//
+            },
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5B_k4_5B'//
+            },
+            {
+                idss: macros_2223_s1['ss_nilai_5'],
+                tab :'newRekapRaport_5C_k4_5C'//
+            },
+        ];
+
+        let crud_5_2 = this.service.repo.otherCrud(macros_2223_s2['exec_crud']);
+        let param_5_2 = [
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_k3_5A'
+            },
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_k3_5B'
+            },
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_k3_5C'
+            },
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_K4_5A'
+            },
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_K4_5B'
+            },
+            {
+                idss: macros_2223_s2['ss_nilai_5'],
+                tab :'newRekapRaport_K4_5C'
+            },
+        ];
+//kelas6semester1_
+        let crud_6_1 = this.service.repo.otherCrud(macros_2324_s1['exec_crud']);
+        let param_6_1 = [
+            {
+                idss : macros_2324_s1['ss_nilai_6'],
+                tab :'nilai_raport_6A'
+            },
+            {
+                idss : macros_2324_s1['ss_nilai_6'],
+                tab : 'nilai_raport_6B'
+            },
+            {
+                idss : macros_2324_s1['ss_nilai_6'],
+                tab : 'nilai_raport_6C'
+            }
+        ]
+
+        let crud_6_2 = this.service.repo.crud;
+        let param_6_2 = [
+            {
+                idss : macros_2324_s2['ss_nilai_6'],
+                tab : 'nilai_raport_6A'
+            },
+            {
+                idss : macros_2324_s2['ss_nilai_6'],
+                tab : 'nilai_raport_6B'
+            },
+            {
+                idss : macros_2324_s2['ss_nilai_6'],
+                tab : 'nilai_raport_6C'
+            }
+        ]
+
+        await this.service.callMultipleOtherMacro(crud_5_1,param_5_1,'kelas5semester1_');
+        await this.service.callMultipleOtherMacro(crud_5_2,param_5_2,'kelas5semester2_');
+        await this.service.callMultipleOtherMacro(crud_6_1,param_6_1,'kelas6semester1_');
+        await this.service.callMultipleOtherMacro(crud_6_2,param_6_2,'');
+
+
+        console.log(this.service.data);
+        console.log(macros_2324_s2);
+        console.log(macros_2324_s1);
+        console.log(macros_2223_s2);
+        console.log(macros_2223_s1);
+
+        console.log(siswa);
+        return new IjazahFitur(this.service,siswa).allInit(this.kbmFitur.collectionClass,mapelNonAgama);
+        
+    }
+    async cetakijazah(){
+        if(this.fokusJenjang == 6 && this.setApp.semester == 1){
+            this.workplace.innerHTML = 'Hanya bisa diakses di semester 2';
+            return;
+        }else{
+            if(this.fokusJenjang!=6){
+                this.workplace.innerHTML = 'Hanya bisa diakses oleh guru kelas 6';
+                return;
+            }
+        }
+        this.kbmFitur.settingRombel(this.fokusRombel);
+        this.conditionalSubemenu();
+        await this.kbmFitur.init_raport();
+        
+        this.ormMapel.createLabelMapel();
+        this.ormMapel.init();
+        this.ormMapel.ormSiswaOnlyRaporAsli();
+        this.ormMapel.withNilaiRaporSiap();
+        this.maincontrol.innerHTML = viewOrmMapel.tombolCetakIjazah();
+
+        let  dataserverijazah = this.service.data['nilai_ijazah_6'];
+        const btnPrint = document.getElementById('idprintijazah');
+        const btnDetail= document.getElementById('iddetailijazah');
+        btnPrint.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
+        btnDetail.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
+        let data = await this.loadIjazahIfNeeded();
+        
+        
+        let siswa = this.siswa.filter(s=>s.jenjang == 6);
+        let isFromServere = true;
+        if(!dataserverijazah){
+            isFromServere = false;
+            await this.service.nilai_ijazah();
+            dataserverijazah = this.service.data['nilai_ijazah_6'];
+        }
+
+        this.workplace.innerHTML = viewRapor.rekapIjazahPraCtak(data, dataserverijazah);
+        
+        let tb = new TableProperties(document.querySelector('#rekapijazah'));
+            tb.freezeColumn([2]);
+            tb.addScrollUpDown();
+        btnPrint.innerHTML = `Cetak Ijazah`;
+        btnDetail.innerHTML = `Detail Ijazah`;
+        let dbNilaiIjazah = Boolean(dataserverijazah)?dataserverijazah:data;
+        console.log(dbNilaiIjazah);
+        btnDetail.onclick = ()=>{
+            this.Modal.settingHeder('Detail Identitas Siswa');
+            this.Modal.widthOrientation(false);
+            this.Modal.showBodyHtml('Modal Detail');
+            this.Modal.showFooter('Simpan  LihatRapor');
+            this.Modal.show();
+        };
+        btnPrint.onclick = ()=>{
+            this.Modal.settingHeder('Cetak Desain');
+            this.Modal.widthOrientation(true);
+            this.Modal.showBodyHtml('Modal Detail');
+            
+            this.Modal.showFooter('Simpan  LihatRapor');
+            this.Modal.show();
+        };
     }
 }

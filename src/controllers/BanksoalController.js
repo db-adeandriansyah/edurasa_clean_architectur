@@ -8,17 +8,15 @@ export default class BanksoalController extends Fitur{
     #judulHalaman;
     constructor(app,banksoalService){
         super(app);
-        
         this.banksoalService = banksoalService;
         this.banksoalFitur = null;
         this.#judulHalaman="";
         this.controlRombel(false);
         this.Modal = null;
         this.Modal1 = null;
-        
     }
+    
     async init(){
-        
         this.Modal = this.makeInstance(ModalConfig,['#modalAuto',{'backdrop':'static','keyboard':false}]);
         this.Modal1 = this.makeInstance(ModalConfig,['#modalAuto2',{'backdrop':'static','keyboard':false},{
             'printLandscapeDom' : this.printLandscapeDom, // paramaeter (dom)

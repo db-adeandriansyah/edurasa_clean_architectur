@@ -342,4 +342,12 @@ export default class BanksoalRepository extends CallHttp{
         let refHeader = 'id';
         return await this.createOrUpdate(idss,data,tab,refHeader);
     }
+    async nilai_ijazah(){
+        let p = {
+            'idss':this.appscript['ss_nilai_6'],
+            'tab':'nilai_ijazah_6',
+            'action':'read'
+        }
+        return await this.post(this.crud,p);
+    }
 }

@@ -572,8 +572,5 @@ export default class BanksoalFitur{
             
         }
     }
-    
-
-
-
+ 
 }

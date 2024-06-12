@@ -227,4 +227,11 @@ export default class KbmService{
         this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
         this.repo.stopProgressBar();
     }
+    async nilai_ijazah(){
+        this.repo.callWithProses();
+        let n = await this.repo.nilai_ijazah()
+        
+        this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
+        this.repo.stopProgressBar();
+    }
 }

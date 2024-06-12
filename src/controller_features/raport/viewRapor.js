@@ -1,3 +1,5 @@
+import buttonEdu from "../../views/components/buttons";
+
 const controlHTMLPrint = (siswa) =>{
     let html="";
         html+=`<div class="sticky-md-bottom text-center accord-bg print-hide rounded shadow-lg py-2">`;
@@ -1022,7 +1024,7 @@ const tabel_setting_predikat_keterampilan = (data,fokusMapel,editable=false)=>{
                 html+=`<td class="text-nowrap"  data-server="namasiswa">${siswa.pd_nama}</td>`;
                 let db = siswa.dataRapor_Siap.filter(s=>s.kodemapel == fokusMapel);
                 if(db.length>0){
-                    html+=`<td class="text-center">${db[0][fokusMapel]}</td>`;
+                    html+=`<td class="text-center">${db[0][fokusMapel+'_NILAI_KETERAMPILAN']}</td>`;
                     if(editable){ /// ada input select;
 
                         if(data.isKurmer){
@@ -2836,11 +2838,11 @@ const skl = (data,htmlkop,withnilai=false)=>{
     html+=controlHTMLPrint(data);
     return html;
 }
-const rekapIjazah =(data)=>{
+const rekapIjazah =(data,idtabel="")=>{
     let html = "";
     html+=`<h3 class="text-center mb-3">Rekapitulasi Nilai Ijazah</h3>`;
     html+=`<div class="table-responsive">`;
-        html+=`<table class="table table-sm table-bordered border-dark lh-1 font10 toExcel" id="rekapijazah">`;
+        html+=`<table class="table table-sm table-bordered border-dark lh-1 font10 toExcel" id="rekapijazah${idtabel}">`;
             html+=`<thead>`;
                 html+=`<tr>`;
                     html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle" style="width:29px">No</th>`;
@@ -2882,6 +2884,85 @@ const rekapIjazah =(data)=>{
     html+=`</div>`;
     return html;
 }
+function titleCase(str){
+    return str.replace(
+        /\w\S*/g,
+        function(txt) {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        }
+      );
+}
+const rekapIjazahPraCtak =(data,dataserver)=>{
+    console.log(data, dataserver)
+    let html = "";
+    html+=`<h3 class="text-center mb-3">Data Cetak Ijazah </h3>`;
+    html+=`<div class="table-responsive">`;
+        html+=`<table class="table table-sm table-bordered border-dark lh-1 font8 toExcel" id="rekapijazah">`;
+            html+=`<thead>`;
+                html+=`<tr>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle" style="width:29px">No</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">-</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">ID</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">Nama Siswa</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">TTL</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">Nama Orang Tua</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">NIS</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">NISN</th>`;
+                    html+=`<th colspan="9" class="text-center text-bg-secondary align-middle">Nilai Mata Pelajaran</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">Nilai Ijazah</th>`;
+                    
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<th class="text-center text-bg-secondary align-middle">Agama</th>`
+                    html+=`<th class="text-center text-bg-secondary align-middle">PKn</th>`
+                    html+=`<th class="text-center text-bg-secondary align-middle">BIND</th>`
+                    html+=`<th class="text-center text-bg-secondary align-middle">MTK</th>`
+                    html+=`<th class="text-center text-bg-secondary align-middle">IPA</th>`
+                    html+=`<th class="text-center text-bg-secondary align-middle">IPS</th>`
+                    html+=`<th class="text-center text-bg-secondary align-middle">SBdP</th>`
+                    html+=`<th class="text-center text-bg-secondary align-middle">PJOK</th>`
+                    html+=`<th class="text-center text-bg-secondary align-middle">BSUND</th>`
+                html+=`</tr>`;
+            html+=`</thead>`;
+            html+=`<tbody>`;
+            data.forEach((siswa,i)=>{
+                html+=`<tr>`;
+                    html+=`<td class="text-center">${i+1}</td>`;
+                    html+=`<td class="text-center">${buttonEdu.primary(`[data-editijazah="${siswa.id}"]`,'<i class="bi bi-pencil"></i>')}</td>`;
+                    html+=`<td class="text-nowrap">${siswa.id}</td>`;
+                    html+=`<td class="text-nowrap">${siswa.pd_nama}</td>`;
+                    html+=`<td class="text-nowrap">${titleCase(siswa.pd_tl)}, ${new Date(siswa.pd_tanggallahir).toLocaleDateString('id-ID',{dateStyle:'long'})}</td>`;
+                    if(dataserver.length>0){
+                        let curDataServer = dataserver.filter(s=> s.id == siswa.id)[0]
+                        html+=`<td class="text-bg-info text-nowrap">${curDataServer.ortu_di_ijazah}</td>`;
+                    }else{
+                        
+                        html+=`<td class="text-nowrap">${siswa.pd_namaayah}</td>`;
+                    }
+
+                    html+=`<td class="text-center">${siswa.nis}</td>`;
+                    html+=`<td class="text-center">${siswa.nisn}</td>`;
+                    let nilai = siswa.olah_ijazah;
+                    nilai.forEach(mp=>{
+                        html+=`<td class="text-center" title="${mp.kodemapel_umum}">${mp.nilai_ijazah}</td>`;
+                    });
+                    let total = nilai.map(n=> n.nilai_ijazah).reduce((a,b)=>a+b);
+                    let rerata = (total/data.length).toFixed(2);
+                    html+=`<td class="text-center">${rerata}</td>`;
+                    
+                        
+                html+=`</tr>`;
+            })
+            html+=`</tbody>`;
+        html+=`</table>`;
+    html+=`</div>`;
+    return html;
+}
+const detailCetakIjazah = (dataNilai, dataSiswa)=>{
+    let html="";
+
+    return html;
+}
 const viewRapor = {
     'viewDepanRapor'            : viewDepanRapor,
     'tabelRekapRapor'           : tabelRekapRapor,
@@ -2905,7 +2986,8 @@ const viewRapor = {
     'tabelIjazahOlah'           : tabelIjazahOlah,
     'skl'                       : skl,
     'viewSkl'                   : viewSkl,
-    'rekapIjazah'               : rekapIjazah
+    'rekapIjazah'               : rekapIjazah,
+    'rekapIjazahPraCtak'        : rekapIjazahPraCtak
 
 }
 

@@ -561,6 +561,7 @@ export default class ArsipNaskah{
                 tabmateri.addItem('idtgl',timer_awal.value);
                 tabmateri.addItem('idtglend',timer_akhir.value);
                 tabmateri.addItem('iddurasi',target_timer.value);
+                tabmateri.addItem('crtToken',target_crtToken.value);
 
                 if(desainAwal.ketersediaan.filter(s=>s.label == 'identitas').length>0){
                     let tabel = document.getElementById('naskah_identitas').querySelector('table');
@@ -650,6 +651,9 @@ export default class ArsipNaskah{
             tabmateri.addItem('idtgl',timer_awal.value);
             tabmateri.addItem('idtglend',timer_akhir.value);
             tabmateri.addItem('iddurasi',target_timer.value);
+            tabmateri.addItem('crtToken',target_crtToken.value);
+            
+
             tabmateri.addItem('idmapel',idmateri_judul.value);
             tabmateri.addItem('idkelas',this.banksoal.rombel);
             
@@ -818,10 +822,13 @@ export default class ArsipNaskah{
         let timer_awal = document.getElementById('idtgl');
         let timer_akhir = document.getElementById('idtglend');
         let target_timer = document.getElementById('iddurasi');
-        
+        let target_crtToken = document.getElementById('crtToken');
+        target_crtToken.value = new FormatTanggal(timer_awal.value).idStringAbsen();
         tabmateri.addItem('idtgl',timer_awal.value);
         tabmateri.addItem('idtglend',timer_akhir.value);
         tabmateri.addItem('iddurasi',target_timer.value);
+        tabmateri.addItem('crtToken',target_crtToken.value);
+
 
         timer.forEach(n=>{
             n.oninput=(e)=>{
@@ -833,6 +840,7 @@ export default class ArsipNaskah{
 
                 target_timer.value  = FormatTanggal.durasiMenit(timer_awal.value,timer_akhir.value);
                 target_crtToken.value = new FormatTanggal(timer_awal.value).idStringAbsen();
+                tabmateri.addItem('crtToken',target_crtToken.value);
                 tabmateri.addItem('idtgl',timer_awal.value);
                 tabmateri.addItem('idtglend',timer_akhir.value);
                 tabmateri.addItem('iddurasi',target_timer.value);

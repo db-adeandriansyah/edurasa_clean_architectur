@@ -1337,15 +1337,15 @@ export default class OrmMapel{
         const {objek_maks,objek_min,predikat_maks,predikat_min} = data;
         if(this.isKurmer){
             html+='Ananda sudah ';
-            html+= predikat_maks;
+            html+= '';//predikat_maks;
             html+=' dalam '
-            html+= objek_maks.atp;
+            html+= '';//objek_maks.atp;
             html+= '<hr class="my-0">'
             
             html+='Ananda masih ';
-            html+= predikat_min;
+            html+= '';//predikat_min;
             html+=' dalam '
-            html+= objek_min.atp;
+            html+= '';//objek_min.atp;
         }else{
             html+='Ananda sudah ';
             html+= predikat_maks??'Baik';

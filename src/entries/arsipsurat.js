@@ -7,7 +7,7 @@ import { ArsipSuratController } from "../controllers/ArsipSuratController.js";
 
 App.buildSidebarFitur(arsipSuratSidebar,false);
 App.createTitle('Arsip Surat-Menyurat','Surat/SPPD');
-App.dataPermision({'canEdit':[2,8,14,21]});
+App.dataPermision({'canEdit':[2,8,14,21,27]});
 
 const repoSurat = new RepositorySurat();
 repoSurat.trial=false;

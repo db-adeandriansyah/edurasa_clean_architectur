@@ -12,9 +12,9 @@ export default class Dashboard{
             this.userService.ptk();
         }
         
-        if(!this.app.hasLocal('dbSiswa')){
-            this.userService.allSiswa()
-        }
+        this.userService.allSiswa()
+        // if(!this.app.hasLocal('dbSiswa')){
+        // }
     }
     headerCheck(){
         let dom = this.app.TopHeader(this.app.UserApp).dashboardMenu();;
