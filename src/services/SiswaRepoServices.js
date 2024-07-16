@@ -18,6 +18,7 @@ export default class SiswaRepoService extends UserRepositories{
         this.arLabel = arLabel;
         this.#typeTglDbSiswa = []
         this.#ptkAlltime = [];
+        this.berkasppdb = [];
         // this.ensureLoadeRepo();
     }
     get ptkAll(){
@@ -265,6 +266,55 @@ export default class SiswaRepoService extends UserRepositories{
             // return checkIn <= refStart && checkOut > refEnd;
             return (chekOut >=r1 && chekOut <=r2)
         })
+    }
+    async callberkasppdb(){
+        this.callWithProses();
+        const param = {
+            'idss':this.appscript['ss_user'],
+            'tab':'berkasppdb',
+            'action':'read',
+            
+        };
+        const result = await this.post(this.crud,param);
+        this.berkasppdb = result.data;
+        this.stopProgressBar();
+    }
+    
+    
+    async tambahberkasppdb(request){
+        this.callWithProses();
+        let param = {
+            action:'create',
+            idss:this.appscript['ss_user'],
+            // idss:this.ssTrial,
+            tab:'berkasppdb',
+            formData:JSON.stringify(request),
+            createTabEmpty:1, //1 (true)|| 0 = false,
+            autoId:'idbaris',
+            // stringFormat:'["data"]',
+            // filter:'{"jenjang":"6"}'
+        }
+        const result = await this.post(this.crud,param);
+        this.berkasppdb = result.data;
+        this.stopProgressBar();
+    }
+    async edithapusberkas(request){
+        this.callWithProses();
+        let param = {
+            action:'update',
+            idss:this.appscript['ss_user'],
+            // idss:this.ssTrial,
+            byRow:parseInt(request.idbaris),
+            tab:'berkasppdb',
+            formData:JSON.stringify(this.validateSiswa(request)),
+            // createTabEmpty:1, //1 (true)|| 0 = false,
+            autoId:'idbaris',
+            // stringFormat:'["data"]',
+            // filter:'{"jenjang":"6"}'
+        }
+        const result = await this.post(this.crud,param);
+        this.berkasppdb = result.data;
+        this.stopProgressBar();
     }
     
     

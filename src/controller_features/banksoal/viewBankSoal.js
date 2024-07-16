@@ -1,8 +1,5 @@
 import controlbanksoal from "../../views/banksoal/controlBankSoal";
 
-const tabelPilihBentukSoal = (datasoal)=>{
-
-}
 export const controlFiturBuatPerItemSoal = (data)=>{
     const { shortKurikulum, longKurikulum, jenjang, koleksibentuksoal,koleksimapel, isGuruMapel, mapelAjar, _htmlkoleksimapel, kurikulum} = data;
     let datamenu = {

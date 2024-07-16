@@ -275,6 +275,7 @@ export default class KbmFitur extends BanksoalFitur{
         return ar;
     }
     get arrayDataMateri(){
+        
         let ar = [ 
             {
                 'idss':  this.service.repo.ss_kurikulum_must_call,
@@ -412,8 +413,8 @@ export default class KbmFitur extends BanksoalFitur{
             await this.service.callPropertiMultipleWithPrefik(loadedApi);
         }
         
-       
-            let totallkey_nosoal = Object.keys(this.service.data.simpandesainsoal[0]).length - 20;
+
+            // let totallkey_nosoal = Object.keys(this.service.data.simpandesainsoal[0]).length - 20;
             
             this.ormKurikulum = new OrmKurikulumSoal(this.service,this.jenjang,this.currentMapelOnClassRoom).settingKurikulum(this.shortKurikulum).init().collection;
             

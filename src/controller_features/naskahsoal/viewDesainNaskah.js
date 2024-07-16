@@ -185,7 +185,8 @@ const tabelPropertiKurikulum = (kurikulum,orm,banksoal,jenjang,koleksibentuksoal
                                 html+=`<input type="checkbox" data-desain="atp" name="atpmodal" id="radioatpmoda${data.idbaris}" value="${data.idbaris}">`
                             html+=`</td>`;
                             html+=`<td>`;
-                                html+=`${index+1}`
+                                // html+=`${index+1}`
+                                html+=`${data.idbaris}`;
                             html+=`</td>`;
                             html+=`<td>`;
                                 html+=`<b>${data.elemen}</b><br/>`;

@@ -44,6 +44,12 @@ const dataSiswaSidebar = [
             {value:'tambah_siswa',text:'Tambah Siswa', name:'menusidebar'}
         ]
     },
+    {
+        title:'Berkas PPDB 2024',
+        menu:[
+            {value:'berkasppdb',text:'Berkas PPDB', name:'menusidebar'}
+        ]
+    },
 ];
 
 // export default dataSiswaSidebar;

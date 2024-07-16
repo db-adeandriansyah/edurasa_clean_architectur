@@ -186,7 +186,7 @@ export class FormulirBankSoal{
         let sr = `https://chart.apis.google.com/chart?cht=tx&chl=%7B%5Csqrt%5B3%5D%20%7B${encodeURIComponent(teks)}%7D`;
             img.src =  new UrlImg(sr).convertUrlToLatexLatest();
             img.style.verticalAlign='middle';
-            img.alt = `akar kuadrat ${teks}`;
+            img.alt = `akar kubik ${teks}`;
         // selection.deleteFromDocument();
         asal.insertNode(img);
         // selection.collapseToEnd();

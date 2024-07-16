@@ -9,6 +9,7 @@ const EntriePoint=  {
     'kurikulum'     :{import:'./src/entries/kurikulum.js'   ,dependOn:['app','vendor','pdf']},
     'kalender'     :{import:'./src/entries/kalender.js'   ,dependOn:['app','vendor','pdf']},
     'banksoal'     :{import:'./src/entries/banksoal.js'   ,dependOn:['app','vendor','pdf']},
+    'banksoallama'     :{import:'./src/entries/banksoallama.js'   ,dependOn:['app','vendor','pdf']},
     'kbm'           :{import:'./src/entries/kbm.js'   ,dependOn:['app','vendor','pdf']},
     'raporijazah'   :{import:'./src/entries/raporijazah.js'   ,dependOn:['app','vendor','pdf']},
     'app'           :'./src/apps/Singleton.js',//{import:'./src/apps/Singleton.js'},
@@ -146,7 +147,7 @@ const pagesConfig = [
         title:'Edurasa | Bank Soal',
         template:'./src/templates/fitur.html',
         //favicon:'./src/img/lamaso.ico',
-        filename:'/banksoal/index.html',
+        filename:'/banksoalbaru/index.html',
         inject:"body",
         meta: {
             'description':'Aplikasi Manajemen Berbasis Sekolah SDN Ratujaya 1',
@@ -154,6 +155,20 @@ const pagesConfig = [
             'apple-mobile-web-app-status-bar':'#ffffff'
         },
         chunks:['style','banksoal','pdf','app','vendor'],
+        publicPath:'/'
+    },
+    {
+        title:'Edurasa | Bank Soal',
+        template:'./src/templates/fitur.html',
+        //favicon:'./src/img/lamaso.ico',
+        filename:'/banksoal/index.html',
+        inject:"body",
+        meta: {
+            'description':'Aplikasi Manajemen Berbasis Sekolah SDN Ratujaya 1',
+            'theme-color': '#ffffff',
+            'apple-mobile-web-app-status-bar':'#ffffff'
+        },
+        chunks:['style','banksoallama','pdf','app','vendor'],
         publicPath:'/'
     },{
         title:'Edurasa | Kbm',

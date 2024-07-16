@@ -955,6 +955,7 @@ export default class OrmMapel{
                                     })
                                     return result;
                                 })
+                                // .sortByProperty('nis','asc');
                                 .sortByProperty('pd_nama','asc');
                                 // .selectProperties([
                                 //                     'id',
@@ -1377,14 +1378,41 @@ export default class OrmMapel{
                     let datasiap = raportSiap.filter(s=>s.id== item.id);
                     if(datasiap.length>0){
                         let objek_datasiap = datasiap[0];
-                        
-                        
-                        ob_data.kkmkktp_nilai = data.kkmkktp_nilai
+                        // let propertikurikulum = objek_datasiap.filter(s=> s.kodemapel == data.kodemapel)
+                        // let key_idpropertikurikulum_maks =data.raporAsli_predikatMaks_objek;
+                        // let key_idpropertikurikulum_min = data.raporAsli_predikatMin_objek;
+                        // if(objek_datasiap['kdmaks_'+data.kodemapel]){
+                        //     key_idpropertikurikulum_maks =objek_datasiap['kdmaks_'+data.kodemapel]
+
+                        // }
+                        // if(objek_datasiap['kdmin_'+data.kodemapel]){
+                        //     key_idpropertikurikulum_min =objek_datasiap['kdmin_'+data.kodemapel]
+
+                        // }
+                        // let objekSiap_kdmaks_kodemapel = undefined;
+                        // let objekSiap_kdmin_kodemapel = undefined;
+                        // if(this.isKurmer){
+                        //     objekSiap_kdmaks_kodemapel = objek_datasiap.filter(s=> s.idbaris == key_idpropertikurikulum_min)[0]
+                        //     objekSiap_kdmin_kodemapel = objek_datasiap.filter(s=> s.idbaris ==  key_idpropertikurikulum_maks)[0]
+                        // }else{
+                        //     objekSiap_kdmaks_kodemapel = objek_datasiap.filter(s=> s.kd3 ==key_idpropertikurikulum_min)[0]
+                        //     objekSiap_kdmin_kodemapel = objek_datasiap.filter(s=> s.kd3 == key_idpropertikurikulum_maks)[0]
+                            
+                        // }
+
+                        // propertikurikulum.filter(s=> s)
+
+
+                        ob_data.kkmkktp_nilai = data.kkmkktp_nilai;
+
                         ob_data[data.kodemapel]                     = objek_datasiap[data.kodemapel]                   //??data.raporAsli_nilai;
                         ob_data[data.kodemapel+'_P_PREDIKAT']       = objek_datasiap[data.kodemapel+'_P_PREDIKAT']     ??data.raporAsli_nilai_predikat;
                         ob_data[data.kodemapel+'_P_DESKRIPSI']      = objek_datasiap[data.kodemapel+'_P_DESKRIPSI']    ??this.createDeskripsiRapor( { objek_maks      : data.raporAsli_predikatMaks_objek, objek_min       : data.raporAsli_predikatMin_objek, predikat_maks   : data.raporAsli_predikatMaks, predikat_min    : data.raporAsli_predikatMin, });
-                        ob_data['kdmaks_'+data.kodemapel]           = objek_datasiap['kdmaks_'+data.kodemapel]         ??data.raporAsli_predikatMaks_objek;
-                        ob_data['kdmin_'+data.kodemapel]            = objek_datasiap['kdmin_'+data.kodemapel]          ??data.raporAsli_predikatMin_objek;
+                        // ob_data['kdmaks_'+data.kodemapel]           = objek_datasiap['kdmaks_'+data.kodemapel]         ??data.raporAsli_predikatMaks_objek;
+                        // ob_data['kdmin_'+data.kodemapel]            = objek_datasiap['kdmin_'+data.kodemapel]          ??data.raporAsli_predikatMin_objek;
+                        ob_data['kdmaks_'+data.kodemapel]           = data.raporAsli_predikatMaks_objek;
+                        ob_data['kdmin_'+data.kodemapel]            = data.raporAsli_predikatMin_objek;
+                        
                         ob_data['predikat_kdmaks_'+data.kodemapel]  = objek_datasiap['predikat_kdmaks_'+data.kodemapel]??data.raporAsli_predikatMaks;
                         ob_data['predikat_kdmin_'+data.kodemapel]   = objek_datasiap['predikat_kdmin_'+data.kodemapel] ??data.raporAsli_predikatMin;
                         /**
@@ -1398,8 +1426,10 @@ export default class OrmMapel{
                         ob_data[data.kodemapel+'_NILAI_KETERAMPILAN']       = objek_datasiap[data.kodemapel+'_NILAI_KETERAMPILAN']                                      ??data.keterampilan_raporAsli_nilai;
                         ob_data[data.kodemapel+'_K_PREDIKAT']       = objek_datasiap[data.kodemapel+'_K_PREDIKAT']                                      ??data.keterampilan_raporAsli_nilai_predikat;
                         ob_data[data.kodemapel+'_K_DESKRIPSI']      = objek_datasiap[data.kodemapel+'_K_DESKRIPSI']                                     ??this.createDeskripsiRaporKeterampilan( { objek_maks      : data.keterampilan_raporAsli_predikatMaks_objek, objek_min       : data.keterampilan_raporAsli_predikatMin_objek, predikat_maks   : data.ketrampilan_raporAsli_predikatMaks, predikat_min    : data.keterampilan_raporAsli_predikatMin, });
-                        ob_data['kdmaks_'+data.kodemapel+'_KETERAMPILAN']           = objek_datasiap['kdmaks_'+data.kodemapel+'_KETERAMPILAN']          ??data.keterampilan_raporAsli_predikatMaks_objek;
-                        ob_data['kdmin_'+data.kodemapel+'_KETERAMPILAN']            = objek_datasiap['kdmin_'+data.kodemapel+'_KETERAMPILAN']           ??data.keterampilan_raporAsli_predikatMin_objek;
+                        // ob_data['kdmaks_'+data.kodemapel+'_KETERAMPILAN']           = objek_datasiap['kdmaks_'+data.kodemapel+'_KETERAMPILAN']          ??data.keterampilan_raporAsli_predikatMaks_objek;
+                        // ob_data['kdmin_'+data.kodemapel+'_KETERAMPILAN']            = objek_datasiap['kdmin_'+data.kodemapel+'_KETERAMPILAN']           ??data.keterampilan_raporAsli_predikatMin_objek;
+                        ob_data['kdmaks_'+data.kodemapel+'_KETERAMPILAN']           = data.keterampilan_raporAsli_predikatMaks_objek;
+                        ob_data['kdmin_'+data.kodemapel+'_KETERAMPILAN']            = data.keterampilan_raporAsli_predikatMin_objek;
                         ob_data['predikat_kdmaks_'+data.kodemapel+'_KETERAMPILAN']  = objek_datasiap['predikat_kdmaks_'+data.kodemapel+'_KETERAMPILAN'] ??data.keterampilan_raporAsli_predikatMaks;
                         ob_data['predikat_kdmin_'+data.kodemapel+'_KETERAMPILAN']   = objek_datasiap['predikat_kdmin_'+data.kodemapel+'_KETERAMPILAN']  ??data.keterampilan_raporAsli_predikatMin;
                     }else{

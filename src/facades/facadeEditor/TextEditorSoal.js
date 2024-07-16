@@ -1,14 +1,16 @@
-import UrlImg from "../../controllers/UrlImg";
-import ImageResizer from "../../utilities/ImageResizer";
-import { debounce } from "../../views/components/doms";
-import { IframeTextEditor, ToolbarEditor, contextMenu, previewBentukSoal, styleIframe } from "./viewTextEditorEdurasa";
 
-export default class TextEditorEdurasa{
-    constructor(praDesain,queryTarget,idiframe='editorcustom',load){
+// import ImageResizer from "../../utilities/ImageResizer";
+// import { debounce } from "../.../../views/components/doms";
+import { IframeTextEditor, ToolbarEditor, contextMenu, previewBentukSoal, styleIframe } from "../../controller_features/editor/viewTextEditorEdurasa";
+import { debounce } from "../../views/components/doms";
+
+export default class TextEditorSoal{
+    constructor(praDesain,queryTarget,load,UrlImg,idiframe='editorcustom'){
         this.praDesain = praDesain;
         this.targetDom = document.querySelector(queryTarget);
         this.idIframe = idiframe;
         this.imageLoading = load;
+        this.UrlImg =UrlImg;
         this.iframeDom = null;
         this.contextMenu = null;
         this.resspon =null;
@@ -150,7 +152,8 @@ export default class TextEditorEdurasa{
         return ToolbarEditor(this.idIframe);
     }
     createContextMenu(){
-        const data = this.service.data.lingkupmateri.filter(s=> s.kodemapel == this.praDesain.kodemapel);
+        // const data = this.service.data.lingkupmateri.filter(s=> s.kodemapel == this.praDesain.kodemapel);
+        const data = this.praDesain.lingkupmateri;
         
         return contextMenu(this.idIframe,data)
     }
@@ -557,6 +560,13 @@ export default class TextEditorEdurasa{
         let orm = [];
         if(this.praDesain.namakurikulum == 'kurmer'){
             orm = this.praDesain.ormkurikulum.filter(s=> s.idbaris == this.praDesain.kd)[0];
+            if(!orm){
+                orm = {
+                    atp:'',
+                    elemen:'',
+                    atp:''
+                }
+            }
             tekskd = orm.atp;
             
             this.request.elemen = orm.elemen;
@@ -568,9 +578,11 @@ export default class TextEditorEdurasa{
 
             }else{
                 orm = this.praDesain.ormkurikulum.filter(s=> (s.kd3 == this.praDesain.kd || s.kd4 ==this.praDesain.kd) && s.mapel == this.praDesain.kodemapel)[0];
-
             }
-            
+
+            if(!orm){
+                orm ={kd3:'',indikatorkd3:'',kd4:'',indikatorkd4:'',}
+            }
             tekskd = orm.kd3+' '+orm.indikatorkd3;
         }
         this.request.bentuksoalspesifik=this.praDesain.bentuksoal;
@@ -679,7 +691,8 @@ export default class TextEditorEdurasa{
                 let img = new Image();
                 let sr = `https://chart.apis.google.com/chart?cht=tx&chl=%7B%5Cfrac%20%7B${encodeURIComponent(arr[0])}%7D%20%7B${encodeURIComponent(arr[1])}%7D%7D`;
                 // sr = new UrlImg(sr).convertUrlToLatexLatest()
-                img.src =  new UrlImg(sr).convertUrlToLatexLatest()
+                // let sr = `https://latex.codecogs.com/png.latex?%5Cdpi%7B0%7D%20%5Cbg_white%20%7B${encodeURIComponent(`\/frac{${arr[0]}}{${arr[1]}}`)}`;
+                img.src =  this.UrlImg(sr).convertUrlToLatexLatest()
                 img.style.verticalAlign='middle';
                 img.alt = `pecahan ${arr[0]}/${arr[1]}`;    
                     selection.deleteFromDocument();
@@ -852,8 +865,14 @@ export default class TextEditorEdurasa{
             levelkognitif:''
             
         };
-        if(this.service.data.taksonomibloom.length>0){
-            let cek = this.service.data.taksonomibloom.filter(s=> s.kko.toLowerCase() == dom.innerHTML.toLowerCase());
+        // if(this.service.data.taksonomibloom.length>0){
+        //     let cek = this.service.data.taksonomibloom.filter(s=> s.kko.toLowerCase() == dom.innerHTML.toLowerCase());
+        //     if(cek.length>0){
+        //         data = cek[0];
+        //     }
+        // }
+        if(this.praDesain.taksonomibloom.length>0){
+            let cek = this.praDesain.taksonomibloom.filter(s=> s.kko.toLowerCase() == dom.innerHTML.toLowerCase());
             if(cek.length>0){
                 data = cek[0];
             }
@@ -941,7 +960,10 @@ export default class TextEditorEdurasa{
                     }
                 })
                 let img = new Image();
-                let sr = `https://latex.codecogs.com/png.latex?%5Cdpi%7B0%7D%20%5Cbg_white%20%7B%5Csqrt%5B%7B2%7D%5D%20%7B${encodeURIComponent(teks)}%7D%7D`;
+                // let sr = `https://latex.codecogs.com/png.latex?%5Cdpi%7B0%7D%20%5Cbg_white%20%7B%5Csqrt%5B%7B2%7D%5D%20%7B${encodeURIComponent(teks)}%7D%7D`;
+                
+                let akar = `\/dpi{0} \/bg_white {\/sqrt[{3}] {${teks}}}`;
+                let sr = `https://latex.codecogs.com/png.latex?${encodeURIComponent(akar)}`;
                     img.src = sr;
                     img.style.verticalAlign='middle';
                     img.alt = `akar kuadrat ${teks}`;
@@ -984,10 +1006,13 @@ export default class TextEditorEdurasa{
                     }
                 })
                 let img = new Image();
-                let sr = `https://latex.codecogs.com/png.latex?%5Cdpi%7B0%7D%20%5Cbg_white%20%7B%5Csqrt%5B%7B3%7D%5D%20%7B${encodeURIComponent(teks)}%7D%7D`;
+                // let sr = `https://latex.codecogs.com/png.latex?%5Cdpi%7B0%7D%20%5Cbg_white%20%7B%5Csqrt%5B%7B3%7D%5D%20%7B${encodeURIComponent(teks)}%7D%7D`;
+                
+                let akar = `\/dpi{0} \/bg_white {\/sqrt[{3}] {${teks}}}`;
+                let sr = `https://latex.codecogs.com/png.latex?${encodeURIComponent(akar)}`;
                     img.src = sr;
                     img.style.verticalAlign='middle';
-                    img.alt = `akar kuadrat ${teks}`;
+                    img.alt = `akar kubik ${teks} (\/dpi{0} \/bg_white {\/sqrt[{3}] {${teks}}})`;
                 selection.deleteFromDocument();
                 selection.getRangeAt(0).insertNode(img);
                 selection.collapseToEnd();
@@ -1071,26 +1096,15 @@ export default class TextEditorEdurasa{
         return obj;
     }
                     
-    addDomActivityOnInput(e){
+    async addDomActivityOnInput(e){
         let file = e.target.files[0];
-        let imgResize = new ImageResizer(150,Infinity,false);
         // let namafileinput = 'gambar_soal'+new Date().getTime();
         if(file){
-            imgResize.resizeImageToDataURL(file, async (mimeType, dataURL)=>{
-                let src = dataURL;//"https://lh3.googleusercontent.com/d/"+respon.data.idfile;
-                let params = {
-                    action:'uploadFile',
-                    folder:'GAMBAR MENJODOHKAN',
-                    // subfolder:,
-                    // namafile:namafileinput.replace(/[^\w\s.-]/g, "_"),
-                    "namafile":'gambarmenjodohkan'+new Date().getTime()+'.png',
-                    "base64":src.replace(/^.*,/, ''),//.replace(/^.*,/, '');
-                    "mimeType":src.match(/^.*(?=;)/)[0],//dataURL.match(/^.*(?=;)/)[0],//
-                }
+                const respon = await this.service.uploadGambarInputFileTextEditor(file,this.praDesain.paramUploadGambar);
+                console.log(respon);
+                // const respon = await this.service.simpanImage(params);
                 
-                const respon = await this.service.simpanImage(params);
-                
-                let rsrc = new UrlImg(respon.idfile).urlImg;//"https://lh3.googleusercontent.com/d/"+respon.data.idfile;
+                let rsrc = new this.UrlImg(respon.idfile).urlImg;//"https://lh3.googleusercontent.com/d/"+respon.data.idfile;
                 
                 this.iframeDom.execCommand("insertImage",false,rsrc);
                 
@@ -1098,7 +1112,7 @@ export default class TextEditorEdurasa{
                 
                 this.iframeDom.body.focus();
                 
-            })
+            
         }
         
     }   
@@ -1108,26 +1122,17 @@ export default class TextEditorEdurasa{
             let imgs = e.target.querySelectorAll('img');
                 imgs.forEach(async el=>{
                     let src = el.getAttribute('src');
+                    
                     if(src.indexOf('data:image')==-1) return;
-                    let param = src.replace(/^.*,/, '');
                     
-                    let tipe = src.match(/^.*(?=;)/)[0];
-                    let params = {
-                        action:'uploadFile',
-                        folder:'GAMBAR MATERI SOAL',
-                        subfolder:'Gambar Paste',
-                        // namafile:namafileinput.replace(/[^\w\s.-]/g, "_"),
-                        "namafile":'upload_paste_'+new Date().getTime(),//+'.'+ekstnsi,
-                        "base64":param,//.replace(/^.*,/, '');
-                        "mimeType":tipe,//dataURL.match(/^.*(?=;)/)[0],//
-                    }
                     el.src = this.imageLoading;
-                    const respon =  await this.service.simpanImage(params);
                     
+                    const respon =  await this.service.uploadGambarFromBase64(src,this.praDesain.paramUploadGambar);
+                    let newurl = this.UrlImg(respon.idfile).urlImg; ;//`https://lh3.googleusercontent.com/d/${respon.data.idfile}`;
                     
-                    let newurl = new UrlImg(respon.idfile).urlImg; ;//`https://lh3.googleusercontent.com/d/${respon.data.idfile}`;
                     el.src = newurl;
                     el.alt = "Gambar Upload";
+                    
                     this.iframeDom.body.focus();
                 });
     }

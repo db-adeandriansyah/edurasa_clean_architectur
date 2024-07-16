@@ -78,6 +78,7 @@ export class CallHttp{
         let tahunAwal = thAwal.toString();
         let tahunAkhir = thAkhir.toString();
         return 't_'+tahunAwal.slice(2,4)+tahunAkhir.slice(2,4)+'_s_'+semester;
+        // return 't_2324_s_2';//+tahunAwal.slice(2,4)+tahunAkhir.slice(2,4)+'_s_'+semester;
     }
     get crud (){
         return `https://script.google.com/macros/s/${this.appscript['exec_crud']}/exec`; 

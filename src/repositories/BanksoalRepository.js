@@ -24,6 +24,7 @@ export default class BanksoalRepository extends CallHttp{
         return this.trial?this.ssTrial:this.appscript['ss_absen_'+jenjang];
     }
     get ss_kurikulum_must_call(){
+        
         return this.trial?this.ssTrial:this.ss_kurikulum;
     }
     get ss_banksoal_must_call(){
@@ -349,5 +350,27 @@ export default class BanksoalRepository extends CallHttp{
             'action':'read'
         }
         return await this.post(this.crud,p);
+    }
+    async savenilai_ijazah(data){
+        let param = {
+            idss:this.appscript['ss_nilai_6'],
+            tab:'nilai_ijazah_6',
+            key:'id',
+            action:'createOrUpdate',
+            data:JSON.stringify(data)
+        }
+        return await this.post(this.crud,param);
+    }
+    async editItemIjazah (data){
+        
+        let param = {
+            idss:this.appscript['ss_nilai_6'],
+            tab:'nilai_ijazah_6',
+            byRow : parseInt(data.idbaris),
+            action:'update',
+            autoId:'idbaris',
+            formData:JSON.stringify(data)
+        }
+        return await this.post(this.crud,param);
     }
 }

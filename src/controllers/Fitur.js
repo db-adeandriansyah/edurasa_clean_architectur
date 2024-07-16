@@ -382,6 +382,7 @@ export default class Fitur extends Controller{
                 
                 if(this[e.target.value]){
                     this.maincontrol.innerHTML="";
+                    this.footerarea.innerHTML="";
                     this.workplace.innerHTML="Area Kerja Anda";
                     this.fokusMenu = e.target.value;
                     this[e.target.value]();

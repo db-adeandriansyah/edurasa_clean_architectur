@@ -1,4 +1,40 @@
 export const macro = {
+    "t_2425_s_1":{ 
+                "email":"databaseadeandriansyah@gmail.com",
+                "exec_user"     :"AKfycbz0tQfvKxtM02GVb_bj6uFR645cjBkNftFzmvwox6WrnT4ruTYKRLebKZhAWKlvoJBC",
+                "ss_user"       :"1WjyLiEvjuGbyho9h0o4MQ74SNZ5OFzAzIQq3vgXwj3Q",
+                
+                "exec_kalender" :"AKfycbz1C_d342y6TzjOEV-7eZkfdo0wMYHmXsioDjrmqAkjVTF4KmiArY72MfvB_riIDdsi",
+                "ss_kalender"   :"12Ns5cGUggCys04rpfelrC4BG9QIVAKByjdZfxzPmDng",
+
+                "exec_kepsek"   :"AKfycbysBOYTu-n3H0yNPGoD-SWAeyZzEEBaKHYRG7xrrpFaDxNbNWK3DlKf-vY47NWW9NAd2g",
+                "ss_kepsek"     :"18vLm5qLHKNXLbzbh6zggTgWz5I8wlD2Rp3YUA4PiL4Y",
+                
+                "ss_materi"     :"1w4SSUjERJ8gODXdpEZknMP8Q5lasFU9LRKg2vbr4cfk",
+
+                "absen_1"       :"",
+                "absen_2"       :"",
+                "absen_3"       :"",
+                "absen_4"       :"",
+                "absen_5"       :"",
+                "absen_6"       :"",
+                
+                "ss_absen_1"    :"182rPFaeciat1s4pmkIqiZ12t00hdI0_9-W5SrZQUBEQ",
+                "ss_absen_2"    :"1fVnID69-aqdKStNQQ0y4M4L9cjgrZse2JJhonhcR8HE",
+                "ss_absen_3"    :"1y16XDWRPCzTXhq1UlBI8WKSawkbYz-2jqNfxaWwWlOo",
+                "ss_absen_4"    :"1Ah5n35zMN4NI4jsg2db1-7pNhhzZ2BJXG9BOEGstxNU",
+                "ss_absen_5"    :"1PfUbdOK0xnVv9LO-s5AJPEvWsc-hFaYYjxcg6DMpVjg",
+                "ss_absen_6"    :"1ED6KgvPjPSs7VrpUk7bnolThJvudf6tX8KoNHHFTNIo",
+
+                "ss_nilai_1"    :"1WS9O8pkE5KXtW2yOwuCgrr7cbLB4P8NR1HAnjnV2vwQ",
+                "ss_nilai_2"    :"1HbzV8lWrA6-7g4BnLOBrRvDz5MlQbzc6jyT-PSlEGG8",
+                "ss_nilai_3"    :"1DJTOmdLnjg92wcdFS92tUjLyzA6_5Mks-UQV8A8bNAI",
+                "ss_nilai_4"    :"1XxwY3Rt4FCqhFzGz27Snp1vzpSjA8U8FRl2kUnEG3zY",
+                "ss_nilai_5"    :"13nszXR9rc-Tpr-pVFdkwIrwb3u--RC7feGY2TsxE1KU",
+                "ss_nilai_6"    :"15OGeaseLHm_3LwuM2iRVpDaODAAR2QTSkg8L7IZ_IsI",
+                
+                "exec_crud"     :"AKfycbxIpHLJ4TZs22XxAEdGIseZzrqdcF2DYLT4F1BHtg8CoVI6jorp6h34JL325aUbQzOt"
+            },
     't_2324_s_2':{ 'email':'databaseadeandriansyah@gmail.com',
                     //link folder nilai = 
                     // sama seperti di semester 1, akun sama

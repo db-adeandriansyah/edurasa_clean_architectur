@@ -1,4 +1,8 @@
+import controlbanksoal from "../../views/banksoal/controlBankSoal";
 import buttonEdu from "../../views/components/buttons";
+import inputsElements from "../../views/components/input-elements";
+import rowCols from "../../views/components/row-cols";
+import { cardMenu } from "../../views/sidebar/cardSidebar";
 
 const controlHTMLPrint = (siswa) =>{
     let html="";
@@ -1778,7 +1782,7 @@ const html_halaman_isi_rapor = (identitas)=>{
     const alamat = identitas.alamat;
     const namasekolah = identitas.namasekolah;
     let html="";
-    html+=`<div id="area_rapor" class="tnr">`;
+    html+=`<div id="area_rapor" class="tnr table-responsive">`;
         html+=`<table class="toExcel font14" style="line-height:1;border-collapse:collapse;border-spacing:0;width:99.5%">`;
             html+=`<thead>`;
                 html+=`<tr>`;
@@ -2763,7 +2767,7 @@ const skl = (data,htmlkop,withnilai=false)=>{
     html+=`<div id="areaprint" class="tnr p-2">`;
         html+=htmlkop
         html+=`<h3 class="mb-0 mt-4 text-center fw-bold text-uppercase text-decoration-underline">SURAT KETERANGAN KELULUSAN</h3>`;
-        html+=`<h5 class="mb-4 text-center">No.: 421.2/026.<span data-skl="index"></span>/SDNRAJA1/VI/2024</h5>`;
+        html+=`<h5 class="mb-4 text-center">No.: 421.2/030.<span data-skl="index"></span>/SDNRAJA1/VI/2024</h5>`;
         html+=`<p>Kepala SD Negeri Ratujaya 1 selaku penyelenggara Penilaian Sumatif Akhir Jenjang Tahun Pelajaran 2023/2024 berdasarkan:</p>`;
         html+=`<ol>`
             html+=`<li>Ketuntasan dari seluruh program pembelajaran pada Kurikulum 2013</li>`;
@@ -2873,7 +2877,7 @@ const rekapIjazah =(data,idtabel="")=>{
                         html+=`<td class="text-center" title="${mp.kodemapel_umum}">${mp.nilai_ijazah}</td>`;
                     });
                     let total = nilai.map(n=> n.nilai_ijazah).reduce((a,b)=>a+b);
-                    let rerata = (total/data.length).toFixed(2);
+                    let rerata = (total/nilai.length).toFixed(2);
                     html+=`<td class="text-center">${rerata}</td>`;
                     html+=`<td class="text-center"></td>`;
                         
@@ -2892,6 +2896,10 @@ function titleCase(str){
         }
       );
 }
+const noSeriIjazah = (index)=>{
+    let noawal = 706259;
+    return `DN-02/D-SD/K13/24/0${(noawal+index)}`
+}
 const rekapIjazahPraCtak =(data,dataserver)=>{
     console.log(data, dataserver)
     let html = "";
@@ -2903,11 +2911,13 @@ const rekapIjazahPraCtak =(data,dataserver)=>{
                     html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle" style="width:29px">No</th>`;
                     html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">-</th>`;
                     html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">ID</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">Rombel</th>`;
                     html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">Nama Siswa</th>`;
                     html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">TTL</th>`;
                     html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">Nama Orang Tua</th>`;
                     html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">NIS</th>`;
                     html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">NISN</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">No Seri Ijazah</th>`;
                     html+=`<th colspan="9" class="text-center text-bg-secondary align-middle">Nilai Mata Pelajaran</th>`;
                     html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">Nilai Ijazah</th>`;
                     
@@ -2928,13 +2938,21 @@ const rekapIjazahPraCtak =(data,dataserver)=>{
             data.forEach((siswa,i)=>{
                 html+=`<tr>`;
                     html+=`<td class="text-center">${i+1}</td>`;
-                    html+=`<td class="text-center">${buttonEdu.primary(`[data-editijazah="${siswa.id}"]`,'<i class="bi bi-pencil"></i>')}</td>`;
+                    html+=`<td class="text-center">${buttonEdu.primary(`data-editijazah="${siswa.id}"`,'<i class="bi bi-pencil"></i>')}</td>`;
                     html+=`<td class="text-nowrap">${siswa.id}</td>`;
+                    html+=`<td class="text-nowrap">${siswa.nama_rombel}</td>`;
                     html+=`<td class="text-nowrap">${siswa.pd_nama}</td>`;
                     html+=`<td class="text-nowrap">${titleCase(siswa.pd_tl)}, ${new Date(siswa.pd_tanggallahir).toLocaleDateString('id-ID',{dateStyle:'long'})}</td>`;
+                    
                     if(dataserver.length>0){
-                        let curDataServer = dataserver.filter(s=> s.id == siswa.id)[0]
-                        html+=`<td class="text-bg-info text-nowrap">${curDataServer.ortu_di_ijazah}</td>`;
+                        let curDataServer = dataserver.filter(s=> s.id == siswa.id)[0];
+                        if(siswa.dok_akte==""){
+
+                            html+=`<td class="text-bg-warning text-nowrap">${curDataServer.ortu_di_ijazah}</td>`;
+                        }else{
+                            html+=`<td class="text-bg-info text-nowrap">${curDataServer.ortu_di_ijazah}</td>`;
+
+                        }
                     }else{
                         
                         html+=`<td class="text-nowrap">${siswa.pd_namaayah}</td>`;
@@ -2942,13 +2960,14 @@ const rekapIjazahPraCtak =(data,dataserver)=>{
 
                     html+=`<td class="text-center">${siswa.nis}</td>`;
                     html+=`<td class="text-center">${siswa.nisn}</td>`;
+                    html+=`<td class="text-nowrap">${noSeriIjazah(i)}</td>`;
                     let nilai = siswa.olah_ijazah;
                     nilai.forEach(mp=>{
                         html+=`<td class="text-center" title="${mp.kodemapel_umum}">${mp.nilai_ijazah}</td>`;
                     });
                     let total = nilai.map(n=> n.nilai_ijazah).reduce((a,b)=>a+b);
-                    let rerata = (total/data.length).toFixed(2);
-                    html+=`<td class="text-center">${rerata}</td>`;
+                    let rerata = (total/nilai.length).toFixed(2);
+                    html+=`<td class="text-center">${rerata}</td>`; 
                     
                         
                 html+=`</tr>`;
@@ -2958,9 +2977,240 @@ const rekapIjazahPraCtak =(data,dataserver)=>{
     html+=`</div>`;
     return html;
 }
-const detailCetakIjazah = (dataNilai, dataSiswa)=>{
-    let html="";
+const halamanDepanIjazah = (db, dbIjazah,bol=false)=>{
+    let html ="";
+    if(bol){
 
+        html+=`<div class="col-6 px-5 lh-sm" style="background-image:url(https://lh3.googleusercontent.com/d/1qcpzq9ABBR8WVMXOk38AEiKN8KRj6YH-);background-repeat: no-repeat;background-size: 100% 100%">`;
+    }else{
+        html+=`<div class="px-5 lh-sm border-5">`;
+
+    }
+                html+=`<p class="text-center fs-4 fw-bold mt-5 pt-5">KEMENTRIAN DAN KEBUDAYAAN REPUBLIK INDONESIA</p>`;
+                html+=`<h3 class="text-center fw-bold">I J A Z A H</h3>`;
+                html+=`<p class="text-center mt-2 mb-0">SEKOLAH DASAR</p>`;
+                html+=`<p class="text-center">TAHUN PELAJARAN 2023/2024</p>`;
+                html+=`<p class="mt-5">Yang bertanda tangan di bawah ini, Kepala <b class="text-decoration-underline"> UPTD Sekolah Dasar Negeri Ratujaya 1</b></p>`;
+                html+=`<p>Nomor Pokok Sekolah Nasional <b class="text-decoration-underline d-inline-block"> 20228914</b></p>`;
+                html+=`<p>Kabupaten/Kota <b class="text-decoration-underline"> Depok</b></p>`;
+                html+=`<p class="mb-3">Provinsi <b class="text-decoration-underline"> Jawa Barat</b> menerangkan bahwa:</p>`;
+                html+=`<table class="table table-borderless w3-small">`;
+                    html+=`<tbody>`;
+                        html+=`<tr>`;
+                            html+=`<td>nama</td><td>:</td>`;
+                            html+=`<td class="text-nowrap fw-bold" data-isian="namasiswa">${db.pd_nama}</td>`;
+                        html+=`</tr>`;
+                        html+=`<tr>`;
+                            html+=`<td class="text-nowrap">tempat dan tanggal lahir</td><td>:</td>`;
+                            html+=`<td class="text-nowrap fw-bold" data-isian="ttl">${titleCase(db.pd_tl)}, ${new Date(db.pd_tanggallahir).toLocaleString('id-ID',{dateStyle:'long'})}</td>`;
+                        html+=`</tr>`;
+                        html+=`<tr>`;
+                            html+=`<td class="text-nowrap">nama Orang tua/Walli</td><td>:</td>`;
+                            html+=`<td class="text-nowrap text-capitalize fw-bold" data-isian="ortusiswa">${titleCase(dbIjazah.ortu_di_ijazah)}</td>`;
+                        html+=`</tr>`;
+                        html+=`<tr>`;
+                            html+=`<td class="text-nowrap">Nomor Induk Siswa</td><td>:</td>`;
+                            html+=`<td class="text-nowrap fw-bold" data-isian="nis">${db.nis}</td>`;
+                        html+=`</tr>`;
+                        html+=`<tr>`;
+                            html+=`<td class="text-nowrap">Nomor Induk Siswa Nasional</td><td>:</td>`;
+                            html+=`<td class="text-nowrap fw-bold" data-isian="nisn">${db.nisn}</td>`;
+                        html+=`</tr>`;
+                    html+=`</tbody>`;
+                html+=`</table>`;
+                html+=`<h2 class="text-center fs-1 mt-3">L U L U S</h2>`;
+                html+=`<p>Berdasarkan keputusan kepala <b>UPTD Sekolah Dasar Negeri Ratujaya 1 </p><p>nomor. 421.2/029/SDNRAJA1/VI/2024</b></p>`;
+                html+=`<div class="row">`;
+                    html+=`<div class="col-6">`;
+                        html+=`<div class="d-flex justify-content-center py-3 ps-5">`
+                            html+=`<div class="border border-1 text-bg-secondary rounded shadow-lg text-center d-flex flex-column justify-content-center" style="width:90px;height:120px">Poto</div>`;
+                        html+=`</div>`;
+                    html+=`</div>`;
+                    html+=`<div class="col-6 text-center">`;
+                        html+=`<b class="text-decoration-underline">Kota Depok, 26 Juni </b>2024<br>`;
+                        html+=`<p>Kepala Sekolah</p><br>`;
+                        html+=`<p class="mt-5 text-decoration-underline mb-0">Yoce Magdalena, S.Pd.SD</p>`;
+                        html+=`<p>NIP. 19730720 200003 2 005</p>`
+                    html+=`</div>`;
+                html+=`</div>`;
+                html+=`<div class="text-center mt-4 mb-4"></div>`;
+            html+=`</div>`;
+    return html;
+}
+const suratPernyataanKebenaranIjazah = (db, dbIjazah)=>{
+    let html="";
+    html+=`<div class="p-2" style="min-height:98vh!important;break-inside: avoid;">`;
+        html+=`<h3 class="text-center fw-bold mb-5">SURAT PERNYATAAN</h3>`;
+        html+=`<p> Yang bertanda tangan di bawah ini:</p>`;
+        html+=`<table class="table table-sm lh1 table-borderless">`;
+            html+=`<tr>`;
+                html+=`<td>Nama Orang Tua/Wali</td>`;
+                html+=`<td style="width:30px">:</td>`;
+                html+=`<td class="text-nowrap border-bottom"></td>`;
+            html+=`</tr>`;
+            html+=`<tr>`;
+                html+=`<td>Status (lingkari jawaban)</td>`;
+                html+=`<td style="width:30px">:</td>`;
+                html+=`<td class="text-nowrap border-bottom">Orang Tua Kandung/Orang Tua Angkat/Wali</td>`;
+            html+=`</tr>`;
+        html+=`</table>`;
+        html+=`<p>menyatakan bahwa data berikut yang akan dituliskan di lembar ijazah: </p>`;
+        
+        html+=`<table class="table table-sm lh1 table-borderless">`;
+            html+=`<tr>`;
+                html+=`<td>Nama Siswa</td>`;
+                html+=`<td style="width:30px">:</td>`;
+                html+=`<td class="text-nowrap border-bottom">${db.pd_nama}</td>`;
+            html+=`</tr>`;
+            html+=`<tr>`;
+                html+=`<td>Tempat, Tanggal Lahir</td>`;
+                html+=`<td style="width:30px">:</td>`;
+                html+=`<td class="text-nowrap border-bottom">${titleCase(db.pd_tl)}, ${new Date(db.pd_tanggallahir).toLocaleString('id-ID',{dateStyle:'long'})}</td>`;
+            html+=`</tr>`;
+            html+=`<tr>`;
+                html+=`<td>Nama Orang tua</td>`;
+                html+=`<td style="width:30px">:</td>`;
+                html+=`<td class="text-nowrap border-bottom">${dbIjazah.ortu_di_ijazah}</td>`;
+            html+=`</tr>`;
+            html+=`<tr>`;
+                html+=`<td>Nomor Induk Sekolah</td>`;
+                html+=`<td style="width:30px">:</td>`;
+                html+=`<td class="text-nowrap border-bottom">${db.nis}</td>`;
+            html+=`</tr>`;
+            html+=`<tr>`;
+                html+=`<td>Nomor Induk Sekolah Siswa Nasional</td>`;
+                html+=`<td style="width:30px">:</td>`;
+                html+=`<td class="text-nowrap border-bottom">${db.nisn}</td>`;
+            html+=`</tr>`;
+        html+=`</table>`;
+        html+=`<p>adalah <b>BENAR dan SESUAI</b> dengan dokumen Akta Kelahiran. </p><p>Adapun Saya lampirkan dokumen Akta Kelahiran atau bukti dokumen untuk memperkuat kebenaran tersebut. Serta Surat Pernyatan ini dapat dijadikan dasar hukum validasi kebenaran data penulisan ijazah oleh pihak UPTD SDN Ratujaya 1.</p>`
+        html+=`<br><br><br>`;
+        html+=`<div class="row justify-content-end">`;
+            html+=`<div class="col-6 text-center">`;
+                html+=`Yang membuat Pernyataan,`
+                html+=`<br><br><br><br><br>`;
+                html+=`<p class="border-bottom"></p>`
+            html+=`</div>`;
+        html+=`</div>`
+    html+=`</div>`;
+    html+=`<div class="border p-0" style="min-height:98vh!important;break-inside: avoid;">`;
+        html+=halamanDepanIjazah(db,dbIjazah);
+    html+=`</div>`
+    return html;
+};
+const guidesIjazah = (db, dbIjazah,index)=>{
+    let html = "";
+    html+=`<div class="row">`;
+    html+=halamanDepanIjazah(db,dbIjazah,true);
+        html+=`<div class="col-6 border">`;
+        
+        html+=`<h4 class="text-center mb-0 fw-bold">DAFTAR NILAI</h4>`;
+        html+=`<h5 class="text-center mb-0">SEKOLAH DASAR</h5>`;
+        html+=`<h6 class="text-center mb-5">TAHUN PELAJARAN 2023/2024</h6>`;
+        html+=`<table class="table table-sm table-borderless font12">`;
+            html+=`<tr>`;
+                html+=`<td style="width:170px">Nama</td>`;
+                html+=`<td style="width:10px">:</td>`;
+                html+=`<td>${db.pd_nama}</td>`;
+            html+=`</tr>`;
+            html+=`<tr>`;
+                html+=`<td>Tempat dan Tanggal Lahir</td>`;
+                html+=`<td>:</tdx>`;
+                html+=`<td>${titleCase(db.pd_tl)}, ${new Date(db.pd_tanggallahir).toLocaleString('id-ID',{dateStyle:'long'})}</td>`;
+            html+=`</tr>`;
+            html+=`<tr>`;
+                html+=`<td>Nomor Induk Siswa</td>`;
+                html+=`<td>:</tdx>`;
+                html+=`<td>${db.nis}</td>`;
+            html+=`</tr>`;
+            html+=`<tr>`;
+                html+=`<td>Nomor Induk Siswa Nasional</td>`;
+                html+=`<td>:</tdx>`;
+                html+=`<td>${db.nisn}</td>`;
+            html+=`</tr>`;
+        html+=`</table>`;
+        html+=`<table class="table table-sm table-bordered border-dark lh-1">`;
+                html+=`<thead>`;
+                    html+=`<tr>`;
+                        html+=`<th class="text-center align-middle" style="width:30px">No</th>`;
+                        html+=`<th class="text-center align-middle">Mata Pelajaran</th>`;
+                        html+=`<th class="text-center align-middle" style="width:120px">Nilai</th>`;
+                    html+=`</tr>`;
+                html+=`</thead>`;
+                html+=`<tbody data-skl="tabelbody_skl">`;
+                    html+=viewSkl(db.olah_ijazah)
+                html+=`</tbody>`;
+            html+=`</table>`;
+            ///tandatangan
+            html+=`<div class="row">`;
+                    html+=`<div class="col-6">`;
+                        html+=`<div class="d-flex justify-content-center py-3 ps-5">`
+                            // html+=`<div class="border border-1 text-bg-secondary rounded shadow-lg text-center d-flex flex-column justify-content-center" style="width:90px;height:120px">Poto</div>`;
+                        html+=`</div>`;
+                    html+=`</div>`;
+                    html+=`<div class="col-6 text-center">`;
+                        html+=`<b class="text-decoration-underline">Kota Depok, 26 Juni </b>2024<br>`;
+                        html+=`<p>Kepala Sekolah</p><br>`;
+                        html+=`<p class="mt-5 text-decoration-underline mb-0">Yoce Magdalena, S.Pd.SD</p>`;
+                        html+=`<p>NIP. 19730720 200003 2 005</p>`
+                    html+=`</div>`;
+                html+=`</div>`;
+            ///tandatangan
+            html+=`<p class="text-center">${noSeriIjazah(index)}</p>`
+        html+=`</div>`;
+
+    html+=`</div>`
+    return html;
+}
+const dataRealSiswa = (data)=>{
+    let html ="";
+    html+=`<table class="table table-sm font10">`;
+        html+=`<tr>`;
+            html+=`<td>Nama Siswa</td>`;
+            html+=`<td style="width:20px">:</td>`;
+            html+=`<td class="text-nowrap">${data.pd_nama}</td>`;
+        html+=`</tr>`;
+        html+=`<tr>`;
+            html+=`<td>Tempat, Tanggal Lahir</td>`;
+            html+=`<td style="width:20px">:</td>`;
+            html+=`<td class="text-nowrap">${data.pd_tl}, ${new Date(data.pd_tanggallahir).toLocaleString('id-ID',{dateStyle:'long'})}</td>`;
+        html+=`</tr>`;
+        html+=`<tr>`;
+            html+=`<td>NIS</td>`;
+            html+=`<td style="width:20px">:</td>`;
+            html+=`<td class="text-nowrap">${data.nis}</td>`;
+        html+=`</tr>`;
+        html+=`<tr>`;
+            html+=`<td>NISN</td>`;
+            html+=`<td style="width:20px">:</td>`;
+            html+=`<td class="text-nowrap">${data.nisn}</td>`;
+        html+=`</tr>`;
+        html+=`<tr><td colspan="3" class="text-center">Perubahan data ini hanya bisa dilakukan di Menu Data Siswa</td></tr>`
+    html+=`</table>`
+    return html;
+}
+const editDetailSiswaIjazahModal = (data,dataserver)=>{
+    let html= "";
+    let akte = data.dok_akte==""?"Akte Tidak Ada":`<div class="containerIframe"> <iframe id="iframePreviewUpload" src="https://drive.google.com/file/d/${data.dok_akte}/preview"></iframe> </div>`;
+    html+= rowCols.rows('justify-content-center',
+            rowCols.cols('col-md-6',
+                cardMenu('Identitas Pribadi Siswa',
+                    dataRealSiswa(data),false
+                )
+                
+            )
+            +
+            rowCols.cols('col-md-6',akte)
+            +rowCols.cols('col-md-6 text-center',
+                cardMenu('Nama Orang Tua di Ijazah',
+                            inputsElements.floatingText('update_ortu_di_ijazah','Nama ',dataserver.ortu_di_ijazah)
+                            +buttonEdu.primary('id="simpan_ortu_di_ijazah"','Simpan Nama Ortu')
+                            ,false
+                        )
+
+            )
+
+    )
     return html;
 }
 const viewRapor = {
@@ -2987,7 +3237,11 @@ const viewRapor = {
     'skl'                       : skl,
     'viewSkl'                   : viewSkl,
     'rekapIjazah'               : rekapIjazah,
-    'rekapIjazahPraCtak'        : rekapIjazahPraCtak
+    'rekapIjazahPraCtak'        : rekapIjazahPraCtak,
+    'editDetailSiswaIjazahModal': editDetailSiswaIjazahModal,
+    'suratPernyataanKebenaranIjazah':suratPernyataanKebenaranIjazah,
+    'controlHTMLPrint'          :controlHTMLPrint,
+    'guidesIjazah'              :guidesIjazah
 
 }
 

@@ -108,7 +108,7 @@ export default class KbmService{
     }
     async editLJKTabRespon(body,arrayTab){
         this.repo.callWithProses();
-        let n = await this.repo.editLJKTabRespon(body,'update');
+        let n = await this.repo.editLJKTabResponSingle(body,'update');
         
         // this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
         let tabrespon = n.info.namaTab;
@@ -233,5 +233,20 @@ export default class KbmService{
         
         this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
         this.repo.stopProgressBar();
+    }
+    async savenilai_ijazah(data){
+        this.repo.callWithProses();
+        let n = await this.repo.savenilai_ijazah(data)
+        
+        this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
+        this.repo.stopProgressBar();
+    }
+    async editItemIjazah (data){
+        this.repo.callWithProses();
+        let n = await this.repo.editItemIjazah(data)
+        
+        this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
+        this.repo.stopProgressBar();
+        
     }
 }

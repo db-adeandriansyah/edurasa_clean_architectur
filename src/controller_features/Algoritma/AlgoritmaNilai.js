@@ -118,7 +118,8 @@ export default class AlgoritmaNilai {
             jenjang
         } = refrensi;
         // result.test = fn(80)
-        result.kkm = propertikurikulummapel[0].kkm;
+        console.log(propertikurikulummapel)
+        result.kkm = propertikurikulummapel.length>0?propertikurikulummapel[0].kkm:71;
 
         if(isKurmer){ //kurmer
             /**
@@ -164,7 +165,7 @@ export default class AlgoritmaNilai {
                     result.raporAsli_kdMin_predikat_string = 'Cukup';
                 }else{
 
-                    let onlyNilai = avoid.map(n=>n.nilai);
+                    let onlyNilai = avoid.map(n=>n.nilai.toString().replace(',','.'));
                     let ubahTipe = onlyNilai.map(n=>Number(n));
                     let cariMax = Math.max(...ubahTipe);
                     let predikat = fn(cariMax).predikat;
@@ -200,7 +201,7 @@ export default class AlgoritmaNilai {
                     result.raporAsli_nilaiMin_number = '';
                     result.raporAsli_kdMin_predikat_string = 'Cukup';
                 }else{
-                    let onlyNilai = avoid.map(n=>n.nilai);
+                    let onlyNilai = avoid.map(n=>n.nilai.toString().replace(',','.'));
                     let ubahTipe = onlyNilai.map(n=>Number(n));
                     let cariMax = Math.max(...ubahTipe);
                     let cariMin = Math.min(...ubahTipe);
@@ -220,7 +221,7 @@ export default class AlgoritmaNilai {
                         predikatMin = 'Cukup';
                     }
                     let notDuplicate = true;
-    
+                    
                     if(dataKdMax.kd == dataKdMin.kd){
                         notDuplicate = false;
                         dataKdMin = propertikurikulummapel.filter((s,i)=>i!= cariIndex)[0];

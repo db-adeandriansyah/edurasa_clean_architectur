@@ -86,7 +86,7 @@ export default class AbsensiRepository extends CallHttp{
 
     uploadGambarAbsen(files,propertiImage,callback,options={}){
         let defaultPropertiImage={
-            folder:'Files Absensi Siswa',
+            folder:'Files Absensi 2425',
             // subFolder:'',
             // subFolder:'',
         }

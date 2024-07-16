@@ -48,7 +48,7 @@ export class TopHeader{
         return `<a href="/" class="btn btn-sm bg-white btn-outline-danger rounded-circle fs-5"><i class="bi bi-house-fill  neon-lite-transisi scrolled text-clip"></i></a>`
     }
     mobile_menuLogin(){
-        return `<a href="/login" class="btn btn-sm  fs-5 rounded-circle"><i class="bi-person-circle neon-lite-transisi scrolled text-clip"></i></a>`;
+        return `<a href="/login" class="btn btn-sm  fs-5 rounded-circle"><i class="bi-person-circle bg-color1 border scrolled text-clip"></i></a>`;
     }
     mobile_menuBtnDashboard(){
         return `<button class="btn btn-sm p-0  overflow-hidden btn-collapse" data-target-collapse="navbarToggleExternalContent2" aria-expanded="false" aria-label="Toggle navigation"> <svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" fill="currentColor" class="bi bi-grid-3x3-gap-fill" viewBox="0 0 16 16"> <path d="M1 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2zM1 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V7zM1 12a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2z"></path> </svg> </button>`;
@@ -181,7 +181,7 @@ export class TopHeader{
         let html= ""
         if(guest){
             html+=this.header(this.nav(this.wrapContainer(this.Linklogo+this.homeSubmenu(false,'/'))));
-            html+=this.headerMobile(this.navMobile(this.mobile_menuHome()+this.mobile_menuLogin()));
+            html+=this.headerMobile('iniiii'+this.navMobile(this.mobile_menuHome()+this.mobile_menuLogin()));
         }else{
             // html+=this.header(this.nav(this.wrapContainer(this.Linklogo+this.homeSubmenu(data))));
             html =this.pc_menuHOmePage(guest);

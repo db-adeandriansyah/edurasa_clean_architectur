@@ -11,7 +11,7 @@ export const banksoalSidebar= [
         title:'Desain Naskah',
         menu:[
         {value:'desain_naskah',text:'Naskah Soal',name:'menusidebar'},
-        {value:'desain_naskah_us',text:'Naskah Soal US',name:'menusidebar'},
+        // {value:'desain_naskah_us',text:'Naskah Soal US',name:'menusidebar'},
         ]
     },
     {

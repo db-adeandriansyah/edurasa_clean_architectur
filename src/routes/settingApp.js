@@ -3,16 +3,16 @@ export const koleksiRombel = {
     '2':['2A','2B'],
     '3':['3A','3B'],
     '4':['4A','4B'],
-    '5':['5A','5B','5C'],
+    '5':['5A','5B'],
     '6':['6A','6B','6C'],
 }
 export const JenisKurikulum = {
   '1':'kurmer',
   '2':'kurmer',
-  '3':'kurtilas',
+  '3':'kurmer',
   '4':'kurmer',
   '5':'kurmer',
-  '6':'kurtilas',
+  '6':'kurmer',
 }
 export const faseKey = {
   "1":"faseA",
@@ -51,6 +51,7 @@ export const riwayatApiTapel = [ // riwayatApiTapel Lamaso
   {'tapel':'2223','semester':2,'label':'2022/2023','api':'t_2223_s_2','kurmer':[1,4],'kurtilas':[2,3,5,6]},
   {'tapel':'2324','semester':1,'label':'2023/2024','api':'t_2324_s_1','kurmer':[1,2,4,5],'kurtilas':[3,6]},
   {'tapel':'2324','semester':2,'label':'2023/2024',   'api':'t_2324_s_2','kurmer':[1,2,4,5],       'kurtilas':[3,6]},
+  {'tapel':'2425','semester':1,'label':'2024/2025',   'api':'t_2425_s_1','kurmer':[1,2,3,4,5,6],       'kurtilas':[]},
 
 ];
 export const riwayatApiTapelReal = [ 
@@ -75,4 +76,5 @@ export const riwayatApiTapelReal = [
   {'tapel':'2223','semester':2,'label':'2022/2023',   'api':'t_2223_s_2',      'kurikulum':['kurtilas','kurmer'],          'k2006':[],              'kurmer':[1,4],           'kurtilas':[2,3,5,6]},
   {'tapel':'2324','semester':1,'label':'2023/2024',   'api':'t_2324_s_1',      'kurikulum':['kurtilas','kurmer'],          'k2006':[],              'kurmer':[1,2,4,5],       'kurtilas':[3,6]},
   {'tapel':'2324','semester':2,'label':'2023/2024',   'api':'t_2324_s_2',      'kurikulum':['kurtilas','kurmer'],          'k2006':[],              'kurmer':[1,2,4,5],       'kurtilas':[3,6]},
+  {'tapel':'2425','semester':1,'label':'2024/2025',   'api':'t_2425_s_1',       'kurikulum':['kurmer'],                   'k2006':[],             'kurmer':[1,2,3,4,5,6],       'kurtilas':[]},
 ];

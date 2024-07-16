@@ -464,6 +464,7 @@ export default class DesainNaskahSoal{
         }
     }
     registerKlikIsiDesainNaskah(){
+        console.log('cek data pradesain dari registrered klik desain', this.pradesain);
         const tabel = document.getElementById('tabelkontendesainnaskah_dariserver');
         tabel.onclick = (e)=>{
             let dataklik = TableProperties.propertiesByClick(e.target);

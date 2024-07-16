@@ -298,6 +298,7 @@ export default class IjazahFitur{
             });
             return result;
         })
+        .sortByProperty('nama_rombel','asc');
         
         return result.data;
     }

@@ -5,13 +5,11 @@ import { kbmSidebar } from "../controller_menus/kbmSidebar.js";
 import BanksoalRepository from "../repositories/BanksoalRepository.js";
 import KbmService from "../services/KbmService.js";
 import KbmController from "../controllers/KbmController.js";
-// import { kalenderSidebar } from "../controller_menus/kalenderSidebar.js";
-// import KalenderRepository from "../repositories/KalenderRepository.js";
-// import KalenderService from "../services/KalenderService.js";
-// import KalenderController from "../controllers/KalenderController.js";
+
 
 const apisidebar = App.RiwayatApi;
 const appCurrent = apisidebar.filter(s=>s.api != App.key).sort((a,b)=>b.tapel.localeCompare(a.tapel));
+
 let arrriwayat = [];
     appCurrent.forEach(n=>{
         let ob={};
@@ -37,3 +35,4 @@ const controller = new KbmController(App,kbmServ);
 
 controller.init();
 controller.exec_fitur(true);
+

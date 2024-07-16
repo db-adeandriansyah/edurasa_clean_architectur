@@ -1,3 +1,5 @@
+import ImageResizer from "../utilities/ImageResizer";
+
 export default class BanksoalService{
     #db;
     constructor(repo){
@@ -13,7 +15,7 @@ export default class BanksoalService{
         return this.#db.hasOwnProperty(key);
     }
     async callPropertiMultiple(arrayTab){
-        this.repo.callWithProses();
+        this.repo.callWithProses(); 
 
         const respon = await this.repo.callPropertiMultiple(arrayTab);
         respon.forEach(n=>{
@@ -35,6 +37,58 @@ export default class BanksoalService{
         
         this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
         this.repo.stopProgressBar();
+    }
+    async convertSizeImageSoal(file){
+        
+        // let imgResize = new ImageResizer(150,Infinity,false);
+        let imgResize = new ImageResizer(Infinity,Infinity,true);
+        let src =  await imgResize.resizeImageToDataURLCallback(file);
+        
+        // return imgResize.resizeImageToDataURL(file, async (mimeType, dataURL)=>{ 
+        //     console.log(dataURL);
+        //     data =  await dataURL;
+        //     return  dataURL;
+            // let src = dataURL;//"https://lh3.googleusercontent.com/d/"+respon.data.idfile;
+            let params = {
+                action:'uploadFile',
+                folder:'GAMBAR MENJODOHKAN',
+                // subfolder:,
+                // namafile:namafileinput.replace(/[^\w\s.-]/g, "_"),
+                "namafile":'gambarmenjodohkan'+new Date().getTime()+'.png',
+                "base64":src.replace(/^.*,/, ''),//.replace(/^.*,/, '');
+                "mimeType":src.match(/^.*(?=;)/)[0],//dataURL.match(/^.*(?=;)/)[0],//
+            }
+            return params;
+        // });
+        // return data;
+    }
+    async uplaodedImageTextEditorFromFile(file){
+        let param = await this.paramApiconvertSizeImage(file,Infinity,Infinity,true,'Gambar Soal','gambarsoal');
+        return await this.simpanImage(param);
+    }
+    async paramApiconvertSizeImage(file,maxWidth,maxHeight,keepOriginalSize,targetFolder,namaFile){
+        
+        // let imgResize = new ImageResizer(150,Infinity,false);
+        let imgResize = new ImageResizer(maxWidth,maxHeight,keepOriginalSize);
+        let src =  await imgResize.resizeImageToDataURLCallback(file);
+        
+        // return imgResize.resizeImageToDataURL(file, async (mimeType, dataURL)=>{ 
+        //     console.log(dataURL);
+        //     data =  await dataURL;
+        //     return  dataURL;
+            // let src = dataURL;//"https://lh3.googleusercontent.com/d/"+respon.data.idfile;
+            let params = {
+                action:'uploadFile',
+                folder:targetFolder,
+                // subfolder:,
+                // namafile:namafileinput.replace(/[^\w\s.-]/g, "_"),
+                "namafile":namaFile+_+new Date().getTime()+'.png',
+                "base64":src.replace(/^.*,/, ''),//.replace(/^.*,/, '');
+                "mimeType":src.match(/^.*(?=;)/)[0],//dataURL.match(/^.*(?=;)/)[0],//
+            }
+            return params;
+        // });
+        // return data;
     }
     async simpanImage(par){
         this.repo.callWithProses();
@@ -92,4 +146,5 @@ export default class BanksoalService{
         this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
         this.repo.stopProgressBar();
     }
+    
 }

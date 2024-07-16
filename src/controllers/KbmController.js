@@ -112,7 +112,7 @@ export default class KbmController extends Fitur{
         this.ormMapel.createLabelMapel();
         this.maincontrol.innerHTML = viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="groupBy_PH_nilai" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
         this.ormMapel.init();
-        console.log(this.ormMapel.collectionsSiswa)
+        
         this.ormMapel.selectingMapel('groupBy_PH_nilai');
     }
     
@@ -145,7 +145,7 @@ export default class KbmController extends Fitur{
         this.maincontrol.innerHTML = viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="rapor_sementara" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
         this.ormMapel.init();
         this.ormMapel.selectingMapelRapor();
-        console.log(this.ormMapel.collectionsSiswa.data)
+        
     }
     async new_rekapraportketerampilan(){
         

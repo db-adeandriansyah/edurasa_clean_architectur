@@ -71,6 +71,7 @@ export class Controller{
         if(param.length==0){
             return new devClass();
         }else{
+            
             return new devClass(...param);
         }
     }

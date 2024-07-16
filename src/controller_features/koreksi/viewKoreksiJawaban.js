@@ -64,6 +64,9 @@ const tabelDataKoreksian = (identitas,data)=>{
                 html+=`</thead>`;
                 html+=`<tbody>`;
                     data.forEach((n,i)=>{
+                        if(data.id == 856){
+                            console.log(n.algoritma_by_spreadsheet_tabrespon);
+                        }
                         html+=`<tr>`;
                             html+=`<td class="text-center">${i+1}</td>`;
                             html+=`<td>${n.pd_nama}</td>`;
@@ -92,6 +95,9 @@ const tabelDataKoreksian = (identitas,data)=>{
                                                 html+=`</tr>`;
                                             html+=`</thead>`;
                                             n.algoritma_by_spreadsheet_tabrespon.forEach(ljk=>{
+                                                if(data.id == 856){
+                                                    console.log(ljk);
+                                                }
                                                 html+=`<thead>`;
                                                         html+=`<tr class="text-center">`;
                                                                 // html+=`<th colspan="2" class="text-center text-bg-secondary" title="LJK terindikasi duplikat, pilih ljk mana yang akan digunakan. Secara default, aplikasi akan mengambil LJK yang terakhir">${ljk.dataspreadsheet.html_jawaban}</th>`;

@@ -529,7 +529,7 @@ const viewRekapRaporSementara = (identitas,sebaran, data)=>{
                         }else{
                             let mapingnilai = dataPASPAK.map(n=> n.niai_kd);
                             let total = mapingnilai.reduce((a,b)=>a+b);
-                            let rerata = Number((total/dataPTS.length).toFixed(2));
+                            let rerata = Number((total/dataPASPAK.length).toFixed(2));
                             html+=`<td class="text-center">${rerata}</td>`
                             
                         };
