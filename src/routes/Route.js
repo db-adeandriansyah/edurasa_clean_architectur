@@ -196,7 +196,6 @@ export default class Route{
                     dom.mobile_menuProfile()+
                     dom.mobile_menuDashboard()+
                     dom.navMobile(
-                        'iniiii'+
                             dom.mobile_menuHome()+
                             dom.mobile_menuBtnDashboard()+
                             dom.mobile_menuBtnProfile(this.#User.imgUser),true

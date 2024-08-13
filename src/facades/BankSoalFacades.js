@@ -30,18 +30,36 @@ export default class BankSoalFacades extends Facades{
             }else if(element.type=='select-one'){
                 this.praDesain[key] = element.value;
                 this.praDesain['tekskodemapel']=this.praDesain.koleksimapel[element.value];
-                this.praDesain['lingkupmateri']=this.praDesain.ormkurikulum.filter(s=>s.kodemapel == element.value)[0].ruanglingkup;
+                // this.praDesain['lingkupmateri']=this.praDesain.ormkurikulum.filter(s=>s.kodemapel == element.value)[0].ruanglingkup;
+                let ruanglingkupSearch = this.praDesain.ormkurikulum.filter(s=>s.kodemapel == element.value);//[0].ruanglingkup;;
+                    console.log('ruanglingkupSearch', ruanglingkupSearch);
+                    if(ruanglingkupSearch.length>0){
+
+                        this.praDesain['lingkupmateri']=ruanglingkupSearch[0].ruanglingkup;;
+                    }else{
+                        this.praDesain['lingkupmateri']=[];//this.praDesain.ormkurikulum.filter(s=>s.kodemapel == e.target.value)[0].ruanglingkup;;
+
+                    }
             };
 
             element.onchange = (e)=>{
                 this.praDesain[key] = element.value;
-
                 if(key == 'kodemapel'){
+                    console.log('element change has value kodemapel=', key,needData )
+                    
                     let divwrap = document.getElementById('resultefekpilihmapel');
                     let html = controlbanksoal.menuPilihPropertiKurikulum(needData.shortKurikulum,needData.kurikulum.simpleFilter({'kodemapel':e.target.value}).data)
                     divwrap.innerHTML = html;
                     this.praDesain['tekskodemapel']=this.praDesain.koleksimapel[e.target.value];
-                    this.praDesain['lingkupmateri']=this.praDesain.ormkurikulum.filter(s=>s.kodemapel == e.target.value)[0].ruanglingkup;;
+                    let ruanglingkupSearch = this.praDesain.ormkurikulum.filter(s=>s.kodemapel == e.target.value);//[0].ruanglingkup;;
+                    console.log('ruanglingkupSearch', ruanglingkupSearch);
+                    if(ruanglingkupSearch.length>0){
+
+                        this.praDesain['lingkupmateri']=ruanglingkupSearch[0].ruanglingkup;;
+                    }else{
+                        this.praDesain['lingkupmateri']=[];//this.praDesain.ormkurikulum.filter(s=>s.kodemapel == e.target.value)[0].ruanglingkup;;
+
+                    }
                     this.registerEventToolBar(q);   
                 }
                 if(key == 'bentuksoal'){
@@ -60,6 +78,8 @@ export default class BankSoalFacades extends Facades{
         const pradesain = this.praDesain;
         console.log('pradesain displayInputCreateItemSoal', pradesain);
         let divMode = document.getElementById('modecanvas');
+        
+        this.workplace.innerHTML = "";
         
         if(pradesain.mode =='bycopast' && pradesain.editor == 'editor'){
             this.workplace.innerHTML = controlbanksoal.templateCreatePerItemBankSoal();

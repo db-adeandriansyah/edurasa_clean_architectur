@@ -14,7 +14,7 @@ let arrriwayat = [];
         ob.value = 't_'+n.tapel+'_s_'+n.semester;
         ob.text= n.label+' Semester '+n.semester;
         ob.name='menusidebar';
-        arrriwayat.push(ob);
+        arrriwayat.push(ob);        
 
     })
 App.buildSidebarFitur(raporSidebar(arrriwayat),true,false);//,false,false);

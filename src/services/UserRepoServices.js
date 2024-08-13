@@ -19,7 +19,8 @@ export default class UserService extends UserRepositories{
         }
         let data = null;
         let result = false;
-        if(tokensiswa.length == 10){
+        console.log("panjang nilai tokensiswa",token.length)
+        if(token.length == 10){
             data = await this.loginSiswaByNISN(token);
         }else{
             data = await this.loginSiswaByToken(token);

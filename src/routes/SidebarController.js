@@ -37,7 +37,7 @@ const koleksiMenuNavigasi = [
         background  :images['absensi-siswa.webp']},
     { 
         title       :'KBM',                   
-        tag         :['Guru Kelas','admin','Guru Mapel','ptk','Kepala Sekolah',],         
+        tag         :['Guru Kelas','admin','Guru Mapel','ptk','Kepala Sekolah'],         
         tersedia    :'<span class="text-muted py-2">tersedia</span>',   
         icon        :'<i class="bi bi-book"></i>',                      
         target      :'/kbm',                      

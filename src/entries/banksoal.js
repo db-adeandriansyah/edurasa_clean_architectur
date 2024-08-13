@@ -9,7 +9,8 @@ import SoalService from "../services/SoalService.js";
 
 
 App.buildSidebarFitur(banksoalSidebar,false,true);
-App.createTitle('Bank Soal','Soal');
+
+App.createTitle('Bank-Soal','Soal');
 App.dataPermision({'canEdit':[2]});
 
 // const banksoalRepo = new BanksoalRepository();
@@ -20,7 +21,6 @@ const controller = new BankSoalControllers(App,banksoalServ);
 
 controller.init();
 controller.exec_fitur(false);
-
 
 ////======================== siap
 // import "../sass/main.scss";

@@ -3,6 +3,7 @@ import { ModalConfig,CollectionsEdu } from "../entries/vendor";
 import OrmKurikulumSoal from "../controller_features/banksoal/OrmKurikulumSoal";
 import { controlFiturBuatPerItemSoal } from "../controller_features/banksoal/viewBankSoal";
 import BankSoalFacades from "../facades/BankSoalFacades";
+// const BankSoalFacades = await import("../facades/BankSoalFacades").then(module=>  module.default  );;
 import DcBankSoal from "../data_controllers/DcBankSoal";
 import SoalDomain from "../domains/SoalDomain";
 import viewDesainNaskah from "../controller_features/naskahsoal/viewDesainNaskah";

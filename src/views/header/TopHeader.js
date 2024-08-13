@@ -181,7 +181,7 @@ export class TopHeader{
         let html= ""
         if(guest){
             html+=this.header(this.nav(this.wrapContainer(this.Linklogo+this.homeSubmenu(false,'/'))));
-            html+=this.headerMobile('iniiii'+this.navMobile(this.mobile_menuHome()+this.mobile_menuLogin()));
+            html+=this.headerMobile(this.navMobile(this.mobile_menuHome()+this.mobile_menuLogin()));
         }else{
             // html+=this.header(this.nav(this.wrapContainer(this.Linklogo+this.homeSubmenu(data))));
             html =this.pc_menuHOmePage(guest);

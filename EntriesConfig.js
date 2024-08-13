@@ -7,15 +7,15 @@ const EntriePoint=  {
     'arsipsurat'    :{import:'./src/entries/arsipsurat.js'   ,dependOn:['app','vendor','pdf']},
     'absensi'       :{import:'./src/entries/absensi.js'   ,dependOn:['app','vendor','pdf']},
     'kurikulum'     :{import:'./src/entries/kurikulum.js'   ,dependOn:['app','vendor','pdf']},
-    'kalender'     :{import:'./src/entries/kalender.js'   ,dependOn:['app','vendor','pdf']},
-    'banksoal'     :{import:'./src/entries/banksoal.js'   ,dependOn:['app','vendor','pdf']},
-    'banksoallama'     :{import:'./src/entries/banksoallama.js'   ,dependOn:['app','vendor','pdf']},
-    'kbm'           :{import:'./src/entries/kbm.js'   ,dependOn:['app','vendor','pdf']},
-    'raporijazah'   :{import:'./src/entries/raporijazah.js'   ,dependOn:['app','vendor','pdf']},
+    'kalender'      :{import:'./src/entries/kalender.js'   ,dependOn:['app','vendor','pdf']},
+    'banksoal'      :{import:'./src/entries/banksoal.js'   ,dependOn:['app','vendor','pdf']},
+    'banksoallama'  :{import:'./src/entries/banksoallama.js'   ,dependOn:['app','vendor','pdf']},
+    'kbm'           :{import:'./src/entries/kbm.js', dependOn:['app','vendor','pdf']},
+    'raporijazah'   :{import:'./src/entries/raporijazah.js'    ,dependOn:['app','vendor','pdf']},
     'app'           :'./src/apps/Singleton.js',//{import:'./src/apps/Singleton.js'},
     'vendor'        :'./src/entries/vendor.js',//{import:'./src/entries/vendor.js'},
     'style'         :'./src/entries/style.js' ,//{import:'./src/entries/style.js' },
-    // 'helper'      rt:'./src/apps/helper.js',//  :{import:'./src/apps/helper.js'},npm 
+    // 'helper'      rt:'./src/apps/helper.js',//  :{import:'./src/apps/helper.js'},
     'pdf'           :'./src/entries/style.js',// {import:'./src/entries/style.js' }
 }
 

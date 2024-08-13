@@ -86,9 +86,15 @@ const menuPilihBentukSoal = (data)=>{
 const menuPilihPropertiKurikulum = (tipekurikulum, data)=>{
     let html ="";
     let titleCard = 'Properti '+tipekurikulum;
+    console.log('menu pilih properti kurikulum',data)
     if(tipekurikulum == 'kurmer'){
-        
-        titleCard+=` (${data[0].kodemapel_teks})`;
+        if(data.length>0){
+            titleCard+=` (${data[0].kodemapel_teks})`;
+            
+        }else{
+            titleCard+=` (Mapel Tidak memiliki ATP)`;
+
+        }
     };
     html+=`<table class="w3-table-all table-sm table-bordered border-dark-subtle font10">`;
         html+=`<thead>`;
