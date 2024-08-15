@@ -71,4 +71,13 @@ export default class KalenderRepository extends CallHttp{
         }
         return await this.post(this.crud, param);
     }
+    async riwayatPtk(){
+        let p = {
+            'idss':this.appscript['ss_user'],
+            'tab':'ptk_alltime',
+            'action':'read',
+        }
+        
+        return await this.post(this.crud,p);
+    }
 }

@@ -35,15 +35,15 @@ export default class KalenderController extends Fitur{
         //     window.localStorage.setItem('dbSiswa',JSON.stringify(response.data));
         //     this.#dbsiswa = response.data;
         // }
-        // if(!this.App.hasLocal('ptkAlltime')){
-        //     let response = await this.service.repo.riwayatPtk();
+        if(!this.App.hasLocal('ptkAlltime')){
+            let response = await this.kaldikService.repo.riwayatPtk();
             
-        //     this.App.writeLocal('ptkAlltime',JSON.stringify(response.data));
-        //     this.#ptkalltime = response.data;
-        // }else{
-        //     this.#ptkalltime = this.App.LocalJson('ptkAlltime');
-        // }
-        // await this.kaldikService.hasDb();
+            this.App.writeLocal('ptkAlltime',JSON.stringify(response.data));
+            this.#ptkalltime = response.data;
+        }else{
+            this.#ptkalltime = this.App.LocalJson('ptkAlltime');
+        }
+        await this.kaldikService.hasDb();
         
         this.init();
     }
