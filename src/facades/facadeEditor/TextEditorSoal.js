@@ -585,7 +585,7 @@ export default class TextEditorSoal{
             }
             tekskd = orm.kd3+' '+orm.indikatorkd3;
         }
-        this.request.bentuksoalspesifik=this.praDesain.bentuksoal;
+        this.request.bentuksoalspesifik=this.praDesain.bentuksoalspesifik;
         this.request.tekskd = tekskd ;
         this.request.kurikulum = this.praDesain.namakurikulum ;
         this.request.kodemapel = this.praDesain.kodemapel;
@@ -1101,7 +1101,7 @@ export default class TextEditorSoal{
         // let namafileinput = 'gambar_soal'+new Date().getTime();
         if(file){
                 const respon = await this.service.uploadGambarInputFileTextEditor(file,this.praDesain.paramUploadGambar);
-                console.log(respon);
+                
                 // const respon = await this.service.simpanImage(params);
                 
                 let rsrc = new this.UrlImg(respon.idfile).urlImg;//"https://lh3.googleusercontent.com/d/"+respon.data.idfile;
@@ -1128,6 +1128,7 @@ export default class TextEditorSoal{
                     el.src = this.imageLoading;
                     
                     const respon =  await this.service.uploadGambarFromBase64(src,this.praDesain.paramUploadGambar);
+                    
                     let newurl = this.UrlImg(respon.idfile).urlImg; ;//`https://lh3.googleusercontent.com/d/${respon.data.idfile}`;
                     
                     el.src = newurl;

@@ -4,10 +4,13 @@ export default class SoalService{
     #db;
     #paramBankSoal;
     #paramUploadFileGambar;
+    #api_desainsimpansoal;
+    #api_datamateri;
     constructor(repo){
         this.repo = repo;
         this.#db = {};
         this.#paramBankSoal ={idss:'',tab:''};
+        this.#api_datamateri ={idss:'',tab:''};
         this.#paramUploadFileGambar ={'folder':'FOLDER'};
     }
     
@@ -25,6 +28,18 @@ export default class SoalService{
     }
     get api_banksoal(){
         return this.#paramBankSoal;
+    }
+    get api_desainsimpansoal(){
+        return this.#api_desainsimpansoal;
+    }
+    set api_desainsimpansoal(x){
+        this.#api_desainsimpansoal = x;
+    }
+    set api_materi(x){
+        this.#api_datamateri = x;
+    }
+    get api_materi (){
+        return this.#api_datamateri;
     }
     /**
      * 
@@ -102,5 +117,81 @@ export default class SoalService{
         
         this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
         this.repo.stopProgressBar();
+    }
+
+    async simpanItemSoalEdit(body){
+        let param=this.#paramBankSoal;
+        param.byRow = parseInt(body.idbaris);
+        param.formData = JSON.stringify(body);
+        this.repo.callWithProses();
+        let n = await this.repo.simpanItemSoalEdit(param);
+        
+        this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
+        this.repo.stopProgressBar();
+    }
+    async EditDesainNaskah(body){
+        let param=this.#api_desainsimpansoal;;
+        param.byRow = parseInt(body.idbaris);
+        param.formData = JSON.stringify(body);
+        this.repo.callWithProses();
+        let n = await this.repo.edit(param);
+        console.log(n);
+        this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
+        console.log('edit desain naskah', n.info.namaTab, this.#db)
+        this.repo.stopProgressBar();
+    }
+    async EditKbm(body){
+        let param=this.#api_datamateri;;
+        param.byRow = parseInt(body.idbaris);
+        param.formData = JSON.stringify(body);
+        this.repo.callWithProses();
+        let n = await this.repo.edit(param);
+        console.log(n);
+        this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
+        console.log('edit kbm', n.info.namaTab, this.#db)
+        this.repo.stopProgressBar();
+    }
+    async simpanDesainNaskah(dataspreadsheet,media){
+        let paramdefault = this.#api_desainsimpansoal;
+        let obchange ={'html_identitas':'fileUrl', 'html_soal':'idfile'}
+
+        this.repo.callWithProses();
+        let n = await this.repo.createIncludeMedia(paramdefault,obchange,dataspreadsheet,media)
+        console.log('test simpanDesainNaskah',n);
+        this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
+        this.repo.stopProgressBar();
+    }
+    async editDesainNaskahMedia(dataspreadsheet,media){
+        let paramdefault = this.#api_desainsimpansoal;
+        let obchange ={'html_identitas':'fileUrl', 'html_soal':'idfile'}
+        console.log('paramdefault', paramdefault)
+        this.repo.callWithProses();
+        let n = await this.repo.updateIncludeMedia(paramdefault,obchange,dataspreadsheet,media)
+        console.log('test editDesainNaskah',n);
+        this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
+        this.repo.stopProgressBar();
+    }
+    async simpanDataMateriKbm(dataspreadsheet,media){
+        let paramdefault = this.#api_datamateri;
+        let obchange = {'basetxt':'fileUrl', 'idmateri':'idfile'}
+
+        this.repo.callWithProses();
+        let n = await this.repo.createIncludeMediaKBM(paramdefault,obchange,dataspreadsheet,media)
+        console.log('test simpandatamateri',n);
+        this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
+        this.repo.stopProgressBar();
+    }
+    async simpanImage(par){
+        this.repo.callWithProses();
+        const res = await this.repo.saveImage(par);
+        this.repo.stopProgressBar();
+        return res;
+    }
+    async showTextHTML(idmateri){
+        this.repo.callWithProses();
+        let paramUI = '?action=readTxt&idmateri='+idmateri;
+        let n = await this.repo.showTextHTML(paramUI);
+        this.repo.stopProgressBar();
+        return n
     }
 }

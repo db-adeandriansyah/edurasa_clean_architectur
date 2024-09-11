@@ -8,15 +8,20 @@ const EntriePoint=  {
     'absensi'       :{import:'./src/entries/absensi.js'   ,dependOn:['app','vendor','pdf']},
     'kurikulum'     :{import:'./src/entries/kurikulum.js'   ,dependOn:['app','vendor','pdf']},
     'kalender'      :{import:'./src/entries/kalender.js'   ,dependOn:['app','vendor','pdf']},
-    'banksoal'      :{import:'./src/entries/banksoal.js'   ,dependOn:['app','vendor','pdf']},
-    'banksoallama'  :{import:'./src/entries/banksoallama.js'   ,dependOn:['app','vendor','pdf']},
+    'banksoal'      :{import:'./src/entries/newBankSoal.js'   ,dependOn:['app','vendor','pdf','vendorsoal']},
+    //versi lama
+    // 'banksoal'      :{import:'./src/entries/banksoal.js'   ,dependOn:['app','vendor','pdf']},
+    // 'banksoallama'  :{import:'./src/entries/banksoallama.js'   ,dependOn:['app','vendor','pdf']},
     'kbm'           :{import:'./src/entries/kbm.js', dependOn:['app','vendor','pdf']},
     'raporijazah'   :{import:'./src/entries/raporijazah.js'    ,dependOn:['app','vendor','pdf']},
+    //selesai versilama
     'app'           :'./src/apps/Singleton.js',//{import:'./src/apps/Singleton.js'},
     'vendor'        :'./src/entries/vendor.js',//{import:'./src/entries/vendor.js'},
     'style'         :'./src/entries/style.js' ,//{import:'./src/entries/style.js' },
     // 'helper'      rt:'./src/apps/helper.js',//  :{import:'./src/apps/helper.js'},
     'pdf'           :'./src/entries/style.js',// {import:'./src/entries/style.js' }
+    'vendorsoal'    :'./src/entries/vendorsoal.js',
+    
 }
 
 //page utama;
@@ -143,20 +148,20 @@ const pagesConfig = [
         chunks:['style','kalender','pdf','app','vendor'],
         publicPath:'/'
     },
-    {
-        title:'Edurasa | Bank Soal',
-        template:'./src/templates/fitur.html',
-        //favicon:'./src/img/lamaso.ico',
-        filename:'/banksoalbaru/index.html',
-        inject:"body",
-        meta: {
-            'description':'Aplikasi Manajemen Berbasis Sekolah SDN Ratujaya 1',
-            'theme-color': '#ffffff',
-            'apple-mobile-web-app-status-bar':'#ffffff'
-        },
-        chunks:['style','banksoal','pdf','app','vendor'],
-        publicPath:'/'
-    },
+    // {
+    //     title:'Edurasa | Bank Soal',
+    //     template:'./src/templates/fitur.html',
+    //     //favicon:'./src/img/lamaso.ico',
+    //     filename:'/banksoallama/index.html',
+    //     inject:"body",
+    //     meta: {
+    //         'description':'Aplikasi Manajemen Berbasis Sekolah SDN Ratujaya 1',
+    //         'theme-color': '#ffffff',
+    //         'apple-mobile-web-app-status-bar':'#ffffff'
+    //     },
+    //     chunks:['style','banksoallama','pdf','app','vendor'],
+    //     publicPath:'/'
+    // },
     {
         title:'Edurasa | Bank Soal',
         template:'./src/templates/fitur.html',
@@ -168,9 +173,10 @@ const pagesConfig = [
             'theme-color': '#ffffff',
             'apple-mobile-web-app-status-bar':'#ffffff'
         },
-        chunks:['style','banksoallama','pdf','app','vendor'],
+        chunks:['style','banksoal','pdf','app','vendor','vendorsoal'],
         publicPath:'/'
-    },{
+    },
+    {
         title:'Edurasa | Kbm',
         template:'./src/templates/fitur.html',
         //favicon:'./src/img/lamaso.ico',
@@ -183,7 +189,8 @@ const pagesConfig = [
         },
         chunks:['style','kbm','pdf','app','vendor'],
         publicPath:'/'
-    },{
+    },
+    {
         title:'Edurasa | Rapor',
         template:'./src/templates/fitur.html',
         //favicon:'./src/img/lamaso.ico',

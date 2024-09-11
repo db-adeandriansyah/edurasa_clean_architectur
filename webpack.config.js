@@ -155,8 +155,9 @@ module.exports = {
         runtimeChunk: 'single',
         // runtimeChunk: {
         //     name: (entrypoint) => `runtimechunk~${entrypoint.name}`,
-        //   },
+        // },
         splitChunks: {
+            
             cacheGroups: {
 
                 commons: {
@@ -183,7 +184,9 @@ module.exports = {
 					enforce: true,
                     reuseExistingChunk: true,
                     minSize: 0
-				}
+				},
+                
+
             }
         },
         

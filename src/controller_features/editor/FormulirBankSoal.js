@@ -1,5 +1,7 @@
 import UrlImg from "../../controllers/UrlImg";
+import { propertiItemSoal } from "../banksoal/viewBankSoal";
 import viewFormulirBankSoal from "./viewFormulirBankSoal";
+import { previewBentukSoal } from "./viewTextEditorEdurasa";
 
 export class FormulirBankSoal{
     constructor(pradesain,service){
@@ -9,6 +11,7 @@ export class FormulirBankSoal{
         this.imageLoading='/lamaso.webp'
         this.contextMenu = null;
         this.wraperTabel = null;
+
         this.btnSave = null;
         this.btnReset = null;
         this.resspon =null;
@@ -18,6 +21,7 @@ export class FormulirBankSoal{
         return this.service.data.lingkupmateri;
     }
     createForm(){
+        
         this.div.classList.add('position-relative');
         this.div.appendChild(viewFormulirBankSoal.html_table_formulir(this.datadesain, this.lingkupmateri()));
         this.div.appendChild(viewFormulirBankSoal.html_contextmenu_table_formulir());
@@ -26,12 +30,120 @@ export class FormulirBankSoal{
         // this.init();
     }
     createFormEdit(){
+        this.div.innerHTML = "";
         this.div.classList.add('position-relative');
         this.div.appendChild(viewFormulirBankSoal.html_table_formulirEdit(this.datadesain, this.lingkupmateri()));
         this.div.appendChild(viewFormulirBankSoal.html_contextmenu_table_formulir());
         this.contextMenu = document.getElementById('contextMenuDivEditorEditing');
         this.wraperTabel = document.getElementById('wrapertabel');
         // this.init();
+    }
+    fillItem(soal){
+        let inputan = document.querySelectorAll('[data-keyformuliredit]');
+        let inputandata = document.querySelector('#previewdata');
+        let inputanpreview = document.querySelector('#previewsoaledit');
+        
+        inputan.forEach(n=>{
+                let atr = n.getAttribute('data-keyformuliredit');
+                if(n.nodeName == 'td'|| n.nodeName =='TD' ){
+                    n.innerHTML = soal[atr];
+                }else{
+                    n.value = soal[atr];
+                }
+            });
+            
+            inputandata.innerHTML = propertiItemSoal(soal);
+            inputanpreview.innerHTML = previewBentukSoal(soal,false);
+    }
+
+    initEdit(){
+        let k = document.querySelectorAll('[data-keyformuliredit]');
+        let tekskd = '';
+        let orm = [];
+        if(this.datadesain.namakurikulum == 'kurmer'){
+            orm = this.datadesain.ormkurikulum.filter(s=> s.idbaris == this.datadesain.kd)[0];
+            console.log('ormInitEdit datadesain',this.datadesain)
+            console.log('ormInitEdit', orm)
+            tekskd = orm.atp;
+            
+            this.request.elemen = orm.elemen;
+            this.request.tp = orm.tp;
+            this.request.atp = orm.atp;
+        }else{
+            if(this.datadesain.mode == 'modal'){
+                orm = this.datadesain.ormkurikulum.filter(s=> s.baris == this.datadesain.kd)[0];
+            }else{
+                orm = this.datadesain.ormkurikulum.filter(s=> (s.kd3 == this.datadesain.kd || s.kd4 ==this.datadesain.kd) && s.mapel == this.datadesain.kodemapel)[0];
+            }
+
+            tekskd = orm.kd3+' '+orm.indikatorkd3;
+        }
+        this.request.bentuksoalspesifik=this.datadesain.bentuksoal;
+        this.request.tekskd = tekskd ;
+        this.request.kurikulum = this.datadesain.namakurikulum ;
+        this.request.kodemapel = this.datadesain.kodemapel;
+        this.request.tekskodemapel = this.datadesain.tekskodemapel;
+        this.request.jenjang = this.datadesain.jenjang;
+        this.request.oleh = this.datadesain.oleh;
+        this.request.idguru = this.datadesain.idguru;
+        this.request.kd= this.datadesain.kd;
+        if(this.datadesain.bentuksoal=='Pilihan Ganda'){
+            this.request.tampilanpg = 'BIASA';
+        }
+
+        this.request.bentuksoal = this.datadesain.bentuksoal =='Essay'?'Isian':this.datadesain.bentuksoal;
+        
+        k.forEach(n=>{
+            n.oninput = (e)=>{
+                let key = n.getAttribute('data-keyformuliredit');
+                this.replacingDataSrcToUrl(e);
+                if(e.target.nodeName == 'TD'){
+                    this.request = Object.assign(this.request,{[key]:e.target.innerHTML})
+                }else{
+                    this.request = Object.assign(this.request,{[key]:e.target.value})
+
+                } 
+                this.resspon(this.request);
+                this.contextMenu.style.display="none";
+            }
+            
+            n.oncontextmenu = (e)=>{
+                e.preventDefault();
+                
+                const selection = window.getSelection() ;//? window.getSelection() : document.selection;;
+                if (selection && selection.rangeCount) {
+                    
+                    let selectAsal = selection;
+                    let asal = selection.getRangeAt(0);
+                    let cekselect = selection.getRangeAt(0).cloneContents().childNodes;
+                    selectAsal.deleteFromDocument();
+                    
+                    if(cekselect.length != 1 || cekselect.length == 0) {
+                        alert('Silakan seleksi bagian teks saja, bukan kosong/lebih dari satu baris.') 
+                        
+                        return
+                    };
+                    this.showonContextMenu(e);
+                    let teks = cekselect;//[0].data;
+                    
+                    let btnscontext = document.querySelectorAll('[data-divEditor]');
+                    btnscontext.forEach(el=>{
+                        el.onclick = ()=>{
+                            let d = el.getAttribute('data-divEditor');
+                            if(this[d]){
+                                this[d](teks,asal);
+                            }else{
+                                asal.insertNode(document.createTextNode(teks[0].data));
+                            }
+                            this.contextMenu.style.display="none";
+                        }
+                    })
+                }
+            }
+
+            
+        })
+        
     }
     init(){
         let k = document.querySelectorAll('[data-keyformulir]');
@@ -115,6 +227,8 @@ export class FormulirBankSoal{
                     })
                 }
             }
+
+            
         })
         
     }

@@ -37,7 +37,7 @@ export default class OrmKurikulumSoal{
         return this;
     }
     properti_kurmer(){
-        // return new CollectionsEdu(this.dataService.data['fase'+this.abjadFase[this.jenjang]]);
+        
         let tp = this.dataService.data['fase'+this.abjadFase[this.jenjang]];
         let cp = this.dataService.data.elemencp;
         let kkmkktp = this.dataService.data.kkmkktp;

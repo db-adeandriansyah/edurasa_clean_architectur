@@ -86,7 +86,6 @@ const menuPilihBentukSoal = (data)=>{
 const menuPilihPropertiKurikulum = (tipekurikulum, data)=>{
     let html ="";
     let titleCard = 'Properti '+tipekurikulum;
-    console.log('menu pilih properti kurikulum',data)
     if(tipekurikulum == 'kurmer'){
         if(data.length>0){
             titleCard+=` (${data[0].kodemapel_teks})`;
@@ -267,4 +266,5 @@ const controlbanksoal = {
     'createPgKompleks'              : createPgKompleks
 }
 
+// export {controlbanksoal};
 export default controlbanksoal;

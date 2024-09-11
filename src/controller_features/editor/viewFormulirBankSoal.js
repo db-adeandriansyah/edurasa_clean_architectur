@@ -10,12 +10,23 @@ const tdFormulir = (item)=>{
     html+=`</tr>`;
     return html;
 }
-const selectFormulir = (item)=>{
+const tdFormulirEdit = (item)=>{
+    let html ="";
+    html+=`<tr>`;
+        html+=`<td class="text-end border-bottom border-top-0 border-end border-start-0">${item.title}</td>`;
+        html+=`<td contenteditable="true"  class="vw-100 text-start border-bottom border-top-0 border-end-0 border-start-0" data-keyformuliredit="${item.key}"></td>`;
+        html+=`<td>`;
+            html+=`<input class="form-check-input" type="checkbox" role="switch" onchange="(this.checked)?document.querySelector('[data-keyformuliredit=${item.key}]').textContent= document.querySelector('[data-keyformuliredit=${item.key}]').innerHTML:document.querySelector('[data-keyformuliredit=${item.key}]').innerHTML=document.querySelector('[data-keyformuliredit=${item.key}]').textContent">`;
+        html+=`</td>`;
+    html+=`</tr>`;
+    return html;
+}
+const selectFormulir = (item,edit=false)=>{
     let html ="";
     html+=`<tr>`;
         html+=`<td class="text-end border-bottom border-top-0 border-end border-start-0">${item.title}</td>`;
         html+=`<td colspan="2" class="vw-100 text-start border-bottom border-top-0 border-end-0 border-start-0">`;
-            html+=`<select class="form-select form-select-sm border-0" data-keyformulir="${item.key}">`;
+            html+=`<select class="form-select form-select-sm border-0" data-keyformulir${(edit)?'edit':''}="${item.key}">`;
             item.aray.forEach(n=>{
                 html+=`<option value="${n.key}">${n.title}</option>`;
             })
@@ -27,7 +38,8 @@ const selectFormulir = (item)=>{
     return html;
 }
 const html_table_formulir = (data,lingkupmateri)=>{
-    let currLingkupMateri = lingkupmateri.filter(s=> s.kodemapel == data.kodemapel);
+    let currLingkupMateriAsal = lingkupmateri.filter(s=> s.kodemapel == data.kodemapel).map(n=>({'key':n.lingkupmateri, 'title':n.lingkupmateri}));
+    let currLingkupMateri = [{key:'',title:'Belum Memilih',lingkupmateri:''}, ...currLingkupMateriAsal];//lingkupmateri.filter(s=> s.kodemapel == data.kodemapel);
     let ar = [
         {key:'ilustrasi',title:'Ilustrasi'},
         {key:'pertanyaan',title:'Pertanyaan'},
@@ -39,6 +51,7 @@ const html_table_formulir = (data,lingkupmateri)=>{
         {key:'opsiD',title:'Opsi D'},
     ];
     let keyopsi = [
+        {key:'',title:'Belum Memilih'},
         {key:'A',title:'A'},
         {key:'B',title:'B'},
         {key:'C',title:'C'},
@@ -53,13 +66,15 @@ const html_table_formulir = (data,lingkupmateri)=>{
         {key:'materi',title:'Materi Pokok'},
     ];
     let level=[
+        {key:'',title:'Belum Memilih'},
         {key:'L1',title:'L1/LK1/Pengetahuan Pemahaman'},
         {key:'L2',title:'L2/LK2/Aplikasi'},
         {key:'L3',title:'L3/LK3/Penalaran'},
     ]
     let arSelect = [
         {key:'levelkognitif',title:'Level Kognitif',aray:level},
-        {key:'ruanglingkup',title:'Lingkup Materi',aray:currLingkupMateri.map(n=>({'key':n.lingkupmateri, 'title':n.lingkupmateri}))},
+        // {key:'ruanglingkup',title:'Lingkup Materi',aray:currLingkupMateri.map(n=>({'key':n.lingkupmateri, 'title':n.lingkupmateri}))},
+        {key:'ruanglingkup',title:'Lingkup Materi',aray:currLingkupMateri},
     ]
     let html = "";
     html+=`<div class="tabel-responsive" id="wrapertabel">`;
@@ -103,7 +118,9 @@ const html_table_formulir = (data,lingkupmateri)=>{
     return stringToDom(html);
 }
 const html_table_formulirEdit = (data,lingkupmateri)=>{
-    let currLingkupMateri = lingkupmateri.filter(s=> s.kodemapel == data.kodemapel);
+    let currLingkupMateriAsal = lingkupmateri.filter(s=> s.kodemapel == data.kodemapel);
+    let currLingkupMateri = [{'lingkupmateri':'','title':'Belum Memilih'}, ...currLingkupMateriAsal];
+    console.log('lingkupmateri html render',currLingkupMateri)
     let ar = [
         {key:'ilustrasi',title:'Ilustrasi'},
         {key:'pertanyaan',title:'Pertanyaan'},
@@ -147,26 +164,26 @@ const html_table_formulirEdit = (data,lingkupmateri)=>{
                 html+=`</tr>`;
             html+=`</thead>`;
             html+=`<tbody>`;
-            html+=`<tr><td>ID</td><td colspan="2"><input type="number" data-keyformulir="idbaris" disabled class="form-control m-0 text-center" value="${data.idbaris}"></td></tr>`
+            html+=`<tr><td>ID</td><td colspan="2"><input type="number" data-keyformuliredit="idbaris" disabled class="form-control m-0 text-center" value="${data.idbaris}"></td></tr>`
             ar.forEach(n=>{
-                html+=tdFormulir(n);
+                html+=tdFormulirEdit(n);
             });
             if(data.bentuksoal == 'Pilihan Ganda'){
                 opsi.forEach(n=>{
-                    html+=tdFormulir(n)
+                    html+=tdFormulirEdit(n)
                 });
                 opsijawaban.forEach(n=>{
-                    html+=selectFormulir(n);
+                    html+=selectFormulir(n,true);
                 })
             }
             if(data.bentuksoal == 'Menjodohkan'){
                 html+=`<tr><td class="text-end border-bottom border-top-0 border-end border-start-0">Jumlah Soal</td><td colspan="2"><input type="number" data-keyformulir="jumlahsoalmenjodohkan" class="form-control m-0 text-center" value="${data.jumlahsoalmenjodohkan}"></td></tr>`
             }
             arWajib.forEach(n=>{
-                html+=tdFormulir(n);
+                html+=tdFormulirEdit(n);
             });
             arSelect.forEach(n=>{
-                html+=selectFormulir(n);
+                html+=selectFormulir(n,true);
             })
 
                 // html+=`<tr>`;

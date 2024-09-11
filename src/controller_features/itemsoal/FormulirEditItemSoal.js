@@ -1,104 +1,102 @@
-import ContextMenuEditor from "./ContextMenuEditor";
+import { previewBentukSoal, propertiItemSoal } from "../banksoal/viewBankSoal";
+import viewFormulirBankSoal from "../editor/viewFormulirBankSoal";
 
+export default class FormulirEditItemSoal{
+    constructor(currentItemSoal)
+    {
+        this.itemsoal = currentItemSoal;
 
-export default class PgKompleksEditor extends ContextMenuEditor{
-    // constructor(praDesain,queryTarget,load,UrlImg, view, idiframe='editorcustom'){
-        constructor(pradesain,service,divTextEditor,barloading,UrlImg,view){
-        super(service, divTextEditor,barloading,UrlImg);
-        this.datadesain = pradesain;
-        // this.targetDom = document.querySelector(queryTarget);
-        // this.idIframe = idiframe;
-        // this.imageLoading = load;
-        // this.UrlImg =UrlImg;
-        this.view = view;
+        //add class or instance of class
+        this.service = null;
+        this.UrlImg = null;
+        this.imageLoading = ''
+
+        //elemen
+        this.workplace = document.getElementById('editsoaleditorwraper');
+        this.contextMenu = null;
+        this.wraperTabel = null;
+        this.elemenForm = null;
+        this.elemenProperty = null;
+        this.elemenPreview = null;
+
+        //respon/output
+        this.request = {};
+        this.resspon = null;
+        this.callback = null;
+
+    }
+    addService(service){
+        this.service = service;
+        
+        return this;
+    }
+    addUrlImg(d){
+        this.UrlImg = d;
+        return this;
+    }
+    addLoading(x){
+        this.imageLoading = x;
+        return this;
+    }
+    addDataDesain(x){
+        this.datadesain = x;
+        return this
+    }
+    buildForm(){
+        console.log('build formuliredititemsoal',this.datadesain,this.service.data.lingkupmateri);
+        this.datadesain.kodemapel = this.itemsoal.kodemapel;
+        this.workplace.innerHTML = "";
+        this.workplace.classList.add('position-relative');
+        this.workplace.appendChild(viewFormulirBankSoal.html_table_formulirEdit(this.datadesain, this.service.data.lingkupmateri));
+        this.workplace.appendChild(viewFormulirBankSoal.html_contextmenu_table_formulir());
+
+        //define elemen
+        this.contextMenu = document.getElementById('contextMenuDivEditorEditing');
+        this.wraperTabel = document.getElementById('wrapertabel');
+        this.elemenForm = document.querySelectorAll('[data-keyformuliredit]');
+        this.elemenProperty = document.querySelector('#previewdata');
+        this.elemenPreview = document.querySelector('#previewsoaledit');
+        return this;
+    }
+    fillItem(){
+        const soal = this.itemsoal;
+        // let inputan = document.querySelectorAll('[data-keyformuliredit]');
+        // let inputandata = document.querySelector('#previewdata');
+        // let inputanpreview = document.querySelector('#previewsoaledit');
+        
+        this.elemenForm.forEach(n=>{
+                let atr = n.getAttribute('data-keyformuliredit');
+                if(n.nodeName == 'td'|| n.nodeName =='TD' ){
+                    n.innerHTML = soal[atr];
+                }else{
+                    n.value = soal[atr];
+                }
+            });
+            
+        this.elemenProperty.innerHTML = propertiItemSoal(soal);
+        this.elemenPreview.innerHTML = previewBentukSoal(soal,false);
+        return this;
     }
     init(){
-        //buat html formulir di properti div;
-        this.div.innerHTML = this.view.createPgKompleks(this.datadesain.lingkupmateri);
-        //definisikan contextMenu
-        this.contextMenu = document.getElementById('contextMenuDivEditorPGKOMPLEKS');
-        //definisikan div wraper dimana html formulir ditempatkan
-        this.wraperTabel = document.getElementById('divStaticalPGKOMPLEKS');
-        
-        
-        let tekskd = '';
-        let orm = [];
-        if(this.datadesain.namakurikulum == 'kurmer'){
-            orm = this.datadesain.ormkurikulum.filter(s=> s.idbaris == this.datadesain.kd)[0];
-            tekskd = orm.atp;
-            
-            this.request.elemen = orm.elemen;
-            this.request.tp = orm.tp;
-            this.request.atp = orm.atp;
-        }else{
-            if(this.datadesain.mode == 'modal'){
-                orm = this.datadesain.ormkurikulum.filter(s=> s.baris == this.datadesain.kd)[0];
-            }else{
-                orm = this.datadesain.ormkurikulum.filter(s=> (s.kd3 == this.datadesain.kd || s.kd4 ==this.datadesain.kd) && s.mapel == this.datadesain.kodemapel)[0];
-            }
 
-            tekskd = orm.kd3+' '+orm.indikatorkd3;
-        }
-        this.request.bentuksoalspesifik=this.datadesain.bentuksoal;
-        this.request.tekskd = tekskd ;
-        this.request.kurikulum = this.datadesain.namakurikulum ;
-        this.request.kodemapel = this.datadesain.kodemapel;
-        this.request.tekskodemapel = this.datadesain.tekskodemapel;
-        this.request.jenjang = this.datadesain.jenjang;
-        this.request.oleh = this.datadesain.oleh;
-        this.request.idguru = this.datadesain.idguru;
-        this.request.kd= this.datadesain.kd;
-        if(this.datadesain.bentuksoal=='Pilihan Ganda'){
-            this.request.tampilanpg = 'BIASA';
-        }
-
-        this.request.bentuksoal = this.datadesain.bentuksoal =='Essay'?'Isian':this.datadesain.bentuksoal;
-        //definisikan semua elemen isian
-        this.registerAction();
-    }
-    registerAction(){
-        let k = document.querySelectorAll('[data-kontenpgkomplek]')
-        k.forEach(n=>{
+        
+        this.request = Object.assign({},this.request, this.itemsoal);
+        this.elemenForm.forEach(n=>{
             n.oninput = (e)=>{
-                let key = n.getAttribute('data-kontenpgkomplek');
+                let key = n.getAttribute('data-keyformuliredit');
                 this.replacingDataSrcToUrl(e);
-                if(e.target.nodeName =='DIV'){
-                    
-                    this.request = Object.assign(this.request,{[key]:e.target.innerHTML});
-                    if(key == 'arraypgkomplek'){
-                        let allArray = document.querySelectorAll('[data-kontenpgkomplek="arraypgkomplek"]');
-                        let arrayResult = [];
-                        allArray.forEach(divresult=>{
-                            arrayResult.push(divresult.innerHTML);
-                        });
-                        this.request = Object.assign(this.request,{[key]:JSON.stringify(arrayResult)});
-                    }
-                    
-
-                } else{
+                if(e.target.nodeName == 'TD'){
+                    this.request = Object.assign(this.request,{[key]:e.target.innerHTML})
+                }else{
                     this.request = Object.assign(this.request,{[key]:e.target.value})
 
                 } 
                 this.resspon(this.request);
                 this.contextMenu.style.display="none";
+                this.elemenProperty.innerHTML = propertiItemSoal(this.request);
+                this.elemenPreview.innerHTML = previewBentukSoal(this.request,false);
             }
-            n.onchange = (e)=>{
-                let key = n.getAttribute('data-kontenpgkomplek');
-                if(key == 'kuncijawaban'){
-                    let allArray = document.querySelectorAll('[data-kontenpgkomplek="kuncijawaban"]');
-                    let arrayResult = [];
-                    let pembahasan = 'Pilihan seharusnya:';
-                    allArray.forEach(divresult=>{
-                        if(divresult.checked){
-                            arrayResult.push(divresult.nextElementSibling.innerHTML);;
-                            pembahasan+=`<br>`;
-                            pembahasan+=divresult.nextElementSibling.innerHTML;
-                        }
-                    });
-                    this.request = Object.assign(this.request,{[key]:JSON.stringify(arrayResult)});
-                    this.request = Object.assign(this.request,{['penskoran']:pembahasan});
-                }
-            }
+            
             n.oncontextmenu = (e)=>{
                 e.preventDefault();
                 
@@ -124,6 +122,9 @@ export default class PgKompleksEditor extends ContextMenuEditor{
                             let d = el.getAttribute('data-divEditor');
                             if(this[d]){
                                 this[d](teks,asal);
+                                this.elemenProperty.innerHTML = propertiItemSoal(this.request);
+                                this.elemenPreview.innerHTML = previewBentukSoal(this.request,false);
+
                             }else{
                                 asal.insertNode(document.createTextNode(teks[0].data));
                             }
@@ -132,6 +133,7 @@ export default class PgKompleksEditor extends ContextMenuEditor{
                     })
                 }
             }
+            
             n.onkeyup = n.onmouseup = (e)=>{
                 let cekImgs = n.querySelectorAll('.resizer');
                 cekImgs.forEach((img)=>{
@@ -284,25 +286,143 @@ export default class PgKompleksEditor extends ContextMenuEditor{
                     
                 }
             }
-        })
-        
-        const tambahelemenopsi = document.getElementById('tambahopsi');
-        tambahelemenopsi.onclick = (e)=>{
+
             
-            let list = document.getElementById('listpgkompleks');
-            let iLast = list.children.length-1;
-            let newLi = this.stringToDom(`<li class="list-item-group d-flex">
-                    <input type="checkbox" data-kontenPgKomplek="kuncijawaban" class="form-check-inline" id="koleksipgkompleks${iLast}" name="koleksipgkompleks">
-                    <div data-kontenPgKomplek="arraypgkomplek" data-refrensiId="koleksipgkompleks${iLast}" class="col-8 w-75 p-2 border-bottom border-end-0 border-top-0 border-start-0 text-start" contenteditable="true" spellcheck="false"></div>
-                    <span class="btn btn-sm btn-danger py-2 self-align-middle" onclick="this.parentElement.remove()">Hapus</span>
-                </li>`);
-            list.insertBefore(newLi, list.children[list.children.length-1]);
-            this.registerAction();
+        })
+        return this;
+    }
+    runtime(fn){
+        this.resspon = fn;
+    }
+    
+    showonContextMenu(e){
+        // let divStatical = this.staticDiv.getBoundingClientRect();
+        // let divWraper = this.divElemen.getBoundingClientRect();
+        let divStatical = this.workplace.getBoundingClientRect();
+        let divWraper = this.wraperTabel.getBoundingClientRect();
+        // posisi contextmenu;
+        let coord={
+            'clientX':e.clientX,
+            'left':e.offsetLeft,
+            'clientY':e.clientY,
+            'offsetX':e.offsetX, 
+            'offsetY':e.offsetY,
+        }
+        this.contextMenu.style.display="block";
+        this.contextMenu.style.left = (coord.clientX-divWraper.left+this.contextMenu.offsetWidth)+10+'px';
+        this.contextMenu.style.top = (coord.clientY - divStatical.top) -(this.contextMenu.offsetWidth/2)+'px';
+        
+    }
+    pecahan(cekteks,asal){
+        
+        let teks = cekteks[0].data
+
+        let arr = teks.split('/');
+        if(arr.length == 2){
+            let img = new Image();
+            let sr = `https://chart.apis.google.com/chart?cht=tx&chl=%7B%5Cfrac%20%7B${encodeURIComponent(arr[0])}%7D%20%7B${encodeURIComponent(arr[1])}%7D%7D`;
+            
+            img.src =  new this.UrlImg(sr).convertUrlToLatexLatest()
+            img.style.verticalAlign='middle';
+            img.alt = `pecahan ${arr[0]}/${arr[1]}`;
+            asal.insertNode(img);
+            
+        }else{
+            asal.insertNode(document.createTextNode(teks));
+        }
+        
+    }
+    
+    akarkubik(cekselect, asal){
+        let teks = "";
+        cekselect.forEach(el => {
+            
+            if(el.nodeName=='SUP'){
+                let d = el.innerHTML;
+                teks += `^{${d}}`;
+            }else if(el.nodeName == '#text'){
+                let d = el.data;
+                d = d.replace(/²/g,'^{2}');
+                d = d.replace(/³/g,'^{3}');
+                // d = d.replace(/\s+/g,'\:');
+                teks +=d;
+            }
+        })
+        let img = new Image();
+        let sr = `https://chart.apis.google.com/chart?cht=tx&chl=%7B%5Csqrt%5B3%5D%20%7B${encodeURIComponent(teks)}%7D`;
+            img.src =  new this.UrlImg(sr).convertUrlToLatexLatest();
+            img.style.verticalAlign='middle';
+            img.alt = `akar kubik ${teks}`;
+        // selection.deleteFromDocument();
+        asal.insertNode(img);
+        // selection.collapseToEnd();
+    
+}
+    akarkuadrat(cekselect, asal){
+
+            // let teks = cekselect[0].data;
+            let teks = "";
+            cekselect.forEach(el => {
+                
+                if(el.nodeName=='SUP'){
+                    let d = el.innerHTML;
+                    teks += `^{${d}}`;
+                }else if(el.nodeName == '#text'){
+                    let d = el.data;
+                    d = d.replace(/²/g,'^{2}');
+                    d = d.replace(/³/g,'^{3}');
+                    // d = d.replace(/\s+/g,'\:');
+                    teks +=d;
+                }
+            })
+            let img = new Image();
+            let sr = `https://chart.apis.google.com/chart?cht=tx&chl=%7B%5Csqrt%20%7B${encodeURIComponent(teks)}%7D`;
+            img.src =  new this.UrlImg(sr).convertUrlToLatexLatest()
+                img.style.verticalAlign='middle';
+                img.alt = `akar kuadrat ${teks}`;
+            // selection.deleteFromDocument();
+            asal.insertNode(img);
+            // selection.collapseToEnd();
+        
+    }
+    cekLK(cekselect,asal){
+        let teks = cekselect[0].data;
+
+        asal.insertNode(document.createTextNode(teks));
+        let taksonomibloom = this.service.data['taksonomibloom'].filter(s=> s.kko == teks);
+
+        if(taksonomibloom.length==0 ){
+            alert('Takonomi Bloom tidak ditemukan')
+            if(document.querySelector('[data-keyformulir="levelkognitif"]')){
+                document.querySelector('[data-keyformulir="levelkognitif"]').value ="";
+            }
+        }else{
+            if(document.querySelector('[data-keyformulir="levelkognitif"]')){
+                document.querySelector('[data-keyformulir="levelkognitif"]').value = taksonomibloom[0].levelkognitif;
+                document.querySelector('[data-keyformulir="levelkognitif"]').dispatchEvent(new Event('change'));
+                
+                this.request = Object.assign(this.request,{'levelkognitif':taksonomibloom[0].levelkognitif});
+                this.resspon(this.request);
+            }
         }
     }
-    stringToDom(string){
-        const template= document.createElement('template');
-        template.innerHTML = string;
-        return template.content;
+        
+    replacingDataSrcToUrl(e){
+        let inputTeks = e.target.innerHTML;
+            if(inputTeks.indexOf('data:image')==-1) return;
+            let imgs = e.target.querySelectorAll('img');
+                imgs.forEach(async el=>{
+                    let src = el.getAttribute('src');
+                    if(src.indexOf('data:image')==-1) return;
+                    el.src = this.imageLoading;
+                    const respon =  await this.service.uploadGambarFromBase64(src,this.service.api_uloadgambar);
+                    
+                    
+                    let newurl = new this.UrlImg(respon.idfile).urlImg; ;//`https://lh3.googleusercontent.com/d/${respon.data.idfile}`;
+                    el.src = newurl;
+                    el.alt = "Gambar Upload";
+                    // this.iframeDom.body.focus();
+                });
     }
+
 }

@@ -73,6 +73,15 @@ export default class ParameterAppScript{
     get api_elemencp(){
         return this.createParamTab(this.idssMateri,'elemencp','elemencp')
     }
+    get api_banksoal(){
+        return this.createParamTab(this.idssKalender,'banksoal','banksoal')
+    }
+    get api_desainsimpansoal(){
+        return this.createParamTab(this.idssKalender,'simpandesainsoal','simpandesainsoal')
+    }
+    get api_datamateri(){
+        return this.createParamTab(this.idssMateri,'datamateri','datamateri')
+    }
     get api_kdOrTp(){
         return this.createParamTab(this.idssMateri,this.namaFase,this.namaFase)
         // if(this.shortKurikulum == 'kurmer'){
@@ -81,6 +90,7 @@ export default class ParameterAppScript{
         //     return this.createParamTab(this.idssMateri,'kelas'+this.#jenjang,'kelas'+this.#jenjang);
         // }
     }
+
     //Fungsi Untuk membuat parameter
     createParamTab(idss,tabServer,tabDb){
         return {

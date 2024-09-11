@@ -105,10 +105,20 @@ export class CallHttp{
     }
     async post(uri,param){
         // if(!this.csrf()) return;
-        const parameter = this.paramFormData(param);
-        const f = await fetch(uri,{body:parameter,method:'post'});
-        const t = await f.json();
-        return t;
+        try{
+            const parameter = this.paramFormData(param);
+            const f = await fetch(uri,{body:parameter,method:'post'});
+            
+            const t = await f.json();
+            return t;
+        }catch(er){
+            document.getElementById('printarea').innerHTML = "ERROR, PERIKSA KONEKSI INTERNETNYA! <br>Massage Server: <br>"+er;
+        }
+        // const parameter = this.paramFormData(param);
+        //     const f = await fetch(uri,{body:parameter,method:'post'});
+        //     console.log(f.ok)
+        //     const t = await f.json();
+        //     return t;
     }
     async postAuto(param){
         /**

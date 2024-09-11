@@ -499,4 +499,39 @@ export default class Fitur extends Controller{
         }
         return monthArray;
     }
+    printableModal1(title='edurasa file'){
+        const print = this.Modal1.body.querySelector("#btncetaknaskah");
+        const word  = this.Modal1.body.querySelector("#btncetakword");
+        const pdf   = this.Modal1.body.querySelector("#btncetakpdf");
+        
+        print.onclick = ()=>{
+            let dom = document.getElementById('print-area-modal');
+            if(this.Modal1.orientation=='portrait'){
+                this.Modal1.control.printPortraitDom(dom);
+            }else{
+                this.Modal1.control.printLandscapeDom(dom);
+            }
+        }
+        
+        word.onclick = ()=>{
+            let dom = document.getElementById('print-area-modal');
+            if(this.Modal1.orientation=='portrait'){
+                this.Modal1.control.wordPortraitDom(title,dom);
+            }else{
+                this.Modal1.control.wordLandscapeDom(title,dom);
+            }
+        }
+
+
+
+        pdf.onclick = ()=>{
+            let dom = document.getElementById('print-area-modal');
+            if(this.Modal1.orientation=='portrait'){
+                this.Modal1.control.pdfPortraitDom(dom,title);
+            }else{
+                this.Modal1.control.pdfLandscapeDom(dom,title);
+            }
+        }
+
+    }
 }

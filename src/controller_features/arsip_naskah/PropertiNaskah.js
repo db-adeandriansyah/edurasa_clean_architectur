@@ -1,17 +1,17 @@
 
-import mapelkdcp_kurikulum from "../../models/mapel";
+
 import { FormatTanggal } from "../../utilities/FormatTanggal";
 
 
-export default class PropertiNaskahSoal{
+export default class PropertiNaskah{
     #dom;
     constructor(dbsoal){
-        this.desain = {};
+        
         this.dbsoal = dbsoal;
         this.ormkurikulum = [];//ormkurikulum;
         this.#dom = null;
         this.owner = {};
-        this.mapelAplikasi = mapelkdcp_kurikulum;
+        this.mapelAplikasi = {};
         this.desain={
             "judulnaskah"       : "",
             "kelas"             : '',
@@ -40,12 +40,21 @@ export default class PropertiNaskahSoal{
     get domNaskah(){
         return this.dom;
     }
+    // get currentMapelOnClassRoom(){
+    //     let tinggiRendah = this.desain.jenjang>3?'tinggi':'rendah';;
+    //     let teks = 'mapel'+this.desain.namakurikulum + tinggiRendah;;
+        
+    //     return  this.mapelAplikasi[teks]();
+        
+    // } 
+    set currentMapelOnClassRoom(x){
+                
+        this.mapelAplikasi = x;
+        return this;
+    }
     get currentMapelOnClassRoom(){
-        let tinggiRendah = this.desain.jenjang>3?'tinggi':'rendah';;
-        let teks = 'mapel'+this.desain.namakurikulum + tinggiRendah;;
-        
-        return  this.mapelAplikasi[teks]();
-        
+                
+        return  this.mapelAplikasi
     }
     get titlemapel(){
         if(this.desain.mapel.indexOf('Tema ')>-1 || this.desain.mapel.indexOf('TEMA ')>-1){
@@ -148,23 +157,23 @@ export default class PropertiNaskahSoal{
         
 
         let datadom={
-            "idbaris"           : data.obj_desainnaskah[0].idbaris,
-            "kop"               : data.obj_desainnaskah[0].kop,
-            "judulnaskah"       : data.obj_desainnaskah[0].juduldesain,
-            "kelas"             : data.obj_desainnaskah[0].jenjang,
+            // "idbaris"           : data.obj_desainnaskah[0].idbaris,
+            // "kop"               : data.obj_desainnaskah[0].kop,
+            // "judulnaskah"       : data.obj_desainnaskah[0].juduldesain,
+            // "kelas"             : data.obj_desainnaskah[0].jenjang,
             "start_waktu"       : new Date(data.idtgl),//"2024-05-14T23:11"
             "end_waktu"         : new Date(data.idtglend),
             "kopsoal"           : this.domNaskah.querySelector('#naskah_kop')?true:false,
             "identitassoal"     : this.domNaskah.querySelector('#naskah_identitas')?true:false,
             "tabelnilai"        : this.domNaskah.querySelector('#naskah_tabelnilai')?true:false,
             "petunjukumum"      : this.domNaskah.querySelector('#naskah_petunjukumum')?true:false,
-            "mapel"             : data.obj_desainnaskah[0].mapel,
-            "tekskodemapel"     : this.currentMapelOnClassRoom[data.obj_desainnaskah[0].mapel],
+            // "mapel"             : data.obj_desainnaskah[0].mapel,
+            // "tekskodemapel"     : this.currentMapelOnClassRoom[data.obj_desainnaskah[0].mapel],
             "petunjuknilai"     : this.domNaskah.querySelector('#naskah_sebarankd')?true:false,//naskah_sebarankd
             "penomoransoal"     : false,
             // "propertikd"        : data.propertikurikulum,
-            "kerangka"          : data.obj_desainnaskah[0].kerangka,//[{ "bentuksoal": "Pilihan Ganda", "jumlah": "2" }],//{ "bentuksoal": "Pilihan Ganda", "jumlah": "2" },
-            // "namakurikulum"     : data.namakurikulum,//kurmer|kurtilas
+            // "kerangka"          : data.obj_desainnaskah[0].kerangka,//[{ "bentuksoal": "Pilihan Ganda", "jumlah": "2" }],//{ "bentuksoal": "Pilihan Ganda", "jumlah": "2" },
+            "namakurikulum"     : 'kurmer',
             "mapeltema"         : [],//"PKN", "BINDO", "MTK", "SBDP", "PJOK",
             "jenjang"           : data.idtoken,
             "isUN"              : data.ujiansekolah==''?false:data.ujiansekolah,
@@ -384,10 +393,74 @@ export default class PropertiNaskahSoal{
             
         }
     }
-    propertiNaskahServer(){
+    
+    ketersedianElemenNaskahHtml(){
+        const {kopsoal,identitassoal,petunjukumum,petunjuknilai,tabelnilai,namakurikulum}=this.desain;
+        let domElemen = [];
         
-
-
+        if(kopsoal){
+            domElemen.push({'label':'KOP Surat (Tapel bisa saja beda,cek preview untuk edit naskah!)','id':'ketersediaan_kop','value':'kop'});
+        }
         
+        if(identitassoal){
+            domElemen.push({'label':'identitas','id':'ketersediaan_identitas','value':'identitas'});
+        }
+        
+        
+        if(petunjukumum){
+            domElemen.push({'label':'petunjukumum','id':'ketersediaan_petunjukumum','value':'petunjukumum'});
+        }
+        // let sebarankd = doms.getElementById('naskah_sebarankd');
+        if(petunjuknilai){
+            if(namakurikulum == 'kurmer'){
+                domElemen.push({'label':'Sebaran ATP','id':'ketersediaan_sebarankd','value':'sebarankd'});
+            }else{
+                domElemen.push({'label':'Sebaran KD','id':'ketersediaan_sebarankd','value':'sebarankd'});
+            }
+        }
+        
+        if(tabelnilai){
+            // if(namakurikulum == 'kurmer'){
+            //     domElemen.push({'label':'Kolom Nilai','id':'ketersediaan_tabelnilai','value':'tabelnilai'});
+            // }else{
+            //     domElemen.push({'label':'Kolom Nilai','id':'ketersediaan_tabelnilai','value':'tabelnilai'});
+            // }
+            domElemen.push({'label':'Kolom Nilai','id':'ketersediaan_tabelnilai','value':'tabelnilai'});
+        }
+        return domElemen;
     }
+    pelaksanaanNaskahHtml(){
+        const desain = this.desain;
+        let pelaksanaan = {
+            'start_waktu':new FormatTanggal(desain.start_waktu).stringForDateTimeLocal(),
+            'end_waktu':new FormatTanggal(desain.end_waktu).stringForDateTimeLocal(),
+            'durasi':FormatTanggal.durasiMenit(desain.start_waktu,desain.end_waktu),
+            'crtToken':new FormatTanggal(desain.start_waktu).idStringAbsen()
+        }
+        return pelaksanaan;
+    }
+    ObjekSebaranKDdanSoalnya(){
+        let kisikisiByNaskah = this.generateDataKisikisi();//.datakisikisi().generate;
+        let result = {};
+        kisikisiByNaskah.forEach(n=>{
+            let mapel = n.kodemapel; //kodemapel
+            let kd = n.data; // array;
+            
+            kd.forEach(kd=>{
+                let mapel_kd = mapel;
+                let propertikurikulum = kd.objekproperti;
+                    mapel_kd = mapel+'_'+propertikurikulum.idbaris;
+                
+                result[mapel_kd] = kd.arraysoal.map(n=>n.nosoal);
+            })
+
+        })
+        return result;
+    }
+    kuncipg(datasoal){
+       
+        return datasoal.filter(s=> s.bentuksoal == 'Pilihan Ganda').map(n=>n.nosoal+n.itemsoal.kuncijawaban);
+
+    }
+        
 }

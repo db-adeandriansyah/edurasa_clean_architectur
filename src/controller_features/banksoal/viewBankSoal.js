@@ -1,7 +1,7 @@
 import controlbanksoal from "../../views/banksoal/controlBankSoal";
 
 export const controlFiturBuatPerItemSoal = (data)=>{
-    const { shortKurikulum, longKurikulum, jenjang, koleksibentuksoal,koleksimapel, isGuruMapel, mapelAjar, _htmlkoleksimapel, kurikulum} = data;
+    const { shortKurikulum, longKurikulum, jenjang, koleksibentuksoal,isGuruMapel, mapelAjar, _htmlkoleksimapel, kurikulum} = data;
     let datamenu = {
         araymenu:[
             {
@@ -123,11 +123,12 @@ export const previewBentukSoalJawaban = (data,withnumber=true)=>{
 
     if(data.bentuksoalspesifik === "Pilihan Ganda"){
         return previewKunciJawaban(data,withnumber);
-    }else if(data.bentuksoalspesifik == 'Isian'){
-        return previewSoalIsian(data,withnumber);
-    }else if(data.bentuksoalspesifik == 'Essay'){
-        return previewSoalIsian(data,withnumber);
     }
+    // else if(data.bentuksoalspesifik == 'Isian'){
+    //     return previewSoalIsian(data,withnumber);
+    // }else if(data.bentuksoalspesifik == 'Essay'){
+    //     return previewSoalIsian(data,withnumber);
+    // }
     return data.penskoran??'Belum Ada data';
 }
 export const propertiItemSoal = (data)=>{

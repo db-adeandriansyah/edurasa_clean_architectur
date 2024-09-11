@@ -14,7 +14,7 @@ App.registerUrlPermission('/kurikulum', ['Guru Kelas','Guru Mapel','Kepala Sekol
 App.registerUrlPermission('/kalender', ['Guru Kelas','Guru Mapel','Kepala Sekolah','admin','Staff'] );
 App.registerUrlPermission('/banksoal', ['Guru Kelas','Guru Mapel','Kepala Sekolah','admin','Staff'] );
 App.registerUrlPermission('/banksoallama', ['admin'] );
-App.registerUrlPermission('/banksoalbaru', ['admin'] );
+App.registerUrlPermission('/banksoalbaru', ['admin','Guru Kelas','Guru Mapel'] );
 App.registerUrlPermission('/kbm', ['Guru Kelas','Guru Mapel','Kepala Sekolah','admin','Staff'] );
 App.registerUrlPermission('/rapor', ['Guru Kelas','Guru Mapel','Kepala Sekolah','admin','Staff'] );
 App.init();

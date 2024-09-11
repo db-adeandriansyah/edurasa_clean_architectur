@@ -1,7 +1,7 @@
 import UrlImg from "../../controllers/UrlImg";
 import { tabelDom } from "../../entries/vendor";
 import { stringToDom } from "../../views/components/doms";
-import { previewBentukSoal, previewBentukSoalJawaban, previewSoalPilihanGanda, replaceSoalToSel } from "../banksoal/viewBankSoal";
+import { previewBentukSoal, previewBentukSoalJawaban, previewKunciJawaban, previewSoalPilihanGanda, replaceSoalToSel } from "../banksoal/viewBankSoal";
 const viewTabelNilai=()=>{
     let blank = [{absen:'',namasiswa:'',nilai:'',parafguru:'',parafot:''}];
     let settingTabelNilai = {
@@ -99,6 +99,7 @@ const viewIdentitas = (data)=>{
     return html;
 }
 const tabelSebaranKD = (data)=>{
+    console.log('data tabelSebaranKD',data);
     let kelompokBentukSoal = data.kelompokBentuksoal;
     let labelheader = [];
     kelompokBentukSoal.forEach(n=>{
@@ -126,7 +127,7 @@ const tabelSebaranKD = (data)=>{
         ],
         body:()=>{
             const srcData = data.propertiKurikulum;
-            const mpl = srcData[0].mapel;
+            const mpl = srcData[0].mapel??srcData[0].kodemapel;
             let tr = "";
             let elemen = [ ...new Set(srcData.map(n=> n.elemen))];
             elemen.forEach((el,i)=>{
@@ -306,22 +307,22 @@ const viewIsiNaskahSoal = (data)=>{
             html+=`</td>`;
         html+=`</tr>`;
         let jumlahKelompokSoal =parseInt(ref);// parseInt(kerangka[ref]);
-        if(val =='Menjodohkan'){
-            html+=`<tr>
-            <td style="width:8px;margin-bottom:0;border:0;text-align:right;padding:4px 8px;mso-padding:4px 8px;vertical-align:middle"></td>`
-            // ${flagnoByBentuk} s.d ${flagnoByBentuk+(jumlahKelompokSoal-1)}.</td>`;
-            html+=`<td 
-                    data-noByBentuk="${flagnoByBentuk}" 
-                    style="border:0;margin-bottom:0;padding:4px 8px;mso-padding:4px 8px;vertical-align:top" 
-                    data-nosoal="${flagNoSoal}" 
-                    data-bentuksoal="${val}"
-                    data-banyakjodoh="${jumlahKelompokSoal}"
-                >`;
-                html+=`Klik bagian ini untuk menempatkan soal menjodohkan untuk mengisi nomor ${flagnoByBentuk} sampai ${flagnoByBentuk+(jumlahKelompokSoal-1)}.`
-            html+=`</td>`;
-                flagNoSoal+=jumlahKelompokSoal;
-                flagnoByBentuk+=jumlahKelompokSoal;
-        }else{
+                    // if(val =='Menjodohkan'){
+                    //     html+=`<tr>
+                    //     <td style="width:8px;margin-bottom:0;border:0;text-align:right;padding:4px 8px;mso-padding:4px 8px;vertical-align:middle"></td>`
+                    //     // ${flagnoByBentuk} s.d ${flagnoByBentuk+(jumlahKelompokSoal-1)}.</td>`;
+                    //     html+=`<td 
+                    //             data-noByBentuk="${flagnoByBentuk}" 
+                    //             style="border:0;margin-bottom:0;padding:4px 8px;mso-padding:4px 8px;vertical-align:top" 
+                    //             data-nosoal="${flagNoSoal}" 
+                    //             data-bentuksoal="${val}"
+                    //             data-banyakjodoh="${jumlahKelompokSoal}"
+                    //         >`;
+                    //         html+=`Klik bagian ini untuk menempatkan soal menjodohkan untuk mengisi nomor ${flagnoByBentuk} sampai ${flagnoByBentuk+(jumlahKelompokSoal-1)}.`
+                    //     html+=`</td>`;
+                    //         flagNoSoal+=jumlahKelompokSoal;
+                    //         flagnoByBentuk+=jumlahKelompokSoal;
+                    // }else{
             for(let i = 0 ; i < jumlahKelompokSoal ; i++){
                 if(val=='Menulis Rapih'){
                     html+=`<tr>
@@ -331,7 +332,7 @@ const viewIsiNaskahSoal = (data)=>{
                     data-noByBentuk="${flagnoByBentuk}" 
                     style="border:0;margin-bottom:0;padding:4px 8px;mso-padding:4px 8px;vertical-align:top" 
                     data-nosoal="${flagNoSoal}" 
-                    data-bentuksoal="${val}"
+                    data-bentuksoal="${val}" 
                 >`;
                         html+=`<table style="border-collapse:collapse; border-spacing:0; width:100%;margin-top:1rem;line-height:7px">`;
                             html+=`<tr><td style="border-bottom:.5pt solid #ddd;width:100%;font-size:6px">&nbsp;</td></tr>`
@@ -350,7 +351,7 @@ const viewIsiNaskahSoal = (data)=>{
                         data-noByBentuk="${flagnoByBentuk}" 
                         style="border:0;margin-bottom:0;padding:4px 8px;mso-padding:4px 8px;vertical-align:top" 
                         data-nosoal="${flagNoSoal}" 
-                        data-bentuksoal="${val}"
+                        data-bentuksoal="${val}" ${val=='Menjodohkan'?`data-banyakjodoh="1" `:''}
                     >`
                     
                     html+=`Klik Sekali untuk menambahkan/mengedit posisi soal ${val}<br> (index Soal: ${flagNoSoal}, No. Soal:${flagnoByBentuk} )`
@@ -362,7 +363,7 @@ const viewIsiNaskahSoal = (data)=>{
             }
 
             
-        }
+        // }
         if(data.penomoransoal){
             
             flagnoByBentuk = 1
@@ -376,7 +377,7 @@ const viewIsiNaskahSoal = (data)=>{
 const viewIsiNaskahSoalDraft = (data)=>{
     let Urutan = data.kerangka;
     let html = "";
-
+    console.log(data, Urutan)
     html+=`<table class="tempatnaskahsoal_soal" id="tabelkontendesainnaskah_dariserver" style="border-collapse:collapse;border-spacing;margin-top:0;font-family:'timesNewRoman';border:0;width:95%;font-weight:normal;margin-left:2.1rem"><tbody>`;
     
     Urutan.forEach(n=>{
@@ -857,7 +858,7 @@ const tabelkisikisidansoal = (datakonfigurasi,datasoal)=>{
                         html+=`</tr><tr>`
                         html+=`<td style="padding:4px 8px;border:.5pt solid #000;vertical-align:top" colspan="${headerKey.length}">`;
                             html+=previewBentukSoal(n.itemsoal,false);
-                            html+=previewBentukSoalJawaban(n.itemsoal,false);
+                            html+=previewKunciJawaban(n.itemsoal,false);
                         html+=`</td>`;
                     html+=`</tr>`;
                 })
@@ -1011,6 +1012,38 @@ const htmlkuncijawabanModal1 = (identitas,datasoal)=>{
     return html;
 
 }
+const templateNaskahOffline = (dom,datahtml)=>{
+    let tbody = dom.querySelector('#tabelkontendesainnaskah_dariserver > tbody');
+    let tr = tbody.querySelectorAll('tr');
+    
+    for(let i = 0 ; i < tr.length ; i++){
+        let sel = tr[i].cells;
+        let ref = datahtml[i];
+        if(sel.length>1){
+            let datareplace = {};
+
+            datareplace.setilustrasi = ref.ilustrasi;
+            
+            if(ref.hasOwnProperty('tampilanpg')){
+                datareplace.tampilanpg   = ref.tampilanpg
+            }else{
+                datareplace.tampilanpg   = 'vertical';
+            }
+
+            datareplace.nosoal = ref.nosoal;
+            sel[1].innerHTML = replaceSoalToSel(ref.itemsoal,datareplace,false);
+        }
+    }
+    
+    let html = document.createElement('div');
+    html.appendChild(dom);
+    // this.Modal1.widthOrientation(false);
+    // this.Modal1.settingHeder('NASKAH OFFLINE '+datadesain.juduldesain.toUpperCase());
+    // this.Modal1.showBodyHtml(viewArsipNaskah.viewModal(html.innerHTML));
+    // this.Modal1.show();
+    // this.printableModal(datadesain.juduldesain);
+    return html.innerHTML;
+}
 const viewSoal = {
     'tabelNilai' : viewTabelNilai,
     'petunjukUmum':viewPetunjukUmum,
@@ -1022,7 +1055,8 @@ const viewSoal = {
     'viewIsiNaskahSoalDraft':viewIsiNaskahSoalDraft,
     'htmlkuncijawaban':htmlkuncijawaban,
     'htmlkisikisiModal1':htmlkisikisiModal1,
-    'htmlkuncijawabanModal1':htmlkuncijawabanModal1
+    'htmlkuncijawabanModal1':htmlkuncijawabanModal1,
+    'templateNaskahOffline':templateNaskahOffline
 }
 
 export default viewSoal;

@@ -1,5 +1,6 @@
 import { Controller } from "./Controller";
 
+
 export default class LoginController extends Controller{
     constructor(App){
         super(App);
@@ -8,6 +9,7 @@ export default class LoginController extends Controller{
     }
     
     index(service){
+        document.getElementById('logolamaso').src = this.Auth.logo;
         this.btn.onclick= async()=>{
             let auth = await service.loginPtk(document.getElementById('username').value,document.getElementById('password').value);
             

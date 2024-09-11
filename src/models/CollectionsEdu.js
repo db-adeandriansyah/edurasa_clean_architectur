@@ -66,6 +66,16 @@ export class CollectionsEdu {
     countData() {
       return this.data.length;
     }
+    get lastData(){
+      return this.data[this.countData()-1];
+    }
+    get headerValueEmpty(){
+      let obj = {};
+      Object.keys(this.data[0]).forEach(n=>{
+        obj[n]="";
+      })
+      return obj;
+    }
     intersectByProperty(propName, otherData) {
       const intersectedData = this.data.filter((item) =>
         otherData.some((otherItem) => otherItem[propName] === item[propName])
@@ -82,155 +92,156 @@ export class CollectionsEdu {
         return item;
       });
       return this;
+    }
+    uniqueByProperty(propName) {
+      const uniqueValues = new Set();
+      const uniqueData = this.data.filter((item) => {
+          const propValue = item[propName];
+          if (!uniqueValues.has(propValue)) {
+              uniqueValues.add(propValue);
+              return true;
+          }
+          return false;
+      });
+      return new CollectionsEdu(uniqueData);
+    }
+    
+    uniqueByProperties(propNames) {
+      const uniqueValues = new Set();
+      const uniqueData = this.data.filter((item) => {
+          const propValues = propNames.map(propName => item[propName]);
+          const joinedPropValue = propValues.join('|');
+          if (!uniqueValues.has(joinedPropValue)) {
+              uniqueValues.add(joinedPropValue);
+              return true;
+          }
+          return false;
+      });
+
+      this.data = uniqueData; // Update data instance variable
+      return this; // Return the current instance for chaining
   }
-  uniqueByProperty(propName) {
-    const uniqueValues = new Set();
-    const uniqueData = this.data.filter((item) => {
-        const propValue = item[propName];
-        if (!uniqueValues.has(propValue)) {
-            uniqueValues.add(propValue);
-            return true;
-        }
-        return false;
-    });
-    return new CollectionsEdu(uniqueData);
-  }
-  
-  uniqueByProperties(propNames) {
-    const uniqueValues = new Set();
-    const uniqueData = this.data.filter((item) => {
-        const propValues = propNames.map(propName => item[propName]);
-        const joinedPropValue = propValues.join('|');
-        if (!uniqueValues.has(joinedPropValue)) {
-            uniqueValues.add(joinedPropValue);
-            return true;
-        }
-        return false;
-    });
-
-    this.data = uniqueData; // Update data instance variable
-    return this; // Return the current instance for chaining
-}
-  
-  sortByProperty(propName, order = 'asc') {
-  if (order !== 'asc' && order !== 'desc') {
-      throw new Error("Invalid order. Use 'asc' or 'desc'.");
-  }
-
-  const sortedData = this.data.slice().sort((a, b) => {
-      const propA = a[propName];
-      const propB = b[propName];
-      
-      if (typeof propA === 'number' && typeof propB === 'number') {
-          return order === 'asc' ? propA - propB : propB - propA;
-      }
-
-      if (typeof propA === 'string' && typeof propB === 'string') {
-          return order === 'asc' ? propA.localeCompare(propB) : propB.localeCompare(propA);
-      }
-
-      return 0;
-  });
-
-  return new CollectionsEdu(sortedData);
-  }
-  calculateAge(dateOfBirth) {
-    const today = new Date();
-    const birthDate = new Date(dateOfBirth);
-
-    const yearDiff = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    const dayDiff = today.getDate() - birthDate.getDate();
-
-    let ageYears = yearDiff;
-    let ageMonths = monthDiff;
-    let ageDays = dayDiff;
-
-    if (dayDiff < 0) {
-      ageMonths -= 1;
-      ageDays += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+    
+    sortByProperty(propName, order = 'asc') {
+    if (order !== 'asc' && order !== 'desc') {
+        throw new Error("Invalid order. Use 'asc' or 'desc'.");
     }
 
-    if (monthDiff < 0) {
-      ageYears -= 1;
-      ageMonths += 12;
-    }
+    const sortedData = this.data.slice().sort((a, b) => {
+        const propA = a[propName];
+        const propB = b[propName];
+        
+        if (typeof propA === 'number' && typeof propB === 'number') {
+            return order === 'asc' ? propA - propB : propB - propA;
+        }
 
-    return { years: ageYears, months: ageMonths, days: ageDays };
-  }
+        if (typeof propA === 'string' && typeof propB === 'string') {
+            return order === 'asc' ? propA.localeCompare(propB) : propB.localeCompare(propA);
+        }
 
-  calculateAges() {
-    const newData = this.data.map((item) => {
-      // const age = this.calculateAge(item.dateOfBirth);
-      const age = this.calculateAge(item.pd_tanggallahir);
-      return { ...item, age };
+        return 0;
     });
 
-    return new CollectionsEdu(newData);
-  }
-  simpleFilterAge(kriteriaPenyaringan) {
-    return this.customFilter((item) => {
-      for (const key in kriteriaPenyaringan) {
-        if (key === 'age' && typeof kriteriaPenyaringan.age === 'object') {
-          const ageCriteria = kriteriaPenyaringan.age;
-          const age = this.calculateAge(item.pd_tanggallahir);
+    return new CollectionsEdu(sortedData);
+    }
+    calculateAge(dateOfBirth) {
+      const today = new Date();
+      const birthDate = new Date(dateOfBirth);
 
-          if (
-            ('years' in ageCriteria && age.years !== ageCriteria.years) ||
-            ('months' in ageCriteria && age.months !== ageCriteria.months) ||
-            ('days' in ageCriteria && age.days !== ageCriteria.days)
-          ) {
+      const yearDiff = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      const dayDiff = today.getDate() - birthDate.getDate();
+
+      let ageYears = yearDiff;
+      let ageMonths = monthDiff;
+      let ageDays = dayDiff;
+
+      if (dayDiff < 0) {
+        ageMonths -= 1;
+        ageDays += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+      }
+
+      if (monthDiff < 0) {
+        ageYears -= 1;
+        ageMonths += 12;
+      }
+
+      return { years: ageYears, months: ageMonths, days: ageDays };
+    }
+
+    calculateAges() {
+      const newData = this.data.map((item) => {
+        // const age = this.calculateAge(item.dateOfBirth);
+        const age = this.calculateAge(item.pd_tanggallahir);
+        return { ...item, age };
+      });
+
+      return new CollectionsEdu(newData);
+    }
+    simpleFilterAge(kriteriaPenyaringan) {
+      return this.customFilter((item) => {
+        for (const key in kriteriaPenyaringan) {
+          if (key === 'age' && typeof kriteriaPenyaringan.age === 'object') {
+            const ageCriteria = kriteriaPenyaringan.age;
+            const age = this.calculateAge(item.pd_tanggallahir);
+
+            if (
+              ('years' in ageCriteria && age.years !== ageCriteria.years) ||
+              ('months' in ageCriteria && age.months !== ageCriteria.months) ||
+              ('days' in ageCriteria && age.days !== ageCriteria.days)
+            ) {
+              return false;
+            }
+          } else if (item[key] !== kriteriaPenyaringan[key]) {
             return false;
           }
-        } else if (item[key] !== kriteriaPenyaringan[key]) {
-          return false;
-        }
-      }
-      return true;
-    });
-  }
-//   filterByArg(arg) {
-//     if (!Array.isArray(arg)) {
-//         throw new Error('Argumen harus berupa array.');
-//     }
-
-//     const filteredData = this.data.filter(item => {
-//         for (const filterItem of arg) {
-//             const propName = Object.keys(filterItem)[0];
-//             if (item[propName] !== filterItem[propName]) {
-//                 return false;
-//             }
-//         }
-//         return true;
-//     });
-
-//     return new CollectionsEdu(filteredData);
-// }
-  filterByArg(arg) {
-    if (!Array.isArray(arg)) {
-        throw new Error('Argumen harus berupa array.');
-    }
-
-    const filterCriteria = {};
-
-    for (const item of arg) {
-        if (typeof item === 'object' && Object.keys(item).length === 1) {
-            const propName = Object.keys(item)[0];
-            filterCriteria[propName] = item[propName];
-        }
-    }
-
-    const filteredData = this.data.filter(item => {
-        for (const prop in filterCriteria) {
-            if (item[prop] !== filterCriteria[prop]) {
-                return false;
-            }
         }
         return true;
-    });
+      });
+    }
+  //   filterByArg(arg) {
+  //     if (!Array.isArray(arg)) {
+  //         throw new Error('Argumen harus berupa array.');
+  //     }
 
-    return new CollectionsEdu(filteredData);
-}
+  //     const filteredData = this.data.filter(item => {
+  //         for (const filterItem of arg) {
+  //             const propName = Object.keys(filterItem)[0];
+  //             if (item[propName] !== filterItem[propName]) {
+  //                 return false;
+  //             }
+  //         }
+  //         return true;
+  //     });
+
+  //     return new CollectionsEdu(filteredData);
+  // }
+    filterByArg(arg) {
+      if (!Array.isArray(arg)) {
+          throw new Error('Argumen harus berupa array.');
+      }
+
+      const filterCriteria = {};
+
+      for (const item of arg) {
+          if (typeof item === 'object' && Object.keys(item).length === 1) {
+              const propName = Object.keys(item)[0];
+              filterCriteria[propName] = item[propName];
+          }
+      }
+
+      const filteredData = this.data.filter(item => {
+          for (const prop in filterCriteria) {
+              if (item[prop] !== filterCriteria[prop]) {
+                  return false;
+              }
+          }
+          return true;
+      });
+
+      return new CollectionsEdu(filteredData);
+    }
+    
 }
 /**contoh penggunaan intersect 
 const data1 = [

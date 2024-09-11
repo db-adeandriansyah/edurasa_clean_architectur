@@ -90,7 +90,7 @@ const menuPilihMapel = (data)=>{
         +
         rowCols.cols('col-md-12',
             cardMenu('Properti Kurikulum',
-                `<div class="border p-1 rounded font8" id="tableKDTemplateDesain">TABEL PROPERTI</div>`,false
+                `<div class="border p-1 rounded font8 overflow-y-scroll" style="max-height:500px" id="tableKDTemplateDesain">TABEL PROPERTI</div>`,false
 
             )
         )
@@ -332,11 +332,11 @@ const toolbarDesainNaskah = (data)=>{
                 title_tab:'Kerangka Naskah',
                 body_html:menuKerangkaNaskah(data)
             },
-            {
-                id:'tab_menu4',
-                title_tab:'Finishing',
-                body_html:menuFinishing()
-            },
+            // {
+            //     id:'tab_menu4',
+            //     title_tab:'Finishing',
+            //     body_html:menuFinishing()
+            // },
             {
                 id:'tab_menu5',
                 title_tab:'Draft',
@@ -387,20 +387,22 @@ const tabelPropertikurikulummodal = (prefikid,data)=>{
     if(namakurikulum == 'kurmer'){
 
         html+=`<table class="w3-table-all font8">`;
-                html+=`<tr><th class="text-center align-middle">Elemen</th><th class="text-center align-middle">ATP</th><th class="text-center align-middle">Pilih</th></tr>`;
+                html+=`<tr><th class="text-center align-middle">Elemen</th><th class="text-center align-middle">Id</th><th class="text-center align-middle">ATP</th><th class="text-center align-middle">Pilih</th></tr>`;
                 let elemenUnique =  [...new Set(propertikd.map(n=> n.elemen))];
                 elemenUnique.forEach(elemen=>{
                         html+=`<tr>`;
                         let countElemen = propertikd.filter(s=> s.elemen == elemen);
                         if(countElemen.length == 1){
                             html+=`<td class="text-wrap">${elemen}</td>`;
+                            html+=`<td class="text-wrap">${countElemen[0].idbaris}</td>`;
                             html+=`<td><label for="${prefikid}_${countElemen[0].idbaris}"> ${countElemen[0].atp}</td>`;
-                            html+=`<td><input type="radio" name="${prefikid}" id="${prefikid}_${countElemen[0].idbaris}" value="${countElemen[0].idbaris}"/></td>`;
+                            html+=`<td><input type="radio" data-desainmodal="kd" name="${prefikid}" id="${prefikid}_${countElemen[0].idbaris}" value="${countElemen[0].idbaris}"/></td>`;
                         }else{
                             html+=`<td class="text-wrap" rowspan="${countElemen.length}">${elemen}</td>`;
                             for(let i = 0 ; i < countElemen.length ; i++){
+                                    html+=`<td class="text-wrap">${countElemen[i].idbaris}</td>`;
                                     html+=`<td><label for="${prefikid}_${countElemen[i].idbaris}"> ${countElemen[i].atp}</td>`;
-                                    html+=`<td><input type="radio" name="${prefikid}" id="${prefikid}_${countElemen[i].idbaris}" value="${countElemen[i].idbaris}"/></td>`;
+                                    html+=`<td><input type="radio" data-desainmodal="kd" name="${prefikid}" id="${prefikid}_${countElemen[i].idbaris}" value="${countElemen[i].idbaris}"/></td>`;
                                 if(i < countElemen.length-1){
                                     html+=`</tr><tr>`;
                                 }
@@ -538,20 +540,125 @@ const viewModalSetSoal = (data,bentuksoal)=>{
 
     return tabs.wraperMainControl(menus);
 };
+const switchRadioModeCreateSoal = ()=>{
+    return `<div class="border border-warning shadow-lg p-1 text-center rounded" id="modecanvas">Pilih Mode Cara Membuat Item Soal : 
+        <div class="btn-group btn-group-sm"> 
+            <input type="radio" class="btn-check" data-desain="mode" name="mode" id="modeByCopast" value="bycopast" autocomplete="off" checked> 
+            <label class="btn btn-outline-danger" for="modeByCopast">Copy Paste</label> 
+            <input type="radio" class="btn-check" data-desain="mode" name="mode" id="modeByFormuir" value="formulir" autocomplete="off"> 
+            <label class="btn btn-outline-danger" for="modeByFormuir">Formulir</label> 
+        </div>
+    </div>`
+}
+const switchRadioModeCreateSoalModal = ()=>{
+    return `<div class="border border-warning shadow-lg p-1 text-center rounded" id="modecanvas">Pilih Mode Cara Membuat Item Soal : 
+        <div class="btn-group btn-group-sm"> 
+            <input type="radio" class="btn-check" data-desainmodal="mode" name="mode" id="modeByCopast" value="bycopast" autocomplete="off" checked> 
+            <label class="btn btn-outline-danger" for="modeByCopast">Copy Paste</label> 
+            <input type="radio" class="btn-check" data-desainmodal="mode" name="mode" id="modeByFormuir" value="formulir" autocomplete="off"> 
+            <label class="btn btn-outline-danger" for="modeByFormuir">Formulir</label> 
+        </div>
+    </div>`
+}
+const viewModalSetSoalWithCustomEditor = (data,bentuksoal)=>{
+    
+    let menu = [
+        {
+            id:'tabmodal_menu1',
+            title_tab:'Koleksi Soal',
+            body_html:rowCols.rows('mb-2',
+                rowCols.cols('col-md-3',
+                    cardMenu2('Properti Kurikulum',tabelPropertikurikulummodal('selectedPropertiKD',data),false)
+                )
+                +
+                rowCols.cols('col-md-9',
+                    previewBankSoal(data,bentuksoal)
+                )+
+                rowCols.cols('col-md-12 text-center my-3',
+                    `<button class='btn btn-sm anim-bg-gradient border-5 border-warning border-start-0 border-bottom border-top-0 border-end-0 rounded-pill' id="terapkan_replacewithout">Terapkan Tanpa Ilustrasi</button>
+                    <button class='btn btn-sm anim-bg-gradient border-5 border-warning border-start-0 border-bottom border-top-0 border-end-0 rounded-pill' id="terapkan_replace">Terapkan</button>`
+                )
+            )
+        },
+        {
+            id:'tabmodal_menu2',
+            title_tab:'Soal Baru',
+            body_html:rowCols.rows('mb-2',
+                            rowCols.cols('col-md-3', 
+                                cardMenu2('Properti Kurikulum',tabelPropertikurikulummodal('selectedPropertiKDbaru',data),false)
+                                +
+                                cardMenu2('Pilih Mode Editor',switchRadioModeCreateSoalModal())
+                            )
+                            +
+                            rowCols.cols('col-md-9','<div id="createsoalbarumodal"></div>'
+                            )
+            )
+        },
+        {
+            id:'tabmodal_menu3',
+            title_tab:'Sisipkan',
+            body_html:'Sisipkan Keterangan'
+        },
+        {
+            id:'tabmodal_menu4',
+            title_tab:'Edit Soal',
+            body_html:rowCols.rows('mb-2 justify-content-center',
+                rowCols.cols('col-md-8',
+                    cardMenu2('Edit Soal',`<div id="editsoaleditorwraper"></div>`,false)
+                )+
+                rowCols.cols('col-md-4',
+                    cardMenu2('Data',`<div id="previewdata"></div>`,false)
+                )+
+                rowCols.cols('col-md-6',
+                    cardMenu('Preview Soal',
+                    `<div id="previewsoaledit"></div>`,false
+
+                    )
+                )+
+                rowCols.cols('col-md-12 text-center',
+                    `<button class='btn d-none btn-sm anim-bg-gradient border-5 border-warning border-start-0 border-bottom border-top-0 border-end-0 rounded-pill' id="terapkan_replaceedit">Terapkan</button>`
+                )
+
+            )
+        }
+    
+    ];
+    let menus =  tabs.MenuTab(menu);
+
+    return tabs.wraperMainControl(menus);
+};
 const tombolCreateDesainFinal = ()=>{
     let html="";
     html+=`<div class="sticky-md-bottom accord-bg text-center my-3 py-2 print-hide">
-    <button class="btn btn-sm anim-bg-gradient border-bottom border-5 border-warning border-start-0 border-top-0 border-end-0 rounded-pill py-1 px-3" id="btnLihatKisikisiDesain">Lihat Kisi-kisi</button>
-    <button class="btn btn-sm anim-bg-gradient border-bottom border-5 border-warning border-start-0 border-top-0 border-end-0 rounded-pill py-1 px-3" id="btnLihatKisikisiDesainView">Lihat Kisi-kisi dan Soal</button>
-    <button class="btn btn-sm anim-bg-gradient border-bottom border-5 border-warning border-start-0 border-top-0 border-end-0 rounded-pill py-1 px-3" id="btnLihatKunciJawaban">Lihat Kunci Jawaban</button>
-    <button class="btn btn-sm anim-bg-gradient border-bottom border-5 border-warning border-start-0 border-top-0 border-end-0 rounded-pill py-1 px-3" id="btnSimpanServerDesain">Simpan Server</button>
-    </div>`;
+        <button class="btn btn-sm text-bg-primary border-bottom border-5 border-warning border-start-0 border-top-0 border-end-0 rounded-pill py-1 px-3" id="btnLihatKisikisiDesain">Lihat Kisi-kisi</button>
+        <button class="btn btn-sm text-bg-warning border-bottom border-5 border-warning border-start-0 border-top-0 border-end-0 rounded-pill py-1 px-3" id="btnLihatKisikisiDesainView">Lihat Kisi-kisi dan Soal</button>
+        <button class="btn btn-sm text-bg-success border-bottom border-5 border-warning border-start-0 border-top-0 border-end-0 rounded-pill py-1 px-3" id="btnLihatKunciJawaban">Lihat Kunci Jawaban</button>
+        <button class="btn btn-sm text-bg-info border-bottom border-5 border-warning border-start-0 border-top-0 border-end-0 rounded-pill py-1 px-3" id="btnSimpanServerDesain">Simpan Server</button>
+        <button class="btn btn-sm text-bg-dark border-bottom border-5 border-warning border-start-0 border-top-0 border-end-0 rounded-pill py-1 px-3" id="btnSimpanDraft">Simpan Draft</button>
+        </div>`;
+    return html;
+}
+const tombolCreateDesainEdit= ()=>{
+    let html="";
+    html+=`<div class="sticky-md-bottom accord-bg text-center my-3 py-2 print-hide">
+        <button class="btn btn-sm text-bg-secondary border-bottom border-5 border-warning border-start-0 border-top-0 border-end-0 rounded-pill py-1 px-3" id="kembalikearsipnaskah">Kembali</button>
+        <button class="btn btn-sm text-bg-primary border-bottom border-5 border-warning border-start-0 border-top-0 border-end-0 rounded-pill py-1 px-3" id="btnLihatKisikisiDesain">Lihat Kisi-kisi</button>
+        <button class="btn btn-sm text-bg-warning border-bottom border-5 border-warning border-start-0 border-top-0 border-end-0 rounded-pill py-1 px-3" id="btnLihatKisikisiDesainView">Lihat Kisi-kisi dan Soal</button>
+        <button class="btn btn-sm text-bg-success border-bottom border-5 border-warning border-start-0 border-top-0 border-end-0 rounded-pill py-1 px-3" id="btnLihatKunciJawaban">Lihat Kunci Jawaban</button>
+        <button class="btn btn-sm text-bg-info border-bottom border-5 border-warning border-start-0 border-top-0 border-end-0 rounded-pill py-1 px-3" id="btnSimpanServerDesain">Simpan Server</button>
+        <button class="btn btn-sm text-bg-dark border-bottom border-5 border-warning border-start-0 border-top-0 border-end-0 rounded-pill py-1 px-3" id="btnSimpanDraft">Simpan Draft</button>
+        </div>`;
     return html;
 }
 const viewDesainNaskah = {
     'toolbar':toolbarDesainNaskah,
     'tabelPropertiKurikulum':tabelPropertiKurikulum,
     'modalSoal':viewModalSetSoal,
-    'editorsoalbaru':templateCreatePerItemBankSoal
+    'modalSoal2':viewModalSetSoalWithCustomEditor,
+    'editorsoalbaru':templateCreatePerItemBankSoal,
+    'footerButtons':tombolCreateDesainFinal,
+    'convertToDateTimeLocalString':convertToDateTimeLocalString,
+    'tombolCreateDesainEdit':tombolCreateDesainEdit
+    
 }
 export default viewDesainNaskah;

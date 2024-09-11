@@ -16,9 +16,11 @@
             margin:5px 0;
             // background-color: blueviolet;
             ;
+            
             transition:2.5s ease;
             
         &:hover{
+            
             background:linear-gradient(to bottom  , #cae1ff 51%,#c858f8 100%);
             background:-webkit-linear-gradient(to bottom  , #cae1ff 51%,#c858f8 100%);
         }
