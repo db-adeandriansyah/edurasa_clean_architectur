@@ -55,7 +55,7 @@ export default class CreateNaskahSoal{
         this.instansPropnaskah = x;
     }
     init(pradesain){
-        console.log('pradesain Create',pradesain)
+        
         const { BuildHtmlNaskah,
                 ClickableNaskah,
                 ControlSoalReplacing,
@@ -111,7 +111,6 @@ export default class CreateNaskahSoal{
                             new ControlSoalReplacing(dataklik, banksoal)
                                     .handle()
                                     .runtime((dataselraplacing)=>{
-                                        console.log('ketika user memilih radio, data ini yang dihasilkan:',dataselraplacing);
                                         let paramToolbarEditor = {
                                             bentuksoal:bentuksoalBySel,
                                             koleksibentuksoal:koleksiBentukSoal,
@@ -120,7 +119,8 @@ export default class CreateNaskahSoal{
                                             paramUploadGambar:{folder:'Gambar Media Soal'},
                                             mode:dataselraplacing.mode,
                                             user:this.Auth,
-                                            jenjang:this.fokusJenjang
+                                            jenjang:this.fokusJenjang,
+                                            taksonomibloom:this.service.data.taksonomibloom
                                         }
                                         let desainsoalbaruedit = ToolbarCreateItemSoal.createPraDesain(paramToolbarEditor);
                                         /**
@@ -188,7 +188,7 @@ export default class CreateNaskahSoal{
                                                                 if(req.validatingRequest()){
                                                                     let cek = await req.domain();
                                                                     let idbaris = cek.idbaris;
-                                                                    console.log('idbaris soal edit', idbaris);
+                                                                    
                                                                     await this.service.simpanItemSoalEdit(cek);
                                                                     btnTerapkan.classList.remove('d-none');
                                                                     banksoal = this.makeInstance(classCollectionsEdu,[this.service.data.banksoal])

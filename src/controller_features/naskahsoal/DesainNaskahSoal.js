@@ -464,7 +464,7 @@ export default class DesainNaskahSoal{
         }
     }
     registerKlikIsiDesainNaskah(){
-        console.log('cek data pradesain dari registrered klik desain', this.pradesain);
+        
         const tabel = document.getElementById('tabelkontendesainnaskah_dariserver');
         tabel.onclick = (e)=>{
             let dataklik = TableProperties.propertiesByClick(e.target);
@@ -615,7 +615,7 @@ export default class DesainNaskahSoal{
             this.praDesain.Modal.hide();
             await this.service.simpanItemSoal(test);
             let data = this.service.data.banksoal;
-            console.log('data soal baru',data);
+            
             let last = data.length;
             let itemsoal = data[last-1];
             

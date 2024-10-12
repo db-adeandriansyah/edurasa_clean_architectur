@@ -36,7 +36,8 @@ export default class ParameterAppScript{
      * id spreadsheet Kalender;
      */
     get idssKalender(){
-        return this.isTrial?this.repo.ssTrial:this.repo.appscript.ss_kalender;
+        // return this.isTrial?this.repo.ssTrial:this.repo.appscript.ss_kalender;
+        return this.isTrial?this.repo.appscript.trial_ss_kalender:this.repo.appscript.ss_kalender;
     }
 
     // spreadsheet Materi, terdiri dari tab;
@@ -48,14 +49,16 @@ export default class ParameterAppScript{
      * string
      */
     get idssMateri(){
-        return this.isTrial?this.repo.ssTrial:this.repo.appscript.ss_materi;
+        // return this.isTrial?this.repo.ssTrial:this.repo.appscript.ss_materi;
+        return this.isTrial?this.repo.appscript.trial_ss_materi:this.repo.appscript.ss_materi;
     }
 
     get idssNilai(){
-        return this.isTrial?this.repo.ssTrial:this.repo.appscript['ss_nilai_'+this.#jenjang];
+        // return this.isTrial?this.repo.ssTrial:this.repo.appscript['ss_nilai_'+this.#jenjang];
+        return this.isTrial?this.repo.appscript['trial_ss_nilai_'+this.#jenjang]:this.repo.appscript['ss_nilai_'+this.#jenjang];
     }
     get idssAbsen(){
-        return this.isTrial?this.repo.ssTrial:this.repo.appscript['ss_absen_'+this.#jenjang];
+        return this.isTrial?this.repo.appscript['trial_ss_absen_'+this.#jenjang]:this.repo.appscript['ss_absen_'+this.#jenjang];
     }
 
     get api_taksonomibloom(){
@@ -75,6 +78,9 @@ export default class ParameterAppScript{
     }
     get api_banksoal(){
         return this.createParamTab(this.idssKalender,'banksoal','banksoal')
+    }
+    get api_kalender(){
+        return this.createParamTab(this.idssKalender,'kalender','kalender')
     }
     get api_desainsimpansoal(){
         return this.createParamTab(this.idssKalender,'simpandesainsoal','simpandesainsoal')

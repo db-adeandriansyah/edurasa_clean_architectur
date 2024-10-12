@@ -26,8 +26,7 @@ export default class OrmArsipNaskah extends Orm{
         const isGuruMapel = auth.typeUser == 'Guru Mapel';
         this.auth = auth;
         this.isAdmin = isAdmin;
-        this.isGuruMapel = isGuruMapel
-        console.log('isGuruMapel', isGuruMapel, auth.tugasUser)
+        this.isGuruMapel = isGuruMapel;
 
         this.result.addProperty('owner',(item)=>!isAdmin?item.idguru == owner:true);
         if(isGuruMapel){
@@ -50,6 +49,7 @@ export default class OrmArsipNaskah extends Orm{
     }
     init(){
         this.result = new this.CollectionsEdu(this.mainArray)
+                    .simpleFilter({idtoken:this.fokusJenjang})
                     .addProperty('namakurikulum',()=>'kurmer')
                     .addProperty('keyNoSoal',()=>[...Array(this.totalSoal)].map((_,i)=>'no_'+(i+1)))
                     .sortByProperty('waktu2','desc');;

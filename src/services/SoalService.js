@@ -135,9 +135,9 @@ export default class SoalService{
         param.formData = JSON.stringify(body);
         this.repo.callWithProses();
         let n = await this.repo.edit(param);
-        console.log(n);
+        
         this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
-        console.log('edit desain naskah', n.info.namaTab, this.#db)
+        
         this.repo.stopProgressBar();
     }
     async EditKbm(body){
@@ -146,9 +146,8 @@ export default class SoalService{
         param.formData = JSON.stringify(body);
         this.repo.callWithProses();
         let n = await this.repo.edit(param);
-        console.log(n);
+        
         this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
-        console.log('edit kbm', n.info.namaTab, this.#db)
         this.repo.stopProgressBar();
     }
     async simpanDesainNaskah(dataspreadsheet,media){
@@ -157,17 +156,17 @@ export default class SoalService{
 
         this.repo.callWithProses();
         let n = await this.repo.createIncludeMedia(paramdefault,obchange,dataspreadsheet,media)
-        console.log('test simpanDesainNaskah',n);
+        
         this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
         this.repo.stopProgressBar();
     }
     async editDesainNaskahMedia(dataspreadsheet,media){
         let paramdefault = this.#api_desainsimpansoal;
         let obchange ={'html_identitas':'fileUrl', 'html_soal':'idfile'}
-        console.log('paramdefault', paramdefault)
+        
         this.repo.callWithProses();
         let n = await this.repo.updateIncludeMedia(paramdefault,obchange,dataspreadsheet,media)
-        console.log('test editDesainNaskah',n);
+        
         this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
         this.repo.stopProgressBar();
     }
@@ -177,7 +176,7 @@ export default class SoalService{
 
         this.repo.callWithProses();
         let n = await this.repo.createIncludeMediaKBM(paramdefault,obchange,dataspreadsheet,media)
-        console.log('test simpandatamateri',n);
+        
         this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
         this.repo.stopProgressBar();
     }

@@ -56,7 +56,6 @@ export default class AbsensiController extends Fitur{
         }
     }
     settingHeaderPageByTgl(refTgl){
-
     }
 
     controlFilterAbsen(data,addControlSiswa = true){

@@ -288,6 +288,18 @@ function contextMenu(idIframe,data){
                                         <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle" data-aksicontext="refrensi" role="button">Refrensi</li>
                                         <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle" data-aksicontext="levelkognitif" role="button">Level Kognitif (Cek KKO)</li>
                                         <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle d-flex justify-content-between font10" role="button">
+                                        <div class="dropdown">
+                                                <button class="btn btn-light dropdown-toggle p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                </button>
+                                                <ul class="dropdown-menu bg-secondary-subtle dropdown-menu-end" data-popper-placement="bottom-end">
+                                                <li class="border-bottom border-white mx-1 font10 d-flex justify-content-between" data-aksicontext="levelkognitif2" role="button">L1</li>
+                                                <li class="border-bottom border-white mx-1 font10 d-flex justify-content-between" data-aksicontext="levelkognitif2" role="button">L2</li>
+                                                <li class="border-bottom border-white mx-1 font10 d-flex justify-content-between" data-aksicontext="levelkognitif2" role="button">L3</li>
+                                                </ul>
+                                            </div>
+                                            Level Kognitif (LK)
+                                        </li>
+                                        <li class="list-group-item py-1 border-bottom border-white bg-secondary-subtle d-flex justify-content-between font10" role="button">
                                         
                                             <div class="dropdown">
                                                 <button class="btn btn-light dropdown-toggle p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">

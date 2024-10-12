@@ -112,7 +112,12 @@ export class CallHttp{
             const t = await f.json();
             return t;
         }catch(er){
-            document.getElementById('printarea').innerHTML = "ERROR, PERIKSA KONEKSI INTERNETNYA! <br>Massage Server: <br>"+er;
+            if(document.getElementById('printarea')){
+                document.getElementById('printarea').innerHTML = "ERROR, PERIKSA KONEKSI INTERNETNYA! <br>Massage Server: <br>"+er;
+            }else{
+                document.getElementById('infosiswa').innerHTML = "ERROR, PERIKSA KONEKSI INTERNETNYA! <br>Massage Server: <br>"+er;
+
+            }
         }
         // const parameter = this.paramFormData(param);
         //     const f = await fetch(uri,{body:parameter,method:'post'});
@@ -170,7 +175,7 @@ export class CallHttp{
         return t;
     }
     async saveImage(param){
-        
+        console.log(param);
         const parameter = this.paramFormData(param);
         const f = await fetch(this.crud,{body:parameter,method:'post'});
         const t = await f.json();

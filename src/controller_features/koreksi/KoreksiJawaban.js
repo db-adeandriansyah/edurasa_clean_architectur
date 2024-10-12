@@ -297,7 +297,7 @@ export default class KoreksiJawaban{
         let html = UrlImg.replacingImg(api);
         let dom = this.stringToDom(html);
         
-        
+        console.log(dom)
         let ljk = new LjkFromDomHtml(dom,dataOrm,idRespon,this.currentKbm);
         let dataview = ljk.dataViewHtmlLjk();
         let identitas = dataview.identitas;

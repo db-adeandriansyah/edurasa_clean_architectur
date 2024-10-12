@@ -38,7 +38,6 @@ export default class ControlSoalReplacing{
                         if(!twins1.checked){
                             twins1.checked = true;
                         }
-                        console.log(e.target.value,document.querySelector('#selectedPropertiKDbaru_'+e.target.value))
                     }else{
                         // this.result.mode = e.target.value;
                     }

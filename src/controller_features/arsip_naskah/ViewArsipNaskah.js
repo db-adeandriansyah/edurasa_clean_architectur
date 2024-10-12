@@ -245,7 +245,7 @@ export default class ViewArsipNaskah{
                                 html+=`<button class="btn btn-sm py-0 bg-info-subtle rounded-pill" data-aksibytabelnaskah="at_edit" data-shownaskah="${n.idbaris}" data-bs-toggle="tooltip" data-bs-title="Edit Naskah"><i class="bi bi-pencil-square"></i></button>`;
                             html+=`</td>`;
                             html+=`<td>`;
-                                html+=`<button class="btn btn-sm py-0 bg-success text-white rounded-pill" data-aksibytabelnaskah="at_publikasikan" data-shownaskah="${n.idbaris}" data-bs-toggle="tooltip" data-bs-title="Publikasikan!"><i class="bi bi-globe"></i></button>`;
+                                html+=`<button class="btn btn-sm py-0 bg-success text-white rounded-pill" data-aksibytabelnaskah="at_publikasikan" data-shownaskah="${n.idbaris}" data-bs-toggle="tooltip" data-bs-title="Tambah Publikasi!"><i class="bi bi-globe"></i></button>`;
                                 if(n.owner){
                                     html+=`<button class="btn btn-sm py-0 bg-danger text-white rounded-pill" data-aksibytabelnaskah="at_hapus" data-shownaskah="${n.idbaris}" data-bs-toggle="tooltip" data-bs-title="Hapus"><i class="bi bi-trash"></i></button>`;
                                 }

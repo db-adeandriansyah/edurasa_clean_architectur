@@ -85,8 +85,8 @@ export class TopHeader{
     anchorLink(url,text){
         return `<a href="${url}" class="nav-link cool-link text-white">${text}</a>`;
     }
-    btnControlDropdown(namaUser, imgUser){
-        return `<button class="btn dropdown-toggle akun" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"> <span class="text-white cool-link">${namaUser}</span> <img src="${this.urlImage(imgUser)}" width="30" height="30" alt="profil ${namaUser}" style="object-fit:cover" class="rounded-circle d-none d-md-inline-block" referrerpolicy="no-referrer"> </button>`;
+    btnControlDropdown(namaUser, imgUser,kelas=''){
+        return `<button class="btn dropdown-toggle akun" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><span class="text-white cool-link">${namaUser} ${kelas}</span> <img src="${this.urlImage(imgUser)}" width="30" height="30" alt="profil ${namaUser}" style="object-fit:cover" class="rounded-circle d-none d-md-inline-block" referrerpolicy="no-referrer"> </button>`;
     }
     menuStaticDropdown(isDashboard=false){
         let htmldashbord = `<li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>`;
@@ -101,8 +101,9 @@ export class TopHeader{
         return new UrlImg(id).urlImg;
     }
     profilNavbar(dataUser,isDashboard){
-        let {namaUser, imgUser} = dataUser;
-        return this.dropdown(this.btnControlDropdown(namaUser,imgUser),this.menuStaticDropdown(isDashboard));
+        let {namaUser, imgUser,typeUser,tugasUser} = dataUser;
+        let kelas = typeUser=='siswa'?` (${tugasUser})`:'';
+        return this.dropdown(this.btnControlDropdown(namaUser,imgUser,kelas),this.menuStaticDropdown(isDashboard));
     }
     staticMenu(){
         let html = "";

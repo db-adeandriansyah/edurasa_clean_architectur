@@ -42,6 +42,7 @@ export default class ArsipNaskahToKbm{
     jenjang(x){
         this.fokusJenjang = x;
         this.datakbm['idkelas'] = x;
+        this.datakbm['idtoken'] = x;
         return this;
     }
     get koleksiRombel(){
@@ -129,9 +130,6 @@ export default class ArsipNaskahToKbm{
             // html_kuncijawaban   : htmlkuncijawaban
 
         }
-        // console.log(view)
-        // this.datakbm['kuncikd'] = JSON.stringify(kuncikd);
-        //render view di modal
         DOMTarget.innerHTML = ViewArsipNaskah.viewEditPublikasiKbm(view);
 
         return this;
@@ -274,7 +272,6 @@ export default class ArsipNaskahToKbm{
                     if(key=='kopAtas'){
                         //#naskah_kop > tbody > tr > td:nth-child(1)
                         let tabel = DOMTarget.querySelector(`#naskah_kop > tbody > tr > td:nth-child(2) > h3`);
-                        console.log(tabel);
                         tabel.innerHTML = prop.value;
                     }
                 }

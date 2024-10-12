@@ -133,10 +133,9 @@ export default class ToolbarCreateDesainNaskah{
             
             n.onchange = (e)=>{
                 if(n.getAttribute('data-pradesain')=='mapel'){
-                    console.log('atribut pradesain',n.getAttribute('data-pradesain'))
                     this.registerListnerPropertiKurikulum();
-
                 }
+                
                 data = this.updatepradesain(q);
                 targetInput.value =  FormatTanggal.durasiMenit(data.start_waktu,data.end_waktu);
                 data = this.updatepradesain(q);
@@ -169,7 +168,7 @@ export default class ToolbarCreateDesainNaskah{
                 }
             }else if(n.type=='select-one'){
                 data[n.getAttribute('data-pradesain')]=n.value;
-                console.log('select-one',n.getAttribute('data-pradesain',n.value));
+                
                 
                 data['kodemapel'] = n.value;
                 data['tekskodemapel']=this.koleksimapel[n.value];//this.banksoal.currentMapelOnClassRoom[n.value];
@@ -237,7 +236,7 @@ export default class ToolbarCreateDesainNaskah{
                 let ormItem = orm.filter(s=> s[key]== n.value);
                 data.push(ormItem[0]);
             }
-            console.log('register checker kd', data)
+            
             n.onchange = (e)=>{
                 if(n.checked){
                     let ormItem = orm.filter(s=> s[key]== e.target.value);
@@ -368,11 +367,10 @@ export default class ToolbarCreateDesainNaskah{
             }else if(n.type == 'checkbox' && this.pradesain[key]){
                 n.checked = true;
             }else if(n.type == 'text'){
-                    console.log('key dan type', n.type, key)
                 n.value = this.pradesain[key];
             }else if(n.type == 'select-one'){
-                console.log('key dan type', n.type, key, this.pradesain[key]);
                 n.value = this.pradesain[key];
+                
                 let targetView = document.querySelector('#tableKDTemplateDesain');
                 let filterOrm = this.ormkurikulum.filter(s=> s.kodemapel == this.pradesain[key]).sort((a,b)=>a.foreignkey_elemencp - b.foreignkey_elemencp);
             
@@ -383,20 +381,16 @@ export default class ToolbarCreateDesainNaskah{
                                     this.#jenjang,//this.banksoal.jenjang,
                                     this.#koleksibentuksoal,//this.banksoal.koleksiBentukSoal
                                 );
-                                console.log(this.pradesain.propertikd)
                 this.pradesain.propertikd.forEach(kd=>{
                     let rd = document.querySelector(`#radioatpmoda${kd.idbaris}`);
-                    console.log(rd, kd);
                     if(rd){
                         rd.checked = true;
                     }
-
                 })
                 
                 this.registerCheckMarkKompetensi(this.shortKurikulum,filterOrm);
 
             }else if(n.type == 'datetime-local'){
-                console.log('n type', n.type)
                 n.value = this.#viewDesainNaskah.convertToDateTimeLocalString(new Date(this.pradesain[key]));
             }else{
                 n.value = this.pradesain[key];

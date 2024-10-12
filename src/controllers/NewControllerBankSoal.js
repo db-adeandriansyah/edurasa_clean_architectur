@@ -242,7 +242,7 @@ export default class NewControllerBankSoal extends Fitur{
             .registrasiListenerKerangka()
             .registrasiDraft()   
             .runtime((pradesain)=>{
-                this.cekLog('pradesain saat toolbar pertama dihandle',pradesain);
+                
                 const create = new CreateNaskahSoal()
                     .user(this.Auth)
                     .modal(this.Modal)
@@ -278,246 +278,7 @@ export default class NewControllerBankSoal extends Fitur{
                         controlbanksoal:controlbanksoal
                     })
                     .init(pradesain);
-                // /**
-                //  * Render HTML Pradesain naskah, selnya diklik muncul data di modal
-                //  */
-                // new BuildHtmlNaskah(pradesain)
-                //     .author(this.Auth)
-                //     .renderHTMLTo(this.workplace);
-                
-                // if(pradesain.hasOwnProperty('html')){
-                //     delete pradesain.html;
-                // }
-                // /**
-                //  * Addlistener tiap sel yang diklik
-                //  * setelah menambah listener/event tiap sel, selanjutnya instansiasi class ini
-                //  * akan mengupdate hasil kliknya berupa data untuk diteruskan ke event-event/listener selnjutnya
-                //  */
-                // new ClickableNaskah()
-                //     .init()
-                //     .runtime((dataklik)=>{
-                //         let bentuksoalBySel = dataklik.bentuksoal;
-                        
-                //         //menampilkan UI/kontrol untuk bank soal yang disediakan sesuai sel yang diklik pada modal
-                //         this.Modal.widthOrientation(true);
-                //         this.Modal.body.classList.add('p-0');
-                //         this.Modal.settingHeder('Data Soal '+bentuksoalBySel);
-                //         this.Modal.showBodyHtml(viewDesainNaskah.modalSoal2(pradesain,bentuksoalBySel));
-                //         this.Modal.showHideFooter(false);
-
-                //         if(bentuksoalBySel){
-                //             this.Modal.show();  
-                            
-                //             /**
-                //              * handle/event dari setiap pemilihan kd di modal
-                //              */
-                //             new ControlSoalReplacing(dataklik, banksoal)
-                //                     .handle()
-                //                     .runtime((dataselraplacing)=>{
-                //                         this.cekLog('ketika user memilih radio, data ini yang dihasilkan:',dataselraplacing);
-                //                         let paramToolbarEditor = {
-                //                             bentuksoal:bentuksoalBySel,
-                //                             koleksibentuksoal:koleksiBentukSoal,
-                //                             kurikulum: orm.collections.data,
-                //                             kd: dataselraplacing.kd,
-                //                             paramUploadGambar:{folder:'Gambar Media Soal'},
-                //                             mode:dataselraplacing.mode,
-                //                             user:this.Auth,
-                //                             jenjang:this.fokusJenjang
-                //                         }
-                //                         let desainsoalbaruedit = this.ToolbarCreateItemSoal.createPraDesain(paramToolbarEditor);
-                //                         /**
-                //                          * meregistrasikan class untuk menampilkan pagination bank soal yang terselesksi berdasarkan
-                //                          * data ('dataselreplacing').
-                //                          * hasil dari class ini adalah: item soal yang akan ditempatkan pada sel;
-                //                          * item soal tersebut juga akan diteruskan untuk dapat diedit melalui class formuliredit
-                //                          */
-                //                         new PaginationAvailableSoal(dataselraplacing,banksoal)
-                //                             .runtime((selectedItemSoal)=>{
-                //                                 const btnReplace = document.getElementById('terapkan_replace');
-                //                                 const btnWithout = document.getElementById('terapkan_replacewithout');
-                //                                 const btnEditSoal = document.getElementById('editsoalini');
-                //                                 const btnSimpanReplace =document.getElementById('terapkan_replaceedit');
-                //                                 const btnTab = document.getElementById('tabmodal_menu4');
-
-                //                                 /**
-                //                                  * class berikut meregistrasikan elemen html (btnTerapkan, btnTerapkanWithout, btnEdit)
-                //                                  */
-                //                                 const evntReplace = new ReplacingSoalToSel(selectedItemSoal)
-                //                                                     .datapradesain(pradesain)
-                //                                                     .auth(this.Auth)
-                //                                                     .noUrutNaskah(dataklik.nourut_naskah)
-                //                                                     .targetSel(dataklik.current_sel)
-                //                                                     .instancePropertiNaskah(instancesPropertiNaskah);  
-                                                
-                //                                 btnReplace.onclick = ()=>{
-                //                                     evntReplace.replacing(true);
-                //                                     evntReplace.hasElemenSebaranKd;
-                //                                     this.Modal.hide();
-                //                                 };
-
-                //                                 btnWithout.onclick = ()=>{
-                //                                     evntReplace.replacing(false);
-                //                                     this.Modal.hide();
-                //                                 };
-
-                //                                 /**
-                //                                  * meregistrasikan event edit soal yang sedang ditampilkan di modal
-                //                                  */
-                //                                 btnSimpanReplace.classList.add('d-none');
-
-                //                                 btnEditSoal.onclick = ()=>{
-                //                                     btnTab.click();
-
-                //                                     btnSimpanReplace.classList.remove('d-none');
-                                                    
-                //                                     new FormulirEditItemSoal(selectedItemSoal)
-                //                                         .addService(this.service)
-                //                                         .addDataDesain(desainsoalbaruedit)
-                //                                         .addUrlImg(this.urlImg)
-                //                                         .addLoading(this.Auth.barloading)
-                //                                         .buildForm()
-                //                                         .fillItem()
-                //                                         .init()
-                //                                         .runtime((result)=>{
-                //                                             const btnTerapkan = document.getElementById('terapkan_replaceedit');
-                                                            
-                //                                             btnTerapkan.onclick = async ()=>{
-                //                                                 let req = new this.ValidatorItemSoal(result);
-                                                                
-                //                                                 btnTerapkan.classList.add('d-none');
-                //                                                 req.init();
-                                                                
-                //                                                 if(req.validatingRequest()){
-                //                                                     let cek = await req.domain();
-                //                                                     let idbaris = cek.idbaris;
-                //                                                     console.log('idbaris soal edit', idbaris);
-                //                                                     await this.service.simpanItemSoalEdit(cek);
-                //                                                     btnTerapkan.classList.remove('d-none');
-                //                                                     banksoal = this.makeInstance(this.classCollectionsEdu,[this.service.data.banksoal])
-                //                                                                 .simpleFilter({'jenjang':this.fokusJenjang})
-                //                                                                 .setProperty('ilustrasi',(item)=>this.replacingImage(item))
-                //                                                                 .setProperty('pertanyaan',(item)=>this.replacingImage(item))
-                //                                                                 .setProperty('opsiA',(item)=>this.replacingImage(item))
-                //                                                                 .setProperty('opsiB',(item)=>this.replacingImage(item))
-                //                                                                 .setProperty('opsiC',(item)=>this.replacingImage(item))
-                //                                                                 .setProperty('opsiD',(item)=>this.replacingImage(item))
-                //                                                                 .setProperty('penskoran',(item)=>this.replacingImage(item))
-                //                                                                 ;
-                //                                                             instancesPropertiNaskah = this.makeInstance(PropertiNaskah,[banksoal.data]);
-                //                                                             instancesPropertiNaskah.currentMapelOnClassRoom = this.service.data.koleksimapel;
-        
-                //                                                             let itemsoal = banksoal.simpleFilter({'idbaris':idbaris}).data[0];
-                                                                            
-                //                                                             itemsoal['tampilanpg'] = 'vertical';
                     
-                //                                                             const evntReplace = new ReplacingSoalToSel(itemsoal)
-                //                                                                 .datapradesain(pradesain)
-                //                                                                 .auth(this.Auth)
-                //                                                                 .noUrutNaskah(dataklik.nourut_naskah  )
-                //                                                                 .targetSel(dataklik.current_sel)
-                //                                                                 .instancePropertiNaskah(instancesPropertiNaskah);  
-                    
-                //                                                             evntReplace.replacing(true); 
-                //                                                     this.Modal.hide();
-                //                                                 }else{
-                //                                                     let teks = "Item soal belum siap, silakan lengkapi bagian berikut:\n";
-                //                                                     let datainvladi = req.arrayKeyInvalid();
-                                    
-                //                                                     datainvladi.forEach(n=>{
-                //                                                         teks+=n;
-                //                                                         teks+="\n";
-                //                                                     })
-                //                                                     alert(teks);
-                //                                                 }
-                //                                             }
-                //                                         });
-                //                                 };
-                //                             })
-                //                             .listenerSelecting();
-                                        
-                //                         /**
-                //                          * mereigstrasikan jenis teks editor untuk menambahkan item soal
-                //                          * disesuaikan jenis teks editornya (copypaste atau formulir)
-                //                          */
-                //                         new this.EditorCreateItemSoal()
-                //                             .praDesain(desainsoalbaruedit)
-                //                             .workplace(this.Modal.body.querySelector('#createsoalbarumodal'))
-                //                             .urlImg(this.urlImg)
-                //                             .service(this.service)
-                //                             .auth(this.Auth)
-                //                             .view(controlbanksoal)
-                //                             .build()
-                //                             .runtime((data)=>{
-                //                                 const save = document.getElementById('simpanItemSoal');
-                //                                 const reset = document.getElementById('resetItemSoal');
-                                                
-                //                                 save.onclick = async()=>{
-                //                                     save.classList.add('d-none');
-                //                                     let req = new this.ValidatorItemSoal(data);
-                //                                     req.init();
-                //                                     if(req.validatingRequest()){
-                //                                         let cek = await req.domain();
-                                                        
-                //                                         await this.service.simpanItemSoal(cek);
-                //                                         save.classList.remove('d-none');
-                                                        
-                //                                         banksoal = this.makeInstance(this.classCollectionsEdu,[this.service.data.banksoal])
-                //                                             .simpleFilter({'jenjang':this.fokusJenjang})
-                //                                             .setProperty('ilustrasi',(item)=>this.replacingImage(item))
-                //                                             .setProperty('pertanyaan',(item)=>this.replacingImage(item))
-                //                                             .setProperty('opsiA',(item)=>this.replacingImage(item))
-                //                                             .setProperty('opsiB',(item)=>this.replacingImage(item))
-                //                                             .setProperty('opsiC',(item)=>this.replacingImage(item))
-                //                                             .setProperty('opsiD',(item)=>this.replacingImage(item))
-                //                                             .setProperty('penskoran',(item)=>this.replacingImage(item))
-                //                                             ;
-                //                                         instancesPropertiNaskah = this.makeInstance(PropertiNaskah,[banksoal.data]);
-                //                                         instancesPropertiNaskah.currentMapelOnClassRoom = this.service.data.koleksimapel;
-        
-                //                                         let itemsoal = banksoal.lastData;
-                                                        
-                //                                         itemsoal['tampilanpg'] = 'vertical';
-
-                //                                         const evntReplace = new ReplacingSoalToSel(itemsoal)
-                //                                             .datapradesain(pradesain)
-                //                                             .auth(this.Auth)
-                //                                             .noUrutNaskah(dataklik.nourut_naskah  )
-                //                                             .targetSel(dataklik.current_sel)
-                //                                             .instancePropertiNaskah(instancesPropertiNaskah);  
-
-                //                                         evntReplace.replacing(true); 
-                //                                         this.Modal.hide();
-
-                //                                         data.reset();                    
-                //                                     }else{
-                //                                         save.classList.remove('d-none');
-                        
-                //                                         let teks = "Item soal belum siap, silakan lengkapi bagian berikut:\n";
-                //                                         let datainvladi = req.arrayKeyInvalid();
-                        
-                //                                         datainvladi.forEach(n=>{
-                //                                             teks+=n;
-                //                                             teks+="\n";
-                //                                         })
-                //                                         alert(teks);
-                //                                     }
-                //                                 };
-
-                //                                 reset.onclick = ()=>{
-                //                                     if(save.classList.contains('d-none')){
-                //                                         save.classList.remove('d-none');
-                //                                     };
-                                                    
-                //                                     data.reset();
-                                                    
-                //                                 };
-                //                             });
-
-                //                     }).execute();
-                //         }
-                //     }); 
-
                 /**
                  * registered btns final
                  */
@@ -618,7 +379,7 @@ export default class NewControllerBankSoal extends Fitur{
         // buat paramater database yang akan dipanggil, filter db yang telah dipanggil agar tidak usah dipanggil lagi
         const arrayTab = this.parameterAppScript[this.fokusMenu]();
         const arrayReduce = this.fn_parameterMustSended(arrayTab);
-        console.log('array Tab', arrayTab)
+        
         //tiap kelas memiliki mapel yang berbeda. Misalnya mapel IPAS ada hanya di kelas tinggi
         Object.assign(this.service.data, {
             koleksimapel: this.fnc_mapelByJenjang[this.paramMapelCurrentJenjang]()
@@ -643,12 +404,13 @@ export default class NewControllerBankSoal extends Fitur{
         const ormDesainNaskah = new OrmArsipNaskah(this.classCollectionsEdu, this.replacingImage)
                                 .parent(this.service.data.simpandesainsoal)
                                 .init()
-                                .withOrmSpecificQuery('materi', new this.classCollectionsEdu(this.service.data.datamateri),{'id_desainnaskah':'idbaris','idtoken':this.fokusJenjang})
+                                .withOrmSpecificQuery('materi', new this.classCollectionsEdu(this.service.data.datamateri),{'id_desainnaskah':'idbaris','idtoken':'jenjang',})
                                 .isOwner(this.Auth)
                                 .settingOwnerToSpecificOrm('materi')
                                 .relationNoSoal(ormBankSoal.collections)
                                 
-        console.log(ormDesainNaskah.data);
+                                
+        
         /** view */
         let htmlApi = {};
         new ArsipNaskahController(ormDesainNaskah.collections)
@@ -656,9 +418,9 @@ export default class NewControllerBankSoal extends Fitur{
             .instansiasiClass({tooltip:this.App.tooltipkan})
             .renderTable()
             .runtime(async (data)=>{
-                console.log('runtime arsip naskah',data);
                 const {aksi,desainnaskahsoal,arrayKbm} = data;
                 let idTxtSimpanDesain = desainnaskahsoal.html_soal;
+                
                 document.getElementById('footerarea').innerHTML  =""
                 if(aksi == 'at_naskah'){
                     if(!htmlApi.hasOwnProperty(idTxtSimpanDesain)){
@@ -695,7 +457,7 @@ export default class NewControllerBankSoal extends Fitur{
                      * 
                      */
                     let datakisikisi = instancesPropertiNaskah.datakisikisi();
-                    console.log('properti naskah dari Spreadsheet dan konten txt id file',datakisikisi)
+                    
                     this.Modal1.body.classList.remove('p-0');
                     this.Modal1.widthOrientation(true);
                     this.Modal1.settingHeder('PRATINJAU KISI-KISI<br> ' + desainnaskahsoal.juduldesain.toUpperCase())
@@ -714,7 +476,7 @@ export default class NewControllerBankSoal extends Fitur{
                     instancesPropertiNaskah.desainFromSpreadSheet(desainnaskahsoal,this.Auth);
                     
                     let datakisikisi =instancesPropertiNaskah.datakisikisi();
-                    console.log(datakisikisi)
+                    
                     this.Modal1.body.classList.remove('p-0');
                     this.Modal1.widthOrientation(true);
                     this.Modal1.settingHeder('PRATINJAU KISI-KISI<br> ' + desainnaskahsoal.juduldesain.toUpperCase())
@@ -752,7 +514,7 @@ export default class NewControllerBankSoal extends Fitur{
                     
                     let datakisikisi =instancesPropertiNaskah.datakisikisi();
                     let view = viewSoal.templateNaskahOffline(dom,datakisikisi.datadom.datanaskah);
-                    console.log(datakisikisi);
+                    
                     this.Modal1.body.classList.remove('p-0');
                     this.Modal1.showHideFooter(false);
                     this.Modal1.widthOrientation(false);
@@ -779,11 +541,11 @@ export default class NewControllerBankSoal extends Fitur{
                         .htmlTxt(api)
                         .ControlAddPublicationNaskahTo(this.Modal1.body)
                         .runtime((datakbm)=>{
-                            console.log(datakbm);
+                            
                             const btnSave = document.getElementById('btnServerPublikasi');
                             btnSave.onclick =async()=>{
                                 btnSave.classList.add('d-none');
-                                console.log(datakbm);
+                                
                                 let media = datakbm.htmlsoal;
                                 let ss = new ValidatorKbmDatamateri().paramaterClass(datakbm);
                                 let entiti = await ss.domain();
@@ -803,8 +565,7 @@ export default class NewControllerBankSoal extends Fitur{
                 
                 }else if(aksi=='at_editpublikasi'){
                     idTxtSimpanDesain = arrayKbm[0].idmateri;
-                    console.log(arrayKbm[0])
-                    console.log(arrayKbm[0].idmateri)
+                    
                     if(!htmlApi.hasOwnProperty(idTxtSimpanDesain)){
                         htmlApi[idTxtSimpanDesain] = await this.service.showTextHTML(idTxtSimpanDesain)
                     }
@@ -823,9 +584,9 @@ export default class NewControllerBankSoal extends Fitur{
                         .htmlTxt(api)
                         .ControlEditPublicationKbmNaskahTo(this.Modal1.body)
                         .runtime((datakbm)=>{
-                            console.log(datakbm);
                             const btnSave = document.getElementById('btnServerEditPublikasi');
                             const btnHapus = document.getElementById('btnServerHapustPublikasi');
+                            
                             btnSave.onclick =async()=>{
                                 let arraykelas = datakbm.arraykelas =='';
                                 if(arraykelas){
@@ -860,8 +621,7 @@ export default class NewControllerBankSoal extends Fitur{
                                 btnHapus.classList.remove('d-none');
                                 this.arsip_naskah();
                             }
-                        })
-                            .executeEdit();
+                        }).executeEdit();
                     this.Modal1.body.classList.add('p-0');
                     this.Modal1.widthOrientation(false);
                     this.Modal1.settingHeder('TAMBAH PUBLIKASI<br> ' + desainnaskahsoal.juduldesain.toUpperCase())
@@ -873,7 +633,7 @@ export default class NewControllerBankSoal extends Fitur{
                     let hasMateriKbm = desainnaskahsoal.materi.countData() === 0;
                     let konfir = ''
                     konfir+='Anda yakin akan menghapus Arsip Desain naskah ini?';
-                    console.log(hasMateriKbm);
+                    
                     if(!hasMateriKbm){
                         konfir+='\n\r Naskah ini telah Anda jadikan konten KBM yang telah Anda/teman sejawat Anda publikasikan.'
                         // alert('Anda tidak bisa mengedit naskah ini karena telah dijadikan refrensi Naskah KBM yang akan Anda/kelas laksanakan. Fitur ini berlaku untuk mengedit Arsip Naskah ketika belum dipublikasikan.\n\r\nAnda masih tetap bisa mengedit naskah KBM di fitur KBM');
@@ -888,7 +648,7 @@ export default class NewControllerBankSoal extends Fitur{
                     this.arsip_naskah();
                 }else if(aksi == 'at_edit'){
                     let hasMateriKbm = desainnaskahsoal.materi.countData() === 0;
-                    console.log(hasMateriKbm);
+                    
                     if(!hasMateriKbm){
                         alert('Anda tidak bisa mengedit naskah ini karena telah dijadikan refrensi Naskah KBM yang akan Anda/kelas laksanakan. Fitur ini berlaku untuk mengedit Arsip Naskah ketika belum dipublikasikan.\n\r\nAnda masih tetap bisa mengedit naskah KBM di fitur KBM');
                         return;
@@ -910,7 +670,7 @@ export default class NewControllerBankSoal extends Fitur{
                         html:kerangkadom.datanaskah
                         // kerangka:
                     });
-                    console.log(pradesain)
+                    
                     document.getElementById('footerarea').innerHTML  = viewDesainNaskah.tombolCreateDesainEdit();
                     const create = new CreateNaskahSoal()
                     .user(this.Auth)
@@ -1029,7 +789,7 @@ export default class NewControllerBankSoal extends Fitur{
                     
                     const dataspreadsheet = await cek.domain();
                         // const dataspreadsheet = await cek.domainSpreadsheetNaskah(desainnaskahsoal);; 
-                        console.log(dataspreadsheet);
+                        
                         let gab = Object.assign({},desainnaskahsoal, dataspreadsheet)
                         const html = this.workplace.innerHTML;//this.workplace.cloneNode(true).innerHTML;
                         await this.service.editDesainNaskahMedia(gab,html);
@@ -1052,6 +812,18 @@ export default class NewControllerBankSoal extends Fitur{
                         
                     }
 
+                }else if(aksi== 'at_hapuspublikasi'){
+                    let kon = confirm('Anda yakin?');
+                    if(!kon) return;
+                    const datakbm = arrayKbm[0];
+                    datakbm.idtoken='';
+                    datakbm.idkelas='';
+                    datakbm.id_desainnaskah='';
+                    let ss = new ValidatorKbmDatamateri().paramaterClass(datakbm);
+                                let entiti = await ss.domain();
+                                await this.service.EditKbm(entiti);
+                                
+                                this.arsip_naskah();
                 }
             })
             

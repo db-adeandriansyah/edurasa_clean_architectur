@@ -120,7 +120,7 @@ const html_table_formulir = (data,lingkupmateri)=>{
 const html_table_formulirEdit = (data,lingkupmateri)=>{
     let currLingkupMateriAsal = lingkupmateri.filter(s=> s.kodemapel == data.kodemapel);
     let currLingkupMateri = [{'lingkupmateri':'','title':'Belum Memilih'}, ...currLingkupMateriAsal];
-    console.log('lingkupmateri html render',currLingkupMateri)
+    
     let ar = [
         {key:'ilustrasi',title:'Ilustrasi'},
         {key:'pertanyaan',title:'Pertanyaan'},

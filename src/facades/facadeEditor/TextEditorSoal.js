@@ -201,7 +201,7 @@ export default class TextEditorSoal{
                 
                 // this.onmouseup(e);
             }else{
-
+                
                 let teks = e.clipboardData.getData('text/plain');
                 const selection = dom.getSelection();
                 if(check.checked){
@@ -530,6 +530,10 @@ export default class TextEditorSoal{
                             }else if(atr == 'levelkognitif'){
                                 const {levelkognitif, tipe} = data;
                                 this.request = Object.assign(this.request,{levelkognitif:levelkognitif,'taksonomibloom':tipe});
+
+                            }else if(atr == 'levelkognitif2'){
+                                const {levelkognitif} = data;
+                                this.request = Object.assign(this.request,{levelkognitif:levelkognitif});
 
                             }else{
                                 this.request = Object.assign(this.request,{[atr]:data});
@@ -878,6 +882,17 @@ export default class TextEditorSoal{
             }
         }
         return data;
+    }
+    
+    levelkognitif2(e){
+        return   {
+            idbaris:'',
+            tipe:'',
+            nama_taksonomi:'',
+            kko:'',
+            levelkognitif:e.target.innerHTML
+            
+        };
     }
     indikatorsoal(){
         let dom = document.createElement('div');

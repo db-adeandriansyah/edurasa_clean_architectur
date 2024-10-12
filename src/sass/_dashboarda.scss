@@ -19,6 +19,36 @@
         transform: translate(-50%, -20%);
     }
 }
+
+.w3-lobster {
+    font-family: "Lobster", serif;
+  }
+.w3-center{
+text-align:'center'
+}
+// input[type=radio].calc+label.opsi{color:#000;cursor:pointer}
+// input[type=radio].calc:checked+label.opsi::before{content:" \2705"}
+// input[type=radio].calc:checked+label.opsi{color:#00f;background-color:#ff0}
+// label.asem{border:1px solid #adacac;background-color:#eeefff;padding:5px;width:200px;cursor:pointer;border-radius:5px;color:#00f}label.asem::before{content:url(https://3.bp.blogspot.com/-6O-y9t8ZdMw/Xnzcbx-RVnI/AAAAAAAAPT4/aS_hpQNKPoAVLJk4BjpE8Zd3s8zEVI2wACLcBGAsYHQ/s1600/kamerakecil.png)}label.asem::after{content:" Unggah Poto"}img.gambarlamaso3{max-width:90%}
+input[type=radio] {
+    &.calc {
+        + label.opsi {
+        color: #000;
+        cursor: pointer;
+        }
+
+        &:checked {
+        + label.opsi {
+            &::before {
+            content: " \2705";
+            }
+            color: #00f;
+            background-color: #ff0;
+        }
+        }
+    }
+}
+  
 // @media (min-width: 768px) { 
 //     .menudashboard{
 //         &__title{

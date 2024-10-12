@@ -200,7 +200,7 @@ export default class EditorCreateItemSoal{ //BuilderPattern
         if(teksInptu){
             teksInptu.innerHTML = previewSoalWithProperty(data);
         }
-        console.log('respon teks editor baru',data)
+        
         this.markerContext(data);
         data.reset = ()=>{
             data.pertanyaan="";
@@ -228,7 +228,7 @@ export default class EditorCreateItemSoal{ //BuilderPattern
         let inputanpreview = document.querySelector('#previewsoaledit');
         inputandata.innerHTML = propertiItemSoal(data);
         inputanpreview.innerHTML = previewBentukSoal(data,false);
-        console.log('respon teks editor edit',data)
+        
         this.markerContext(data);
         data.reset = ()=>{
             data.pertanyaan="";

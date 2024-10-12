@@ -233,7 +233,7 @@ export class CanvasFabricEditor{
         fCanvas.setHeight(920);
         let tekskd = '';
         let orm = [];
-        console.log(this.request);
+        
         if(this.praDesain.namakurikulum == 'kurmer'){
             orm = this.praDesain.ormkurikulum.filter(s=> s.idbaris == this.praDesain.kd)[0];
             tekskd = orm.atp;
@@ -415,7 +415,7 @@ export class CanvasFabricEditor{
         fCanvas.setHeight(920);
         let tekskd = '';
         let orm = [];
-        console.log(this.request);
+        
         if(this.praDesain.namakurikulum == 'kurmer'){
             orm = this.praDesain.ormkurikulum.filter(s=> s.idbaris == this.praDesain.kd)[0];
             tekskd = orm.atp;
@@ -600,7 +600,7 @@ export class CanvasFabricEditor{
                 this.callback(this.request);
             }
         }) 
-        console.log(this.callback, typeof this.callback)     
+        
         
     }
     addRespons(fncallback){

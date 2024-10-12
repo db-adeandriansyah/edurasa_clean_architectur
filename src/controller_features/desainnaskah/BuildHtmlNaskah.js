@@ -74,7 +74,7 @@ export default class BuildHtmlNaskah{
                 propertiKurikulum:propertikd,
                 kurikulumbanksoal:this.pradesain.shortKurikulum
             }
-            console.log('datasebaran',datasebaran);
+            
             html+=`<ol type="A" style="margin:0;" class="tnr" id="naskah_sebarankd" class="tnr">`
                 html+=`<li value="${tag}" style="padding-left:0.7em;font-weight:bold">PETUNJUK PENILAIAN`
                     html+=viewSoal.sebarankd(datasebaran)   

@@ -201,54 +201,6 @@ const tabelDataKoreksian = (identitas,data)=>{
         html+=`</div>`;
     return html;
 }
-const identitasljk = (identitas)=>{
-    let html ="";
-    html+=`<h3 class="text-uppercase text-center fw-bolder tnr">LEMBAR JAWABAN EDURASA SISWA</h3>`
-    html+=`<table class="table table-sm lh-1 table-borderless mt-3 tnr">`;
-        html+=`<tr>`;
-            //kolom1;
-            html+=`<td>Nama Siswa</td>`;
-            html+=`<td style="width:15px">:</td>`;
-            html+=`<td class="text-nowrap">${identitas.namasiswa}</td>`;
-            html+=`<td class="text-nowrap">Identitas Materi</td>`;
-            html+=`<td style="width:15px">:</td>`;
-            html+=`<td>${identitas.identitasmateri}</td>`;
-        html+=`</tr>`;
-        html+=`<tr>`;
-            html+=`<td>Kelas</td>`;
-            html+=`<td style="width:15px">:</td>`;
-            html+=`<td>${identitas.kelas}</td>`;
-            html+=`<td class="text-nowrap">Jenis Tagihan</td>`;
-            html+=`<td style="width:15px">:</td>`;
-            html+=`<td>${identitas.jenistagihan}</td>`;
-        html+=`</tr>`;
-        html+=`<tr>`;
-            html+=`<td class="text-nowrap">Mulai Dikerjakan pada</td>`;
-            html+=`<td style="width:15px">:</td>`;
-            html+=`<td id="selwaktumulai">${identitas.waktustart_siswa}</td>`;
-            html+=`<td>Pelaksanaan</td>`;
-            html+=`<td style="width:15px">:</td>`;
-            html+=`<td>${identitas.pelaksanaan}</td>`;
-        html+=`</tr>`;
-        html+=`<tr>`;
-            html+=`<td>Selesai dikerjakan pada</td>`;
-            html+=`<td style="width:15px">:</td>`;
-            html+=`<td id="hasilakhirwaktu">${identitas.waktuakhir_siswa}</td>`;
-            html+=`<td class="text-nowrap">Kompetensi yang diukur</td>`;
-            html+=`<td style="width:15px">:</td>`;
-            html+=`<td>`;
-                identitas.mapel_kd.forEach(n=>{
-                    html+=n.mapel;
-                    html+=' = ';
-                    html+=n.kd;
-                    html+='<br/>'
-                })
-            html+=`</td>`;
-        html+=`</tr>`;
-
-    html+=`</table>`;
-    return html;
-}
 const viewIsianPG = (kerangka,data,modekoreksi)=>{
     let html="";
     html+=`<table data-tabel="Pilihan Ganda" style="border-collapse:separate;width:100%;font-size:12px;border-bottom:.5pt solid #eee" id="tabelconfigpgbantuisiljk">`;
@@ -527,8 +479,7 @@ const viewLJK = (identitas,data,modekoreksi=false)=>{
                         html+=viewIsianLjkMenurutTagihan(n.bentuksoal,n,modekoreksi,data)
                     }
                 });
-                // if(!modekoreksi){
-                // }
+                
                 html+=cardMenu2('Nilai Bentuk Soal',
                         `<div id="view_nilai_perbentuksoal">`+
                             view_nilai_perbentuksoal(data)+

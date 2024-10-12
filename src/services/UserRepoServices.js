@@ -19,7 +19,7 @@ export default class UserService extends UserRepositories{
         }
         let data = null;
         let result = false;
-        console.log("panjang nilai tokensiswa",token.length)
+        
         if(token.length == 10){
             data = await this.loginSiswaByNISN(token);
         }else{
@@ -55,9 +55,10 @@ export default class UserService extends UserRepositories{
     }
     
     async allSiswa(){
-        const dataSiswa = await this.callSiswa()
+        const dataSiswa = await this.callSiswa();
+        console.log(dataSiswa)
         // this.stopProgressBar();
-        window.localStorage.setItem('dbSiswa',JSON.stringify(dataSiswa.datasiswa));
+        window.localStorage.setItem('dbSiswa',JSON.stringify(dataSiswa.data));
     }
 
 

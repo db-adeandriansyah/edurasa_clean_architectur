@@ -35,7 +35,7 @@ export default class LjkFromDomHtml{
                 let htmljawaban = "";
 
                 //cek regex;
-                const regex = /<b style="color:blue">Jawaban:<\/b>[\s\S]*?(?=<div id=)/;
+                const regex = /<b style="color:blue">Jawaban:<\/b>[\s\S]*?(?=<div id="untuklj)/;
                 const match = ol.innerHTML.match(regex);
                 let regexs = [];
 

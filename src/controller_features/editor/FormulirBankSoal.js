@@ -62,8 +62,7 @@ export class FormulirBankSoal{
         let orm = [];
         if(this.datadesain.namakurikulum == 'kurmer'){
             orm = this.datadesain.ormkurikulum.filter(s=> s.idbaris == this.datadesain.kd)[0];
-            console.log('ormInitEdit datadesain',this.datadesain)
-            console.log('ormInitEdit', orm)
+            
             tekskd = orm.atp;
             
             this.request.elemen = orm.elemen;

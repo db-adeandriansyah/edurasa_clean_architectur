@@ -534,7 +534,7 @@ export default class KbmFitur extends BanksoalFitur{
         const siswaRombel = this.siswaRombel;
         const intIdSiswaRombel = siswaRombel.map(n=> parseInt(n.id));
         const orm_desainnaskah = this.ormDesainNaskah;
-        
+        console.log('cari',this.ormKurikulum.data);
         this.ormKBM = new CollectionsEdu(api_datamateri)
             .simpleFilter({'idtoken':jenjang})
             .customFilter((item)=>item.arraykelas.indexOf(rombel)>-1)
@@ -610,23 +610,27 @@ export default class KbmFitur extends BanksoalFitur{
                 };
                 return ar;
             })
-            .addProperty('objek_mapelkd',(item)=>Object.keys(item.objek_kuncikd).map(n=>Object.assign({},{
-                'mapel'             : n.split('_')[0],
-                'mapelteks'         : this.currentMapelOnClassRoom[n.split('_')[0]],
-                'kd'                : n.split('_')[1],
-                'atp'               : n.split('_')[1],
-                'tp'                : (kurikulumAkitif=='kurmer')?this.ormKurikulum.data.filter(s=> s.idbaris==n.split('_')[1])[0].foreignkey_tp:this.ormKurikulum.data.filter(s=> s.mapel == n.split('_')[0] && (s.kd3 == n.split('_')[1]||s.kd4 == n.split('_')[1])),
-                'elemen'            : (kurikulumAkitif=='kurmer')?this.ormKurikulum.data.filter(s=> s.idbaris==n.split('_')[1])[0].foreignkey_elemencp:this.ormKurikulum.data.filter(s=> s.mapel == n.split('_')[0] && (s.kd3 == n.split('_')[1]||s.kd4 == n.split('_')[1])),
-                'kurikulum'         : kurikulumAkitif,
-                'idkbm'             : item.idbaris,
-                'crtToken'          : item.crtToken,
-                'jenistagihan'      : item.jenistagihan,
-                'no_soal'           : item.objek_kuncikd[n],
-                'no_soal_banksoal'  : item.objek_kuncikd[n].length>0?item.objek_kuncikd[n].map(bs=>Object.assign({},{'nosoal':bs,'datasoal':item.obj_desainnaskah[0]['banksoal_'+bs]})):[],
-                'key_tagihan'       : item.idbaris+'_'+item.jenistagihan+'_'+item.crtToken+'_'+n,
-                'mapel_kd'          : n,
-                'objek_kd'          : (kurikulumAkitif=='kurmer')?this.ormKurikulum.data.filter(s=> s.idbaris==n.split('_')[1]):this.ormKurikulum.data.filter(s=> s.mapel == n.split('_')[0] && (s.kd3 == n.split('_')[1]||s.kd4 == n.split('_')[1])),
-            })))
+            .addProperty('objek_mapelkd',(item)=>Object.keys(item.objek_kuncikd).map(n=>{
+                console.log('cek',n.split('_'), item.idbaris,item.objek_kuncikd)
+                return Object.assign({},{
+                    'mapel'             : n.split('_')[0],
+                    'mapelteks'         : this.currentMapelOnClassRoom[n.split('_')[0]],
+                    'kd'                : n.split('_')[1],
+                    'atp'               : n.split('_')[1],
+                    'tp'                : (kurikulumAkitif=='kurmer')?this.ormKurikulum.data.filter(s=> s.idbaris==n.split('_')[1])[0].foreignkey_tp:this.ormKurikulum.data.filter(s=> s.mapel == n.split('_')[0] && (s.kd3 == n.split('_')[1]||s.kd4 == n.split('_')[1])),
+                    'elemen'            : (kurikulumAkitif=='kurmer')?this.ormKurikulum.data.filter(s=> s.idbaris==n.split('_')[1])[0].foreignkey_elemencp:this.ormKurikulum.data.filter(s=> s.mapel == n.split('_')[0] && (s.kd3 == n.split('_')[1]||s.kd4 == n.split('_')[1])),
+                    'kurikulum'         : kurikulumAkitif,
+                    'idkbm'             : item.idbaris,
+                    'crtToken'          : item.crtToken,
+                    'jenistagihan'      : item.jenistagihan,
+                    'no_soal'           : item.objek_kuncikd[n],
+                    'no_soal_banksoal'  : item.objek_kuncikd[n].length>0?item.objek_kuncikd[n].map(bs=>Object.assign({},{'nosoal':bs,'datasoal':item.obj_desainnaskah[0]['banksoal_'+bs]})):[],
+                    'key_tagihan'       : item.idbaris+'_'+item.jenistagihan+'_'+item.crtToken+'_'+n,
+                    'mapel_kd'          : n,
+                    'objek_kd'          : (kurikulumAkitif=='kurmer')?this.ormKurikulum.data.filter(s=> s.idbaris==n.split('_')[1]):this.ormKurikulum.data.filter(s=> s.mapel == n.split('_')[0] && (s.kd3 == n.split('_')[1]||s.kd4 == n.split('_')[1])),
+                })
+            })
+        )
             .addProperty('mapel_desain',(item)=>item.obj_desainnaskah[0].mapel)
             .addProperty('kodeteks_mapel',(item)=>{
                 let teksmapel = "";

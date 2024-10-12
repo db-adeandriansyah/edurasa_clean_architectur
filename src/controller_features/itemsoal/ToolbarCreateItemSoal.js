@@ -120,7 +120,7 @@ export default class ToolbarCreateItemSoal{
 
             element.onchange = (e)=>{
                 this.#result[key]=element.value;
-                console.log('jalan sat memlih elemen kd')
+                
                 if(key == 'kodemapel'){
                     let divwrap = document.getElementById('resultefekpilihmapel');
                     let html = this.#controlbanksoal.menuPilihPropertiKurikulum(this.shortKurikulum,this.propertiKurikulum.simpleFilter({'kodemapel':e.target.value}).data)
@@ -171,7 +171,7 @@ export default class ToolbarCreateItemSoal{
                 }
             };
             element.onchange = ()=>{
-                console.log('element modal toolbar create berjalan di sini');
+                
                 if(element.type == 'radio' && element.checked){
                     this.#result[key] = element.value;
                     if(key == 'kd'){
@@ -199,7 +199,7 @@ export default class ToolbarCreateItemSoal{
         return this;
     }
     static createPraDesain(data){
-        const {bentuksoal,koleksibentuksoal,kurikulum,kd,paramUploadGambar,mode,user,jenjang} = data;
+        const {bentuksoal,koleksibentuksoal,kurikulum,kd,paramUploadGambar,mode,user,jenjang,taksonomibloom} = data;
         let result = {};
             result['namakurikulum']         ='kurmer';
             result['mode']                  =mode;
@@ -211,6 +211,7 @@ export default class ToolbarCreateItemSoal{
             // result['bentuksoal']            = bentuksoal;
             result['bentuksoal']            = !['Essay','Isian'].includes(bentuksoal)?bentuksoal:'Isian';
             result['bentuksoalspesifik']    = bentuksoal;
+            result['taksonomibloom']    = taksonomibloom;
             result['editor']                = koleksibentuksoal.filter(s=>s.bentuksoalspesifik == bentuksoal)[0].editorinput;
             result['mapel']                 = kurikulum.filter(s=> s.idbaris == kd)[0].kodemapel;
             result['kodemapel']             = kurikulum.filter(s=> s.idbaris == kd)[0].kodemapel;;//[0].kodemapel;

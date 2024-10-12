@@ -9,6 +9,10 @@ export default class Orm{
         /**@type Array */
         this.mainArray = [];
 
+        /**@return Object of Classes */
+        this.devedency = {}
+        this.instancionObject = null;
+
         this.result = null;
     }
     get collections(){
@@ -24,13 +28,21 @@ export default class Orm{
         this.mainArray = data;
         return this;
     }
-    findById(id){
-        return this.result.simpleFilter({'idbaris':id}).data;
+    findById(id,key=idbaris){
+        return this.result.simpleFilter({[key]:id}).data;
         
     }
     findProperty(namakey){
         return this.data[0][namakey]??'Not Found';
         
+    }
+    devedencyClass(objectClass){
+        this.devedency = objectClass;
+        return this;
+    }
+    devedencyInstansiasiClass(ClassInstances){
+        this.instancionObject = ClassInstances;
+        return this;
     }
     /**
      * 

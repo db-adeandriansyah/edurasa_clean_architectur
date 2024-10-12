@@ -77,6 +77,7 @@ export default class KbmController extends Fitur{
         
         const olahNilaiKbm = new OlahNilaiKbm(this.kbmFitur, this.Modal, this.Modal1, this.Auth,this.App.tooltipkan,this.kbm_online);
         olahNilaiKbm.createTableData();
+        console.log('olahNilai',olahNilaiKbm);
         
         const switchReload = document.getElementById('btnreloadhendler');
         switchReload.onchange = (e)=>{

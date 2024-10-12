@@ -43,7 +43,7 @@ export default class FormulirEditItemSoal{
         return this
     }
     buildForm(){
-        console.log('build formuliredititemsoal',this.datadesain,this.service.data.lingkupmateri);
+        
         this.datadesain.kodemapel = this.itemsoal.kodemapel;
         this.workplace.innerHTML = "";
         this.workplace.classList.add('position-relative');
@@ -286,6 +286,47 @@ export default class FormulirEditItemSoal{
                     
                 }
             }
+            n.onpaste = (e)=>{
+                
+                const type = e.clipboardData.types;
+                if(type.includes('Files')){
+                    const selection = document.getSelection();
+                    let teks = e.clipboardData.getData('text/plain');
+                    let parser = new DOMParser();
+                        let htmldoc = parser.parseFromString(teks,'text/html');
+                        let div = document.createDocumentFragment();
+                        while (htmldoc.body.childNodes.length > 0){
+                            div.appendChild(htmldoc.body.childNodes[0]);
+                        }
+                        selection.deleteFromDocument();
+                        selection.getRangeAt(0).insertNode(div);
+                        selection.collapseToEnd()
+                    
+                    // this.onmouseup(e);
+                }else{
+                    
+                    let teks = e.clipboardData.getData('text/plain');
+                    const selection = document.getSelection();
+                    // if(check.checked){
+                    //     teks = this.CleanWordFormatting(teks);
+                    //     selection.deleteFromDocument();
+                    //     selection.getRangeAt(0).insertNode(document.createTextNode(teks));
+                    //     selection.collapseToEnd();
+                    // }else{
+                    // }
+                    teks = this.CleanWordFormatting(teks);
+                    let parser = new DOMParser();
+                    let htmldoc = parser.parseFromString(teks,'text/html');
+                    let div = document.createDocumentFragment();
+                    while (htmldoc.body.childNodes.length > 0){
+                        div.appendChild(htmldoc.body.childNodes[0]);
+                    }
+                    selection.deleteFromDocument();
+                    selection.getRangeAt(0).insertNode(div);
+                    selection.collapseToEnd();
+                    e.preventDefault();
+                }
+            }
 
             
         })
@@ -294,7 +335,12 @@ export default class FormulirEditItemSoal{
     runtime(fn){
         this.resspon = fn;
     }
-    
+    CleanWordFormatting(input) {
+        let output = input.replace(/(<[^>]*>)|\t+/gm, ' ');
+        //ganti semua breakline
+        output = output.replace(/\r?\n|\r/g,'<br>');
+        return output;
+    }
     showonContextMenu(e){
         // let divStatical = this.staticDiv.getBoundingClientRect();
         // let divWraper = this.divElemen.getBoundingClientRect();

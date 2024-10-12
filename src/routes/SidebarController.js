@@ -45,7 +45,12 @@ const koleksiMenuNavigasi = [
     },
     { 
         title:'Raport',                
-        tag:['Guru Kelas','admin','Guru Mapel','ptk','Kepala Sekolah',],         tersedia:'<span class="text-muted py-2">tersedia</span>',   icon:'<i class="bi bi-mortarboard-fill"></i>',          target:'/rapor',                    background:images['raport.webp']},
+        tag             :['Guru Kelas','admin','Guru Mapel','ptk','Kepala Sekolah',],         
+        tersedia        :'<span class="text-muted py-2">tersedia</span>',   
+        icon            :'<i class="bi bi-mortarboard-fill"></i>',          
+        target          :'/rapor',                    
+        background:images['raport.webp']
+    },
     { 
         title:'Bank Soal',             
         tag:['Guru Kelas','admin','Guru Mapel','ptk',],         tersedia:'<span class="text-muted py-2">tersedia</span>',   icon:'<i class="bi bi-question-octagon-fill"></i>',     target:'/banksoal',                 background:images['banksoal.webp']},
@@ -91,6 +96,29 @@ const koleksiMenuNavigasi = [
     { 
         title:'Galeri',                
         tag:['Guru Kelas','admin','Guru Mapel','ptk','Penjaga Sekolah','Kepala Sekolah','Operator Sekolah'],         tersedia:'',                                                icon:'<i class="bi bi-flower1"></i>',                   target:'/',                         background:images['galeri.webp']},
+        { 
+            title       :'Absensiku',         
+            tag         :['siswa'],         
+            tersedia    :'<span class="text-muted py-2">tersedia</span>',   
+            icon        :'<i class="bi bi-file-person-fill"></i>',          
+            target      :'/absensiku',                  
+            background  :images['absensi-siswa.webp']},
+        { 
+            title       :'KBMku',                   
+            tag         :['Guru Kelas','admin','Guru Mapel','ptk','Kepala Sekolah'],         
+            tag         :['siswa'],  
+            icon        :'<i class="bi bi-book"></i>',                      
+            target      :'/kbmku',                      
+            background  :images['kbm.webp']
+        },
+        { 
+            title:'Raportku',                
+            tag         :['siswa'],        
+            tersedia        :'<span class="text-muted py-2">tersedia</span>',   
+            icon            :'<i class="bi bi-mortarboard-fill"></i>',          
+            target          :'/raporku',                    
+            background:images['raport.webp']
+        },
 ];
 
 const menubar = (tag)=> koleksiMenuNavigasi.filter(s=> s.tag.indexOf(tag)>-1) ;

@@ -2,6 +2,8 @@ import InfoKbmModal from "../kbm/InfoKbmModal";
 //const InfoKbmModal =import("../kbm/InfoKbmModal").then(module=>  module.default  );;
 import KoreksiJawaban from "../koreksi/KoreksiJawaban"
 import UploadCsv from "../uploadCsv/UploadCsv";
+import analisisSoal from "./AnalisisSoal";
+import viewAnalisisSoal from "./viewAnalisisSoal";
 import viewOlahNilaiKBM from "./viewOlahNilaiKbm";
 
 export default class OlahNilaiKbm{
@@ -72,6 +74,12 @@ export default class OlahNilaiKbm{
     }
     analisisnilai(id){
         console.log('analisis nilai',id);
+        // const data = this.kbmFitur.ormKBM.data.filter(s=> s.idbaris == id)[0];
+        // console.log(data);
+        // console.log('siswa',this.kbmFitur.siswa);
+        // console.log('rombel',this.kbmFitur.rombel);
+        new analisisSoal(this.kbmFitur).user(this.user).data(id).show(this.Modal);
+
     }
     editpublikasi(id){
         
