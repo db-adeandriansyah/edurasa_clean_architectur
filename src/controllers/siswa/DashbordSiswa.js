@@ -62,7 +62,7 @@ export default class DashboardSiswa{
             .init()
             .withOrm('datanilai',ormNilai.collections,'idbaris','matericode')
             .statusPengerjaan();
-
+            
             const ormKurikulum              = new OrmKurikulumSoal(CollectionsEdu ,this.service.data, this.param.faseKey[jenjang],jenjang);
             
             /** Orm Bank Soal */
@@ -81,6 +81,7 @@ export default class DashboardSiswa{
             .Orm({
                 ormAbsen:absen,
                 ormKalender:ormKalender,
+                ormNilai:ormNilai,
                 ormDataMateri:ormDataMateri,
                 ormBankSoal:ormBankSoal,
                 Modal:ModalInit,
@@ -93,6 +94,8 @@ export default class DashboardSiswa{
             })
             .renderView(dom)
             .init(this.init.bind(this));
+
+            // new VisibilityHandler();
         return this;
 
     }

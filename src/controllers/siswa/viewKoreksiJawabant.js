@@ -65,7 +65,7 @@ const tabelDataKoreksian = (identitas,data)=>{
                 html+=`<tbody>`;
                     data.forEach((n,i)=>{
                         if(data.id == 856){
-                            console.log(n.algoritma_by_spreadsheet_tabrespon);
+                            
                         }
                         html+=`<tr>`;
                             html+=`<td class="text-center">${i+1}</td>`;
@@ -96,7 +96,7 @@ const tabelDataKoreksian = (identitas,data)=>{
                                             html+=`</thead>`;
                                             n.algoritma_by_spreadsheet_tabrespon.forEach(ljk=>{
                                                 if(data.id == 856){
-                                                    console.log(ljk);
+                                                
                                                 }
                                                 html+=`<thead>`;
                                                         html+=`<tr class="text-center">`;

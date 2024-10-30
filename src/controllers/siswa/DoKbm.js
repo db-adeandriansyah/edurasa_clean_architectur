@@ -1,5 +1,6 @@
 import CountDown from "./CountDown";
 import CreateLJK from "./CreateLJK";
+import RepoSiswaKirimNilai from "./RepoSiswaKirimNilai";
 import SkorSiswa from "./SkorSiswa";
 
 export default class DoKbm{
@@ -18,14 +19,23 @@ export default class DoKbm{
         return this;
     }
     queryElement(dom){
-        this.dom = dom;
-        this.elTimer = dom.querySelector('#kontroltimer');
-        this.elButton = dom.querySelector('#kontrolselesai');
+        this.modal = dom;
+        this.dom = dom.body;
+        this.elTimer = this.dom.querySelector('#kontroltimer');
+        this.elButton = this.dom.querySelector('#kontrolselesai');
         
         return this;
     }
     urlImg(im){
         this.UrlImg = im;
+        return this;
+    }
+    ormNilai(orm){
+        this.ormDataNilai = orm;
+        return this;
+    }
+    ormMateri(orm){
+        this.ormDataMateri = orm;
         return this;
     }
     paramNilai(p){
@@ -124,18 +134,23 @@ export default class DoKbm{
             idmapel             : this.kbm.idmapel,
             jenistagihan        : this.kbm.jenistagihan,
             idtgl               : this.kbm.idtgl,
+            crtToken            : this.kbm.crtToken
 
 
             
         };
         return this;
     }
-    init(){
-        console.log('service',this.service, this.paramskor)
+    callFunction(fn){
+        this.runtime = fn;
+        return this;
+    }
+    init(callinit){
+        
         let skor = new SkorSiswa(this.dom,this.service,this.naskahsoal.datasoal).init(this.UrlImg);
         let waktumulai = new Date();
-        console.log('datasoal',this.naskahsoal)
-        new CountDown(this.kbm.idtglend,this.elTimer).settingWarning(2).runtime((state)=>{
+        
+        new CountDown(this.kbm.idtglend,this.elTimer).settingWarning(2).runtime((state,interval)=>{
             
             if(state == 1){
                 if(this.elButton.classList.contains('invisible')){
@@ -146,19 +161,36 @@ export default class DoKbm{
             }else if(state == 2){
                 if(this.elButton.classList.contains('visible')){
                     this.elButton.classList.add('invisible');
+                    
+                    
+                    let ljk = new CreateLJK(this.naskahsoal,this.currentSiswa,skor.result);
+                    ljk.waktumulai =waktumulai;
+                    ljk.waktuakhir = new Date();
+                    let nilai = new RepoSiswaKirimNilai(ljk,this.paramskor);
+                    let tabrespons = nilai.output();
+                    let tabrespon = tabrespons.tabrepson
+                    let tabtagihan = tabrespons.tabtagihan;
+                    let mediaHTML = this.view.createHtmlLjk(ljk,this.naskahsoal,ljk.proseskerjaan);
+                    this.runtime(tabrespon,tabtagihan,mediaHTML,state,interval);
                     this.dom.innerHTML = 'Waktu habis';
                 }
+            }else{
+                this.elButton.onclick = async()=>{
+                    
+                    let ljk = new CreateLJK(this.naskahsoal,this.currentSiswa,skor.result);
+                    ljk.waktumulai =waktumulai;
+                    ljk.waktuakhir = new Date();
+                    let nilai = new RepoSiswaKirimNilai(ljk,this.paramskor);
+                    let tabrespons = nilai.output();
+                    let tabrespon = tabrespons.tabrepson
+                    let tabtagihan = tabrespons.tabtagihan;
+                    let mediaHTML = this.view.createHtmlLjk(ljk,this.naskahsoal,ljk.proseskerjaan);
+                    this.runtime(tabrespon,tabtagihan,mediaHTML,state,interval);    // this.dom.innerHTML = this.view.createHtmlLjk(ljk,this.naskahsoal,ljk.proseskerjaan)
+                };
             }
         }).start();
 
-        this.elButton.onclick = ()=>{
-            console.log('anda ngeklik tombol selesai',this.naskahsoal, skor.TotalPg)
-            let ljk = new CreateLJK(this.naskahsoal,this.currentSiswa,skor.result);
-            ljk.waktumulai =waktumulai;
-            ljk.waktuakhir = new Date();
-            console.log(ljk)
-            this.dom.innerHTML = this.view.createHtmlLjk(ljk,this.naskahsoal,ljk.proseskerjaan)
-        };
+        
     }
 
 }

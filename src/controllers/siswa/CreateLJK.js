@@ -24,6 +24,7 @@ export default class CreateLJK{
         return {
             kbmid: this.naskah.idbaris,
             nama: this.siswa.pd_nama,
+            idsiswa:this.siswa.id,
             kelas: this.siswa.nama_rombel,
             namamateri:this.naskah.idmapel,
             jenistagihan:this.naskah.jenistagihan,

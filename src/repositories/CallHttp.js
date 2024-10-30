@@ -119,11 +119,7 @@ export class CallHttp{
 
             }
         }
-        // const parameter = this.paramFormData(param);
-        //     const f = await fetch(uri,{body:parameter,method:'post'});
-        //     console.log(f.ok)
-        //     const t = await f.json();
-        //     return t;
+        
     }
     async postAuto(param){
         /**
@@ -175,7 +171,7 @@ export class CallHttp{
         return t;
     }
     async saveImage(param){
-        console.log(param);
+        
         const parameter = this.paramFormData(param);
         const f = await fetch(this.crud,{body:parameter,method:'post'});
         const t = await f.json();

@@ -8,6 +8,7 @@ export default class CountDown{
     
       start() {
         this.interval = setInterval(() => this.update(), 1000);
+        this.function(0,this.interval)
       }
     
       settingWarning(minutes) {
@@ -16,7 +17,7 @@ export default class CountDown{
       }
       runtime(func){
         this.function = func;
-        this.function(0)
+        this.function(0,this.interval)
         return this;
       }
       update() {
@@ -34,13 +35,13 @@ export default class CountDown{
         // Peringatan sebelum habis
         if (this.warningTime && distance <= this.warningTime && distance > 0) {
           // element.innerHTML += ` - Kurang dari ${this.warningTime / (60 * 1000)} menit lagi!`;
-          this.function(1)
+          this.function(1,this.interval)
         }
     
         if (distance < 0) {
           clearInterval(this.interval);
           element.innerHTML = "Waktu Habis";
-          this.function(2)
+          this.function(2,this.interval)
         }
       }
     }

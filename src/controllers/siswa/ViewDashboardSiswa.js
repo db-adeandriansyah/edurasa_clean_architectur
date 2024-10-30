@@ -29,6 +29,7 @@ export default class ViewDashboardSiswa{
                 Modal,
                 ormDataMateri,
                 ormAbsen,
+                ormNilai,
                 ormBankSoal,
                 logosekolah,
                 barloading,
@@ -128,11 +129,26 @@ export default class ViewDashboardSiswa{
                     Modal.showBodyHtml(view.viewSoalBySiswa(cl));
                     const DoKbm = await import('./DoKbm.js').then(m=>m.default);
                     new DoKbm(this.service,datakbm, this.currentSiswa)
-                            .queryElement(Modal.body)
+                            .queryElement(Modal)
                             .views(view)
                             .datasoaldaridom(ormBankSoal.collections)
                             .urlImg(UrlImg)
-                            .paramNilai(paramnilai)
+                            .callFunction(async(tabrespon,tabtagihan,html,state,interval)=>{
+                                clearInterval(interval);
+                                
+                                let imgLoad = `<img src="${barloading}" alt="loading" class="img"/>`;
+                                Modal.showBodyHtml(imgLoad);
+                                this.service.repo.ss_nilai_jenjang(paramnilai.idss);
+                                
+                                await this.service.kirimSingleNilaiLJK(tabrespon,tabtagihan,html,1,[paramnilai]);
+                                ormNilai.parent(this.service.data['respon_'+parseInt(tabrespon.idkelas)]).init();
+                                ormDataMateri.withOrm('datanilai',ormNilai.collections,'idbaris','matericode').statusPengerjaan();
+                                this.dbOrm = Object.assign(this.dbOrm,{ormNilai:ormNilai,ormDataMateri:ormDataMateri});
+                                    this.parent.innerHTML = view.welcome({siswa:this.currentSiswa,data:this.dbOrm});
+                                    Modal.hide();
+                                    this.init();
+                                
+                            })
                             .init();
                 }
             

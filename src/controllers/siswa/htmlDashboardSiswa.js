@@ -112,6 +112,7 @@ const firstRender = (dataasal)=>{
     }else{
         //tidak libur;
         const kbmhariini = data.ormDataMateri.kbmHariIni();
+        console.log('----kbm hari ini---',kbmhariini)
         if(kbmhariini.length>0){
             if(data.ormAbsen.absensiToday){
                 
@@ -327,17 +328,16 @@ const soalOtomatis = (arraySoal,result,opsiD=true)=>{
 const totalSkorByBentuksoal = (datasoal,result)=>{
     let uniktipesoal = datasoal.soalOtomatis.map(s=> s.bentuksoal).filter((x,i,a)=>a.indexOf(x)== i);
     let unikmanual = datasoal.soalManual.map(s=> s.bentuksoal).filter((x,i,a)=>a.indexOf(x)== i);
-    console.log('otomatis', uniktipesoal, 'manual',unikmanual);
+    
     let html = ""
     uniktipesoal.forEach(bentuksoal=>{
         let soalnya = datasoal.soalOtomatis.filter(s=>s.bentuksoal == bentuksoal);
-        console.log('soal otomatis',soalnya);
+        
         let nilai = result.filter(s=>s.tipe == bentuksoal);
-        console.log('nilai',nilai)
         let count = 0;
         soalnya.forEach(n=>{
             let kj =nilai.filter(s=>s.no == n.nosoal);//[0].jawaban;
-            console.log('soalnya no',n.nosoal, kj)
+            
             if(kj.length>0){
                 if(n.kuncijawaban == kj[0].jawaban){
                     count++

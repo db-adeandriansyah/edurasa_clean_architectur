@@ -69,9 +69,9 @@ export default class AkunSiswaServices{
             autoId:'idbaris'
         },param)
         this.repo.callWithProses();
-        console.log('body', body, 'pram',asParam)
+        
         let cek = await this.repo.post(this.repo.crud, asParam);
-        console.log(param,cek);
+        
         this.#db = Object.assign(this.#db, {[param.tabdb]:cek.data,['blangko_'+param.tabdb]:cek.info.objKosong});
         this.repo.stopProgressBar();
         return cek
@@ -82,15 +82,22 @@ export default class AkunSiswaServices{
         // const respon = await this.repo.callPropertiMultiple(arrayTab);
         const respon  = await this.repo.kirimSingleNilaiLJK(tabrespons,tabtagihan,mediaHTML,kode_tambahEdit);
         const data = respon.data;
+        
+        
         data.forEach(n=>{
-            let tabrespon = n.info.namaTab;
-            let cek = arrayTab.filter(s=> s.tab == tabrespon)[0];
-            
-            if(cek.tab == tabrespon && cek.tabdb == tabrespon){
-                this.#db = Object.assign(this.#db, {[tabrespon]:n.data,['blangko_'+tabrespon]:n.info.objKosong});
-            }else{
-                this.#db = Object.assign(this.#db, {[cek.tabdb]:n.data,['blangko_'+cek.tabdb]:n.info.objKosong});
-            }
+            let namatab = n.info.namaTab;
+            let namakey = namatab+'_'+parseInt(tabrespons.idkelas);
+            this.#db = Object.assign(this.#db, {[namakey]:n.data,['blangko_'+namakey]:n.info.objKosong});
+            // let tabrespon = n.info.namaTab;
+            // let cek = arrayTab.filter(s=> s.tab == tabrespon);
+            // if(cek.length>0){
+
+            // }
+            // if(cek.tab == tabrespon && cek.tabdb == tabrespon){
+            //     this.#db = Object.assign(this.#db, {[tabrespon]:n.data,['blangko_'+tabrespon]:n.info.objKosong});
+            // }else{
+            //     this.#db = Object.assign(this.#db, {[cek.tabdb]:n.data,['blangko_'+cek.tabdb]:n.info.objKosong});
+            // }
 
         })
         

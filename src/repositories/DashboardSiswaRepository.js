@@ -68,9 +68,13 @@ export default class DashboardSiswaRepository extends CallHttp{
     async showTextHTML(paramUI){
         return await this.get(this.crud+paramUI);
     }
-    
+    ss_nilai_jenjang(idss){
+        this.paramidss = idss;
+        return this;
+        
+    }
     async kirimSingleNilaiLJK(tabrespon,tabtagihan,mediaHTML,create=1){
-        let idss = this.ss_nilai_jenjang(tabrespon.idtoken);
+        let idss = this.paramidss;
         let tagihan = tabtagihan.jenistagihan;
         let rombel = tabrespon.idkelas;
         let param = {
