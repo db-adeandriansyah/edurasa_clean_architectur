@@ -1,6 +1,6 @@
 export function importAll(r) {
     return r.keys().reduce((acc, next) => {
-        acc[next.replace("./", "")] = r(next);
+        acc[next.replace("../", "")] = r(next);
         return acc;
         }, {});
 }

@@ -85,7 +85,7 @@ export default class KurikulumFitur{
     }
 
     get currentMapelOnClassRoom(){
-        let tinggiRendah = this.jenjang>3?'tinggi':'rendah';;
+        let tinggiRendah = this.jenjang>2?'tinggi':'rendah';;
         
         let teks = 'mapel'+this.shortKurikulum + tinggiRendah;;
         return this.#mapelAplikasi[teks]();;

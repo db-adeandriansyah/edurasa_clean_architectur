@@ -1775,12 +1775,13 @@ const html_halaman_isi_rapor = (identitas)=>{
     const semester = identitas.semester;
     const tapel = identitas.tapel;
     
-    // const siswapertama = identitas.firstSiswa;
+    // const siswapertama = identitas.firstSiswa; 
     const mapelnonagama = identitas.mapelinti;
     const kurmer = identitas.kurikulum == 'kurmer';
     const namafase = identitas.fase;
     const alamat = identitas.alamat;
     const namasekolah = identitas.namasekolah;
+    
     let html="";
     html+=`<div id="area_rapor" class="tnr table-responsive">`;
         html+=`<table class="toExcel font14" style="line-height:1;border-collapse:collapse;border-spacing:0;width:99.5%">`;
@@ -1918,7 +1919,8 @@ const html_halaman_isi_rapor = (identitas)=>{
                 // Object.entries(mapelnonagama).forEach(([kodemapel, teksmapel],indek)=>{
                 mapelnonagama.forEach((m,indek)=>{
                     let kodemapel = m.value, teksmapel = m.label;
-                    if(kodemapel!=='BSUND'){
+                    
+                    if(!['BSUND','BING'].includes(kodemapel) ){
                         html+=`<tr>`
                             html+=`<td class="border p-1 text-center border-dark" colspan="2">${(indek+2)}.</td>`;
                             html+=`<td  class="border p-1 border-dark" colspan="12">`;
@@ -1958,16 +1960,16 @@ const html_halaman_isi_rapor = (identitas)=>{
                 html+=`</tr>`;
                 //mulok pilihan
                 html+=`<tr>`    
-                    html+=`<td rowspan="2" class="border p-1 text-end border-dark" colspan="2">b.</td>`;
-                    html+=`<td rowspan="2"  class="border p-1 border-dark" colspan="12">`;
-                        html+='Muatan Lokal Pilihan'
+                    html+=`<td class="border p-1 text-end border-dark" colspan="2">b.</td>`;
+                    html+=`<td  class="border p-1 border-dark" colspan="12">`;
+                        html+=mapelnonagama.filter(s=> s.value == 'BING')[0]?mapelnonagama.filter(s=> s.value == 'BING')[0].label:"";
                     html+=`</td>`;
-                    html+=`<td rowspan="2"  class="border p-1 text-center border-dark" colspan="3"></td>`;
-                    html+=`<td class="border p-1 text-center border-dark" colspan="19"></td>`;
+                    html+=`<td class="border p-1 text-center border-dark" colspan="3"  data-nilairapor="BING"></td>`;
+                    html+=`<td class="border p-1 text-center border-dark" data-nilairapor="BING_P_DESKRIPSI" colspan="19"></td>`;
                 html+=`</tr>`;
-                html+=`<tr>`;
-                    html+=`<td class="border p-1 text-center border-dark" colspan="19"></td>`;
-                html+=`</tr>`;
+                // html+=`<tr>`;
+                //     html+=`<td class="border p-1 text-center border-dark" colspan="19"></td>`;
+                // html+=`</tr>`;
                 /** B. Ekstrakurikuler */
                                 
                 html+=`<tr><td colspan="36"><br/></td></tr>`;
@@ -2901,7 +2903,7 @@ const noSeriIjazah = (index)=>{
     return `DN-02/D-SD/K13/24/0${(noawal+index)}`
 }
 const rekapIjazahPraCtak =(data,dataserver)=>{
-    console.log(data, dataserver)
+    
     let html = "";
     html+=`<h3 class="text-center mb-3">Data Cetak Ijazah </h3>`;
     html+=`<div class="table-responsive">`;

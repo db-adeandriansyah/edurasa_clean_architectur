@@ -130,10 +130,10 @@ export default class BanksoalFitur{
         return ar;
     }
     get tinggirendahjenjang(){
-        return this.jenjang>3?'tinggi':'rendah';;
+        return this.jenjang>2?'tinggi':'rendah';;
     }
     get currentMapelOnClassRoomWithTema(){
-        let tinggiRendah = this.jenjang>3?'tinggi':'rendah';;
+        let tinggiRendah = this.jenjang>2?'tinggi':'rendah';;
         let teks = 'mapel'+this.shortKurikulum + tinggiRendah;;
         let dataAsal = {};
         let mapelReal =  this.#mapelAplikasi[teks]();
@@ -146,7 +146,7 @@ export default class BanksoalFitur{
         return dataAsal;
     }
     get currentMapelOnClassRoom(){
-        let tinggiRendah = this.jenjang>3?'tinggi':'rendah';;
+        let tinggiRendah = this.jenjang>2?'tinggi':'rendah';;
         let teks = 'mapel'+this.shortKurikulum + tinggiRendah;;
         
         return  this.#mapelAplikasi[teks]();

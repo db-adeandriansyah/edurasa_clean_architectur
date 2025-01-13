@@ -92,10 +92,10 @@ export default class KbmFitur extends BanksoalFitur{
         return ar;
     }
     get tinggirendahjenjang(){
-        return this.jenjang>3?'tinggi':'rendah';;
+        return this.jenjang>2?'tinggi':'rendah';;
     }
     get currentMapelOnClassRoomWithTema(){
-        let tinggiRendah = this.jenjang>3?'tinggi':'rendah';;
+        let tinggiRendah = this.jenjang>2?'tinggi':'rendah';;
         let teks = 'mapel'+this.shortKurikulum + tinggiRendah;;
         let dataAsal = {};
         let mapelReal =  this.#mapelAplikasi[teks]();
@@ -108,7 +108,7 @@ export default class KbmFitur extends BanksoalFitur{
         return dataAsal;
     }
     get currentMapelOnClassRoom(){
-        let tinggiRendah = this.jenjang>3?'tinggi':'rendah';;
+        let tinggiRendah = this.jenjang>2?'tinggi':'rendah';;
         let teks = 'mapel'+this.shortKurikulum + tinggiRendah;;
         
         return  this.#mapelAplikasi[teks]();
@@ -320,7 +320,7 @@ export default class KbmFitur extends BanksoalFitur{
     }
     get arraySsRapor(){
         let ttm = {
-            'idss':  this.service.spreadsheet_nilai,
+            'idss': this.service.repo.ss_kurikulum_must_call ,//this.service.spreadsheet_nilai,
             'tab':'titimangsa_rapor',
             'tabdb':'titimangsa_rapor'
         };
@@ -332,8 +332,8 @@ export default class KbmFitur extends BanksoalFitur{
         if(this.jenjang == 6){
 
             ttm = {
-                'idss':  this.service.spreadsheet_nilai,
-                'tab':'titimangsa_rapor',
+                'idss':  this.service.repo.ss_kurikulum_must_call ,//this.service.spreadsheet_nilai,
+                'tab':'titimangsa_rapor',   
                 'tabdb':'titimangsa_rapor'
             }
         }
@@ -534,7 +534,7 @@ export default class KbmFitur extends BanksoalFitur{
         const siswaRombel = this.siswaRombel;
         const intIdSiswaRombel = siswaRombel.map(n=> parseInt(n.id));
         const orm_desainnaskah = this.ormDesainNaskah;
-        console.log('cari',this.ormKurikulum.data);
+        
         this.ormKBM = new CollectionsEdu(api_datamateri)
             .simpleFilter({'idtoken':jenjang})
             .customFilter((item)=>item.arraykelas.indexOf(rombel)>-1)
@@ -611,7 +611,7 @@ export default class KbmFitur extends BanksoalFitur{
                 return ar;
             })
             .addProperty('objek_mapelkd',(item)=>Object.keys(item.objek_kuncikd).map(n=>{
-                console.log('cek',n.split('_'), item.idbaris,item.objek_kuncikd)
+                
                 return Object.assign({},{
                     'mapel'             : n.split('_')[0],
                     'mapelteks'         : this.currentMapelOnClassRoom[n.split('_')[0]],
@@ -949,7 +949,7 @@ export default class KbmFitur extends BanksoalFitur{
     createOrmPerTagihan(){
         let datasiswaCurrentRombel = this.siswaRombel.slice();
         let arrayAgama = new CollectionsEdu(datasiswaCurrentRombel).selectProperties(['pd_agama']).uniqueByProperty('pd_agama').data;
-        let mapelNasional = Object.fromEntries(Object.entries(this.currentMapelOnClassRoom).filter(([k,v])=>!['PAI','PKRIS','PKATO','BSUND'].includes(k)));
+        let mapelNasional = Object.fromEntries(Object.entries(this.currentMapelOnClassRoom).filter(([k,v])=>!['PAI','PKRIS','PKATO','BSUND','BING'].includes(k)));
         let mapelNasionalDanMulok = Object.fromEntries(Object.entries(this.currentMapelOnClassRoom).filter(([k,v])=>!['PAI','PKRIS','PKATO'].includes(k)));
         let definisiMapelSiswa = {
             'ISLAM':{
@@ -976,7 +976,7 @@ export default class KbmFitur extends BanksoalFitur{
                     },
                     
         }
-        const blangkoRespon = this.service.data['blangko_respon_'+this.jenjang];
+        const blangkoRespon = this.service.data['blangko_respon_'+this.jenjang]; 
         const isSemesterGanjil = (this.user.semester == 1);
         const isSemesterGenap = (this.user.semester == 2);
         const ormKurikulum = this.ormKurikulum.data;

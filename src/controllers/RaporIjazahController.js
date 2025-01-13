@@ -1317,11 +1317,12 @@ export default class RaporIjazahController extends Fitur{
             'semester':this.setApp.semester,
             'tapel':this.setApp.tapel,
         }
-        let dataapi = this.service.data['nilai_raport_'+this.fokusRombel];//.filter(s=>s.kodetapel === this.setApp.tapelshort && s.semester == this.setApp.semester);
+        let dataapi = this.service.data['nilai_raport_'+this.fokusRombel];//
+        let titimangsaByTabMateri = this.service.data['titimangsa_rapor'].filter(s=>s.kodetapel == this.setApp.tapelshort && s.semester == this.setApp.semester);
         let bulan = this.setApp.semester==1?11:5;
         let tahun = new Date().getFullYear();
         let ttm = dataapi.length>0?dataapi[0].TITIMANGSA_RAPORT??new Date(tahun, bulan, 28):new Date(tahun, bulan, 28);
-        let ttm_id = dataapi.length>0?dataapi[0].id:'';
+        let ttm_id = titimangsaByTabMateri.length>0?titimangsaByTabMateri[0].idbaris:'';
         // this.ttm_rapor_semester_ini = ttm;
         let dataserver = {
             'tgl_for_input':new FormatTanggal(ttm).valueInputDate(),
@@ -1356,7 +1357,10 @@ export default class RaporIjazahController extends Fitur{
             })
             await this.service.saveNilaiRaporMasal (parent_row,this.fokusRombel,'nilai_raport_'+this.fokusRombel,'id');
             this[this.fokusMenu]();
-            
+            if(titimangsaByTabMateri.length==0){
+                blangko.idbaris =this.service.data['titimangsa_rapor'].length+2;
+            }
+            await this.service.updateTtm([blangko]);
         }
     }
     async KD1(){
@@ -1666,9 +1670,12 @@ export default class RaporIjazahController extends Fitur{
         this.ormMapel.withNilaiRaporSiap();
         
         let cekKesiapan  = this.dataSiapRapor();
-        
 
         let alamat = this.setApp.alamatSekolah+', RT'+this.setApp.alamatSekolahRt+'/RW'+this.setApp.alamatSekolahRw+' Kel. '+this.setApp.alamatSekolahkelurahan +' Kec. ' + this.setApp.alamatSekolahkecamatan;
+        let dataapi = this.service.data['nilai_raport_'+this.fokusRombel];
+        let bulan = this.setApp.semester==1?11:5;
+        let tahun = new Date().getFullYear();
+        let ttm = dataapi.length>0?dataapi[0].TITIMANGSA_RAPORT??new Date(tahun, bulan, 28):new Date(tahun, bulan, 28);
         
         const identitas = {
             'dbsiswa' : this.kbmFitur.siswaRombel,
@@ -1683,7 +1690,7 @@ export default class RaporIjazahController extends Fitur{
             'namasekolah':this.setApp.namaSekolah,
             'kelas':this.fokusRombel,
             'jenjang':this.fokusJenjang,
-            'titimangsa':new FormatTanggal(new Date).formatLong(),
+            'titimangsa':new FormatTanggal(ttm).formatLong(),
             'namauser':this.setApp.namaUser,
             'namakepsek':this.setApp.namaKepsek,
             'nipkepsek':this.setApp.nipKepsek,
@@ -2697,65 +2704,6 @@ export default class RaporIjazahController extends Fitur{
 
             }
         }
-        
-        // btnDetail.onclick = async()=>{
-        //     // this.Modal.settingHeder('Detail Identitas Siswa');
-        //     // this.Modal.widthOrientation(false);
-        //     // this.Modal.showBodyHtml('Modal Detail');
-        //     // this.Modal.showFooter('Simpan  LihatRapor');
-        //     // this.Modal.show();
-        //     let filteringData = new CollectionsEdu(data)
-        //                         .addProperty('AGAMA',(item)=>{
-        //                             let olah_ijazah = item.olah_ijazah.filter(s=> s.kodemapel_umum == 'AGAMA');
-        //                             return olah_ijazah[0].nilai_ijazah;
-        //                         })
-        //                         .addProperty('PKN',(item)=>{
-        //                             let olah_ijazah = item.olah_ijazah.filter(s=> s.kodemapel_umum == 'PKN');
-        //                             return olah_ijazah[0].nilai_ijazah;
-        //                         })
-        //                         .addProperty('BINDO',(item)=>{
-        //                             let olah_ijazah = item.olah_ijazah.filter(s=> s.kodemapel_umum == 'BINDO');
-        //                             return olah_ijazah[0].nilai_ijazah;
-        //                         })
-        //                         .addProperty('MTK',(item)=>{
-        //                             let olah_ijazah = item.olah_ijazah.filter(s=> s.kodemapel_umum == 'MTK');
-        //                             return olah_ijazah[0].nilai_ijazah;
-        //                         })
-        //                         .addProperty('IPA',(item)=>{
-        //                             let olah_ijazah = item.olah_ijazah.filter(s=> s.kodemapel_umum == 'IPA');
-        //                             return olah_ijazah[0].nilai_ijazah;
-        //                         })
-        //                         .addProperty('IPS',(item)=>{
-        //                             let olah_ijazah = item.olah_ijazah.filter(s=> s.kodemapel_umum == 'IPS');
-        //                             return olah_ijazah[0].nilai_ijazah;
-        //                         })
-        //                         .addProperty('SBDP',(item)=>{
-        //                             let olah_ijazah = item.olah_ijazah.filter(s=> s.kodemapel_umum == 'SBDP');
-        //                             return olah_ijazah[0].nilai_ijazah;
-        //                         })
-        //                         .addProperty('PJOK',(item)=>{
-        //                             let olah_ijazah = item.olah_ijazah.filter(s=> s.kodemapel_umum == 'PJOK');
-        //                             return olah_ijazah[0].nilai_ijazah;
-        //                         })
-        //                         .addProperty('BSUND',(item)=>{
-        //                             let olah_ijazah = item.olah_ijazah.filter(s=> s.kodemapel_umum == 'BSUND');
-        //                             return olah_ijazah[0].nilai_ijazah;
-        //                         })
-                                
-        //                         .addProperty('RERATA',(item)=>{
-        //                             let olah_ijazah = item.olah_ijazah.map(n=>n.nilai_ijazah)
-        //                             let total = item.olah_ijazah.map(n=> n.nilai_ijazah).reduce((a,b)=>a+b);
-        //                             let rerata = (total/data.length).toFixed(2);
-        //                             return rerata
-        //                         })
-        //                         .selectProperties(['id','pd_nama','ortu_di_ijazah','AGAMA','PKN','BINDO','MTK','IPA','IPS','SBDP','PJOK','BSUND','RERATA'])
-        //                         .data;
-        //     console.log(filteringData);
-        //     await this.service.savenilai_ijazah(filteringData);
-        //     console.log(this.service.data['nilai_ijazah_6'])
-                                
-
-        // };
         btnPrint.onclick = ()=>{
             let tag = 0;
             this.Modal.settingHeder('Surat Pernyataan');
@@ -2856,7 +2804,6 @@ export default class RaporIjazahController extends Fitur{
                 this.Modal.show();
                 const btnSimpan = document.getElementById('simpan_ortu_di_ijazah');
                 btnSimpan.onclick = async()=>{
-                    // console.log('idbaris untuk data edit ini adalah '+(idbarisserver+2), currentDataserverijazah.idbaris);
                     // this.service.editItemIjazah()
                     let namaortu = document.getElementById('update_ortu_di_ijazah');
                     let updatayah = namaortu.value

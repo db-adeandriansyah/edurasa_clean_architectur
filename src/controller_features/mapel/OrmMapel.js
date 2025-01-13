@@ -9,7 +9,7 @@ export default class OrmMapel{
     constructor(ormKbmFitur,modal,modal1){
         this.kbmFitur = ormKbmFitur;
         this.Modal = modal;
-        this.Modal1=modal1;
+        this.Modal1=modal1; 
         this.workplace = document.getElementById('printarea');
         this.labelRealMapel = [];
         this.definisiMapelSiswa = {

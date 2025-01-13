@@ -336,7 +336,9 @@ export default class BanksoalRepository extends CallHttp{
     }
     return await this.post(this.crud,param);
     }
-
+    async updateTtm(data){
+        return await this.createOrUpdate(this.ss_materi,data,'titimangsa_rapor','idbaris');
+    }
     async createOrUpdate_deskripsi_predikat(data,jenjang){
         let idss = this.ss_materi;
         let tab = 'predikat_'+jenjang;

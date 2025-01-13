@@ -49,7 +49,7 @@ export default class Dashboard{
             const OrmNilaiSiswa = await import('../controller_features/ORM/OrmNilaiSiswa.js').then(m=>m.default);
             const ModalConfig = await import('../controller_features/modal/ModalConfig.js').then(m=>m.ModalConfig);
             const instRepo = new DashboardSiswaRepository();
-            instRepo.trial = true;
+            // instRepo.trial = true;
             const rombel = this.app.UserApp.tugasUser;
             const jenjangSiswa = parseInt(rombel);
             const fase = this.app.faseKey;//[jenjangSiswa];

@@ -43,7 +43,7 @@ export default class NewControllerBankSoal extends Fitur{
         this.devedencyInjection = {};
     }
     get paramMapelCurrentJenjang (){
-        let tinggiRendah = this.fokusJenjang>3?'tinggi':'rendah';;
+        let tinggiRendah = this.fokusJenjang>2?'tinggi':'rendah';;
         return 'mapel'+this.App.JenisKurikulum[this.fokusJenjang]+ tinggiRendah;;
     }
     get currentFaseKey(){
@@ -104,7 +104,6 @@ export default class NewControllerBankSoal extends Fitur{
         const arrayReduce = this.fn_parameterMustSended(arrayTab);
 
         //data yang dibutuhkan
-        //data statik
         Object.assign(this.service.data, {
             koleksimapel: this.fnc_mapelByJenjang[this.paramMapelCurrentJenjang]()
             });
@@ -135,7 +134,6 @@ export default class NewControllerBankSoal extends Fitur{
             .selectorDataElement()
             .paramUploadMedia({folder:'Gambar Media Soal'})
             .runtime((praproperti)=>{
-                
                 new this.EditorCreateItemSoal()
                     .praDesain(praproperti)
                     .workplace(this.workplace)
@@ -184,7 +182,6 @@ export default class NewControllerBankSoal extends Fitur{
             .execute();
     }
     async desain_naskah(){
-       
         //tentukan parameter AppScript karena pengaruh rombel/jenjang;
         this.parameterAppScript.fokusJenjang = this.fokusJenjang;
         
@@ -720,24 +717,20 @@ export default class NewControllerBankSoal extends Fitur{
                     btnKisiKisi.onclick = ()=>{
                         instancesPropertiNaskah = create.newInstancePropertiNaskah;
                         let data = instancesPropertiNaskah.desainFromPraDesain(pradesain,this.Auth).datakisikisi();
-                            
                             this.Modal1.widthOrientation(true);
                             this.Modal1.settingHeder('KISI-KISI ' + pradesain.judulnaskah.toUpperCase());
                             this.Modal1.showBodyHtml(viewSoal.htmlkisikisi(data.identitas,data.generate));
                             this.Modal1.show();
-                            //registrasikan tombol print pada modal1;
                             this.printableModal1(pradesain.judulnaskah);
-                            
                     }
                     btnKisiKisiView.onclick = ()=>{
                         this.Modal1.widthOrientation(true);
                         instancesPropertiNaskah = create.newInstancePropertiNaskah;
                         let data = instancesPropertiNaskah.desainFromPraDesain(pradesain,this.Auth).datakisikisi();
-                        
+
                         this.Modal1.settingHeder('KISI-KISI DAN SOAL ' + pradesain.judulnaskah.toUpperCase())
                         this.Modal1.showBodyHtml(viewSoal.htmlkisikisi(data.identitas,data.datadom.datasoal,true));
                         this.Modal1.show();
-                        //registrasikan tombol print pada modal1;
                         this.printableModal1(pradesain.judulnaskah);
                     }
                     kuncijawaban.onclick = ()=>{
@@ -745,10 +738,10 @@ export default class NewControllerBankSoal extends Fitur{
                         instancesPropertiNaskah = create.newInstancePropertiNaskah;
                         let data = instancesPropertiNaskah.desainFromPraDesain(pradesain,this.Auth).datakisikisi();
                         
-                        
                         this.Modal1.settingHeder('KUNCI JAWABAN NASKAH ' + pradesain.judulnaskah.toUpperCase())
                         this.Modal1.showBodyHtml(viewSoal.htmlkuncijawaban(data.identitas,data.datadom.datasoal));
                         this.Modal1.show();
+
                         //registrasikan tombol print pada modal1;
                         this.printableModal1(pradesain.judulnaskah);
                     }
@@ -762,21 +755,12 @@ export default class NewControllerBankSoal extends Fitur{
                         };
                         window.localStorage.setItem('draftnaskah_'+this.fokusJenjang,JSON.stringify(datalocal));
                         alert('Draft berhasil disimpan');
-            
                     }
                     
                     simpanserverDesain.classList.remove('d-none');
                     simpanserverDesain.onclick = async()=>{
                         simpanserverDesain.classList.add('d-none');
-                        // instancesPropertiNaskah = create.newInstancePropertiNaskah;
-                        // // let datanaskah = instancesPropertiNaskah.desainFromPraDesain(pradesain,this.Auth).datakisikisi();
-                        // let cek =  new ValidatorDesainNaskah()
                         
-                        // if(!cek.bolValid){
-                        //     alert(cek.massageInvalid);
-                        //     simpanserverDesain.classList.remove('d-none');
-                        //     return;
-                        // }
                         instancesPropertiNaskah = create.newInstancePropertiNaskah;
                     let datanaskah = instancesPropertiNaskah.desainFromPraDesain(pradesain,this.Auth).datakisikisi();
                     let cek = new ValidatorDesainNaskah().pradesainNaskah(pradesain).auth(this.Auth).fromDesainNaskah(datanaskah).init();
@@ -788,20 +772,17 @@ export default class NewControllerBankSoal extends Fitur{
                     }
                     
                     const dataspreadsheet = await cek.domain();
-                        // const dataspreadsheet = await cek.domainSpreadsheetNaskah(desainnaskahsoal);; 
-                        
                         let gab = Object.assign({},desainnaskahsoal, dataspreadsheet)
-                        const html = this.workplace.innerHTML;//this.workplace.cloneNode(true).innerHTML;
-                        await this.service.editDesainNaskahMedia(gab,html);
-    
                         
+                        const html = this.workplace.innerHTML;//this.workplace.cloneNode(true).innerHTML;
+                        
+                        await this.service.editDesainNaskahMedia(gab,html);
+
                         //response
                         this.workplace.innerHTML = 'Berhasil';
-                        // document.querySelector('.elementdraft').innerHTML = 'Tidak ada Draft Naskah yang Anda disimpan di Perangkat ini.';
                         
-                        //hapus draft
                         window.localStorage.removeItem('draftnaskah_'+this.fokusJenjang);
-    
+
                         //nonaktifkan fungsi buttons di footer;
                         btnKisiKisi.onclick = null;
                         btnKisiKisiView.onclick = null;
@@ -809,7 +790,6 @@ export default class NewControllerBankSoal extends Fitur{
                         btnSimpanDraft.onclick = null;
                         document.getElementById('footerarea').innerHTML  =""
                         this.arsip_naskah()
-                        
                     }
 
                 }else if(aksi== 'at_hapuspublikasi'){
@@ -820,12 +800,10 @@ export default class NewControllerBankSoal extends Fitur{
                     datakbm.idkelas='';
                     datakbm.id_desainnaskah='';
                     let ss = new ValidatorKbmDatamateri().paramaterClass(datakbm);
-                                let entiti = await ss.domain();
-                                await this.service.EditKbm(entiti);
-                                
-                                this.arsip_naskah();
+                            let entiti = await ss.domain();
+                            await this.service.EditKbm(entiti);
+                            this.arsip_naskah();
                 }
             })
-            
     }
 }

@@ -249,4 +249,12 @@ export default class KbmService{
         this.repo.stopProgressBar();
         
     }
+    async updateTtm (data){
+        this.repo.callWithProses();
+        let n = await this.repo.updateTtm(data)
+        console.log(n)
+        // this.#db = Object.assign(this.#db, {[n.info.namaTab]:n.data,['blangko_'+n.info.namaTab]:n.info.objKosong});
+        this.repo.stopProgressBar();
+        
+    }
 }

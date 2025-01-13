@@ -118,7 +118,7 @@ export default class AlgoritmaNilai {
             jenjang
         } = refrensi;
         // result.test = fn(80)
-        console.log(propertikurikulummapel)
+        
         result.kkm = propertikurikulummapel.length>0?propertikurikulummapel[0].kkm:71;
 
         if(isKurmer){ //kurmer

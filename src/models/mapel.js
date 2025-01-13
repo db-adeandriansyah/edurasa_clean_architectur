@@ -43,6 +43,8 @@ const MapelKurmerTinggi =()=>{
 const MapelKurmerRendah =()=>{
     let mapelKurtilas = Object.assign({},KodeMapelKumer);
     delete mapelKurtilas.IPAS;
+    
+    delete mapelKurtilas.BING;
     return mapelKurtilas
 }
 const mapelkdcp_kurikulum={

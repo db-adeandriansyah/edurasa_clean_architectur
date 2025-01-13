@@ -21,6 +21,7 @@ const EntriePoint=  {
     // 'helper'      rt:'./src/apps/helper.js',//  :{import:'./src/apps/helper.js'},
     'pdf'           :'./src/entries/style.js',// {import:'./src/entries/style.js' }
     'vendorsoal'    :'./src/entries/vendorsoal.js',
+    'absensiku'     :'./src/entries/absensiku.js'
     
 }
 
