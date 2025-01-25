@@ -1700,6 +1700,36 @@ const html_control_rekap_absen = ()=>{
     return html;
 }
 
+const html_control_riwayat_raport = (semester=true)=>{
+    let html="";
+    html+=`<div class="row mt-3 justify-content-center">`;
+        html+=`<div class="col-md-6">`;
+            html+=`<div class="card">`;
+                html+=`<div class="card-header">Fitur</div>`;
+                html+=`<div class="card-body py-5 text-center">`;
+                    html+=`<div class="btn-group btn-group-sm">
+                    <input type="radio" class="btn-check" name="sorterasli" id="rekapriwayatraport" value="rekap" autocomplete="off" checked> 
+                    <label class="btn btn-outline-danger" for="rekapriwayatraport">Rekap Raport</label>
+                    <input type="radio" class="btn-check" name="sorterasli" id="cetakriwayatrapor" value="raport" autocomplete="off"> 
+                    <label class="btn btn-outline-danger align-middle" for="cetakriwayatrapor">Cetak Raport</label>`;
+                    if(semester) {
+                        html+=`<input type="radio" class="btn-check" name="sorterasli" id="cetakinduk" value="induk" autocomplete="off"> 
+                        <label class="btn btn-outline-danger align-middle" for="cetakinduk">Cetak Induk</label> `
+                    }
+                html+=`</div></div>`;
+            html+=`</div>`;
+        html+=`</div>`;
+        html+=`<div class="col-md-8">`;
+            html+=`<div class="card">`;
+                html+=`<div class="card-header">Keterangan</div>`;
+                html+=`<div class="card-body" id="deskripsifitur">`;
+                html+=`</div>`;
+            html+=`</div>`;
+        html+=`</div>`;
+    html+=`</div>`;
+    return html;
+}
+
 const html_tabel_rekapabsen = (identitas, dataserver)=>{
     let dbsiswa = identitas.dbsiswa;
     
@@ -1977,7 +2007,7 @@ const html_halaman_isi_rapor = (identitas)=>{
                 //ekskul1
                 html+=`<tr>`
                     html+=`<td colspan="2"  class="border p-1 text-center border-dark bg-secondary-subtle">No.</td>`;
-                    html+=`<td colspan="12" class="border p-1 text-center border-dark bg-secondary-subtle">Kegiatan Ekstrakurikuer</td>`;
+                    html+=`<td colspan="12" class="border p-1 text-center border-dark bg-secondary-subtle">Kegiatan Ekstrakurikuler</td>`;
                     html+=`<td colspan="3"  class="border p-1 text-center border-dark bg-secondary-subtle">Nilai</td>`;
                     html+=`<td colspan="15" class="border p-1 text-center border-dark bg-secondary-subtle">Keterangan</td>`;
                     html+=`<td colspan="4"></td>`;
@@ -2312,7 +2342,7 @@ const html_halaman_isi_rapor = (identitas)=>{
             //ekskul1
             html+=`<tr>`
                 html+=`<td colspan="2"  class="border p-1 text-center border-dark bg-secondary-subtle">No.</td>`;
-                html+=`<td colspan="12" class="border p-1 text-center border-dark bg-secondary-subtle">Kegiatan Ekstrakurikuer</td>`;
+                html+=`<td colspan="12" class="border p-1 text-center border-dark bg-secondary-subtle">Kegiatan Ekstrakurikuler</td>`;
                 html+=`<td colspan="3"  class="border p-1 text-center border-dark bg-secondary-subtle">Nilai</td>`;
                 html+=`<td colspan="15" class="border p-1 text-center border-dark bg-secondary-subtle">Keterangan</td>`;
                 html+=`<td colspan="4"></td>`;
@@ -3215,6 +3245,32 @@ const editDetailSiswaIjazahModal = (data,dataserver)=>{
     )
     return html;
 }
+const tabelCek = (arrayObjek)=>{
+    let html = "";
+    html+=`<div class="overflow-x-scroll">`;
+        html+=`<table class="table table-sm">`;
+            html+=`<thead>`;
+                html+=`<tr>`;
+                    Object.keys(arrayObjek[0]).forEach(n=>{
+                        html+=`<th>${n}</th>`
+                    })
+                html+=`</tr>`
+            html+=`</thead>`;
+            html+=`<tbody>`;
+                    arrayObjek.forEach(n=>{
+                        html+=`<tr>`
+                        
+                        Object.keys(n).forEach(m=>{
+                            html+=`<td class="text-nowrap">${n[m]}</td>`
+                        })
+                        html+=`</tr>`
+                    })
+            html+=`</tbody>`;
+        html+=`</table>`;
+    html+=`</div>`;
+    return html;
+}
+
 const viewRapor = {
     'viewDepanRapor'            : viewDepanRapor,
     'tabelRekapRapor'           : tabelRekapRapor,
@@ -3243,7 +3299,9 @@ const viewRapor = {
     'editDetailSiswaIjazahModal': editDetailSiswaIjazahModal,
     'suratPernyataanKebenaranIjazah':suratPernyataanKebenaranIjazah,
     'controlHTMLPrint'          :controlHTMLPrint,
-    'guidesIjazah'              :guidesIjazah
+    'guidesIjazah'              :guidesIjazah,
+    'html_control_riwayat_raport'   :html_control_riwayat_raport,
+    'tabelCek'                  :tabelCek
 
 }
 

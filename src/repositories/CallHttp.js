@@ -48,6 +48,9 @@ export class CallHttp{
 
         this.animationProgress = null;
     }
+    jsonMacro(){
+        return this.#macro;
+    }
     otherMacro(x){
         return this.#macro[x]
     }

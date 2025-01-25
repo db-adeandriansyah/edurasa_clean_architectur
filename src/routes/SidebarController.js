@@ -1,5 +1,6 @@
 import { images } from "../assets/assetFunction";
 //tag: ['siswa','ptk','','kepsek']
+
 const koleksiMenuNavigasi = [
     { 
         title       : 'Dashboard',             

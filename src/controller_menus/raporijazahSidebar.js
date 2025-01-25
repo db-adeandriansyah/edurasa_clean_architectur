@@ -35,14 +35,16 @@ export const raporSidebar = (arrriwayat=[])=> [
         {value:'kenaikankelas',text:'Kenaikan Kelas',name:'menusidebar'},
         {value:'ttm_rapor',text:'Titimangsa',name:'menusidebar'},
         ]
-    },{
+    },
+    {
     title:'Cetak Rapor',
     menu:[
         {value:'sampulraport',text:'Sampul Raport',name:'menusidebar'},
         {value:'cetakrapor',text:'Halaman Isi',name:'menusidebar'}
         
     ]
-    },{
+    },
+    {
     title:'Ijazah',
     menu:[
         {value:'dataolahijazah',text:'Ijazah Kelas',name:'menusidebar'},

@@ -11,27 +11,33 @@ export default class Dashboard{
         if(!this.app.hasLocal('ptk')){
             this.userService.ptk();
         }
-        
-        let hasLocal = window.localStorage.hasOwnProperty('dbSiswa');
-        
-        if(hasLocal){
-            let datlocale = window.localStorage.getItem('dbSiswa');
-            if(!datlocale || datlocale == undefined){
-                const dataSiswa =  await this.userService.callSiswa();
-                if(this.app.UserApp.typeUser == 'siswa'){
-                    window.localStorage.setItem('dbSiswa',JSON.stringify(dataSiswa.data.filter(s=>s.id == this.app.UserApp.idUser)));
-                }else{
-                    window.localStorage.setItem('dbSiswa',JSON.stringify(dataSiswa.data));
-                }
-            }
+        const dataSiswa =  await this.userService.callSiswa();
+        if(this.app.UserApp.typeUser == 'siswa'){
+            window.localStorage.setItem('dbSiswa',JSON.stringify(dataSiswa.data.filter(s=>s.id == this.app.UserApp.idUser)));
         }else{
-            const dataSiswa =  await this.userService.callSiswa();
-            if(this.app.UserApp.typeUser == 'siswa'){
-                window.localStorage.setItem('dbSiswa',JSON.stringify(dataSiswa.data.filter(s=>s.id == this.app.UserApp.idUser)));
-            }else{
-                window.localStorage.setItem('dbSiswa',JSON.stringify(dataSiswa.data));
-            }
+            window.localStorage.setItem('dbSiswa',JSON.stringify(dataSiswa.data));
         }
+        // let hasLocal = window.localStorage.hasOwnProperty('dbSiswa');
+        
+        // if(hasLocal){
+        //     let datlocale = window.localStorage.getItem('dbSiswa');
+        //     if(!datlocale || datlocale == undefined){
+        //         const dataSiswa =  await this.userService.callSiswa();
+        //         if(this.app.UserApp.typeUser == 'siswa'){
+        //             window.localStorage.setItem('dbSiswa',JSON.stringify(dataSiswa.data.filter(s=>s.id == this.app.UserApp.idUser)));
+        //         }else{
+        //             window.localStorage.setItem('dbSiswa',JSON.stringify(dataSiswa.data));
+        //         }
+        //     }
+        // }else{
+        //     const dataSiswa =  await this.userService.callSiswa();
+        //     if(this.app.UserApp.typeUser == 'siswa'){
+        //         window.localStorage.setItem('dbSiswa',JSON.stringify(dataSiswa.data.filter(s=>s.id == this.app.UserApp.idUser)));
+        //     }else{
+        //         window.localStorage.setItem('dbSiswa',JSON.stringify(dataSiswa.data));
+        //     }
+            
+        // }
     }
     async headerCheck(){
         let dom = this.app.TopHeader(this.app.UserApp).dashboardMenu();;
