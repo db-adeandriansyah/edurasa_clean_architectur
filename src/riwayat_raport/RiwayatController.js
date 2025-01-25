@@ -82,14 +82,7 @@ export default class RiwayatController{
             let dataPertama = siswaSesuaiSaatIni_1.find(s=>s.tokensiswa == val);
             let dataKedua = siswaSesuaiSaatIni_2.find(s=>s.tokensiswa == val);
             let kurikulum = dataPertama?.kurikulum || false;
-            // let kurikulum = dataPertama?.kurikulum || false;
-            // if(kurikulum){
-            //     domTarget.innerHTML = viewRiwayat['kontenRaport'+kurikulum](dataPertama,riwayat);
-            // }else{
-            //     domTarget.innerHTML = `<h2 class="text-center fw-bold fs1 text-danger">Tidak ditemukan</h2>`;
-            // }
-            console.log(kurikulum,dataPertama?.rombel);
-            console.log(riwayat.target.mapel)//['kelas_'+parseInt(dataPertama.rombel)+'_mapel']);
+            
             if(kurikulum){
                 domTarget.innerHTML = viewRiwayat['kontenInduk'+kurikulum](dataPertama,riwayat,dataKedua);
                 

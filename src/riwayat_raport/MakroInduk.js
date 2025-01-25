@@ -98,7 +98,7 @@ export const MakroInduk = [
         },
         {
             tapel   : 1819,
-            idss    :'',
+            idss    :'1HHgQn-UdpzqdITQilTQpzKjLdVevkuN-7LitOvsVAD4',
             kelas_1_kurikulum : 'kurtilas',
             kelas_2_kurikulum : 'k2006',
             kelas_3_kurikulum : 'k2006',
@@ -114,7 +114,7 @@ export const MakroInduk = [
         },
         {
             tapel   : 1718,
-            idss    :'',
+            idss    :'1eVDJI8ard7WCUF4cMsnLS2znQOdDyN8kiQKEm-Z2MEg',
             kelas_1_kurikulum : 'k2006',
             kelas_2_kurikulum : 'k2006',
             kelas_3_kurikulum : 'k2006',
@@ -130,7 +130,7 @@ export const MakroInduk = [
         },
         {
             tapel   : 1617,
-            idss    :'',
+            idss    :'1Pvc5G3Ui9KWCrS2SP1y_wLrObZp-m-YnUltoCVGsuoU',
             kelas_1_kurikulum : 'k2006',
             kelas_2_kurikulum : 'k2006',
             kelas_3_kurikulum : 'k2006',
@@ -146,7 +146,7 @@ export const MakroInduk = [
         },
         {
             tapel   : 1516,
-            idss    :'',
+            idss    :'1NsGMNfDGvcP4E6_c9wa5UEHCt8YLoFLYEcb7-Dnghws',
             kelas_1_kurikulum : 'k2006',
             kelas_2_kurikulum : 'k2006',
             kelas_3_kurikulum : 'k2006',
@@ -162,7 +162,7 @@ export const MakroInduk = [
         },
         {
             tapel   : 1415,
-            idss    :'',
+            idss    :'1wNIeJT3KNwwtzlMCXzIPN9abUK1YMIpsltXB0sUrvK8',
             kelas_1_kurikulum : 'k2006',
             kelas_2_kurikulum : 'k2006',
             kelas_3_kurikulum : 'k2006',
@@ -178,7 +178,7 @@ export const MakroInduk = [
         },
         {
             tapel   : 1314,
-            idss    :'',
+            idss    :'15tDxLwYWHVJaWFKJ7RZsMoYmSDouDBz8ckqVwRmxyYQ',
             kelas_1_kurikulum : 'k2006',
             kelas_2_kurikulum : 'k2006',
             kelas_3_kurikulum : 'k2006',
@@ -192,7 +192,7 @@ export const MakroInduk = [
             kelas_5_mapel : ['PA','PKN','BINDO','MTK','IPA','IPS','SBDP','PJOK','BSUND'],
             kelas_6_mapel : ['PA','PKN','BINDO','MTK','IPA','IPS','SBDP','PJOK','BSUND'],
         },
-      ];
-      
+    ];
+
 
 

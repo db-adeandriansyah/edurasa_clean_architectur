@@ -207,7 +207,6 @@ const html_raport_riwayat = (dataPertama,currentSiswa)=>{
     return html;
 }
 const kontenRaportKurmer = (data,riwayat)=>{
-    console.log('sisiwa ini kelas', data.rombel, ' kurikulumnya:', data.kurikulum, 'mapelnya:', riwayat.target.mapelsiswa(parseInt(data.rombel)));
     let html = "";
     html+=`<table class="toExcel font14" style="line-height:1;border-collapse:collapse;border-spacing:0;width:99.5%">`;
             html+=`<thead>`;
@@ -574,7 +573,6 @@ const kontenRaportKurmer = (data,riwayat)=>{
     return html;
 }
 const kontenRaportKurtilas = (data,riwayat)=>{
-    console.log('sisiwa ini kelas', data.rombel, ' kurikulumnya:', data.kurikulum, 'mapelnya:', riwayat.target.mapelsiswa(parseInt(data.rombel)));
     let html = "";
     html+=`<table class="toExcel font14" style="line-height:1;border-collapse:collapse;border-spacing:0;width:99.5%">`;
             html+=`<thead>`;
@@ -992,7 +990,6 @@ const kontenRaportKurtilas = (data,riwayat)=>{
     return html;
 }
 const kontenIndukKurmer = (data,riwayat,data2)=>{
-    console.log('sisiwa ini kelas', data.rombel, ' kurikulumnya:', data.kurikulum, 'mapelnya:', riwayat.target.mapelsiswa(parseInt(data.rombel)));
     let html = "";
     html+=`<table class="toExcel font12" style="line-height:1;border-collapse:collapse;border-spacing:0;width:100%">`;
             html+=`<thead>`;
@@ -1299,7 +1296,6 @@ const kontenIndukKurmer = (data,riwayat,data2)=>{
     return html;
 }
 const kontenIndukKurtilas = (data,riwayat,data2)=>{
-    console.log('sisiwa ini kelas', data.rombel, ' kurikulumnya:', data.kurikulum, 'mapelnya:', riwayat.target.mapelsiswa(parseInt(data.rombel)));
     let html = "";
     html+=`<table class="toExcel font12" style="line-height:1;border-collapse:collapse;border-spacing:0;width:100%">`;
             html+=`<thead>`;

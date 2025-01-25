@@ -36,7 +36,7 @@ export default class RiwayatController{
     get selisih(){
         return this.#selisihTapel;
     }
-    async init(currentSiswa){
+    async init(){
         const splitingCurrentTapel = this.currentKey.split('_')[1];
         const splitingRequestTapel = this.requestKey.split('_')[1];
         const splitingCurrentSemester = this.currentKey.split('_')[3];

@@ -162,21 +162,17 @@ export default class RiwayatService{
             }
             
         }else{
-            console.log('this.service.data', this.service.data);
-            console.log('this.service.data_induk',  this.service.data['induk_'+riwayat.target.kode_tapel+'_all']);
             const merging = this.service.data['induk_'+riwayat.target.kode_tapel+'_all'];
-            console.log('merging', merging);
+            
             if(merging){
                 siswaSesuaiSaatIni = merging.filter(s=>ids_siswaCurrentRombel.includes((s.tokensiswa).toString()));
-                
                 siswaSesuaiSaatIni_1 = siswaSesuaiSaatIni.filter(s=>s.semester == 1);
                 siswaSesuaiSaatIni_2 = siswaSesuaiSaatIni.filter(s=>s.semester == 2);
                 siswaSesuaiSaatIni_notFound = merging.filter(s=>!ids_siswaCurrentRombel.includes((s.tokensiswa).toString()) && s.rombel === targetRombel);
+            
                 let idDitemukan_siswaSesuaiSaatIni = siswaSesuaiSaatIni.map(n=>(n.tokensiswa).toString());
                 siswaSaatIni_notFound_diTapelTarget = siswaCurrentRombel.filter(s=>!idDitemukan_siswaSesuaiSaatIni.includes((s.id).toString()));
-
             }
-
         }
         
         // result.page = htmlPage;

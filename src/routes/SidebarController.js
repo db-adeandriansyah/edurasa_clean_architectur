@@ -56,6 +56,14 @@ const koleksiMenuNavigasi = [
         title:'Bank Soal',             
         tag:['Guru Kelas','admin','Guru Mapel','ptk',],         tersedia:'<span class="text-muted py-2">tersedia</span>',   icon:'<i class="bi bi-question-octagon-fill"></i>',     target:'/banksoal',                 background:images['banksoal.webp']},
     { 
+            title       :'Buku Induk',                   
+            tag         :['Guru Kelas','admin','Guru Mapel','ptk','Kepala Sekolah'],         
+            tersedia    :'<span class="text-muted py-2">tersedia</span>',   
+            icon        :'<i class="bi bi-book"></i>',                      
+            target      :'/bukuinduk',                      
+            background  :images['lg_hand_book.png']
+    },
+    { 
         title:'Kurikulum',             
         tag:['Guru Kelas','admin','Guru Mapel','ptk','Kepala Sekolah',],         tersedia:'<span class="text-muted py-2">tersedia</span>',   icon:'<i class="bi bi-journal-bookmark-fill"></i>',     target:'/kurikulum',                background:images['kurikulum.webp']},
     { 
@@ -67,7 +75,9 @@ const koleksiMenuNavigasi = [
     { 
         title:'RPP/Modul Ajar',        
         tag:['Guru Kelas','admin','Guru Mapel','ptk','Kepala Sekolah',],         tersedia:'',                                                icon:'<i class="bi bi-journal-medical"></i>',           target:'/',                         background:images['rpp.webp']},
-    { 
+
+
+        { 
         title:'Arsip Surat',           
         tag:['Guru Kelas','admin','Guru Mapel','ptk','Operator Sekolah','Kepala Sekolah'],         tersedia:'<span class="text-muted py-2">tersedia</span>',                       icon:'<i class="bi bi-envelope"></i>',                  target:'/arsip-surat',              background:images['data_lemari.png']},
     { 

@@ -48,20 +48,6 @@ export default class RiwayatFacade{
             }
             result.next = kelasExist
             return result
-            // if(kelasExist){
-            //     console.log('tapel target = ', tapel,', semester = ', targetSemester, ', kelas =', kelas + abjad);
-                
-            //     const repo = new RiwayatRepo(jsonMakro[requestKey], kelas).init();
-                
-            //     #service = new RiwayatService(repo,#targetKodeTapel);
-            //     #service.init(namaRombel);
-            //     repo.callWithProses();
-            //     const data = await #service.dataRaport(namaRombel);
-            //     console.log('api:',data);
-            //     repo.stopProgressBar()
-                
-            // }else{
-            //     console.log('tidak punya data kelas')
-            // }
+            
     }
 }
