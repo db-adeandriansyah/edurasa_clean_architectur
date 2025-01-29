@@ -14,6 +14,20 @@ export class CollectionsEdu {
       });
       return new CollectionsEdu(newData);
     }
+  selectPropertiesExcept(excludedProperties) {
+    const newData = this.data.map((item) => {
+      // Dapatkan semua properti dalam objek, kecuali yang ada dalam excludedProperties
+      const includedProperties = Object.keys(item).filter(
+        (prop) => !excludedProperties.includes(prop)
+      );
+      // Buat objek baru hanya dengan properti yang disertakan
+      return includedProperties.reduce((selectedItem, prop) => {
+        selectedItem[prop] = item[prop];
+        return selectedItem;
+      }, {});
+    });
+    return new CollectionsEdu(newData);
+    }
   
     customFilter(filterFn) {
       const newData = this.data.filter(filterFn);
@@ -59,6 +73,13 @@ export class CollectionsEdu {
         } else {
           item[propName] = propValueOrCallback;
         }
+        return item;
+      });
+      return this;
+    }
+    removeProperty(propName){
+      this.data = this.data.map((item, index) => {
+        delete item[propName]
         return item;
       });
       return this;

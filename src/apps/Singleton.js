@@ -17,6 +17,7 @@ App.registerUrlPermission('/banksoallama', ['admin'] );
 App.registerUrlPermission('/banksoalbaru', ['admin','Guru Kelas','Guru Mapel'] );
 App.registerUrlPermission('/kbm', ['Guru Kelas','Guru Mapel','Kepala Sekolah','admin','Staff'] );
 App.registerUrlPermission('/rapor', ['Guru Kelas','Guru Mapel','Kepala Sekolah','admin','Staff'] );
+App.registerUrlPermission('/bukuinduk', ['Guru Kelas','Guru Mapel','Kepala Sekolah','admin','Staff'] );
 App.init();
 
 export {App as default}

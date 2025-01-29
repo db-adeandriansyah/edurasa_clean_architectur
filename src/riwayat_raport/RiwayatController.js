@@ -51,6 +51,7 @@ export default class RiwayatController{
         this.listener_cetak((val)=>{
             let dataPertama = siswaSesuaiSaatIni.find(s=>s.tokensiswa == val);
             let kurikulum = dataPertama?.kurikulum || false;
+            console.log(dataPertama);
             if(kurikulum){
                 domTarget.innerHTML = viewRiwayat['kontenRaport'+kurikulum](dataPertama,riwayat);
             }else{

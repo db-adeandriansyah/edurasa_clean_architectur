@@ -208,7 +208,7 @@ const html_raport_riwayat = (dataPertama,currentSiswa)=>{
 }
 const kontenRaportKurmer = (data,riwayat)=>{
     let html = "";
-    html+=`<table class="toExcel font14" style="line-height:1;border-collapse:collapse;border-spacing:0;width:99.5%">`;
+    html+=`<table class="toExcel font14 tnr" style="line-height:1;border-collapse:collapse;border-spacing:0;width:99.5%">`;
             html+=`<thead>`;
                 html+=`<tr>`;
                     html+=`<th>&nbsp;</th>`;
@@ -317,7 +317,7 @@ const kontenRaportKurmer = (data,riwayat)=>{
                         html+=`<td class="border p-1 border-dark" colspan="12" data-firstsiswa="pd_agama" data-keyrapor="agama" data-nilairapor="mapel_agama_kode_teks">`;
                             html+=definisiMapelAgama(data.agama,data.kurikulum); 
                         html+=`</td>`;
-                        html+=`<td class="border p-1 text-center border-dark" colspan="3">${data.PA}</td>`;
+                        html+=`<td class="border p-1 text-center border-dark" colspan="3">${data.PA?Math.round(data.PA):''}</td>`;
                         html+=`<td class="border p-1 border-dark"  id="AGAMA_deskripsi_maks" colspan="19">${data.PA_deskripsi}</td>`;
                     html+=`</tr>`;
                     //mapel selain agama dan mulok
@@ -327,7 +327,7 @@ const kontenRaportKurmer = (data,riwayat)=>{
                             html+=`<td  class="border p-1 border-dark" colspan="12">`;
                                 html+=definisiMapel(kodemapel,data.kurikulum)
                             html+=`</td>`;
-                            html+=`<td class="border p-1 text-center border-dark" colspan="3">${data[kodemapel]}</td>`;
+                            html+=`<td class="border p-1 text-center border-dark" colspan="3">${data[kodemapel]?Math.round(data[kodemapel]):''}</td>`;
                             html+=`<td class="border p-1 border-dark" colspan="19">${data[kodemapel+'_deskripsi']}</td>`;
                         html+=`</tr>`;
                     })
@@ -342,7 +342,7 @@ const kontenRaportKurmer = (data,riwayat)=>{
                         html+=`<td  class="border p-1 border-dark" colspan="12">`;
                             html+=definisiMapel('BSUND',data.kurikulum);
                         html+=`</td>`;
-                        html+=`<td  class="border p-1 text-center border-dark" colspan="3" >${data.BSUND}</td>`;
+                        html+=`<td  class="border p-1 text-center border-dark" colspan="3" >${data.BSUND?Math.round(data.BSUND):''}</td>`;
                         html+=`<td class="border p-1 border-dark" data-nilairapor="BSUND_P_DESKRIPSI" colspan="19">${data.BSUND_deskripsi}</td>`;
                     html+=`</tr>`;
                     html+=`<tr>`;
@@ -355,7 +355,7 @@ const kontenRaportKurmer = (data,riwayat)=>{
                         html+=`<td  class="border p-1 border-dark" colspan="12">`;
                             html+=definisiMapel(riwayat.target.mapelsiswa(parseInt(data.rombel)).find(s=>s==='BING')??"",data.kurikulum)??"";
                         html+=`</td>`;
-                        html+=`<td class="border p-1 text-center border-dark" colspan="3"  data-nilairapor="BING">${data.BING}</td>`;
+                        html+=`<td class="border p-1 text-center border-dark" colspan="3"  data-nilairapor="BING">${data.BING?Math.round(data.BING):''}</td>`;
                         html+=`<td class="border p-1 text-center border-dark" data-nilairapor="BING_P_DESKRIPSI" colspan="19">${data.BING_deskripsi}</td>`;
                     html+=`</tr>`;
                     /** B. Ekstrakurikuler */
@@ -574,7 +574,7 @@ const kontenRaportKurmer = (data,riwayat)=>{
 }
 const kontenRaportKurtilas = (data,riwayat)=>{
     let html = "";
-    html+=`<table class="toExcel font14" style="line-height:1;border-collapse:collapse;border-spacing:0;width:99.5%">`;
+    html+=`<table class="toExcel font14 tnr" style="line-height:1;border-collapse:collapse;border-spacing:0;width:99.5%">`;
             html+=`<thead>`;
                 html+=`<tr>`;
                     html+=`<th>&nbsp;</th>`;
@@ -991,7 +991,7 @@ const kontenRaportKurtilas = (data,riwayat)=>{
 }
 const kontenIndukKurmer = (data,riwayat,data2)=>{
     let html = "";
-    html+=`<table class="toExcel font12" style="line-height:1;border-collapse:collapse;border-spacing:0;width:100%">`;
+    html+=`<table class="toExcel font12 tnr" style="line-height:1;border-collapse:collapse;border-spacing:0;width:100%">`;
             html+=`<thead>`;
                 html+=`<tr>`;
                     html+=`<th>&nbsp;</th>`;
@@ -1297,7 +1297,7 @@ const kontenIndukKurmer = (data,riwayat,data2)=>{
 }
 const kontenIndukKurtilas = (data,riwayat,data2)=>{
     let html = "";
-    html+=`<table class="toExcel font12" style="line-height:1;border-collapse:collapse;border-spacing:0;width:100%">`;
+    html+=`<table class="toExcel font12 tnr" style="line-height:1;border-collapse:collapse;border-spacing:0;width:100%">`;
             html+=`<thead>`;
                 html+=`<tr>`;
                     html+=`<th>&nbsp;</th>`;

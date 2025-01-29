@@ -14,6 +14,7 @@ const EntriePoint=  {
     // 'banksoallama'  :{import:'./src/entries/banksoallama.js'   ,dependOn:['app','vendor','pdf']},
     'kbm'           :{import:'./src/entries/kbm.js', dependOn:['app','vendor','pdf']},
     'raporijazah'   :{import:'./src/entries/raporijazah.js'    ,dependOn:['app','vendor','pdf']},
+    'bukuinduk'   :{import:'./src/entries/bukuinduk.js'    ,dependOn:['app','vendor','pdf']},
     //selesai versilama
     'app'           :'./src/apps/Singleton.js',//{import:'./src/apps/Singleton.js'},
     'vendor'        :'./src/entries/vendor.js',//{import:'./src/entries/vendor.js'},
@@ -203,6 +204,20 @@ const pagesConfig = [
             'apple-mobile-web-app-status-bar':'#ffffff'
         },
         chunks:['style','raporijazah','pdf','app','vendor'],
+        publicPath:'/'
+    },
+    {
+        title:'Edurasa | Buku Induk',
+        template:'./src/templates/fitur.html',
+        //favicon:'./src/img/lamaso.ico',
+        filename:'/bukuinduk/index.html',
+        inject:"body",
+        meta: {
+            'description':'Aplikasi Manajemen Berbasis Sekolah SDN Ratujaya 1',
+            'theme-color': '#ffffff',
+            'apple-mobile-web-app-status-bar':'#ffffff'
+        },
+        chunks:['style','bukuinduk','pdf','app','vendor'],
         publicPath:'/'
     },
 ];
