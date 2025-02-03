@@ -1,4 +1,6 @@
+import { data } from "autoprefixer";
 import viewRiwayat from "../../riwayat_raport/RiwayatView";
+import Pagination from "../pagination/Pagination";
 import viewInduk from "./BukuIndukView";
 
 export default class BukuIndukFitur{
@@ -14,16 +16,62 @@ export default class BukuIndukFitur{
         this.workplace.innerHTML = viewInduk.showRingkasanInduk(this.service.ormInduk);
         return this;
     }
-    async showKlapper(){
+    showKlapper(){
         this.service.createKlapper();
         const ormKlapper = this.service.ormKlapper;
         this.workplace.innerHTML ="Klapper";
         this.submenu.innerHTML = viewInduk.subMenuKlapper(ormKlapper);
         this.listenerSelectMenu((v)=>{
-            console.log(ormKlapper.find(s=>s.abjad === v))
+            const judul = `<h2 class="text-center text-uppercase mb-3 fw-bold tnr">BUKU KLAPER<br/>${this.App.UserApp.namaSekolah}<br/>Abjad "${v}"</h2>`;
+            
+            const data = ormKlapper.find(s=>s.abjad === v)?.dataKlapper||[];
+            new Pagination(data).init({
+                'title':judul,
+                'workplace':this.workplace,
+                'showPerPage': 50,
+                'viewFunction':viewInduk.viewKlaper,
+                'overflowingColumn':[0,1,2,3,4,5]
+
+            }).buildHtml();
         });
         
         return this;
+    }
+    async showKlapperAngkatan(){
+        this.submenu.innerHTML = viewInduk.subMenuKlaperAngkatan(this.service.ormInduk);
+        const wraperSelectAbjad = document.getElementById('selectMenuAbjad');
+        this.listenerRadioMenu((tapel)=>{
+            if(tapel==='false'){
+                tapel=false;    
+            }
+            
+            this.workplace.innerHTML = "Memproses ....";
+            const detail = this.service.ormInduk.find(s=>s.awalanInduk===tapel);
+            const koleksiabjad = detail?.klaperAngkatan ||[];
+            const dataopsi = [];
+            
+            koleksiabjad.forEach(item=>{
+                dataopsi.push({
+                    label:`${item.abjad} (${item.dataKlaperAngkatan.length} data)`,
+                    value:item.abjad
+                });
+            });
+            wraperSelectAbjad.innerHTML = viewInduk.selectAbjad(dataopsi);
+            this.listenerSelectMenu((v)=>{
+                const judul = `<h2 class="text-center text-uppercase mb-3 fw-bold tnr">BUKU KLAPER<br/>${this.App.UserApp.namaSekolah}<br/>Tahun Pelajaran ${detail.tahunpelajaran}<br/>Abjad "${v}"</h2>`;
+                const data = detail.klaperAngkatan.find(s=>s.abjad === v)?.dataKlaperAngkatan||[];
+                
+                new Pagination(data).init({
+                    'title':judul,
+                    'workplace':this.workplace,
+                    'showPerPage': 50,
+                    'viewFunction':viewInduk.viewKlaper,
+                    'overflowingColumn':[0,1,2,3,4,5]
+    
+                }).buildHtml();
+            });
+            
+        })
     }
     showTapelInduk(){
         
@@ -140,7 +188,7 @@ export default class BukuIndukFitur{
             this.Modal2.show();
             this.Modal2.showHideFooter(false);
             this.Modal2.settingHeder(`Preview Scan Ijazah`);
-            this.Modal2.showBodyHtml(viewInduk.showWraperInduk(viewInduk.showMediaToHTML(cekfile),false,true));
+            this.Modal2.showBodyHtml(viewInduk.showWraperInduk(viewInduk.showMediaToHTML(cekfile),false,false));
         }else{
             alert('Scan Ijazah tidak ditemukan');
         }
@@ -149,9 +197,10 @@ export default class BukuIndukFitur{
         this.Modal2.showHideFooter(false);
         this.Modal1.hide();
         this.Modal2.widthOrientation(false);
-        this.Modal2.settingHeder(`Upload File Tambahan`);
+        this.Modal2.settingHeder(`Upload File Tambahan ${detail.pd_nama} (${detail.nama_rombel})` );
         this.Modal2.showBodyHtml(viewInduk.showWraperInduk(viewInduk.showCrudFileTambahan(detail),true,false));
         this.Modal2.show();
+        
         const controls = document.querySelectorAll('[data-kontrolfile]');
         const btn = document.getElementById('btnAdd');
         const dataColections = document.querySelectorAll('[data-keydokumen]');
@@ -188,7 +237,9 @@ export default class BukuIndukFitur{
                         
                         const detailAfter = this.service.ormInduk.find(s=>s.awalanInduk===dataset.tapel);
                         this.showTapelInduk();
-                        
+                        //
+                        document.querySelector(`[data-radio-induk="${dataset.tapel}"]`).checked = true;
+                        document.querySelector(`[data-radio-induk="${dataset.tapel}"]`).dispatchEvent(new Event('change'));
                         const itemdetail = detailAfter.indukurut.find(s=>s.id ==dataset.id);
                         this.uploadDokumenTambahan(dataset,itemdetail);
                         this.Modal1.showBodyHtml(viewInduk.showDetailItemInduk(itemdetail));
@@ -205,7 +256,8 @@ export default class BukuIndukFitur{
                     await this.service.hapusDokumenTambahan(datafile);
                     const detailAfter = this.service.ormInduk.find(s=>s.awalanInduk===dataset.tapel);
                         this.showTapelInduk();
-                        
+                        document.querySelector(`[data-radio-induk="${dataset.tapel}"]`).checked = true;
+                        document.querySelector(`[data-radio-induk="${dataset.tapel}"]`).dispatchEvent(new Event('change'));
                         const itemdetail = detailAfter.indukurut.find(s=>s.id ==dataset.id);
                         this.uploadDokumenTambahan(dataset,itemdetail);
                         this.Modal1.showBodyHtml(viewInduk.showDetailItemInduk(itemdetail));
@@ -274,10 +326,7 @@ export default class BukuIndukFitur{
         this.Modal2.showHideFooter(false);
         this.Modal2.settingHeder(`Cetak Buku Raport Tapel ${riwayatAsli.tapel} semester ${dataset.semester}`);
         this.Modal2.showBodyHtml('Cetak Buku Raport:'+detail.pd_nama+' tidak ditemukan');
-        console.log('fokusRapor', fokusRaport)
-        console.log('fokusRapor riwya 1t', fokusRaport.rapor_semester1);
-        console.log('fokusRapor riwyat titimangsa semester1', fokusRaport.rapor_semester1.TITIMANGSA_RAPORT);
-        console.log('fokusRapor riwyat titimangsa semester2', fokusRaport.rapor_semester2.TITIMANGSA_RAPORT);
+        
         if(targetKurikulum){
             this.Modal2.showBodyHtml(viewInduk.showWraperInduk(viewRiwayat['kontenRaport'+targetKurikulum](fokusRaport?.['rapor_semester'+dataset.semester],riwayat)));
         }
@@ -301,7 +350,7 @@ export default class BukuIndukFitur{
         radios[0].dispatchEvent(new Event('change'));
     }
     listenerSelectMenu(cb){
-        const radios = document.querySelectorAll('[data-radio-induk]');
+        const radios = document.querySelectorAll('[data-radio-select]');
         radios.forEach(radio=>{
             radio.onchange = (e)=>{
                 cb(e.target.value)

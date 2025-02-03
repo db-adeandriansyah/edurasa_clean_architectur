@@ -56,6 +56,7 @@ export default class BukuIndukService{
                                     return false
                                 }
                             })
+                            .addProperty('tahunpelajaran',(item)=>item.awalanInduk?'20'+item.awalanInduk.slice(0,2)+'/20'+item.awalanInduk.slice(3,4):'')
                             .uniqueByProperty('awalanInduk')
                             .addProperty('inValidInduk',item=>['1213','1314'].includes(item.awalanInduk))
                             .addProperty('datainduk',item => new CollectionsEdu(this.#dbData.siswa)
@@ -171,21 +172,38 @@ export default class BukuIndukService{
                                     return new CollectionsEdu(data).removeProperty('datainduk').removeProperty('indukurut').data;
                                 }
                             })
+                            .addProperty('klaperAngkatan',item=>{
+                                return new CollectionsEdu(item.datainduk)
+                                        .addProperty('abjad',itemklaper=>itemklaper.pd_nama[0])
+                                        .uniqueByProperty('abjad')
+                                        .addProperty('dataKlaperAngkatan',itemKlaper=>{
+                                            return new CollectionsEdu(item.datainduk)
+                                                .simpleFilter({'abjad':itemKlaper.abjad})
+                                                .sortByProperty('pd_nama','asc')
+                                                .selectPropertiesExcept(['dataKlaper','indukurut','datainduk'])
+                                                .data
+                                        })
+                                        .selectProperties(['abjad','dataKlaperAngkatan'])
+                                        .sortByProperty('abjad','asc')
+                                        .data;
+                                        
+                            })
                             .addProperty('tapelInduk',item=>item.indukurut.map(n=>n.riwayatRapor?.map(m=>m.kodetapel)).flat().filter(s=>s).filter((x,i,a)=>a.indexOf(x)===i))
-                            .selectProperties(['awalanInduk','inValidInduk','tapelInduk','datainduk','nisGanda','indukurut'])
+                            .selectProperties(['awalanInduk','inValidInduk','tahunpelajaran','tapelInduk','klaperAngkatan','datainduk','nisGanda','indukurut'])
                             .sortByProperty('awalanInduk','desc')
                             .data;
+        
         return this;
     }
     createKlapper(){
-        // let tapel = ['1213','1314','1415','1516','1617','1718','1819','1920','2021','2122','2324','2425'];
-        // await this.raportInduk(tapel);
+        
         this.#collectionKleper = new CollectionsEdu(this.#dbData.siswa.slice())
                                 .exceptFilter({'pd_nama':''})
                                 .addProperty('abjad',item=>item.pd_nama[0])
                                 .uniqueByProperty('abjad')
                                 .addProperty('dataKlapper',item=> new CollectionsEdu(this.#dbData.siswa)
                                                     .simpleFilter({'abjad':item.abjad})
+                                                    .sortByProperty('pd_nama','asc')
                                                     .selectPropertiesExcept(['dataKlaper','indukurut','datainduk'])
                                                     .data
                                 ).selectProperties(['abjad','dataKlapper'])

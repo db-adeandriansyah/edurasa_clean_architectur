@@ -34,4 +34,7 @@ export default class BukuIndukController extends Fitur{
     klaper_induk(){
         this.fitur.showKlapper();
     }
+    klaper_angkatan(){
+        this.fitur.showKlapperAngkatan()
+    }
 }

@@ -106,9 +106,9 @@ export class TableProperties{
     addScrollUpDown(inModal=false){
         let wrapTable = this.wrapperTable;
         let existWrap = document.getElementById('wrapScroll');
-        // if(existWrap){
-        //     existWrap.remove();
-        // }
+        if(existWrap){
+            existWrap.remove();
+        }
         let shadowScrol = document.createElement('div');
             shadowScrol.setAttribute('id','wrapScroll');
             shadowScrol.setAttribute('class','sticky-top z-3 scrol-h-custom');

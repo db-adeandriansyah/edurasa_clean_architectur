@@ -13,8 +13,8 @@ const EntriePoint=  {
     // 'banksoal'      :{import:'./src/entries/banksoal.js'   ,dependOn:['app','vendor','pdf']},
     // 'banksoallama'  :{import:'./src/entries/banksoallama.js'   ,dependOn:['app','vendor','pdf']},
     'kbm'           :{import:'./src/entries/kbm.js', dependOn:['app','vendor','pdf']},
-    'raporijazah'   :{import:'./src/entries/raporijazah.js'    ,dependOn:['app','vendor','pdf']},
-    'bukuinduk'   :{import:'./src/entries/bukuinduk.js'    ,dependOn:['app','vendor','pdf']},
+    'raporijazah'   :{import:'./src/entries/raporijazah.js'    ,dependOn:['app','vendor','pdf','raportview']},
+    'bukuinduk'   :{import:'./src/entries/bukuinduk.js'    ,dependOn:['app','vendor','pdf','indukview','raportview']},
     //selesai versilama
     'app'           :'./src/apps/Singleton.js',//{import:'./src/apps/Singleton.js'},
     'vendor'        :'./src/entries/vendor.js',//{import:'./src/entries/vendor.js'},
@@ -22,7 +22,9 @@ const EntriePoint=  {
     // 'helper'      rt:'./src/apps/helper.js',//  :{import:'./src/apps/helper.js'},
     'pdf'           :'./src/entries/style.js',// {import:'./src/entries/style.js' }
     'vendorsoal'    :'./src/entries/vendorsoal.js',
-    'absensiku'     :'./src/entries/absensiku.js'
+    'absensiku'     :'./src/entries/absensiku.js',
+    'indukview'     :'./src/controller_features/bukuinduk/BukuIndukView.js',//'D:\_MY_NEW_APP\edurasa-ca\src\controller_features\bukuinduk\BukuIndukView.js'
+    'raportview'     :'./src/riwayat_raport/RiwayatView.js',//'D:\_MY_NEW_APP\edurasa-ca\src\controller_features\bukuinduk\BukuIndukView.js'
     
 }
 
@@ -203,7 +205,7 @@ const pagesConfig = [
             'theme-color': '#ffffff',
             'apple-mobile-web-app-status-bar':'#ffffff'
         },
-        chunks:['style','raporijazah','pdf','app','vendor'],
+        chunks:['style','raporijazah','pdf','app','vendor','raportview'],
         publicPath:'/'
     },
     {
@@ -217,7 +219,7 @@ const pagesConfig = [
             'theme-color': '#ffffff',
             'apple-mobile-web-app-status-bar':'#ffffff'
         },
-        chunks:['style','bukuinduk','pdf','app','vendor'],
+        chunks:['style','indukview','bukuinduk','pdf','app','vendor','raportview'],
         publicPath:'/'
     },
 ];

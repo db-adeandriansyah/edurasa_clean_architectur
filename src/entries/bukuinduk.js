@@ -7,11 +7,6 @@ import BukuIndukController from "../controllers/BukuIndukController.js";
 import siswa_entity from "../domains/SiswaEntity.js";
 import DokumenTambahan from "../domains/DokumenTambahan.js";
 
-// import { raporSidebar } from "../controller_menus/raporijazahSidebar.js";
-// import BanksoalRepository from "../repositories/BanksoalRepository.js";
-// import KbmService from "../services/KbmService.js";
-// import RaporIjazahController from "../controllers/RaporIjazahController.js";
-
 App.buildSidebarFitur(bukuindukSidebar(),false,false);
 App.createTitle('Buku Induk','Buku Induk');
 App.dataPermision({'canEdit':[2]});

@@ -82,8 +82,6 @@ export default class BukuIndukRepository  extends CallHttp{
     async updateProfile(dataObjek){
         const entities = new this.siswa_entity(dataObjek);;
         const entity = entities.addItem('time_stamp',new Date()).sanitize().data;
-        console.log(entity);
-        console.log(entities.dateFormatKey);
         let param = {
             'idss':this.idssUser,
             'tab':'datasiswa',
@@ -97,7 +95,7 @@ export default class BukuIndukRepository  extends CallHttp{
     async createWOrUpdateithUploadMedia(mode,ss,media,obchange){
         let act = mode===0?'createIncludeMedia':'updateIncludeMedia';
         let mediaValidate = Object.assign({},this.folderSubFolder,media);
-        console.log(mediaValidate)
+        
         let param = {
             action:act,
             spreadsheet:JSON.stringify(ss),

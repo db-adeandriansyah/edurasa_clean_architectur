@@ -1,5 +1,5 @@
 import arLabel from "../../models/array-format-dapodik";
-import { FormatTanggal } from "../../utilities/FormatTanggal";
+import { datediff, FormatTanggal } from "../../utilities/FormatTanggal";
 import inputsElements from "../../views/components/input-elements";
 import { cardMenu2 } from "../../views/sidebar/cardSidebar";
 
@@ -36,6 +36,9 @@ const showRingkasanInduk = (data)=>{
     html+=`</div>`;
     return html;
 }
+const selectAbjad = (dataopsi)=>{
+    return inputsElements.floatingSelect('menuabjad', 'Pilih Abjad',dataopsi,'A',' data-radio-select="selectabjad"')
+}
 const subMenuInduk = (data)=>{
     let html ="";
     let dataInduk = "";
@@ -55,16 +58,48 @@ const subMenuInduk = (data)=>{
     html+=`</div>`;
     return html;
 }
-const subMenuKlapper=(data)=>{
-    let html="";
+const subMenuKlaperAngkatan = (data)=>{
+    let html ="";
+    let dataInduk = "";
+    data.forEach((item,index)=>{
+        if(item.awalanInduk){
+            dataInduk += inputsElements.formInputRadio('idtapel_'+item.awalanInduk,item.awalanInduk,item.awalanInduk,true,'radio-induk',`data-radio-induk="${item.awalanInduk}" ${index==0?'checked':''}`);
+        }else{
+            dataInduk += inputsElements.formInputRadio('idtapel_nonnis','Tidak Punya NIS',item.awalanInduk,true,'radio-induk',`data-radio-induk="${item.awalanInduk}" ${index==0?'checked':''}`);
+
+        }
+
+    });
     let dataopsi = [];
-        data.map(n=>n.abjad).forEach(item=>{
+        // data[0].klaperAngkatan.map(n=>n.abjad).forEach(item=>{
+        data[0].klaperAngkatan.forEach(item=>{
             dataopsi.push({
-                label:item,
+                label:`${item.abjad} (${item.dataKlaperAngkatan.length} data)`,
                 value:item
             });
         });
-    let dataKlapper = inputsElements.floatingSelect('menuabjad', 'Pilih Abjad',dataopsi,'A',' data-radio-induk="selectabjad"')
+    const opsiAbjad = selectAbjad(dataopsi);
+    html+=`<div class="row justify-content-center">`;
+        html+=`<div class="col-md-8">`;
+            html+=cardMenu2('Pilih Kategori Induk',dataInduk,false);
+        html+=`</div>`;
+        html+=`<div class="col-md-4">`;
+            html+=cardMenu2('Abjad',`<div id="selectMenuAbjad">${opsiAbjad}</div>`,false);
+        html+=`</div>`;
+    html+=`</div>`;
+    return html;
+}
+const subMenuKlapper=(data)=>{
+    let html="";
+    let dataopsi = [];
+        // data.map(n=>n.abjad).forEach(item=>{
+        data.forEach(item=>{
+            dataopsi.push({
+                label:`${item.abjad} (${item.dataKlapper.length} data)`,
+                value:item.abjad
+            });
+        });
+    let dataKlapper = selectAbjad(dataopsi);//inputsElements.floatingSelect('menuabjad', 'Pilih Abjad',dataopsi,'A',' data-radio-select="selectabjad"')
     html+=`<div class="row justify-content-center">`;
         html+=`<div class="col-md-8">`;
             html+=cardMenu2('Pilih Abjad',dataKlapper,false);
@@ -238,7 +273,7 @@ const showDetailItemInduk = (data)=>{
                     html+=`<tr>`;
                         html+=`<td colspan="2" class="align-middle text-center">Ijazah</td>`;
                         html+=`<td colspan="2"  class="align-middle text-center">`;
-                                html+=`<button class="btn btn-sm px-1  btn-success" data-modal-item="cetakIjazah" data-id="${data.id}"><i class="bi-printer-fill"></i> Cek Ijazah</button>`;
+                                html+=`<button class="btn btn-sm px-1  btn-info" data-modal-item="cetakIjazah" data-id="${data.id}"><i class="bi-eye"></i> Cek Ijazah</button>`;
                             
                         html+=`</td>`;
                     html+=`</tr>`;
@@ -1993,11 +2028,71 @@ function showMediaToHTML(data){
     if(['jpg','jpeg','png','gif','webp','tif','avif'].includes(data.type)){
         result=`<img src="https://lh3.googleusercontent.com/d/${data.id_file}" class="img-fluid w-100 h-100"/>`
     }else{
-        result=`<iframe src="https://drive.google.com/file/d/${data.id_file}/view" class="img-fluid w-100 h-100"></iframe>`;
+        result=`<iframe src="https://drive.google.com/file/d/${data.id_file}/preview" class="img-fluid w-100 min-vh-100"></iframe>`;
 
     }
     return result;
 }
+const viewKlaper =(indexBefore, data,dataBefore)=>{
+    let startNum = ((indexBefore) * dataBefore.length )+1;
+    let html = "";
+    html+=`<table class="table table-sm toExcel table-bordered lh-1 font12">`;
+        html+=`<thead>`;
+            html+=`<tr>`;
+                html+=`<th colspan="3" class="bg-dark-subtle text-center">Nomor</th>`;
+                html+=`<th rowspan="2" class="bg-dark-subtle text-center print-hide">Status</th>`;
+                html+=`<th rowspan="2" class="bg-dark-subtle text-center print-hide">Kelas Terakhir</th>`;
+                html+=`<th rowspan="2" class="bg-dark-subtle text-center">Nama Siswa</th>`;
+                html+=`<th rowspan="2" class="bg-dark-subtle text-center">L/P</th>`;
+                html+=`<th colspan="2" class="bg-dark-subtle text-center">Kelahiran</th>`;
+                html+=`<th colspan="2" class="bg-dark-subtle text-center">Nama Orang Tua/Wali</th>`;
+                html+=`<th colspan="3" class="bg-dark-subtle text-center">Keterangan Masuk Sekolah</th>`;
+                html+=`<th colspan="4" class="bg-dark-subtle text-center">Keterangan Keluar Sekolah</th>`;
+            html+=`</tr>`;
+            html+=`<tr>`;
+                html+=`<th class="bg-dark-subtle text-center">Urut</th>`;
+                html+=`<th class="bg-dark-subtle text-center">NIS</th>`;
+                html+=`<th class="bg-dark-subtle text-center">NISN</th>`;
+                html+=`<th class="bg-dark-subtle text-center">Tempat</th>`;
+                html+=`<th class="bg-dark-subtle text-center">Tanggal Lahir</th>`;
+                html+=`<th class="bg-dark-subtle text-center">Ayah</th>`;
+                html+=`<th class="bg-dark-subtle text-center">Ibu</th>`;
+                html+=`<th class="bg-dark-subtle text-center">Tanggal</th>`;
+                html+=`<th class="bg-dark-subtle text-center">Kelas</th>`;
+                html+=`<th class="bg-dark-subtle text-center">Keterangan</th>`;
+                html+=`<th class="bg-dark-subtle text-center">Tanggal</th>`;
+                html+=`<th class="bg-dark-subtle text-center">Kelas</th>`;
+                html+=`<th class="bg-dark-subtle text-center">Keterangan</th>`;
+            html+=`</tr>`;
+        html+=`</thead>`;
+        html+=`<tbody>`;
+        data.forEach((item,index)=>{
+            html+=`<tr>`;
+                html+=`<td class="text-center bg-white">${startNum}.</td>`;
+                html+=`<td class="text-center bg-white">${item.nis}</td>`;
+                html+=`<td class="text-center bg-white">${item.nisn}</td>`;
+                html+=`<td class="text-center bg-white print-hide">${item.aktif}</td>`;
+                html+=`<td class="text-center bg-white print-hide">${item.nama_rombel}</td>`;
+                html+=`<td class="text-nowrap bg-white">${item.pd_nama}</td>`;
+                html+=`<td class="text-nowrap">${item.pd_jk}</td>`;
+                html+=`<td class="text-nowrap">${item.pd_tl}</td>`;
+                html+=`<td class="text-nowrap">${item.pd_tanggallahir==""?"":new Date(item.pd_tanggallahir).toLocaleString('id-ID',{dateStyle:'long'})}</td>`;
+                html+=`<td class="text-nowrap">${item.pd_namaayah}.</td>`;
+                html+=`<td class="text-nowrap">${item.pd_namaibu}.</td>`;
+                html+=`<td class="text-nowrap">${item.masuk_tgl==""?"":new Date(item.masuk_tgl).toLocaleString('id-ID',{dateStyle:'long'})}</td>`;
+                html+=`<td class="text-center">${item.awal_kelas}</td>`;
+                html+=`<td class="text-center"></td>`;
+                html+=`<td class="text-nowrap">${item.keluar_tgl==""?"":new Date(item.keluar_tgl).toLocaleString('id-ID',{dateStyle:'long'})}</td>`;
+                html+=`<td class="text-nowrap">${item.kelas_pindah_ke_kelas}</td>`;
+                html+=`<td class="text-nowrap">${item.alasan_keluar ==""&& item.aktif==='lulus'?'Lulus':`${item.alasan_keluar}`}</td>`;
+            html+=`</tr>`;
+            startNum++;
+        })
+        html+=`</tbody>`;
+    html+=`</table>`;
+
+    return html;
+};
 const viewInduk = {
     'showRingkasanInduk' : showRingkasanInduk,
     'subMenuInduk' : subMenuInduk,
@@ -2010,6 +2105,9 @@ const viewInduk = {
     'showCrudFileTambahan':showCrudFileTambahan,
     'addRowTableDynamic':addRowTableDynamic,
     'showMediaToHTML':showMediaToHTML,
-    'subMenuKlapper':subMenuKlapper
+    'subMenuKlapper':subMenuKlapper,
+    'viewKlaper':viewKlaper,
+    'subMenuKlaperAngkatan':subMenuKlaperAngkatan,
+    'selectAbjad':selectAbjad
 };
 export default viewInduk;
