@@ -3,10 +3,13 @@ import { CollectionsEdu } from "../models/CollectionsEdu";
 export default class BukuIndukService{
     #dbData;
     #collectionsInduk;
+    #collectionKleper;
     constructor(repo){
         this.repo = repo;
         this.#dbData = {};
-        this.#collectionsInduk = []
+        this.#collectionsInduk = [];
+        this.#collectionKleper = [];
+        
     }
     get db(){
         return this.#dbData
@@ -14,16 +17,30 @@ export default class BukuIndukService{
     set db(x){
         this.#dbData = x;
     }
+    get ormKlapper(){
+        return this.#collectionKleper;
+    }
     get ormInduk(){
         return this.#collectionsInduk;
     }
     async siswa(){
         if(!this.#dbData['siswa']){
             const apiSiswa = await this.repo.allSiswa();
-            
-            window.localStorage.setItem('dbSiswa',JSON.stringify(apiSiswa.data));
-            this.#dbData['siswa']= apiSiswa.data;
-            this.#dbData['siswa_entity']= apiSiswa.info.objKosong;  
+            apiSiswa.forEach(item=>{
+                if(item.info.findTab){
+                    if(item.info.namaTab==='datasiswa'){
+                        window.localStorage.setItem('dbSiswa',JSON.stringify(item.data));
+                        this.#dbData['siswa']= item.data;
+                        this.#dbData['siswa_entity']= item.info.objKosong;  
+
+                    }else{
+                        this.#dbData[item.info.namaTab] = item.data;
+                        this.#dbData[item.info.namaTab+'_entity']= item.info.objKosong;  
+                        
+                    }
+                }
+
+            })
             
         }
         return this.#dbData['siswa']??[];
@@ -61,6 +78,7 @@ export default class BukuIndukService{
                                                                 let thAwal = semester===1?date.getFullYear():date.getFullYear()-1;
                                                                 let thAkhir = semester===1?date.getFullYear()+1:date.getFullYear();
                                                                 let akhirDate = item.keluar_tgl===""?new Date():new Date(item.keluar_tgl);
+                                                                //jika siswa keluar di semester 1, maka dia punya data semester 1&2 pada tapel sebelumnya
                                                                 let akhirSemester = akhirDate.getMonth()>5?1:2;
                                                                 let akhirTahun = akhirDate.getFullYear();
                                                                 let thAwalCopy = thAwal;
@@ -73,14 +91,14 @@ export default class BukuIndukService{
                                                                     let rombelakhir = this.#dbData['induk_'+awalanInduk]?.find(s=>s.tokensiswa==item.id && s.semester==1)?.rombel||"";
                                                                     let nilaiSemester1 = this.#dbData['induk_'+awalanInduk]?.find(s=>s.tokensiswa==item.id && s.semester==1)||this.#dbData['blangko_induk_'+awalanInduk];
                                                                     let nilaiSemester2 = this.#dbData['induk_'+awalanInduk]?.find(s=>s.tokensiswa==item.id && s.semester ==2)||this.#dbData['blangko_induk_'+awalanInduk];
-                                                                    let profil = {nis:item.nis,nisn:item.nisn};;
+                                                                    let profil = {nis:item.nis,nisn:item.nisn,id:item.id};;
                                                                     let findKurikulum = this.repo.makroRiwayat.find(s=>s.tapel == awalanInduk);
                                                                     ob.kodetapel = awalanInduk;
                                                                     ob.tapel = thAwalCopy+'/'+thAkhirCopy;
                                                                     ob.rombel = rombelakhir;
                                                                     ob.kurikulum = findKurikulum?.['kelas_'+parseInt(rombelakhir)+'_kurikulum']||'';
-                                                                    ob.rapor_semester1 = {profil, ...nilaiSemester1};
-                                                                    ob.rapor_semester2 = {profil, ...nilaiSemester2};
+                                                                    ob.rapor_semester1 = {profil, ...nilaiSemester1, nama:item.pd_nama };
+                                                                    ob.rapor_semester2 = {profil, ...nilaiSemester2, nama:item.pd_nama };
                                                                     ob.semester = semesterCopy;
                                                                     
                                                                     koleksi.push(ob);
@@ -88,13 +106,15 @@ export default class BukuIndukService{
                                                                     thAwalCopy++;
                                                                     thAkhirCopy++;
                                                                     awalanInduk+=101;
-                                                                    if(thAkhirCopy === akhirTahun && akhirSemester ===1){
-                                                                        semesterCopy = [1];
-
-                                                                    }else{
-                                                                        semesterCopy = [1,2];
-
-                                                                    }
+                                                                    /**
+                                                                     * 
+                                                                     */
+                                                                    // if(thAkhirCopy === akhirTahun && akhirSemester ===1  ){
+                                                                    //     semesterCopy = [1];
+                                                                    // }else{
+                                                                    //     semesterCopy = [1,2];
+                                                                    // }
+                                                                    semesterCopy = [1,2];
                                                                 }
                                                                 while(thAwalCopy<akhirTahun);
                                                                 return koleksi;
@@ -102,7 +122,8 @@ export default class BukuIndukService{
                                                                 return [];
                                                             }
                                                         })
-                                                        .selectPropertiesExcept(['indukurut','datainduk'])
+                                                        .addProperty('dokumen',item=> this.db.dokumen.filter(s=>s.tokensiswa == item.id))
+                                                        .selectPropertiesExcept(['indukurut','datainduk','nisGanda'])
                                                         .data)
                             .addProperty('nisGanda',item=>{
                                 const nisnya = item.datainduk.filter((obj,index)=>item.datainduk.findIndex(s=>s.nis === obj.nis)!==index).map(n=>n.nis.toString());
@@ -154,9 +175,22 @@ export default class BukuIndukService{
                             .selectProperties(['awalanInduk','inValidInduk','tapelInduk','datainduk','nisGanda','indukurut'])
                             .sortByProperty('awalanInduk','desc')
                             .data;
-                            
         return this;
-
+    }
+    createKlapper(){
+        // let tapel = ['1213','1314','1415','1516','1617','1718','1819','1920','2021','2122','2324','2425'];
+        // await this.raportInduk(tapel);
+        this.#collectionKleper = new CollectionsEdu(this.#dbData.siswa.slice())
+                                .exceptFilter({'pd_nama':''})
+                                .addProperty('abjad',item=>item.pd_nama[0])
+                                .uniqueByProperty('abjad')
+                                .addProperty('dataKlapper',item=> new CollectionsEdu(this.#dbData.siswa)
+                                                    .simpleFilter({'abjad':item.abjad})
+                                                    .selectPropertiesExcept(['dataKlaper','indukurut','datainduk'])
+                                                    .data
+                                ).selectProperties(['abjad','dataKlapper'])
+                                .sortByProperty('abjad','asc')
+                                .data;
     }
     async raportInduk(IndukArray){
         const keyDb = Object.keys(this.db);
@@ -177,5 +211,92 @@ export default class BukuIndukService{
             this.init();
         }
 
+    }
+    
+    /**
+     * 
+     * @param {*} file 
+     * @param {*} properti 
+     * @returns {idfile:string}
+     */
+    async uploadFile(file,properti){
+        
+            let extension = file.name.split('.').pop();
+            let r = new Promise((resolve,reject)=>{
+                let fr = new FileReader();
+                fr.onload = (evt)=>resolve(evt.target.result);
+                fr.onerror =(er)=>reject(er)
+                fr.readAsDataURL(file);
+            }).then(result=>{
+                
+                let base64 = result.replace(/^.*,/, '');
+                let mimeType = result.match(/^.*(?=;)/)[0];
+                let param = Object.assign({},{
+                    base64:base64,
+                    mimeType:mimeType
+                },properti)
+                param.namafile = properti.namafile +'.'+extension;
+                return this.repo.uploadFile(param);
+            });
+            
+            return await r;//
+
+        
+    }
+
+    /**
+     * 
+     * @param {*} objek 
+     * @void
+     */
+    async updateProfilSiswa(objek){
+        if(objek.id === ""){
+            objek.id = this.#dbData.siswa.length+2;
+        }
+        const data = await this.repo.updateProfile(objek);
+        if(data.info.findTab){
+            this.#dbData['siswa']= data.data;
+            this.#dbData['siswa_entity']= data.info.objKosong;  
+            await this.init();
+        }
+    }
+    async updateDokumenTambahanSiswa(file,dataObjek,folder){
+        const api =  new Promise((resolve,reject)=>{
+            let fr = new FileReader();
+            fr.onload = (ev)=>resolve(ev.target.result);
+            fr.onerror = er =>reject(er)
+            fr.readAsDataURL(file);
+
+        }).then(result=>{
+            
+            let base64 = result.replace(/^.*,/, '');
+            let mimeType = result.match(/^.*(?=;)/)[0];
+            
+            let objekgambar = {
+                base64: base64,
+                mimeType:mimeType,
+                ...folder
+            }
+            
+            
+            return this.repo.updateDokumenTambahan(0,dataObjek,objekgambar);
+
+        });
+        
+        const data =  await api;
+        // const data = await this.repo.updateDokumenTambahan(mode=0,dataObjek,media);
+        if(data.info.findTab){
+            this.#dbData['dokumen']= data.data;
+            this.#dbData['dokumen_entity']= data.info.objKosong;  
+            await this.init();
+        }
+    }
+    async hapusDokumenTambahan(dataObjek){
+        const data = await this.repo.hapusDokumenTambahan(dataObjek);
+        if(data.info.findTab){
+            this.#dbData['dokumen']= data.data;
+            this.#dbData['dokumen_entity']= data.info.objKosong;  
+            await this.init();
+        }
     }
 }

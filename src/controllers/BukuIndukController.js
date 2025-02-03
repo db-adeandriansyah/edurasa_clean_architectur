@@ -22,12 +22,16 @@ export default class BukuIndukController extends Fitur{
         
         
         await this.service.init();
-        this.fitur = new BukuIndukFitur(this.service,this.maincontrol,this.workplace,this.Modal,this.Modal1);
+        this.fitur = new BukuIndukFitur(this.App,this.service,this.maincontrol,this.workplace,this.Modal,this.Modal1);
     }
     async setting_induk(){
         this.fitur.showSetingInduk();
+        
     } 
     async tapel_induk(){
         this.fitur.showTapelInduk();
+    }
+    klaper_induk(){
+        this.fitur.showKlapper();
     }
 }

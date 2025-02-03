@@ -1430,7 +1430,7 @@ const kontenIndukKurtilas = (data,riwayat,data2)=>{
                 html+=`</tr>`;
                 
                 html+=`<tr>`;
-                    html+=`<td colspan="72" class="fw-bold">A. Pengetahuan dan Keterampilan</td>`
+                    html+=`<td colspan="72" class="fw-bold">B. Pengetahuan dan Keterampilan</td>`
                 html+=`</tr>`;
                 html+=`<tr>`;
                     html+=`<td rowspan="3" colspan="2" class="border p-1 text-center border-dark bg-dark-subtle">No</td>`;
@@ -1547,7 +1547,7 @@ const kontenIndukKurtilas = (data,riwayat,data2)=>{
                         html+=`<td class="border p-1 text-center border-dark" colspan="3">${data2?.BING_K_predikat}</td>`;
                         html+=`<td class="border p-1 text-center border-dark" colspan="9" style="font-size:6px !important">${data2?.BING_K_deskripsi}</td>`;
                 html+=`</tr>`;
-                html+=`<tr><td colspan="72" class="fw-bold">B. Ekstrakurikuler</td></tr>`;
+                html+=`<tr><td colspan="72" class="fw-bold">C. Ekstrakurikuler</td></tr>`;
                 html+=`<tr>`;
                     html+=`<td rowspan="2" colspan="2" class="border p-1 text-center border-dark bg-dark-subtle">No</td>`;
                     html+=`<td colspan="35" class="border p-1 text-center border-dark bg-dark-subtle text-center">Semester Ganjil</td>`;
@@ -1588,7 +1588,7 @@ const kontenIndukKurtilas = (data,riwayat,data2)=>{
                     html+=`<td colspan="3" class="border p-1 border-dark"></td>`;
                     html+=`<td colspan="16" class="border p-1 border-dark"></td>`;
                 html+=`</tr>`;
-                html+=`<tr><td colspan="72" class="fw-bold">C. Prestasi</td></tr>`;
+                html+=`<tr><td colspan="72" class="fw-bold">D. Prestasi</td></tr>`;
                 html+=`<tr>`;
                     html+=`<td rowspan="2" colspan="2" class="border p-1 text-center border-dark bg-dark-subtle">No</td>`;
                     html+=`<td colspan="35" class="border p-1 text-center border-dark bg-dark-subtle">Semester Ganjil</td>`;
@@ -1624,7 +1624,7 @@ const kontenIndukKurtilas = (data,riwayat,data2)=>{
                     html+=`<td colspan="19" class="border p-1 border-dark">${data2?.PRESTASI_3_KETERANGAN||""}</td>`;
                     html+=`</td>`;
                 html+=`</tr>`;
-                html+=`<tr><td colspan="72" class="fw-bold">D. Lainnya</td></tr>`;
+                html+=`<tr><td colspan="72" class="fw-bold">E. Lainnya</td></tr>`;
                 html+=`<tr class="bg-dark-subtle">`;
                     html+=`<td colspan="14" class="border p-1 border-dark"></td>`;
                     html+=`<td colspan="29" class="border p-1 border-dark">Semester Ganjil</td>`;
