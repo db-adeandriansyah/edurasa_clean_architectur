@@ -17,13 +17,3 @@ const indukController = new BukuIndukController(App,indukService);
 await indukController.init();
 indukController.exec_fitur(false);
 
-
-// const banksoalRepo = new BanksoalRepository();
-// // banksoalRepo.trial = true;
-
-// const kbmServ = new KbmService(banksoalRepo);
-
-// await kbmServ.ensureLoadedRepo();
-
-// const controller = new RaporIjazahController(App,kbmServ);
-// controller.exec_fitur(true);

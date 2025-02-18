@@ -11,11 +11,24 @@ const kurmerMapel = {
 };
 const kurtilasMapel = {
     PA:'Pendidikan Agama dan Budi Pekerti',
+    PKN:'Pendidikan Pancasila dan Kewarganegaraan',
+    BINDO:'Bahasa Indonesia',
+    MTK:'Matematika',
+    IPA:'Ilmu Pengetahuan Alam',
+    IPS:'Ilmu Pengetahuan Sosial',
+    SBDP:'Seni Budaya dan Prakarya',
+    PJOK:'Pendidikan Jasmani, Olahraga, dan Kesehatan',
+    BSUND:'Bahasa dan Sastra Sunda',
+    BING:'Bahasa Inggris'
+};
+const k2006Mapel = {
+    PA:'Pendidikan Agama dan Budi Pekerti',
     PKN:'Pendidikan Kewarganegaraan',
     BINDO:'Bahasa Indonesia',
     MTK:'Matematika',
-    IPAS:'Ilmu Pengetahuan Alam dan Sosial',
-    SBDP:'Seni Budaya dan Prakarya',
+    IPA:'Ilmu Pengetahuan Alam',
+    IPS:'Ilmu Pengetahuan Sosial',
+    SBDP:'Seni Budaya dan Keterampilan',
     PJOK:'Pendidikan Jasmani, Olahraga, dan Kesehatan',
     BSUND:'Bahasa dan Sastra Sunda',
     BING:'Bahasa Inggris'
@@ -36,8 +49,10 @@ const definisiMapel = (key,kurikulum)=>{
     let result = "";
     if(kurikulum==='kurmer'){
         result = kurmerMapel[key];
-    }else{
+    }else if(kurikulum ==='kurtilas'){
         result = kurtilasMapel[key];
+    }else{
+        result = k2006Mapel[key];
     }
     return result;
 }
@@ -1685,6 +1700,70 @@ const kontenIndukKurtilas = (data,riwayat,data2)=>{
         html+=`</table>`;
     return html;
 }
+
+const showRekapIjazah = (data)=>{
+    let html="";
+    html+=`<h2 class="text-center fw-bold text-uppercase mb-0">Rekapitulasi Nilai Ijazah</h2>`;
+    html+=`<h2 class="text-center fw-bold text-uppercase mb-4">Tahun Pelajaran ${data.tapelLulus}</h2>`;
+    html+=`<div class="table-responsive">`;
+        html+=`<table class="table table-sm table-bordered toExcel lh-1 font10">`;
+            html+=`<thead>`;
+                html+=`<tr>`;
+                    html+=`<th colspan="4" class="text-center bg-dark-subtle align-middle">Nomor</th>`;
+                    html+=`<th rowspan="2" class="text-center bg-dark-subtle align-middle print-hide">ID</th>`;
+                    html+=`<th rowspan="2" class="text-center bg-dark-subtle align-middle">Nama Siswa</th>`;
+                    html+=`<th rowspan="2" class="text-center bg-dark-subtle align-middle">L/P</th>`;
+                    html+=`<th rowspan="2" class="text-center bg-dark-subtle align-middle">Tanggal Lulus</th>`;
+                    html+=`<th colspan="${data.mapel.length+1}" class="text-center bg-dark-subtle align-middle">Nilai Ijazah</th>`;
+                    html+=`<th rowspan="2" class="text-center bg-dark-subtle align-middle print-hide">Aksi</th>`;
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<th class="text-center bg-dark-subtle align-middle">No</th>`;
+                    html+=`<th class="text-center bg-dark-subtle align-middle">NIS</th>`;
+                    html+=`<th class="text-center bg-dark-subtle align-middle">NISN</th>`;
+                    html+=`<th class="text-center bg-dark-subtle align-middle">No. Seri Ijazah</th>`;
+                    data.mapel.forEach(item=>{
+                        html+=`<th class="text-center bg-dark-subtle align-middle font8 text-wrap">${definisiMapel(item,data.kurikulum)}</th>`;
+                    });
+                    html+=`<th class="text-center bg-dark-subtle align-middle">Rerata</th>`;
+                    
+                html+=`</tr>`;
+            html+=`</thead>`;
+            html+=`<tbody>`;
+            data.dataLulusan.forEach((item,index)=>{
+                
+                html+=`<tr>`;
+                    html+=`<td class="text-center bg-white">${index+1}.</td>`;
+                    html+=`<td class="text-nowrap bg-white">${item.nis}</td>`;
+                    html+=`<td class="text-nowrap bg-white">${item.nisn}</td>`;
+                    html+=`<td class="text-nowrap bg-white">${item.dapo_noseriijazah}</td>`;
+                    html+=`<td class="text-nowrap bg-white">${item.id}</td>`;
+                    html+=`<td class="text-nowrap bg-white">${item.pd_nama}</td>`;
+                    html+=`<td class="text-nowrap">${item.pd_jk}</td>`;
+                    html+=`<td class="text-nowrap">${new Date(data.tanggalLulus).toLocaleString('id-ID',{dateStyle:'long'})}</td>`;
+                    // [...Array(11)].forEach((_,i)=>html+=`<td></td>`);
+                    data.mapel.forEach(mp=>{
+                        html+=`<td class="text-center">${item.nilaiijazah?.[mp]}</td>`;
+                    });
+                    html+=`<td class="text-center">${item.nilaiijazah?.rerata==""?"":item.nilaiijazah?.rerata.toFixed(2)||''}</td>`;
+                    html+=`<td class="text-center print-hide p-0"><button class="btn btn-sm btn-success px-1 py-0 m-0" data-modal="detailDokumen"  data-id="${item.id}" data-nis="${item.nis}">Detail</button></td>`;
+                    
+                html+=`</tr>`;
+            })
+            html+=`</tbody>`;
+        html+=`</table>`;
+    html+=`</div>`;
+    
+    html+=`<div class="row justify-content-end">`;
+        html+=`<div class="col-4 text-center">`;
+            html+=`Depok, ${new Date(data.tanggalLulus).toLocaleString('id-ID',{dateStyle:'long'})}`;
+            html+=`<br>Kepala Sekolah<br/><br/><br/><br/><br/>`;
+            html+=`<u><b>${data.kepsek.kepsek}</b></u><br/>`;
+            html+=`NIP. ${data.kepsek.nip}`
+        html+=`</div>`;
+    html+=`</div>`;
+    return html;
+}
 const viewRiwayat = {};
 viewRiwayat.rekapRaportRiwayat = rekapRaportRiwayat;
 viewRiwayat.html_raport_riwayat = html_raport_riwayat;
@@ -1692,4 +1771,5 @@ viewRiwayat.kontenRaportkurmer = kontenRaportKurmer;
 viewRiwayat.kontenRaportkurtilas = kontenRaportKurtilas;
 viewRiwayat.kontenIndukkurmer = kontenIndukKurmer;
 viewRiwayat.kontenIndukkurtilas = kontenIndukKurtilas;
+viewRiwayat.showRekapIjazah = showRekapIjazah;
 export default viewRiwayat;

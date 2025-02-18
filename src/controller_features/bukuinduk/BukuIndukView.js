@@ -1,5 +1,5 @@
 import arLabel from "../../models/array-format-dapodik";
-import { datediff, FormatTanggal } from "../../utilities/FormatTanggal";
+import {FormatTanggal } from "../../utilities/FormatTanggal";
 import inputsElements from "../../views/components/input-elements";
 import { cardMenu2 } from "../../views/sidebar/cardSidebar";
 
@@ -29,7 +29,6 @@ const showRingkasanInduk = (data)=>{
                         html+=`<td class="text-center p-1">${item.indukurut.length}</td>`;
                         html+=`<td class="text-center p-1">${item.inValidInduk?'NIS tidak sesuai aturan':`${(item.indukurut.length - item.datainduk.length)&& item.awalanInduk?(item.indukurut.length - item.datainduk.length)+' data butuh perbaikan':''}`}</td>`;
                     html+=`</tr>`;
-
                 })
             html+=`</tbody>`;
         html+=`</table>`;
@@ -47,14 +46,75 @@ const subMenuInduk = (data)=>{
             dataInduk += inputsElements.formInputRadio('idtapel_'+item.awalanInduk,item.awalanInduk,item.awalanInduk,true,'radio-induk',`data-radio-induk="${item.awalanInduk}" ${index==0?'checked':''}`);
         }else{
             dataInduk += inputsElements.formInputRadio('idtapel_nonnis','Tidak Punya NIS',item.awalanInduk,true,'radio-induk',`data-radio-induk="${item.awalanInduk}" ${index==0?'checked':''}`);
-
         }
-
     })
     html+=`<div class="row justify-content-center">`;
         html+=`<div class="col-md-8">`;
             html+=cardMenu2('Pilih Kategori Induk',dataInduk,false);
         html+=`</div>`;
+    html+=`</div>`;
+    return html;
+}
+const subTahunLulus = (data)=>{
+    let html ="";
+    let dataInduk = "";
+    data.forEach((item,index)=>{
+            dataInduk += inputsElements.formInputRadio('idtapel_'+item.tahunLulus,item.tapelLulus,item.tahunLulus,true,'radio-tapel-ijazah',`data-radio-induk="${item.tahunLulus}" ${index==0?'checked':''}`);
+    })
+    html+=`<div class="row justify-content-center">`;
+        html+=`<div class="col-md-8">`;
+            html+=cardMenu2('Pilih Angkatan Lulusan (Tahun Pelajaran)',dataInduk,false);
+        html+=`</div>`;
+    html+=`</div>`;
+    return html;
+}
+const showRekapIjazah = (data)=>{
+    let html="";
+    html+=`<h2 class="text-center fw-bold text-uppercase mb-0">Rekapitulasi Nilai Ijazah</h2>`;
+    html+=`<h2 class="text-center fw-bold text-uppercase mb-4">Tahun Pelajaran ${data.tapelLulus}</h2>`;
+    html+=`<div class="table-responsive">`;
+        html+=`<table class="table table-sm table-bordered lh-1 font10">`;
+            html+=`<thead>`;
+                html+=`<tr>`;
+                    html+=`<th colspan="4" class="text-center bg-dark-subtle align-middle">Nomor</th>`;
+                    html+=`<th rowspan="2" class="text-center bg-dark-subtle align-middle">Nama Siswa</th>`;
+                    html+=`<th rowspan="2" class="text-center bg-dark-subtle align-middle">L/P</th>`;
+                    html+=`<th rowspan="2" class="text-center bg-dark-subtle align-middle">Tanggal Lulus</th>`;
+                    html+=`<th colspan="10" class="text-center bg-dark-subtle align-middle">Nilai Ijazah</th>`;
+                    html+=`<th rowspan="2" class="text-center bg-dark-subtle align-middle print-hide">Aksi</th>`;
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<th class="text-center bg-dark-subtle align-middle">No</th>`;
+                    html+=`<th class="text-center bg-dark-subtle align-middle">NIS</th>`;
+                    html+=`<th class="text-center bg-dark-subtle align-middle">NISN</th>`;
+                    html+=`<th class="text-center bg-dark-subtle align-middle">No. Seri Ijazah</th>`;
+                    html+=`<th class="text-center bg-dark-subtle align-middle">Pend. Agama</th>`;
+                    html+=`<th class="text-center bg-dark-subtle align-middle">PKn</th>`;
+                    html+=`<th class="text-center bg-dark-subtle align-middle">B. Indonesia</th>`;
+                    html+=`<th class="text-center bg-dark-subtle align-middle">Matematika</th>`;
+                    html+=`<th class="text-center bg-dark-subtle align-middle">IPA</th>`;
+                    html+=`<th class="text-center bg-dark-subtle align-middle">IPS</th>`;
+                    html+=`<th class="text-center bg-dark-subtle align-middle">SBDP</th>`;
+                    html+=`<th class="text-center bg-dark-subtle align-middle">PJOK</th>`;
+                    html+=`<th class="text-center bg-dark-subtle align-middle">B. Sunda</th>`;
+                    html+=`<th class="text-center bg-dark-subtle align-middle">Rerata</th>`;
+                html+=`</tr>`;
+            html+=`</thead>`;
+            html+=`<tbody>`;
+            data.dataLulusan.forEach((item,index)=>{
+                html+=`<tr>`;
+                    html+=`<td class="text-center">${index+1}.</td>`;
+                    html+=`<td class="text-nowrap">${item.nis}</td>`;
+                    html+=`<td class="text-nowrap">${item.nisn}</td>`;
+                    html+=`<td class="text-nowrap">${item.dapo_noseriijazah}</td>`;
+                    html+=`<td class="text-nowrap">${item.pd_nama}</td>`;
+                    html+=`<td class="text-nowrap">${item.pd_jk}</td>`;
+                    html+=`<td class="text-nowrap">${new Date(data.tanggalLulus).toLocaleString('id-ID',{dateStyle:'long'})}</td>`;
+                    [...Array(11)].forEach((_,i)=>html+=`<td></td>`);
+                html+=`</tr>`;
+            })
+            html+=`</tbody>`;
+        html+=`</table>`;
     html+=`</div>`;
     return html;
 }
@@ -66,12 +126,10 @@ const subMenuKlaperAngkatan = (data)=>{
             dataInduk += inputsElements.formInputRadio('idtapel_'+item.awalanInduk,item.awalanInduk,item.awalanInduk,true,'radio-induk',`data-radio-induk="${item.awalanInduk}" ${index==0?'checked':''}`);
         }else{
             dataInduk += inputsElements.formInputRadio('idtapel_nonnis','Tidak Punya NIS',item.awalanInduk,true,'radio-induk',`data-radio-induk="${item.awalanInduk}" ${index==0?'checked':''}`);
-
         }
-
     });
+
     let dataopsi = [];
-        // data[0].klaperAngkatan.map(n=>n.abjad).forEach(item=>{
         data[0].klaperAngkatan.forEach(item=>{
             dataopsi.push({
                 label:`${item.abjad} (${item.dataKlaperAngkatan.length} data)`,
@@ -123,6 +181,7 @@ const showRekapTapel = (data,bol)=>{
                     html+=`<th class="text-center align-middle bg-dark-subtle">Rombel Terakhir</th>`;
                     html+=`<th class="text-center align-middle bg-dark-subtle">Masuk Tanggal</th>`;
                     html+=`<th class="text-center align-middle bg-dark-subtle">Keluar Tanggal</th>`;
+                    html+=`<th class="text-center align-middle bg-dark-subtle">Dokumen</th>`;
                     html+=`<th class="text-center align-middle bg-dark-subtle">Aksi</th>`;
                 html+=`</tr>`;
             html+=`</thead>`;
@@ -137,6 +196,9 @@ const showRekapTapel = (data,bol)=>{
                         html+=`<td class="${nisDuplicate.includes(item.nis)?'bg-danger-subtle text-center':`${!item.founded?'text-center bg-success-subtle':'text-center'}`} p-1">${item.nama_rombel}</td>`;
                         html+=`<td class="${nisDuplicate.includes(item.nis)?'bg-danger-subtle text-center':`${!item.founded?'text-center bg-success-subtle':'text-center'}`} p-1">${item.masuk_tgl!==""?new Date(item.masuk_tgl).toLocaleString('id-ID',{dateStyle:'long'}):""}</td>`;
                         html+=`<td class="${nisDuplicate.includes(item.nis)?'bg-danger-subtle text-center':`${!item.founded?'text-center bg-success-subtle':'text-center'}`} p-1">${item.keluar_tgl!==""?new Date(item.keluar_tgl).toLocaleString('id-ID',{dateStyle:'long'}):""}</td>`;
+                        html+=`<td class="${nisDuplicate.includes(item.nis)?'bg-danger-subtle text-center':`${!item.founded?'text-center bg-success-subtle':'text-center'}`} p-1">`;
+                        item.dokumen?.forEach(itemDok=>html+=itemDok.keterangan +', ')
+                        html+=`</td>`;
                         html+=`<td class="${nisDuplicate.includes(item.nis)?'bg-danger-subtle text-center':`${!item.founded?'text-center bg-success-subtle':'text-center'}`} p-1"><button class="btn btn-sm btn-primary py-0" data-modal="detailInduk" data-id="${item.id}" data-nis="${item.nis}">Detail</button></td>`;
                     html+=`</tr>`;
                 })
@@ -150,6 +212,9 @@ const showRekapTapel = (data,bol)=>{
                         html+=`<td class="${nisDuplicate.includes(item.nis)?'bg-danger-subtle text-center':`${!item.founded?'text-center bg-success-subtle':'text-center'}`} p-1">${item.nama_rombel}</td>`;
                         html+=`<td class="${nisDuplicate.includes(item.nis)?'bg-danger-subtle text-center':`${!item.founded?'text-center bg-success-subtle':'text-center'}`} p-1">${item.masuk_tgl!==""?new Date(item.masuk_tgl).toLocaleString('id-ID',{dateStyle:'long'}):""}</td>`;
                         html+=`<td class="${nisDuplicate.includes(item.nis)?'bg-danger-subtle text-center':`${!item.founded?'text-center bg-success-subtle':'text-center'}`} p-1">${item.keluar_tgl!==""?new Date(item.keluar_tgl).toLocaleString('id-ID',{dateStyle:'long'}):""}</td>`;
+                        html+=`<td class="${nisDuplicate.includes(item.nis)?'bg-danger-subtle text-center':`${!item.founded?'text-center bg-success-subtle':'text-center'}`} p-1">`;
+                        item.dokumen?.forEach(itemDok=>html+=itemDok.keterangan +', ')
+                        html+=`</td>`;
                         html+=`<td class="${nisDuplicate.includes(item.nis)?'bg-danger-subtle text-center':`${!item.founded?'text-center bg-success-subtle':'text-center'}`} p-1"><button class="btn btn-sm btn-primary py-0" data-modal="showDetailItemInduk" data-id="${item.id}" data-nis="${item.nis}">Detail</button></td>`;
                     html+=`</tr>`;
                 })
@@ -214,8 +279,9 @@ const showDetailItemInduk = (data)=>{
                         html+=`<button class="btn btn-primary btn-sm px-1" data-modal-item="editIdentitas" data-id="${data.id}" data-nis="${data.nis}" data-tapel="${data.awalanInduk}"><i class="bi-pencil"></i> Edit</button>`;
                         if(data.id!=="" ){
                             if(data.nis!==""){
-                                html+=`<button class="btn btn-secondary btn-sm px-1" data-modal-item="uploadDokumenTambahan" data-id="${data.id}" data-nis="${data.nis}" data-tapel="${data.awalanInduk}"><i class="bi-upload"></i> Upload Dokumen Tambahan</button>`;
-                                html+=`<button class="btn btn-success btn-sm px-1" data-modal-item="cetakIdentitas" data-id="${data.id}" data-nis="${data.nis}"><i class="bi-printer-fill"></i> Cetak Identitas Induk</button>`
+                                // html+=`<button class="btn btn-secondary btn-sm px-1" data-modal-item="uploadDokumenTambahan" data-id="${data.id}" data-nis="${data.nis}" data-tapel="${data.awalanInduk}"><i class="bi-upload"></i> Upload Dokumen</button>`;
+                                html+=`<button class="btn btn-success btn-sm px-1" data-modal-item="cetakIdentitas" data-id="${data.id}" data-nis="${data.nis}"><i class="bi-printer-fill"></i> Cetak Identitas Induk</button>`;
+
                             }
                         }
                     html+=`</div>`;
@@ -274,7 +340,6 @@ const showDetailItemInduk = (data)=>{
                         html+=`<td colspan="2" class="align-middle text-center">Ijazah</td>`;
                         html+=`<td colspan="2"  class="align-middle text-center">`;
                                 html+=`<button class="btn btn-sm px-1  btn-info" data-modal-item="cetakIjazah" data-id="${data.id}"><i class="bi-eye"></i> Cek Ijazah</button>`;
-                            
                         html+=`</td>`;
                     html+=`</tr>`;
                 }
@@ -305,7 +370,7 @@ const showWraperInduk = (childrem,btnSave=false,showbtn=true)=>{
     return html;
 }
 const showIdentitasInduk = (data,logo)=>{
-    let poto = data.dokumen.filter(s=>s.jenis_dokumen ==='poto siswa');
+    let poto = data.dokumen.filter(s=>s.jenis_dokumen ==='poto_siswa');
     let html = "";
     html+=`<table class="table table-sm font10 lh-1 table-borderless">`;
         html+=`<thead>`;
@@ -431,7 +496,6 @@ const showIdentitasInduk = (data,logo)=>{
                         html+=`<img src="${imgurl}" class="img-thumbnail object-fit-contain" style="width:2cm;height:2.4cm"/>`;
                     }else{
                         html+=`<img src="${logo}" class="img-thumbnail object-fit-contain" style="width:2cm;height:2.4cm"/>`;
-
                     }
 html+=`</td>`;
             html+=`</tr>`;
@@ -1040,7 +1104,7 @@ html+=`</td>`;
                     html+=`<td colspan="8" class="border border-dark p-1">Akte Kelahiran</td>`;
                     html+=`<td colspan="51" class="border border-dark p-1">`;
                     //https://drive.google.com/file/d/1qwZb8wnZVYeESLH_pwGor0GVLII16FqU/view
-                        html+=`<a href="https://drive.google.com/file/d/${data.dok_akte}/view" target="_blank" class="text-decoration-none text-muted">https://drive.google.com/file/d/${data.dok_akte}/view</a>`;
+                        html+=`<a href="https://drive.google.com/file/d/${data.dok_akte}/view?usp=drivesdk" target="_blank" class="text-decoration-none">https://drive.google.com/file/d/${data.dok_akte}/view?usp=drivesdk</a>`;
                     html+=`</td>`;
                     html+=`<td colspan="13" class="border border-dark p-1"></td>`;
                 html+=`</tr>`;
@@ -1051,7 +1115,7 @@ html+=`</td>`;
                     html+=`<td colspan="8" class="border border-dark p-1">Kartu Keluarga</td>`;
                     html+=`<td colspan="51" class="border border-dark p-1">`;
                     //https://drive.google.com/file/d/1qwZb8wnZVYeESLH_pwGor0GVLII16FqU/view
-                        html+=`<a href="https://drive.google.com/file/d/${data.dok_kk}/view" target="_blank" class="text-decoration-none">https://drive.google.com/file/d/${data.dok_kk}/view</a>`;
+                        html+=`<a href="https://drive.google.com/file/d/${data.dok_kk}/view?usp=drivesdk" target="_blank" class="text-decoration-none">https://drive.google.com/file/d/${data.dok_kk}/view?usp=drivesdk</a>`;
                     html+=`</td>`;
                     html+=`<td colspan="13" class="border border-dark p-1"></td>`;
                 html+=`</tr>`;
@@ -1062,7 +1126,7 @@ html+=`</td>`;
                     html+=`<td colspan="8" class="border border-dark p-1">Kartu Indonesia Pintar(KIP)</td>`;
                     html+=`<td colspan="51" class="border border-dark p-1">`;
                     //https://drive.google.com/file/d/1qwZb8wnZVYeESLH_pwGor0GVLII16FqU/view
-                        html+=`<a href="https://drive.google.com/file/d/${data.dok_kip}/view" target="_blank" class="text-decoration-none">https://drive.google.com/file/d/${data.dok_kip}/view</a>`;
+                        html+=`<a href="https://drive.google.com/file/d/${data.dok_kip}/view?usp=drivesdk" target="_blank" class="text-decoration-none">https://drive.google.com/file/d/${data.dok_kip}/view?usp=drivesdk</a>`;
                     html+=`</td>`;
                     html+=`<td colspan="13" class="border border-dark p-1"></td>`;
                 html+=`</tr>`;
@@ -1074,7 +1138,7 @@ html+=`</td>`;
                     html+=`<td colspan="8" class="border border-dark p-1">Kartu Keluarga Sejahtera(KKS)</td>`;
                     html+=`<td colspan="51" class="border border-dark p-1">`;
                     //https://drive.google.com/file/d/1qwZb8wnZVYeESLH_pwGor0GVLII16FqU/view
-                        html+=`<a href="https://drive.google.com/file/d/${data.dok_kks}/view" target="_blank" class="text-decoration-none">https://drive.google.com/file/d/${data.dok_kks}/view</a>`;
+                        html+=`<a href="https://drive.google.com/file/d/${data.dok_kks}/view?usp=drivesdk" target="_blank" class="text-decoration-none">https://drive.google.com/file/d/${data.dok_kks}/view?usp=drivesdk</a>`;
                     html+=`</td>`;
                     html+=`<td colspan="13" class="border border-dark p-1"></td>`;
                 html+=`</tr>`;
@@ -1085,7 +1149,7 @@ html+=`</td>`;
                     html+=`<td colspan="8" class="border border-dark p-1">Program Keluarga Harapan</td>`;
                     html+=`<td colspan="51" class="border border-dark p-1">`;
                     //https://drive.google.com/file/d/1qwZb8wnZVYeESLH_pwGor0GVLII16FqU/view
-                        html+=`<a href="https://drive.google.com/file/d/${data.dok_kpspkh}/view" target="_blank" class="text-decoration-none">https://drive.google.com/file/d/${data.dok_kpspkh}/view</a>`;
+                        html+=`<a href="https://drive.google.com/file/d/${data.dok_kpspkh}/view?usp=drivesdk" target="_blank" class="text-decoration-none">https://drive.google.com/file/d/${data.dok_kpspkh}/view?usp=drivesdk</a>`;
                     html+=`</td>`;
                     html+=`<td colspan="13" class="border border-dark p-1"></td>`;
                 html+=`</tr>`;
@@ -1835,116 +1899,195 @@ html+=`</td>`;
             html+=`<tr>`;
                 html+=`<td colspan="72" class="fw-bold">E. DOKUMEN YANG DIMILIKI SISWA</td>`;
             html+=`</tr>`;
+            // html+=`<tr>`;
+            //     html+=`<td></td>`
+            //     html+=`<td colspan="2" class="border border-dark bg-secondary-subtle">No</td>`
+            //     html+=`<td colspan="8" class="border border-dark bg-secondary-subtle">Jenis Dokumen</td>`
+            //     html+=`<td colspan="40" class="border border-dark bg-secondary-subtle text-center">Link Unduhan</td>`
+            //     html+=`<td colspan="10" class="border border-dark bg-secondary-subtle">Keterangan</td>`
+            //     html+=`<td colspan="11" class="border border-dark bg-secondary-subtle">Aksi</td>`
+            // html+=`</tr>`;
+            
+            // html+=`<tr>`;
+            //     html+=`<td></td>`
+            //     html+=`<td colspan="2" class="border border-dark">1.</td>`
+            //     html+=`<td colspan="8" class="border border-dark">Akte Kelahiran</td>`
+            //     html+=`<td colspan="40" class="border border-dark font8" id="preview_dok_akte">${data.dok_akte===""?"":`<a href="https://drive.google.com/file/d/${data.dok_akte}/view" target="_blank">https://drive.google.com/file/d/${data.dok_akte}/view</a>`}</td>`
+            //     html+=`<td colspan="10" class="border border-dark">Akte Kelahiran</td>`
+            //     html+=`<td colspan="11" class="border border-dark">`;
+            //     html+=`<div class="d-flex justify-content-around">`
+            //         html+=`<label class="btn btn-sm btn-primary py-0 px-1" for="input_akte">Upload</label>`;
+            //         html+=`<input type="file" class="d-none" id="input_akte" data-upload="dok_akte"/>`;
+            //         html+=`<input type="text" class="d-none" data-keyedit="dok_akte" value="${data.dok_akte}"/>`;
+            //         if(data.dok_akte!==""){
+            //             html+=`<button class="btn btn-sm btn-danger py-0 px-1" data-upload="hapus" data-btnhapus="dok_akte" onclick="document.getElementById('preview_dok_akte').innerHTML='',document.querySelector('[data-keyedit=dok_akte]').value=''">Hapus</button>`;
+            //         }else{
+            //             html+=`<button class="btn btn-sm btn-danger py-0 px-1 d-none" data-upload="hapus" data-btnhapus="dok_akte" onclick="document.getElementById('preview_dok_akte').innerHTML='',document.querySelector('[data-keyedit=dok_akte]').value=''">Hapus</button>`;
+
+            //         }
+            //         html+=`</div>`
+            //     html+=`</td>`;
+            // html+=`</tr>`;
+            // html+=`<tr>`;
+            //     html+=`<td></td>`
+            //     html+=`<td colspan="2" class="border border-dark">2.</td>`
+            //     html+=`<td colspan="8" class="border border-dark">Kartu Keluarga</td>`
+            //     html+=`<td colspan="40" class="border border-dark font8" id="preview_dok_kk">${data.dok_kk===""?"":`<a href="https://drive.google.com/file/d/${data.dok_kk}/view" target="_blank">https://drive.google.com/file/d/${data.dok_kk}/view</a>`}</td>`
+            //     html+=`<td colspan="10" class="border border-dark">Kartu Keluarga</td>`
+            //     html+=`<td colspan="11" class="border border-dark">`;
+            //     html+=`<div class="d-flex justify-content-around">`
+            //         html+=`<label class="btn btn-sm btn-primary py-0 px-1" role="button" for="input_kk">Upload</label>`;
+            //         html+=`<input type="file" class="d-none" id="input_kk" data-upload="dok_kk"/>`;
+            //         html+=`<input type="text" class="d-none" data-keyedit="dok_kk" value="${data.dok_kk}"/>`;
+            //         if(data.dok_kk!==""){
+            //             html+=`<button class="btn btn-sm btn-danger py-0 px-1" data-upload="hapus" data-btnhapus="dok_kk" onclick="document.getElementById('preview_dok_kk').innerHTML='',document.querySelector('[data-keyedit=dok_kk]').value=''">Hapus</button>`;
+            //         }else{
+            //             html+=`<button class="btn btn-sm btn-danger py-0 px-1 d-none" data-upload="hapus" data-btnhapus="dok_kk" onclick="document.getElementById('preview_dok_kk').innerHTML='',document.querySelector('[data-keyedit=dok_kk]').value=''">Hapus</button>`;
+
+            //         }
+            //         html+=`</div>`
+            //     html+=`</td>`;
+            // html+=`</tr>`;
+            // html+=`<tr>`;
+            //     html+=`<td></td>`
+            //     html+=`<td colspan="2" class="border border-dark">3.</td>`
+            //     html+=`<td colspan="8" class="border border-dark">Kartu Indonesia Pintar</td>`
+            //     html+=`<td colspan="40" class="border border-dark font8" id="preview_dok_kip">${data.dok_kip===""?"":`<a href="https://drive.google.com/file/d/${data.dok_kip}/view" target="_blank">https://drive.google.com/file/d/${data.dok_kip}/view</a>`}</td>`
+            //     html+=`<td colspan="10" class="border border-dark">Kartu Indonesia Pintar</td>`
+            //     html+=`<td colspan="11" class="border border-dark">`;
+            //     html+=`<div class="d-flex justify-content-around">`
+            //         html+=`<label class="btn btn-sm btn-primary py-0 px-1" role="button" for="input_kip">Upload</label>`;
+            //         html+=`<input type="file" class="d-none" id="input_kip" data-upload="dok_kip"/>`;
+            //         html+=`<input type="text" class="d-none" data-keyedit="dok_kip" value="${data.dok_kip}"/>`;
+            //         if(data.dok_kip!==""){
+            //             html+=`<button class="btn btn-sm btn-danger py-0 px-1" data-upload="hapus" data-btnhapus="dok_kip" onclick="document.getElementById('preview_dok_kip').innerHTML='',document.querySelector('[data-keyedit=dok_kip]').value=''">Hapus</button>`;
+            //         }else{
+            //             html+=`<button class="btn btn-sm btn-danger py-0 px-1 d-none" data-upload="hapus" data-btnhapus="dok_kip" onclick="document.getElementById('preview_dok_kip').innerHTML='',document.querySelector('[data-keyedit=dok_kip]').value=''">Hapus</button>`;
+
+            //         }
+            //         html+=`</div>`
+            //     html+=`</td>`;
+            // html+=`</tr>`;
+            // html+=`<tr>`;
+            //     html+=`<td></td>`
+            //     html+=`<td colspan="2" class="border border-dark">4.</td>`
+            //     html+=`<td colspan="8" class="border border-dark">Kartu Keluarga Sejahtera (KKS)</td>`
+            //     html+=`<td colspan="40" class="border border-dark font8" id="preview_dok_kks">${data.dok_kks===""?"":`<a href="https://drive.google.com/file/d/${data.dok_kks}/view" target="_blank">https://drive.google.com/file/d/${data.dok_kks}/view</a>`}</td>`
+            //     html+=`<td colspan="10" class="border border-dark">Kartu Keluarga Sejahtera (KKS)</td>`
+            //     html+=`<td colspan="11" class="border border-dark">`;
+            //     html+=`<div class="d-flex justify-content-around">`
+            //         html+=`<label class="btn btn-sm btn-primary py-0 px-1" role="button" for="input_kks">Upload</label>`;
+            //         html+=`<input type="file" class="d-none" id="input_kks" data-upload="dok_kks"/>`;
+            //         html+=`<input type="text" class="d-none" data-keyedit="dok_kks" value="${data.dok_kks}"/>`;
+            //         if(data.dok_kks!==""){
+            //             html+=`<button class="btn btn-sm btn-danger py-0 px-1" data-upload="hapus" data-btnhapus="dok_kks"  onclick="document.getElementById('preview_dok_kks').innerHTML='',document.querySelector('[data-keyedit=dok_kks]').value=''">Hapus</button>`;
+            //         }else{
+            //             html+=`<button class="btn btn-sm btn-danger py-0 px-1 d-none" data-upload="hapus" data-btnhapus="dok_kks"  onclick="document.getElementById('preview_dok_kks').innerHTML='',document.querySelector('[data-keyedit=dok_kks]').value=''">Hapus</button>`;
+
+            //         }
+            //         html+=`</div>`
+            //     html+=`</td>`;
+            // html+=`</tr>`;
+            // html+=`<tr>`;
+            //     html+=`<td></td>`
+            //     html+=`<td colspan="2" class="border border-dark">5.</td>`
+            //     html+=`<td colspan="8" class="border border-dark">Program Keluarga Harapan</td>`
+            //     html+=`<td colspan="40" class="border border-dark font8" id="preview_dok_kpspkh">${data.dok_kpspkh===""?"":`<a href="https://drive.google.com/file/d/${data.dok_kpspkh}/view" target="_blank">https://drive.google.com/file/d/${data.dok_kpspkh}/view</a>`}</td>`
+            //     html+=`<td colspan="10" class="border border-dark">Program Keluarga Harapan</td>`
+            //     html+=`<td colspan="11" class="border border-dark">`;
+            //     html+=`<div class="d-flex justify-content-around">`
+            //         html+=`<label class="btn btn-sm btn-primary py-0 px-1" role="button" for="input_kpspkh">Upload</label>`;
+            //         html+=`<input type="file" class="d-none" id="input_kpspkh" data-upload="dok_kpspkh"/>`;
+            //         html+=`<input type="text" class="d-none" data-keyedit="dok_kpspkh" value="${data.dok_kpspkh}"/>`;
+            //         if(data.dok_kpspkh!==""){
+            //             html+=`<button class="btn btn-sm btn-danger py-0 px-1" data-upload="hapus" data-btnhapus="dok_kpspkh" onclick="document.getElementById('preview_dok_kpspkh').innerHTML='',document.querySelector('[data-keyedit=dok_kpspkh]').value=''">Hapus</button>`;
+            //         }else{
+            //             html+=`<button class="btn btn-sm btn-danger py-0 px-1 d-none" data-upload="hapus" data-btnhapus="dok_kpspkh" onclick="document.getElementById('preview_dok_kpspkh').innerHTML='',document.querySelector('[data-keyedit=dok_kpspkh]').value=''">Hapus</button>`;
+
+            //         }
+            //         html+=`</div>`
+            //     html+=`</td>`;
+            // html+=`</tr>`;
+            // html+=`<tr>`;
+            //     html+=`<td colspan="72" class="fw-bold">F. DOKUMEN DIGITAL</td>`;
+            // html+=`</tr>`;
             html+=`<tr>`;
-                html+=`<td></td>`
-                html+=`<td colspan="2" class="border border-dark bg-secondary-subtle">No</td>`
-                html+=`<td colspan="8" class="border border-dark bg-secondary-subtle">Jenis Dokumen</td>`
-                html+=`<td colspan="40" class="border border-dark bg-secondary-subtle text-center">Link Unduhan</td>`
-                html+=`<td colspan="10" class="border border-dark bg-secondary-subtle">Keterangan</td>`
-                html+=`<td colspan="11" class="border border-dark bg-secondary-subtle">Aksi</td>`
+                html+=`<td colspan="2"></td>`;
+                html+=`<td colspan="8" class="border text-center border-dark bg-dark-subtle">Jenis/Nama Dokumen</td>`;
+                html+=`<td colspan="51" class="border text-center border-dark align-middle bg-dark-subtle">Tautan (Link Unduh)</td>`;
+                html+=`<td colspan="13" class="border text-center border-dark bg-dark-subtle">Keterangan</td>`;
             html+=`</tr>`;
             
-            html+=`<tr>`;
-                html+=`<td></td>`
-                html+=`<td colspan="2" class="border border-dark">1.</td>`
-                html+=`<td colspan="8" class="border border-dark">Akte Kelahiran</td>`
-                html+=`<td colspan="40" class="border border-dark font8" id="preview_dok_akte">${data.dok_akte===""?"":`<a href="https://drive.google.com/file/d/${data.dok_akte}/view" target="_blank">https://drive.google.com/file/d/${data.dok_akte}/view</a>`}</td>`
-                html+=`<td colspan="10" class="border border-dark">Akte Kelahiran</td>`
-                html+=`<td colspan="11" class="border border-dark">`;
-                html+=`<div class="d-flex justify-content-around">`
-                    html+=`<label class="btn btn-sm btn-primary py-0 px-1" for="input_akte">Upload</label>`;
-                    html+=`<input type="file" class="d-none" id="input_akte" data-upload="dok_akte"/>`;
-                    html+=`<input type="text" class="d-none" data-keyedit="dok_akte" value="${data.dok_akte}"/>`;
-                    if(data.dok_akte!==""){
-                        html+=`<button class="btn btn-sm btn-danger py-0 px-1" data-btnhapus="dok_akte" onclick="document.getElementById('preview_dok_akte').innerHTML='',document.querySelector('[data-keyedit=dok_akte]').value=''">Hapus</button>`;
-                    }else{
-                        html+=`<button class="btn btn-sm btn-danger py-0 px-1 d-none" data-btnhapus="dok_akte" onclick="document.getElementById('preview_dok_akte').innerHTML='',document.querySelector('[data-keyedit=dok_akte]').value=''">Hapus</button>`;
+            if(data.dok_akte==="" && data.dok_kk==="" && data.dok_kip==="" && data.dok_kks==="" && data.dok_kpspkh==="" && data.dokumen.length===0){
+                html+=`<tr><td colspan="2"></td><td colspan="70" class="border border-dark"><br/></td></tr>`;
+            }
+            if(data.dok_akte!==""){
+                html+=`<tr>`;
+                    html+=`<td colspan="2"></td>`;
+                    html+=`<td colspan="8" class="border border-dark p-1">Akte Kelahiran</td>`;
+                    html+=`<td colspan="51" class="border border-dark p-1">`;
+                    //https://drive.google.com/file/d/1qwZb8wnZVYeESLH_pwGor0GVLII16FqU/view
+                        html+=`<a href="https://drive.google.com/file/d/${data.dok_akte}/view?usp=drivesdk" target="_blank" class="text-decoration-none">https://drive.google.com/file/d/${data.dok_akte}/view?usp=drivesdk</a>`;
+                    html+=`</td>`;
+                    html+=`<td colspan="13" class="border border-dark p-1"></td>`;
+                html+=`</tr>`;
+            }
+            if(data.dok_kk!==""){
+                html+=`<tr>`;
+                    html+=`<td colspan="2"></td>`;
+                    html+=`<td colspan="8" class="border border-dark p-1">Kartu Keluarga</td>`;
+                    html+=`<td colspan="51" class="border border-dark p-1">`;
+                    //https://drive.google.com/file/d/1qwZb8wnZVYeESLH_pwGor0GVLII16FqU/view
+                        html+=`<a href="https://drive.google.com/file/d/${data.dok_kk}/view?usp=drivesdk" target="_blank" class="text-decoration-none">https://drive.google.com/file/d/${data.dok_kk}/view?usp=drivesdk</a>`;
+                    html+=`</td>`;
+                    html+=`<td colspan="13" class="border border-dark p-1"></td>`;
+                html+=`</tr>`;
+            }
+            if(data.dok_kip!==""){
+                html+=`<tr>`;
+                    html+=`<td colspan="2"></td>`;
+                    html+=`<td colspan="8" class="border border-dark p-1">Kartu Indonesia Pintar(KIP)</td>`;
+                    html+=`<td colspan="51" class="border border-dark p-1">`;
+                    //https://drive.google.com/file/d/1qwZb8wnZVYeESLH_pwGor0GVLII16FqU/view
+                        html+=`<a href="https://drive.google.com/file/d/${data.dok_kip}/view?usp=drivesdk" target="_blank" class="text-decoration-none">https://drive.google.com/file/d/${data.dok_kip}/view?usp=drivesdk</a>`;
+                    html+=`</td>`;
+                    html+=`<td colspan="13" class="border border-dark p-1"></td>`;
+                html+=`</tr>`;
+            }
 
-                    }
-                    html+=`</div>`
-                html+=`</td>`;
-            html+=`</tr>`;
-            html+=`<tr>`;
-                html+=`<td></td>`
-                html+=`<td colspan="2" class="border border-dark">2.</td>`
-                html+=`<td colspan="8" class="border border-dark">Kartu Keluarga</td>`
-                html+=`<td colspan="40" class="border border-dark font8" id="preview_dok_kk">${data.dok_kk===""?"":`<a href="https://drive.google.com/file/d/${data.dok_kk}/view" target="_blank">https://drive.google.com/file/d/${data.dok_kk}/view</a>`}</td>`
-                html+=`<td colspan="10" class="border border-dark">Kartu Keluarga</td>`
-                html+=`<td colspan="11" class="border border-dark">`;
-                html+=`<div class="d-flex justify-content-around">`
-                    html+=`<label class="btn btn-sm btn-primary py-0 px-1" role="button" for="input_kk">Upload</label>`;
-                    html+=`<input type="file" class="d-none" id="input_kk" data-upload="dok_kk"/>`;
-                    html+=`<input type="text" class="d-none" data-keyedit="dok_kk" value="${data.dok_kk}"/>`;
-                    if(data.dok_kk!==""){
-                        html+=`<button class="btn btn-sm btn-danger py-0 px-1" data-btnhapus="dok_kk" onclick="document.getElementById('preview_dok_kk').innerHTML='',document.querySelector('[data-keyedit=dok_kk]').value=''">Hapus</button>`;
-                    }else{
-                        html+=`<button class="btn btn-sm btn-danger py-0 px-1 d-none" data-btnhapus="dok_kk" onclick="document.getElementById('preview_dok_kk').innerHTML='',document.querySelector('[data-keyedit=dok_kk]').value=''">Hapus</button>`;
-
-                    }
-                    html+=`</div>`
-                html+=`</td>`;
-            html+=`</tr>`;
-            html+=`<tr>`;
-                html+=`<td></td>`
-                html+=`<td colspan="2" class="border border-dark">3.</td>`
-                html+=`<td colspan="8" class="border border-dark">Kartu Indonesia Pintar</td>`
-                html+=`<td colspan="40" class="border border-dark font8" id="preview_dok_kip">${data.dok_kip===""?"":`<a href="https://drive.google.com/file/d/${data.dok_kip}/view" target="_blank">https://drive.google.com/file/d/${data.dok_kip}/view</a>`}</td>`
-                html+=`<td colspan="10" class="border border-dark">Kartu Indonesia Pintar</td>`
-                html+=`<td colspan="11" class="border border-dark">`;
-                html+=`<div class="d-flex justify-content-around">`
-                    html+=`<label class="btn btn-sm btn-primary py-0 px-1" role="button" for="input_kip">Upload</label>`;
-                    html+=`<input type="file" class="d-none" id="input_kip" data-upload="dok_kip"/>`;
-                    html+=`<input type="text" class="d-none" data-keyedit="dok_kip" value="${data.dok_kip}"/>`;
-                    if(data.dok_kip!==""){
-                        html+=`<button class="btn btn-sm btn-danger py-0 px-1" data-btnhapus="dok_kip" onclick="document.getElementById('preview_dok_kip').innerHTML='',document.querySelector('[data-keyedit=dok_kip]').value=''">Hapus</button>`;
-                    }else{
-                        html+=`<button class="btn btn-sm btn-danger py-0 px-1 d-none" data-btnhapus="dok_kip" onclick="document.getElementById('preview_dok_kip').innerHTML='',document.querySelector('[data-keyedit=dok_kip]').value=''">Hapus</button>`;
-
-                    }
-                    html+=`</div>`
-                html+=`</td>`;
-            html+=`</tr>`;
-            html+=`<tr>`;
-                html+=`<td></td>`
-                html+=`<td colspan="2" class="border border-dark">4.</td>`
-                html+=`<td colspan="8" class="border border-dark">Kartu Keluarga Sejahtera (KKS)</td>`
-                html+=`<td colspan="40" class="border border-dark font8" id="preview_dok_kks">${data.dok_kks===""?"":`<a href="https://drive.google.com/file/d/${data.dok_kks}/view" target="_blank">https://drive.google.com/file/d/${data.dok_kks}/view</a>`}</td>`
-                html+=`<td colspan="10" class="border border-dark">Kartu Keluarga Sejahtera (KKS)</td>`
-                html+=`<td colspan="11" class="border border-dark">`;
-                html+=`<div class="d-flex justify-content-around">`
-                    html+=`<label class="btn btn-sm btn-primary py-0 px-1" role="button" for="input_kks">Upload</label>`;
-                    html+=`<input type="file" class="d-none" id="input_kks" data-upload="dok_kks"/>`;
-                    html+=`<input type="text" class="d-none" data-keyedit="dok_kks" value="${data.dok_kks}"/>`;
-                    if(data.dok_kks!==""){
-                        html+=`<button class="btn btn-sm btn-danger py-0 px-1" data-btnhapus="dok_kks"  onclick="document.getElementById('preview_dok_kks').innerHTML='',document.querySelector('[data-keyedit=dok_kks]').value=''">Hapus</button>`;
-                    }else{
-                        html+=`<button class="btn btn-sm btn-danger py-0 px-1 d-none" data-btnhapus="dok_kks"  onclick="document.getElementById('preview_dok_kks').innerHTML='',document.querySelector('[data-keyedit=dok_kks]').value=''">Hapus</button>`;
-
-                    }
-                    html+=`</div>`
-                html+=`</td>`;
-            html+=`</tr>`;
-            html+=`<tr>`;
-                html+=`<td></td>`
-                html+=`<td colspan="2" class="border border-dark">5.</td>`
-                html+=`<td colspan="8" class="border border-dark">Program Keluarga Harapan</td>`
-                html+=`<td colspan="40" class="border border-dark font8" id="preview_dok_kpspkh">${data.dok_kpspkh===""?"":`<a href="https://drive.google.com/file/d/${data.dok_kpspkh}/view" target="_blank">https://drive.google.com/file/d/${data.dok_kpspkh}/view</a>`}</td>`
-                html+=`<td colspan="10" class="border border-dark">Program Keluarga Harapan</td>`
-                html+=`<td colspan="11" class="border border-dark">`;
-                html+=`<div class="d-flex justify-content-around">`
-                    html+=`<label class="btn btn-sm btn-primary py-0 px-1" role="button" for="input_kpspkh">Upload</label>`;
-                    html+=`<input type="file" class="d-none" id="input_kpspkh" data-upload="dok_kpspkh"/>`;
-                    html+=`<input type="text" class="d-none" data-keyedit="dok_kpspkh" value="${data.dok_kpspkh}"/>`;
-                    if(data.dok_kpspkh!==""){
-                        html+=`<button class="btn btn-sm btn-danger py-0 px-1" data-btnhapus="dok_kpspkh" onclick="document.getElementById('preview_dok_kpspkh').innerHTML='',document.querySelector('[data-keyedit=dok_kpspkh]').value=''">Hapus</button>`;
-                    }else{
-                        html+=`<button class="btn btn-sm btn-danger py-0 px-1 d-none" data-btnhapus="dok_kpspkh" onclick="document.getElementById('preview_dok_kpspkh').innerHTML='',document.querySelector('[data-keyedit=dok_kpspkh]').value=''">Hapus</button>`;
-
-                    }
-                    html+=`</div>`
-                html+=`</td>`;
-            html+=`</tr>`;
-            
+            if(data.dok_kks!==""){
+                html+=`<tr>`;
+                    html+=`<td colspan="2"></td>`;
+                    html+=`<td colspan="8" class="border border-dark p-1">Kartu Keluarga Sejahtera(KKS)</td>`;
+                    html+=`<td colspan="51" class="border border-dark p-1">`;
+                    //https://drive.google.com/file/d/1qwZb8wnZVYeESLH_pwGor0GVLII16FqU/view
+                        html+=`<a href="https://drive.google.com/file/d/${data.dok_kks}/view?usp=drivesdk" target="_blank" class="text-decoration-none">https://drive.google.com/file/d/${data.dok_kks}/view?usp=drivesdk</a>`;
+                    html+=`</td>`;
+                    html+=`<td colspan="13" class="border border-dark p-1"></td>`;
+                html+=`</tr>`;
+            }
+            if(data.dok_kpspkh!==""){
+                html+=`<tr>`;
+                    html+=`<td colspan="2"></td>`;
+                    html+=`<td colspan="8" class="border border-dark p-1">Program Keluarga Harapan</td>`;
+                    html+=`<td colspan="51" class="border border-dark p-1">`;
+                    //https://drive.google.com/file/d/1qwZb8wnZVYeESLH_pwGor0GVLII16FqU/view
+                        html+=`<a href="https://drive.google.com/file/d/${data.dok_kpspkh}/view?usp=drivesdk" target="_blank" class="text-decoration-none">https://drive.google.com/file/d/${data.dok_kpspkh}/view?usp=drivesdk</a>`;
+                    html+=`</td>`;
+                    html+=`<td colspan="13" class="border border-dark p-1"></td>`;
+                html+=`</tr>`;
+            }
+            data.dokumen.forEach(item=>{
+                html+=`<tr>`;
+                    html+=`<td colspan="2"></td>`;
+                    html+=`<td colspan="8" class="border border-dark p-1">${item.jenis_dokumen}</td>`;
+                    html+=`<td colspan="51" class="border border-dark p-1">`;
+                    //https://drive.google.com/file/d/1qwZb8wnZVYeESLH_pwGor0GVLII16FqU/view
+                        html+=`<a href="${item.link_unduh}" target="_blank" class="text-decoration-none">${item.link_unduh}</a>`;
+                    html+=`</td>`;
+                    html+=`<td colspan="13" class="border border-dark p-1">${item.keterangan}</td>`;
+                html+=`</tr>`;
+            })
         html+=`</tbody>`;
     html+=`</table>`;
     return html
@@ -1960,7 +2103,7 @@ const showCrudFileTambahan = (data)=>{
                 {value:'raport',label:'Raport'},
                 {value:'sertifikat',label:'Sertifikat'},
                 {value:'piagam',label:'Piagam'},
-                {value:'poto siswa',label:'Pas Poto'},
+                {value:'poto_siswa',label:'Pas Poto'},
                 {value:'nisn',label:'NISN'},
                 {value:'Lainnya',label:'Lainnya'},
             ],'',' data-keydokumen="jenis_dokumen"');
@@ -2093,6 +2236,280 @@ const viewKlaper =(indexBefore, data,dataBefore)=>{
 
     return html;
 };
+const showTambahDokumenModal = (data)=>{
+    let html = "";
+    html+=`<table class="table table-sm table-bordered font12">`;
+        html+=`<thead>`;
+            html+=`<tr>`;
+                html+=`<th class="align-middle text-bg-secondary text-center">No</th>`;
+                html+=`<th class="align-middle text-bg-secondary text-center">Jenis Dokumen</th>`;
+                html+=`<th class="align-middle text-bg-secondary text-center">Type File</th>`;
+                html+=`<th class="align-middle text-bg-secondary text-center">Link</th>`;
+                html+=`<th class="align-middle text-bg-secondary text-center">Aksi</th>`;
+            html+=`</tr>`;
+        html+=`</thead>`;
+        html+=`<tbody>`;
+        html+=`<tr><td class="bg-dark-subtle text-center" colspan="5">Dokumen Inti (yang sering diminta DAPODIK)</td></tr>`;
+        html+=`<tr>`;
+            html+=`<td>1.</td>`;
+            html+=`<td colspan="2">Akte Kelahiran</td>`;
+            html+=`<td id="preview_dok_akte">`;
+                html+=data.dok_akte==""?"":createAnchorLink(data.dok_akte);
+            html+=`</td>`;
+            html+=`<td>`;
+                html+=`<div class="d-flex justify-content-around">`
+                    html+=`<label class="btn btn-sm btn-primary py-0 px-1" for="input_akte">Upload</label>`;
+                    html+=`<input type="file" class="d-none" id="input_akte" data-upload="dok_akte"/>`;
+                    html+=`<input type="text" class="d-none" data-keyedit="dok_akte" value="${data.dok_akte}"/>`;
+                    if(data.dok_akte!==""){
+                        html+=`<button class="btn btn-sm btn-danger py-0 px-1" data-upload="hapus" data-btnhapus="dok_akte" onclick="document.getElementById('preview_dok_akte').innerHTML='',document.querySelector('[data-keyedit=dok_akte]').value=''">Hapus</button>`;
+                    }else{
+                        html+=`<button class="btn btn-sm btn-danger py-0 px-1 d-none" data-upload="hapus" data-btnhapus="dok_akte" onclick="document.getElementById('preview_dok_akte').innerHTML='',document.querySelector('[data-keyedit=dok_akte]').value=''">Hapus</button>`;
+                    }
+                html+=`</div>`
+            html+=`</td>`;
+        html+=`</tr>`;
+        html+=`<tr>`;
+            html+=`<td>2.</td>`;
+            html+=`<td colspan="2">Kartu Keluarga</td>`;
+            html+=`<td id="preview_dok_kk">`;
+                html+=data.dok_kk==""?"":createAnchorLink(data.dok_kk);
+            html+=`</td>`;
+            html+=`<td>`;
+                html+=`<div class="d-flex justify-content-around">`
+                    html+=`<label class="btn btn-sm btn-primary py-0 px-1" for="input_kk">Upload</label>`;
+                    html+=`<input type="file" class="d-none" id="input_kk" data-upload="dok_kk"/>`;
+                    html+=`<input type="text" class="d-none" data-keyedit="dok_kk" value="${data.dok_kk}"/>`;
+                    if(data.dok_kk!==""){
+                        html+=`<button class="btn btn-sm btn-danger py-0 px-1" data-upload="hapus" data-btnhapus="dok_kk" onclick="document.getElementById('preview_dok_kk').innerHTML='',document.querySelector('[data-keyedit=dok_kk]').value=''">Hapus</button>`;
+                    }else{
+                        html+=`<button class="btn btn-sm btn-danger py-0 px-1 d-none" data-upload="hapus" data-btnhapus="dok_kk" onclick="document.getElementById('preview_dok_kk').innerHTML='',document.querySelector('[data-keyedit=dok_kk]').value=''">Hapus</button>`;
+                    }
+                html+=`</div>`
+            html+=`</td>`;
+        html+=`</tr>`;
+        html+=`<tr>`;
+            html+=`<td>3.</td>`;
+            html+=`<td colspan="2">Kartu Indonesia Pintar (KIP)</td>`;
+            html+=`<td id="preview_dok_kip">`;
+                html+=data.dok_kip==""?"":createAnchorLink(data.dok_kip);
+            html+=`</td>`;
+            html+=`<td>`;
+                html+=`<div class="d-flex justify-content-around">`
+                    html+=`<label class="btn btn-sm btn-primary py-0 px-1" for="input_kip">Upload</label>`;
+                    html+=`<input type="file" class="d-none" id="input_kip" data-upload="dok_kip"/>`;
+                    html+=`<input type="text" class="d-none" data-keyedit="dok_kip" value="${data.dok_kip}"/>`;
+                    if(data.dok_kip!==""){
+                        html+=`<button class="btn btn-sm btn-danger py-0 px-1" data-upload="hapus" data-btnhapus="dok_kip" onclick="document.getElementById('preview_dok_kip').innerHTML='',document.querySelector('[data-keyedit=dok_kip]').value=''">Hapus</button>`;
+                    }else{
+                        html+=`<button class="btn btn-sm btn-danger py-0 px-1 d-none" data-upload="hapus" data-btnhapus="dok_kip" onclick="document.getElementById('preview_dok_kip').innerHTML='',document.querySelector('[data-keyedit=dok_kip]').value=''">Hapus</button>`;
+                    }
+                html+=`</div>`
+            html+=`</td>`;
+        html+=`</tr>`;
+        html+=`<tr>`;
+            html+=`<td>4.</td>`;
+            html+=`<td colspan="2">Kartu Keluarga Sejahtera (KKS)</td>`;
+            html+=`<td id="preview_dok_kks">`;
+                html+=data.dok_kks==""?"":createAnchorLink(data.dok_kks);
+            html+=`</td>`;
+            html+=`<td>`;
+                html+=`<div class="d-flex justify-content-around">`;
+                    html+=`<label class="btn btn-sm btn-primary py-0 px-1" for="input_kks">Upload</label>`;
+                    html+=`<input type="file" class="d-none" id="input_kks" data-upload="dok_kks"/>`;
+                    html+=`<input type="text" class="d-none" data-keyedit="dok_kks" value="${data.dok_kks}"/>`;
+                    if(data.dok_kks!==""){
+                        html+=`<button class="btn btn-sm btn-danger py-0 px-1" data-upload="hapus" data-btnhapus="dok_kks" onclick="document.getElementById('preview_dok_kks').innerHTML='',document.querySelector('[data-keyedit=dok_kks]').value=''">Hapus</button>`;
+                    }else{
+                        html+=`<button class="btn btn-sm btn-danger py-0 px-1 d-none" data-upload="hapus" data-btnhapus="dok_kks" onclick="document.getElementById('preview_dok_kks').innerHTML='',document.querySelector('[data-keyedit=dok_kks]').value=''">Hapus</button>`;
+                    }
+                html+=`</div>`
+            html+=`</td>`;
+        html+=`</tr>`;
+        html+=`<tr><td class="bg-dark-subtle text-center" colspan="5">Dokumen Tambahan</td></tr>`;
+        if(data.dokumen.length===0){
+            html+=`<tr>`;
+                html+=`<td colspan="4" class="text-center">Tidak ditemukan dokumen tambahan lainnya</td>`;
+                html+=`<td>`;
+                    html+=`<button class="btn btn-secondary btn-sm px-1" data-modal-item="uploadDokumenTambahanDokumenSiswa" data-id="${data.id}" data-nis="${data.nis}" data-tapel="${data.awalanInduk}"><i class="bi-upload"></i> Upload</button>`
+                html+=`</td>`;
+            html+=`</tr>`;
+        }else{
+            const grupingData = Object.groupBy(data.dokumen,item=>item.jenis_dokumen);
+            let no = 5;
+            Object.keys(grupingData).forEach((main,indexMain)=>{
+                const countMain = grupingData[main];
+                
+                html+=`<tr>`;
+                    if(countMain.length ===1){
+                        html+=`<td>${no}</td>`;
+                        html+=`<td>${main}</td>`;
+                        html+=`<td>${countMain[0].type}</td>`;
+                        html+=`<td>${createAnchorLink(countMain[0].id_file)}</td>`;
+                        if(indexMain === 0){
+                            html+=`<td rowspan="${data.dokumen.length}">`;
+                            html+=`<button class="btn btn-secondary btn-sm px-1" data-modal-item="uploadDokumenTambahanDokumenSiswa" data-id="${data.id}" data-nis="${data.nis}" data-tapel="${data.awalanInduk}"><i class="bi-upload"></i> Upload</button>`;
+                            html+=`</td>`;
+                        }
+                        no++;
+                    }else{
+                        countMain.forEach((itemCountMain,indexCountMain)=>{
+                            if(indexCountMain===0 && indexCountMain===0){//if(indexMain === 0){
+                                html+=`<td rowspan="${countMain.length}">${no}</td>`
+                                html+=`<td rowspan="${countMain.length}">${main}</td>`
+                            }
+                            html+=`<td>${itemCountMain.type}</td>`;
+                            html+=`<td>${createAnchorLink(itemCountMain.id_file)}</td>`;
+                            if(indexMain === 0 && indexCountMain===0){
+                                html+=`<td rowspan="${data.dokumen.length}" class="align-middle text-center">`;
+                                    html+=`<button class="btn btn-secondary btn-sm px-1" data-modal-item="uploadDokumenTambahanDokumenSiswa" data-id="${data.id}" data-nis="${data.nis}" data-tapel="${data.awalanInduk}"><i class="bi-upload"></i> Upload</button>`;
+                                html+=`</td>`;
+                            }
+                            if(indexCountMain<countMain.length-1){
+                                html+=`</tr><tr>`
+                            }
+                        });
+                        
+                        no++;
+                    }
+                html+=`</tr>`;
+                
+            })
+        };
+        html+=`</tbody>`;
+    html+=`</table>`;
+    return html;
+}
+const showTabelDokumen = (data) =>{
+    
+    let html = "";
+    html+=`<h4 class="text-center">Kelengkapan Dokumen</h4>`;
+    html+=`<div class="table-responsive">`;
+        html+=`<table class="table table-sm table-bordered toExcel font10">`;
+            html+`<thead>`;
+                html+=`<tr>`;
+                    html+=`<th rowspan="2" class="bg-dark-subtle text-center align-middle"></th>`;
+                    html+=`<th rowspan="2" class="bg-dark-subtle text-center align-middle">No</th>`;
+                    html+=`<th rowspan="2" class="bg-dark-subtle text-center align-middle">Status</th>`;
+                    html+=`<th rowspan="2" class="bg-dark-subtle text-center align-middle">NIS</th>`;
+                    html+=`<th rowspan="2" class="bg-dark-subtle text-center align-middle">Kelas Terkini</th>`;
+                    html+=`<th rowspan="2" class="bg-dark-subtle text-center align-middle">Nama Siswa</th>`;
+                    html+=`<th colspan="12" class="bg-dark-subtle text-center align-middle">Dokumen Yang Dimiliki</th>`;
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<th class="bg-dark-subtle text-center">Akte</th>`;
+                    html+=`<th class="bg-dark-subtle text-center">Kartu Keluarga</th>`;
+                    html+=`<th class="bg-dark-subtle text-center">KIP</th>`;
+                    html+=`<th class="bg-dark-subtle text-center">KKS</th>`;
+                    html+=`<th class="bg-dark-subtle text-center">PKH</th>`;
+                    html+=`<th class="bg-dark-subtle text-center">Pas Poto</th>`;
+                    html+=`<th class="bg-dark-subtle text-center">Ijazah</th>`;
+                    html+=`<th class="bg-dark-subtle text-center">Sertifikat</th>`;
+                    html+=`<th class="bg-dark-subtle text-center">Piagam</th>`;
+                    html+=`<th class="bg-dark-subtle text-center">Raport</th>`;
+                    html+=`<th class="bg-dark-subtle text-center">NISN</th>`;
+                    html+=`<th class="bg-dark-subtle text-center">Lainnya</th>`;
+                html+=`</tr>`;
+            html+`</thead>`;
+            html+=`<tbody>`;
+                data.forEach((item,index)=>{
+                    html+=`<tr>`;
+                        html+=`<td><button class="btn btn-sm bg-info px-1 py-0" data-modal="detailInduk" data-id="${item.id}" data-nis="${item.nis}" title="Edit atau Tambah dokumen siswa ini" role="button"><i class="bi bi-pencil-fill"></i></button></td>`;
+                        html+=`<td class="text-center">${index+1}</td>`;
+                        html+=`<td class="text-center">${item.aktif}</td>`;
+                        html+=`<td class="text-center">${item.nis}</td>`;
+                        html+=`<td class="text-center">${item.nama_rombel}</td>`;
+                        html+=`<td class="text-nowrap">${item.pd_nama}</td>`;
+                        html+=`<td class="text-center">${item.dok_akte==""?"":createAnchorLink(item.dok_akte,`<i class="bi bi-eye border rounded font10 bg-info p-1" title="Akte"></i>`)}</td>`;
+                        html+=`<td class="text-center">${item.dok_kk==""?"":createAnchorLink(item.dok_kk,`<i class="bi bi-eye border rounded font10 bg-info p-1" title="Kartu Keluarga"></i>`)}</td>`;
+                        html+=`<td class="text-center">${item.dok_kip==""?"":createAnchorLink(item.dok_kip,`<i class="bi bi-eye border rounded font10 bg-info p-1" title="KIP"></i>`)}</td>`;
+                        html+=`<td class="text-center">${item.dok_kks==""?"":createAnchorLink(item.dok_kks,`<i class="bi bi-eye border rounded font10 bg-info p-1" title="KKS"></i>`)}</td>`;
+                        html+=`<td class="text-center">${item.dok_kpspkh==""?"":createAnchorLink(item.dok_kpspkh,`<i class="bi bi-eye border rounded font10 bg-info p-1" title="PKH/KPS"></i>`)}</td>`;
+                        html+=`<td class="text-center">`;
+                            const poto = Object.groupBy(item.dokumen, ({jenis_dokumen})=>jenis_dokumen)?.poto_siswa||[];
+                            if(poto.length>0){
+                                html+=`<ul class="list-inline mb-0">`;
+                                poto.forEach(pt=>{
+                                    html+=`<li class="list-inline-item m-1">${createAnchorLink(pt.id_file,`<i class="bi bi-eye border rounded font10 bg-info p-1" title="${pt.keterangan}"></i>`)}</li>`;
+                                })
+                                html+=`</ul>`;
+                            }
+                        html+=`</td>`;
+                        html+=`<td class="text-center">`;
+                            const ijazah = Object.groupBy(item.dokumen, ({jenis_dokumen})=>jenis_dokumen)?.ijazah||[];
+                            if(ijazah.length>0){
+                                html+=`<ul class="list-inline mb-0">`;
+                                ijazah.forEach(pt=>{
+                                    
+                                    html+=`<li class="list-inline-item m-1">${createAnchorLink(pt.id_file,`<i class="bi bi-eye border rounded font10 bg-info p-1" title="${pt.keterangan}"></i>`)}</li>`;
+                                })
+                                html+=`</ul>`;
+                            }
+                        html+=`</td>`;
+                        html+=`<td class="text-center">`;
+                            const sertifikat = Object.groupBy(item.dokumen, ({jenis_dokumen})=>jenis_dokumen)?.sertifikat||[];
+                            if(sertifikat.length>0){
+                                html+=`<ul class="list-inline mb-0">`;
+                                sertifikat.forEach(pt=>{
+                                    html+=`<li class="list-inline-item m-1">${createAnchorLink(pt.id_file,`<i class="bi bi-eye border rounded font10 bg-info p-1" title="${pt.keterangan}"></i>`)}</li>`;
+                                })
+                                html+=`</ul>`;
+                            }
+                        html+=`</td>`;
+                        html+=`<td class="text-center">`;
+                            const piagam = Object.groupBy(item.dokumen, ({jenis_dokumen})=>jenis_dokumen)?.piagam||[];
+                            if(piagam.length>0){
+                                html+=`<ul class="list-inline mb-0">`;
+                                piagam.forEach(pt=>{
+                                    html+=`<li class="list-inline-item m-1">${createAnchorLink(pt.id_file,`<i class="bi bi-eye border rounded font10 bg-info p-1" title="${pt.keterangan}"></i>`)}</li>`;
+                                })
+                                html+=`</ul>`;
+                            }
+                        html+=`</td>`;
+                        html+=`<td class="text-center">`;
+                            const raport = Object.groupBy(item.dokumen, ({jenis_dokumen})=>jenis_dokumen)?.raport||[];
+                            if(raport.length>0){
+                                html+=`<ul class="list-inline mb-0">`;
+                                raport.forEach(pt=>{
+                                    html+=`<li class="list-inline-item m-1">${createAnchorLink(pt.id_file,`<i class="bi bi-eye border rounded font10 bg-info p-1" title="${pt.keterangan}"></i>`)}</li>`;
+                                })
+                                html+=`</ul>`;
+                            }
+                        html+=`</td>`;
+                        html+=`<td class="text-center">`;
+                            const nisn = Object.groupBy(item.dokumen, ({jenis_dokumen})=>jenis_dokumen)?.nisn||[];
+                            if(nisn.length>0){
+                                html+=`<ul class="list-inline mb-0">`;
+                                nisn.forEach(pt=>{
+                                    html+=`<li class="list-inline-item m-1">${createAnchorLink(pt.id_file,`<i class="bi bi-eye border rounded font10 bg-info p-1" title="${pt.keterangan}"></i>`)}</li>`;
+                                })
+                                html+=`</ul>`;
+                            }
+                        html+=`</td>`;
+                        html+=`<td class="text-center">`;
+                            const lainnya = Object.groupBy(item.dokumen, ({jenis_dokumen})=>jenis_dokumen)?.Lainnya||[];
+                            if(lainnya.length>0){
+                                html+=`<ul class="list-inline mb-0">`;
+                                lainnya.forEach(pt=>{
+                                    html+=`<li class="list-inline-item m-1">${createAnchorLink(pt.id_file,`<i class="bi bi-eye border rounded font10 bg-info p-1" title="${pt.keterangan}"></i>`)}</li>`;
+                                })
+                                html+=`</ul>`;
+                            }
+                        html+=`</td>`;
+                    html+=`</tr>`;
+                })
+            html+=`</tbody>`;
+        html+=`</table>`;
+    html+=`</div`;
+    return html;
+}
+function createAnchorLink(idFile,text=null){
+    let link = `<a href="https://drive.google.com/file/d/${idFile}/view?usp=drivesdk" target="_blank" class="text-decoration-none">https://drive.google.com/file/d/${idFile}/view?usp=drivesdk</a>`;
+    if(text){
+        link = `<a href="https://drive.google.com/file/d/${idFile}/view?usp=drivesdk" target="_blank" class="text-decoration-none">${text}</a>`;
+    }
+    return link;
+}
 const viewInduk = {
     'showRingkasanInduk' : showRingkasanInduk,
     'subMenuInduk' : subMenuInduk,
@@ -2108,6 +2525,10 @@ const viewInduk = {
     'subMenuKlapper':subMenuKlapper,
     'viewKlaper':viewKlaper,
     'subMenuKlaperAngkatan':subMenuKlaperAngkatan,
-    'selectAbjad':selectAbjad
+    'selectAbjad':selectAbjad,
+    'subTahunLulus':subTahunLulus,
+    'showRekapIjazah':showRekapIjazah,
+    'showTabelDokumen':showTabelDokumen,
+    'showTambahDokumenModal':showTambahDokumenModal
 };
 export default viewInduk;

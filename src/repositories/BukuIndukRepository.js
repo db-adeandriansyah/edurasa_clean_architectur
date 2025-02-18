@@ -90,8 +90,23 @@ export default class BukuIndukRepository  extends CallHttp{
             'autoId':'id',
             'array_timestamp':JSON.stringify(['time_stamp'])
         };
-        return await this.postAuto(param);
+        this.callWithProses();
+        const result =  await this.postAuto(param);
+        this.stopProgressBar();
+        return result;
     }
+        // const entities = new this.siswa_entity(dataObjek);;
+        // const entity = entities.addItem('time_stamp',new Date()).sanitize().data;
+        // let param = {
+        //     'idss':this.idssUser,
+        //     'tab':'datasiswa',
+        //     'data_resource':JSON.stringify(entity),//data_resource = (array-object)|| object; (required);
+        //     'key':'id',
+        //     'autoId':'id',
+        //     'array_timestamp':JSON.stringify(['time_stamp'])
+        // };
+        // return await this.postAuto(param);
+    // }
     async createWOrUpdateithUploadMedia(mode,ss,media,obchange){
         let act = mode===0?'createIncludeMedia':'updateIncludeMedia';
         let mediaValidate = Object.assign({},this.folderSubFolder,media);
@@ -150,5 +165,18 @@ export default class BukuIndukRepository  extends CallHttp{
             this.stopProgressBar();
             return result;
         }
-
+    async updateProfileSiswaWithMainMedia(RequstSs,RequestMedia,obchange){
+        const nSiswa = new this.siswa_entity(RequstSs).sanitize().data;
+        const ssUser = {
+            'idss': this.idssUser,
+            'tab':'datasiswa',
+            'formData':JSON.stringify(nSiswa),//'{"no":"1","data":"00001","data3":"01/02/2023"}',
+            'autoId':'id',
+            'byRow':nSiswa.id
+        };
+        this.callWithProses();
+            const data = await this.createWOrUpdateithUploadMedia(1,ssUser,RequestMedia,obchange);
+        this.stopProgressBar();
+        return data;
+    }
 }

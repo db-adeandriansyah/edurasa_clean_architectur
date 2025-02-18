@@ -5,7 +5,7 @@ export class CollectionsEdu {
       this.data = dataCopy;
     }
   
-    selectProperties(properties) {
+      selectProperties(properties) {
       const newData = this.data.map((item) => {
         return properties.reduce((selectedItem, prop) => {
           selectedItem[prop] = item[prop];

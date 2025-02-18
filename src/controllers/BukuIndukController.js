@@ -31,10 +31,17 @@ export default class BukuIndukController extends Fitur{
     async tapel_induk(){
         this.fitur.showTapelInduk();
     }
+    dokumen_siswa(){
+        this.fitur.showDokumenSiswa();
+    }
     klaper_induk(){
         this.fitur.showKlapper();
     }
     klaper_angkatan(){
         this.fitur.showKlapperAngkatan()
+    }
+    ijazah_angkatan(){
+        console.log(this.App);
+        this.fitur.showIjazahAngkatan();
     }
 }

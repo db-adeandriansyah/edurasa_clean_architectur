@@ -77,7 +77,7 @@ export class TableProperties{
             cell.style.position = 'sticky';
             cell.style.position = '-webkit-sticky';
             cell.style.left = `${cumulativeLeft}px`; // Set posisi sesuai dengan kumulatif
-            cell.style.boxShadow = '-.5px 0 #000 inset';
+            cell.style.boxShadow = '-.5px 0 #ddd inset';
             cell.style.backgroundColor = 'inherit';
     
             cumulativeLeft += cell.offsetWidth; // Menambahkan lebar sel ke posisi kumulatif
@@ -136,9 +136,12 @@ export class TableProperties{
                 shadowScrol.childNodes[0].setAttribute('style','width:'+this.wrapperTable.lastElementChild.offsetWidth+'px;height:5px');
             }
         }
-        
-        divShadowScrol.onscroll = ()=>{
-            this.wrapperTable.scrollLeft = divShadowScrol.scrollLeft; 
+        console.log(divShadowScrol);
+        if(divShadowScrol){
+            divShadowScrol.onscroll = ()=>{
+                this.wrapperTable.scrollLeft = divShadowScrol.scrollLeft; 
+            }
+
         }
     }
 

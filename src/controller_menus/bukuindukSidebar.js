@@ -4,7 +4,7 @@ export const bukuindukSidebar = ()=> [
         menu:[
         {value:'setting_induk',text:'Ringkasan',name:'menusidebar'},
         {value:'tapel_induk',text:'Rekap Induk',name:'menusidebar'},
-        // {value:'riwayat_kurikulum',text:'Riwayat Kurikulum',name:'menusidebar'},
+        {value:'dokumen_siswa',text:'Dokumen Siswa',name:'menusidebar'},
         ]
     },
     {
@@ -17,8 +17,7 @@ export const bukuindukSidebar = ()=> [
     {
         title:'Ijazah',
         menu:[
-        {value:'ijazah_angkatan',text:'Ijazah per Angkatan',name:'menusidebar'},
-        {value:'ijazah_4tahunan',text:'Ijazah 4 Tahun Terakhir',name:'menusidebar'},
+            {value:'ijazah_angkatan',text:'Ijazah per Angkatan',name:'menusidebar'},
         ]
     },
     

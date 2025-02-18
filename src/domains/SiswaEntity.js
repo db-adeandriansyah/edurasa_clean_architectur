@@ -19,7 +19,7 @@ export default class siswa_entity{
         Object.entries(this.#param).forEach(([k,v])=>{
             if(this.protected.includes(k)){
                 if(this.dateFormatKey.includes(k) && v!==""){
-                    this.#result[k] = this.formatingDate(v);
+                    this.#result[k] = new Date(this.formatingDate(v));
                 }else{
                     this.#result[k] = v;
                 }

@@ -10,34 +10,20 @@ export default class Dashboard{
         
         if(!this.app.hasLocal('ptk')){
             this.userService.ptk();
-        }
+        };
+        
+        if([9,28,'9','28'].includes(this.app.UserApp.idUser)) {
+            alert('Anda sudah tidak diijinkan lagi memakai Aplikasi ini!');
+            this.app.clearLocalAll();
+            this.app.redirectHomePage();
+        };
         const dataSiswa =  await this.userService.callSiswa();
         if(this.app.UserApp.typeUser == 'siswa'){
             window.localStorage.setItem('dbSiswa',JSON.stringify(dataSiswa.data.filter(s=>s.id == this.app.UserApp.idUser)));
         }else{
             window.localStorage.setItem('dbSiswa',JSON.stringify(dataSiswa.data));
         }
-        // let hasLocal = window.localStorage.hasOwnProperty('dbSiswa');
         
-        // if(hasLocal){
-        //     let datlocale = window.localStorage.getItem('dbSiswa');
-        //     if(!datlocale || datlocale == undefined){
-        //         const dataSiswa =  await this.userService.callSiswa();
-        //         if(this.app.UserApp.typeUser == 'siswa'){
-        //             window.localStorage.setItem('dbSiswa',JSON.stringify(dataSiswa.data.filter(s=>s.id == this.app.UserApp.idUser)));
-        //         }else{
-        //             window.localStorage.setItem('dbSiswa',JSON.stringify(dataSiswa.data));
-        //         }
-        //     }
-        // }else{
-        //     const dataSiswa =  await this.userService.callSiswa();
-        //     if(this.app.UserApp.typeUser == 'siswa'){
-        //         window.localStorage.setItem('dbSiswa',JSON.stringify(dataSiswa.data.filter(s=>s.id == this.app.UserApp.idUser)));
-        //     }else{
-        //         window.localStorage.setItem('dbSiswa',JSON.stringify(dataSiswa.data));
-        //     }
-            
-        // }
     }
     async headerCheck(){
         let dom = this.app.TopHeader(this.app.UserApp).dashboardMenu();;

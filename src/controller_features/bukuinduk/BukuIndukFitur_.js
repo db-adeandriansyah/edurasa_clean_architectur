@@ -1,8 +1,6 @@
 import viewRiwayat from "../../riwayat_raport/RiwayatView.js";
 import Pagination from "../pagination/Pagination.js";
 import viewInduk from "./BukuIndukView.js";
-import KlaperController from "./KlaperController.js";
-import TapelIndukController from "./TapelIndukController.js";
 
 
 
@@ -14,13 +12,9 @@ export default class BukuIndukFitur{
         this.workplace = workplace;
         this.Modal1 = modal;
         this.Modal2 = modal2;
-        this.KlaperInduk = new KlaperController(service);
-        this.DokumenInduk = new KlaperController(service);
-        this.TapelInduk = new TapelIndukController(service);
     }
     showSetingInduk(){
         this.workplace.innerHTML = viewInduk.showRingkasanInduk(this.service.ormInduk);
-        this.workplace.innerHTML = viewInduk.showRingkasanInduk(this.TapelInduk.orm);
         return this;
     }
     showKlapper(){
@@ -56,6 +50,7 @@ export default class BukuIndukFitur{
             const detail = this.service.ormInduk.find(s=>s.awalanInduk===tapel);
             const koleksiabjad = detail?.klaperAngkatan ||[];
             const dataopsi = [];
+            
             koleksiabjad.forEach(item=>{
                 dataopsi.push({
                     label:`${item.abjad} (${item.dataKlaperAngkatan.length} data)`,
@@ -82,16 +77,17 @@ export default class BukuIndukFitur{
     
     showTapelInduk(){
         
-        this.submenu.innerHTML = viewInduk.subMenuInduk(this.TapelInduk.orm);
-        // this.submenu.innerHTML = viewInduk.subMenuInduk(this.service.ormInduk);
+        this.submenu.innerHTML = viewInduk.subMenuInduk(this.service.ormInduk);
         this.listenerRadioMenu(async (tapel)=>{
             if(tapel==='false'){
                 tapel=false;    
             }
             
             this.workplace.innerHTML = "Memproses ....";
-            const detailAfter = await this.TapelInduk.dataWithRaportByTapel(tapel);
-            const testdetailAfter = await this.TapelInduk.dataByTapel(tapel);
+            const detail = this.service.ormInduk.find(s=>s.awalanInduk===tapel);
+            await this.service.raportInduk(detail.tapelInduk);
+            const detailAfter = this.service.ormInduk.find(s=>s.awalanInduk===tapel);
+            
             this.workplace.innerHTML = viewInduk.showRekapTapel(detailAfter,tapel);
             this.listenerModal((dataset)=>this.showDetailItemInduk(dataset,tapel,detailAfter));
         });
@@ -123,7 +119,6 @@ export default class BukuIndukFitur{
         
     }
     showDetailItemInduk(dataset,tapel,detail){
-        
             this.Modal1.widthOrientation(false);
             this.Modal1.settingHeder('Detail Buku Induk');
             this.Modal1.showHideFooter(false);
@@ -163,15 +158,41 @@ export default class BukuIndukFitur{
                     ob[item.dataset.keyedit] = item.value;
                     
                 });
-                this.Modal2.showBodyHtml(`<img src="${this.App.UserApp.barloading}" /> Memproses...`);
-                const detailAfter = await this.TapelInduk.dataCurrentProfilSiswaByTapel(ob,dataset.tapel,dataset.id);
+                this.Modal2.showBodyHtml(`<img src="${this.App.UserApp.barloading}" /> Memproses...`)
+                await this.service.updateProfilSiswa(ob);
                 this.Modal2.hide();
-                this.Modal1.showBodyHtml(viewInduk.showDetailItemInduk(detailAfter));
-                this.listenerModalinModal((dataset)=>this[dataset['modalItem']](dataset,detailAfter));
-                this.Modal1.show();
+                //
+                //
+                const detailAfter = this.service.ormInduk.find(s=>s.awalanInduk===dataset.tapel);
+                this.showTapelInduk();
                 document.querySelector(`[data-radio-induk="${dataset.tapel}"]`).checked = true;
                 document.querySelector(`[data-radio-induk="${dataset.tapel}"]`).dispatchEvent(new Event('change'));
-            };
+                const itemdetail = detailAfter.indukurut.find(s=>s.id ==dataset.id);
+                this.Modal1.showBodyHtml(viewInduk.showDetailItemInduk(itemdetail));
+                this.listenerModalinModal((dataset)=>this[dataset['modalItem']](dataset,itemdetail));
+                this.Modal1.show()
+            }
+            btnUploads.forEach(upload=>{
+                upload.onchange = async (e)=>{
+                    let file = e.target.files[0];
+                    let elemenUpload = e.target.dataset.upload;
+                    let sel = document.getElementById('preview_'+elemenUpload);
+                    let propertifile = {namafile:`${detail.id} ${detail.pd_nama}`,subfolder:elemenUpload}
+                    if(sel){
+                        sel.innerHTML = `<img src="${this.App.UserApp.barloading}" />`;
+                    }
+                    
+
+                    if(file){
+                        const data = await this.service.uploadFile(file,propertifile);
+                        
+                        sel.innerHTML = data.idfile;
+                        document.querySelector(`[data-keyedit="${elemenUpload}"]`).value = data.idfile;
+                        document.querySelector(`[data-btnhapus="${elemenUpload}"]`).classList.remove('d-none');
+                    }
+                    
+                }
+            })
         }
     }
     showIjazahAngkatan(){
@@ -180,74 +201,26 @@ export default class BukuIndukFitur{
         this.listenerRadioMenu(async (v)=>{
             const data = this.service.dataIjazahAngkatan.find(s=>s.tahunLulus == v);
             const TableProperties = await import("../../entries/vendor.js").then(n=>n.TableProperties);
-            
+            console.log(v,data)
             this.workplace.innerHTML = viewRiwayat.showRekapIjazah(data);
-            
             const tabel = document.querySelector('table.toExcel');
             const tp = new TableProperties(tabel)
             tp.freezeColumn([0,1,2,3,4,5])
             tp.addScrollUpDown();
             this.listenerModal((dataset)=>{
-                
+                console.log('dataset ijazah', dataset)
                 let siswa = data.dataLulusan.find(s=>s.id == dataset.id);
                 this.showDokumenLulusan(siswa,'showIjazahAngkatan');
             });
         });
     }
     showDokumenLulusan(siswa,nextMethod){
-        
         this.Modal1.showHideFooter(false);
         this.Modal1.widthOrientation(false);
         this.Modal1.settingHeder(`Dokumen Digital ${siswa.pd_nama} (${siswa.id}/${siswa.nama_rombel})`);
         this.Modal1.showBodyHtml(viewInduk.showTambahDokumenModal(siswa));
         this.listenerModalinModal((dataset)=>this[dataset['modalItem']](dataset,siswa,nextMethod));
         this.Modal1.show();
-        const uploads = document.querySelectorAll('[data-upload]');
-        uploads.forEach(btninput=>{
-            if(btninput.type==='file'||btninput.type==='FILE'){
-                btninput.onchange = async(e)=>{
-                    let file = e.target.files[0];
-                    let elemenUpload = e.target.dataset.upload;
-                    let sel = document.getElementById('preview_'+elemenUpload);
-                    let propertifile = {namafile:`${siswa.id} ${siswa.pd_nama}`,subfolder:elemenUpload}
-                    if(sel){
-                        sel.innerHTML = `<img src="${this.App.UserApp.barloading}" />`;
-                    }
-                    
-
-                    if(file){
-                        await this.service.updateProfileSiswaWithMainMedia(siswa,file,{[elemenUpload]:'idfile'})
-                        const afterUpdate = this.service.db.siswa.find(s=>s.id == siswa.id);
-                        sel.innerHTML = afterUpdate?.[elemenUpload];
-                        this[nextMethod](afterUpdate,nextMethod);
-                        document.querySelector(`[data-radio-induk="${siswa.awalanInduk}"]`).checked=true;
-                        document.querySelector(`[data-radio-induk="${siswa.awalanInduk}"]`).dispatchEvent(new Event('change'));
-                    }
-                    }
-                
-            }else{
-                btninput.onclick = async(e)=>{
-                    let conf = confirm('Anda yakin ingin menghapus ini?');
-                    const dokhapus = btninput.dataset.btnhapus;
-                    // let elemenUpload = dokhapus;//e.target.dataset.upload;
-                    let sel = document.getElementById('preview_'+dokhapus);
-                    // let propertifile = {namafile:`${siswa.id} ${siswa.pd_nama}`,subfolder:elemenUpload}
-                    if(sel){
-                        sel.innerHTML = `<img src="${this.App.UserApp.barloading}" />`;
-                    }
-                    
-                    const siswaUpdate = Object.assign({},siswa, {[dokhapus]:''})
-                    if(!conf) return;
-                    await this.service.updateProfilSiswa(siswaUpdate);
-                        const afterUpdate = this.service.db.siswa.find(s=>s.id == siswa.id);
-                        sel.innerHTML = '';//afterUpdate?.[elemenUpload];
-                        this.Modal1.hide();
-                        this[nextMethod](afterUpdate,nextMethod);
-                        document.querySelector(`[data-radio-induk="${siswa.awalanInduk}"]`).checked = true;
-                        document.querySelector(`[data-radio-induk="${siswa.awalanInduk}"]`).dispatchEvent(new Event('change'));
-                }
-            }
-        })
     }
     cetakIdentitas(dataset,detail){
         this.Modal1.hide();
@@ -276,6 +249,79 @@ export default class BukuIndukFitur{
             alert('Scan Ijazah tidak ditemukan');
         }
     }
+    uploadDokumenTambahan(dataset,detail,methodAfter=null){
+        this.Modal2.showHideFooter(false);
+        this.Modal1.hide();
+        this.Modal2.widthOrientation(false);
+        this.Modal2.settingHeder(`Upload File Tambahan ${detail.pd_nama} (${detail.nama_rombel})` );
+        this.Modal2.showBodyHtml(viewInduk.showWraperInduk(viewInduk.showCrudFileTambahan(detail),true,false));
+        this.Modal2.show();
+        
+        const controls = document.querySelectorAll('[data-kontrolfile]');
+        const btn = document.getElementById('btnAdd');
+        const dataColections = document.querySelectorAll('[data-keydokumen]');
+        const datacek = {
+            keterangan:'',
+            jenis_dokumen:''
+        };
+        dataColections.forEach(formcontrol=>{
+            formcontrol.oninput = (e)=>{
+                datacek[e.target.dataset.keydokumen]=e.target.value;
+            }
+        });
+        btn.onclick = ()=>{
+            if(datacek.keterangan !=="" && datacek.jenis_dokumen !=="" && Object.keys(datacek).length>=2){
+                document.querySelector('[data-kontrolfile="addFile"]').click();
+            }else{
+                alert('Mohon lengkapi jenis dan keterangan dokumen sebelum menunggah file.');
+            }
+        }
+        controls.forEach(control=>{
+            if(control.type=='file'||control.type=="FILE"){
+                control.onchange = async (e)=>{
+                    let file = e.target.files[0];
+                    if(file){
+                        viewInduk.addRowTableDynamic(this.App.UserApp.barloading);
+
+                        let extension=file.name.split('.').pop();
+                        dataColections.forEach(formcontrol=>{
+                            datacek[formcontrol.dataset.keydokumen]=formcontrol.value;
+                            
+                        });
+                        datacek.type=extension;
+                        await this.service.updateDokumenTambahanSiswa(file,datacek,{subfolder:detail.pd_nama, namafile:datacek.keterangan+'.'+extension})
+                        
+                        const detailAfter = this.service.ormInduk.find(s=>s.awalanInduk===dataset.tapel);
+                        this.showTapelInduk();
+                        //
+                        document.querySelector(`[data-radio-induk="${dataset.tapel}"]`).checked = true;
+                        document.querySelector(`[data-radio-induk="${dataset.tapel}"]`).dispatchEvent(new Event('change'));
+                        const itemdetail = detailAfter.indukurut.find(s=>s.id ==dataset.id);
+                        this.uploadDokumenTambahan(dataset,itemdetail);
+                        this.Modal1.showBodyHtml(viewInduk.showDetailItemInduk(itemdetail));
+                        this.listenerModalinModal((dataset)=>this[dataset['modalItem']](dataset,itemdetail));
+                        // this.Modal1.show()
+                    }
+                }
+            }else{
+                control.onclick = async (e)=>{
+                    const konfirmasi = confirm('Anda yakin akan menghapus dokumen ini? Data terhapus tidak bisa dikembalikan lagi.');
+                    if(!konfirmasi) return;
+                    const datafile = detail.dokumen?.find(s=>s.idbaris == e.target.dataset.idDokumen);
+                    datafile.tokensiswa="";
+                    await this.service.hapusDokumenTambahan(datafile);
+                    const detailAfter = this.service.ormInduk.find(s=>s.awalanInduk===dataset.tapel);
+                        this.showTapelInduk();
+                        document.querySelector(`[data-radio-induk="${dataset.tapel}"]`).checked = true;
+                        document.querySelector(`[data-radio-induk="${dataset.tapel}"]`).dispatchEvent(new Event('change'));
+                        const itemdetail = detailAfter.indukurut.find(s=>s.id ==dataset.id);
+                        this.uploadDokumenTambahan(dataset,itemdetail);
+                        this.Modal1.showBodyHtml(viewInduk.showDetailItemInduk(itemdetail));
+                        this.listenerModalinModal((dataset)=>this[dataset['modalItem']](dataset,itemdetail));
+                }
+            }
+        })
+    }
     uploadDokumenTambahanDokumenSiswa(dataset,detail,nextMethod){
         this.Modal2.showHideFooter(false);
         this.Modal1.hide();
@@ -285,7 +331,6 @@ export default class BukuIndukFitur{
         this.Modal2.show();
         
         const controls = document.querySelectorAll('[data-kontrolfile]');
-        
         const btn = document.getElementById('btnAdd');
         const dataColections = document.querySelectorAll('[data-keydokumen]');
         const datacek = {
@@ -324,10 +369,25 @@ export default class BukuIndukFitur{
                         this.Modal2.hide();
                         // //
                         this[nextMethod]();
-                        
+                        console.log('after upload dataset dan detail', dataset, detail)
                         document.querySelector(`[data-radio-induk="${dataset.tapel}"]`).checked = true;
                         document.querySelector(`[data-radio-induk="${dataset.tapel}"]`).dispatchEvent(new Event('change'));
-                        this.Modal2.hide();
+                        // this.Modal1.show();
+                        // const data = this.service.dataIjazahAngkatan.find(s=>s.tahunLulus == dataset.tapel);
+                        // // const siswa = data.dataLulusan?.find(s=>s.id == dataset.id);
+                        // console.log('this service dataIjazah',data);
+                        // console.log('after upload siswa', siswa);
+                        
+                        // this.Modal1.showBodyHtml(viewInduk.showWraperInduk(viewInduk.showTambahDokumenModal(siswa),true));
+                        // this.listenerModalinModal((dataset)=>this[dataset['modalItem']](dataset,siswa));
+
+                            const btnBeforeClicked = document.querySelector(`[data-modal="detailDokumen"][data-id="${dataset.id}"]`);
+                            console.log(btnBeforeClicked);
+                            if(btnBeforeClicked){
+                                    btnBeforeClicked.click();
+                                    // btnBeforeClicked.dispatchEvent(new Event("click"));
+
+                            }
                     }
                 }
             }else{
@@ -339,17 +399,15 @@ export default class BukuIndukFitur{
                     await this.service.hapusDokumenTambahan(datafile);
                     // const detailAfter = this.service.ormInduk.find(s=>s.awalanInduk===dataset.tapel);
                     //     this.showTapelInduk();
-                    this[nextMethod]();
-                        document.querySelector(`[data-radio-induk="${dataset.tapel}"]`).checked = true;
-                        document.querySelector(`[data-radio-induk="${dataset.tapel}"]`).dispatchEvent(new Event('change'));
+                    //     document.querySelector(`[data-radio-induk="${dataset.tapel}"]`).checked = true;
+                    //     document.querySelector(`[data-radio-induk="${dataset.tapel}"]`).dispatchEvent(new Event('change'));
                     //     const itemdetail = detailAfter.indukurut.find(s=>s.id ==dataset.id);
                     //     this.uploadDokumenTambahan(dataset,itemdetail);
                     //     this.Modal1.showBodyHtml(viewInduk.showDetailItemInduk(itemdetail));
                     //     this.listenerModalinModal((dataset)=>this[dataset['modalItem']](dataset,itemdetail));
-                    this.Modal2.hide();
                 }
             }
-        });
+        })
     }
     cetakInduk(dataset,detail){
         const {riwayatRapor} = detail;

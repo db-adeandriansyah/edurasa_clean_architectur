@@ -1,14 +1,17 @@
+import dataPenandaTanganKepsek from "../controller_features/bukuinduk/PenandatanganIjazah";
 import { CollectionsEdu } from "../models/CollectionsEdu";
 
 export default class BukuIndukService{
     #dbData;
     #collectionsInduk;
     #collectionKleper;
+    #collectionsIjazahAngkatan
     constructor(repo){
         this.repo = repo;
         this.#dbData = {};
         this.#collectionsInduk = [];
         this.#collectionKleper = [];
+        this.#collectionsIjazahAngkatan = [];
         
     }
     get db(){
@@ -22,6 +25,9 @@ export default class BukuIndukService{
     }
     get ormInduk(){
         return this.#collectionsInduk;
+    }
+    get dataIjazahAngkatan(){
+        return this.#collectionsIjazahAngkatan;
     }
     async siswa(){
         if(!this.#dbData['siswa']){
@@ -47,8 +53,10 @@ export default class BukuIndukService{
     }
     async init(){
         await this.siswa();
+        let entity= new this.repo.siswa_entity();
         
         this.#collectionsInduk = new CollectionsEdu(this.#dbData.siswa.slice())
+                            // .selectProperties(entity.protected)
                             .addProperty('awalanInduk',(item)=>{
                                 if(item.nis){
                                     return item.nis.toString().slice(0,4);
@@ -56,10 +64,11 @@ export default class BukuIndukService{
                                     return false
                                 }
                             })
-                            .addProperty('tahunpelajaran',(item)=>item.awalanInduk?'20'+item.awalanInduk.slice(0,2)+'/20'+item.awalanInduk.slice(3,4):'')
+                            .addProperty('tahunpelajaran',(item)=>item.awalanInduk?'20'+item.awalanInduk.slice(0,2)+'/20'+item.awalanInduk.slice(2,4):'')
                             .uniqueByProperty('awalanInduk')
                             .addProperty('inValidInduk',item=>['1213','1314'].includes(item.awalanInduk))
                             .addProperty('datainduk',item => new CollectionsEdu(this.#dbData.siswa)
+                                                        .selectProperties(['awalanInduk','tahunpelajaran','inValidInduk',...entity.protected])
                                                         .simpleFilter({'awalanInduk':item.awalanInduk})
                                                         .exceptFilter({'pd_nama':''})
                                                         .addProperty('lastDigit',item=>{
@@ -124,7 +133,8 @@ export default class BukuIndukService{
                                                             }
                                                         })
                                                         .addProperty('dokumen',item=> this.db.dokumen.filter(s=>s.tokensiswa == item.id))
-                                                        .selectPropertiesExcept(['indukurut','datainduk','nisGanda'])
+                                                        .selectProperties([...entity.protected,'lastDigit','founded','riwayatRapor','dokumen','awalanInduk','tapelInduk','inValidInduk'])
+                                                        // .selectPropertiesExcept(['indukurut','datainduk','nisGanda','dataLulusan','dataKlaperAngkatan'])
                                                         .data)
                             .addProperty('nisGanda',item=>{
                                 const nisnya = item.datainduk.filter((obj,index)=>item.datainduk.findIndex(s=>s.nis === obj.nis)!==index).map(n=>n.nis.toString());
@@ -174,13 +184,18 @@ export default class BukuIndukService{
                             })
                             .addProperty('klaperAngkatan',item=>{
                                 return new CollectionsEdu(item.datainduk)
+                                        .selectProperties(entity.protected)
                                         .addProperty('abjad',itemklaper=>itemklaper.pd_nama[0])
                                         .uniqueByProperty('abjad')
                                         .addProperty('dataKlaperAngkatan',itemKlaper=>{
+                                            // return itemKlaper.abjad;
+                                            // return item.datainduk.filter(s=>s.pd_nama[0] ===itemKlaper.abjad)??[];
                                             return new CollectionsEdu(item.datainduk)
+                                                .addProperty('abjad',idk=>idk.pd_nama[0])
                                                 .simpleFilter({'abjad':itemKlaper.abjad})
                                                 .sortByProperty('pd_nama','asc')
-                                                .selectPropertiesExcept(['dataKlaper','indukurut','datainduk'])
+                                                // .selectPropertiesExcept(['dataKlaper','indukurut','datainduk','dataLulusan'])
+                                                .selectProperties([...entity.protected,'abjad'])
                                                 .data
                                         })
                                         .selectProperties(['abjad','dataKlaperAngkatan'])
@@ -192,11 +207,31 @@ export default class BukuIndukService{
                             .selectProperties(['awalanInduk','inValidInduk','tahunpelajaran','tapelInduk','klaperAngkatan','datainduk','nisGanda','indukurut'])
                             .sortByProperty('awalanInduk','desc')
                             .data;
-        
+            this.#collectionsIjazahAngkatan = new CollectionsEdu(this.#dbData.siswa.slice())
+                    .addProperty('tahunLulus',item=>item.aktif ==='lulus' && item.keluar_tgl !==""?new Date(item.keluar_tgl).getFullYear():false)
+                    .addProperty('tanggalLulus',item=>item.aktif ==='lulus' && item.keluar_tgl !==""?item.keluar_tgl:false)
+                    .addProperty('tapelLulus',item=>item.tahunLulus?'20'+(item.tahunLulus - 1).toString().slice(2,4)+'/20'+item.tahunLulus.toString().slice(2,4):false)
+                    .addProperty('kodeTapelLulus',item=>item.tahunLulus? (item.tahunLulus - 1).toString().slice(2,4)+''+item.tahunLulus.toString().slice(2,4):false)
+                    .addProperty('kurikulum',item=> this.repo.makroRiwayat.find(s=>s.tapel == item.kodeTapelLulus)?.['kelas_6_kurikulum']||'')
+                    .addProperty('mapel',item=> this.repo.makroRiwayat.find(s=>s.tapel == item.kodeTapelLulus)?.['kelas_6_mapel']||[])
+                    .customFilter(item=>item.tahunLulus)
+                    .uniqueByProperty('tahunLulus')
+                    .addProperty('dataLulusan',item=>new CollectionsEdu(this.#dbData.siswa.slice())
+                                                        .simpleFilter({'tahunLulus':item.tahunLulus})
+                                                        .addProperty('nilaiijazah',item=>this.db.ijazah.find(s=>s.token == item.id)??this.db.ijazah_entity)
+                                                        .addProperty('dokumen',item=> this.db.dokumen.filter(s=>s.tokensiswa == item.id))
+                                                        .selectPropertiesExcept(['dataInduk','tapelInduk','klaperAngkatan','indukUrut'])
+                                                        .data
+                    )
+                    .addProperty('kepsek',item=>dataPenandaTanganKepsek(item.tahunLulus))
+                    .selectProperties(['tahunLulus','kepsek','tanggalLulus','tapelLulus','kurikulum','mapel','dataLulusan'])
+                    .sortByProperty('tahunLulus','asc')
+                    .data;
+            
         return this;
     }
     createKlapper(){
-        
+        let entity= new this.repo.siswa_entity();
         this.#collectionKleper = new CollectionsEdu(this.#dbData.siswa.slice())
                                 .exceptFilter({'pd_nama':''})
                                 .addProperty('abjad',item=>item.pd_nama[0])
@@ -204,7 +239,8 @@ export default class BukuIndukService{
                                 .addProperty('dataKlapper',item=> new CollectionsEdu(this.#dbData.siswa)
                                                     .simpleFilter({'abjad':item.abjad})
                                                     .sortByProperty('pd_nama','asc')
-                                                    .selectPropertiesExcept(['dataKlaper','indukurut','datainduk'])
+                                                    // .selectPropertiesExcept(['dataKlaper','indukurut','datainduk','dataLulusan'])
+                                                    .selectProperties([...entity.protected,'abjad','lastDigit','founded','riwayatRapor','dokumen'])
                                                     .data
                                 ).selectProperties(['abjad','dataKlapper'])
                                 .sortByProperty('abjad','asc')
@@ -270,9 +306,10 @@ export default class BukuIndukService{
     async updateProfilSiswa(objek){
         if(objek.id === ""){
             objek.id = this.#dbData.siswa.length+2;
-        }
+        } 
         const data = await this.repo.updateProfile(objek);
         if(data.info.findTab){
+            window.localStorage.setItem('dbSiswa',JSON.stringify(data.data));
             this.#dbData['siswa']= data.data;
             this.#dbData['siswa_entity']= data.info.objKosong;  
             await this.init();
@@ -314,6 +351,63 @@ export default class BukuIndukService{
         if(data.info.findTab){
             this.#dbData['dokumen']= data.data;
             this.#dbData['dokumen_entity']= data.info.objKosong;  
+            await this.init();
+        }
+    }
+
+    /**
+     * 
+     * @param {*} ss {
+     * idss:<string>
+        tab:'<string>namaTab',
+        formData:<JSONStringify(<string>)>// contoh'{"no":"1","data":"00001","data3":"01/02/2023"}',
+        //autoId:'no',
+        //stringFormat:'["data"]',
+        //filter:'{"jenjang":"6"}',
+
+        //if create:
+        createTabEmpty:1, //1 (true)|| 0 = false,
+        }
+     * @param {*} media {
+            folder:'folder',
+            subfolder:'subfolder',
+            namafile:'',
+            base64:'',
+            mimeType:'',
+        }
+     * @param {*} obchange {
+        dok_akte||dok_kk || dok_kip: idfile
+        }
+     */
+    async updateProfileSiswaWithMainMedia(siswa,file,obchange){
+        let extension = file.name.split('.').pop();
+        
+        let r = new Promise((resolve,reject)=>{
+                let fr = new FileReader();
+                fr.onload = (evt)=>resolve(evt.target.result);
+                fr.onerror =(er)=>reject(er)
+                fr.readAsDataURL(file);
+            }).then(result=>{
+                
+                let base64 = result.replace(/^.*,/, '');
+                let mimeType = result.match(/^.*(?=;)/)[0];
+                
+                let param = Object.assign(this.repo.folderSubFolder,{
+                    base64:base64,
+                    mimeType:mimeType,
+                    namafile:Object.keys(obchange)[0] +' '+siswa.pd_nama+'_'+new Date().getTime()+'.'+extension,
+                    subfolder:siswa.pd_nama
+                    
+                },);
+                return this.repo.updateProfileSiswaWithMainMedia(siswa,param,obchange)
+            });
+        
+        // return await r;//
+        const data = await r;//this.repo.updateProfileSiswaWithMainMedia(ss,file,obchange);
+        if(data.info.findTab){
+            window.localStorage.setItem('dbSiswa',JSON.stringify(data.data));
+            this.#dbData['siswa']= data.data;
+            this.#dbData['siswa_entity']= data.info.objKosong;  
             await this.init();
         }
     }

@@ -1,5 +1,5 @@
-import { TableProperties } from "../../entries/vendor";
-
+// import { TableProperties } from "../../entries/vendor";
+// const TableProperties = await import("../../entries/vendor.js").then(n=>n.default);
 export default class Pagination{
     constructor(data){
         this.data = data;
@@ -66,8 +66,8 @@ export default class Pagination{
         return ar;
     
     }
-    buildHtml(){
-        const vData = this.view(0,this.dataPerPage[0].data,[]);
+    async buildHtml(){
+        const vData = this.view(0,this.dataPerPage[0]?.data,[]);
         const vUpControl =this.viewControl();
         const vDownControl = this.viewControl();
         let html ="";
@@ -86,7 +86,7 @@ export default class Pagination{
             html+=`</div>`;
         html+=`</div>`;
         this.workplace.innerHTML = html;
-        this.addScrolling();
+        await this.addScrolling();
         this.listenerPagination();
     }
     listenerPagination(){
@@ -94,10 +94,10 @@ export default class Pagination{
         const wrapDiv=document.getElementById('showdatapagination');
         const countpage=document.getElementById('countpage');
         controls.forEach(btn=>{
-            btn.onclick = (e)=>{
+            btn.onclick = async (e)=>{
                 const dataset = e.target.dataset;
                 wrapDiv.innerHTML = this.view(dataset.controlPagination,this.dataPerPage[dataset.controlPagination].data,this.dataPerPage[dataset.controlPagination-1]?.data||[]);
-                this.addScrolling();
+                await this.addScrolling();
                 //hapus bg tiap controlls;
                 controls.forEach(el=>el.classList.remove('bg-info-subtle'));
                 //hanya control inii yang aktif;
@@ -115,10 +115,13 @@ export default class Pagination{
             }
         }
     }
-    addScrolling(){
+    async addScrolling(){
         if(this.isOverFlowing){
             // const existWraper = document.getElementById('wrapScroll');
             // if(existWraper) existWraper.remove();
+            // import { TableProperties } from "../../entries/vendor";
+            //onst ParameterSiswa = await import('../request/ParameterSiswa.js').then(m=>m.default);
+            const TableProperties = await import("../../entries/vendor.js").then(n=>n.TableProperties);
             const element_table = document.querySelector('#showdatapagination').querySelector('table');
             const tp = new TableProperties(element_table);
             tp.freezeColumn(this.indexFreezeColumn);
