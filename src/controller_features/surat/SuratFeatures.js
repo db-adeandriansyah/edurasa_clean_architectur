@@ -131,7 +131,6 @@ export default class SuratFeature{
         }
         
         let data = {db:par,judul:this.htmlJudul,tapel:this.user.tapel};
-        console.log(this.user.tapel)
         this.workplace.innerHTML = tabelSuratKeluar(data);
 
         let tb = new TableProperties(document.querySelector('#tabel-suratkeluar'));
@@ -158,6 +157,27 @@ export default class SuratFeature{
             tb.addScrollUpDown();
 
         this.listenerDataShow(par,'showSuratKeteranganNISN',[...arguments]);
+    }
+    showSuratKeteranganBerkelakuanBaik(){
+        const db = this.ormSuratkeluar() ;
+        let par = db.dbSuratKeluar.filter(s=>s.indekssurat =='Surat Keterangan Berkelakuan Baik');
+
+        if(arguments.length>0 && typeof(arguments[0])=='number'){
+            par= db.dbSuratKeluar.filter((s,i)=> i <  arguments[0] && s.indekssurat =='Surat Keterangan Berkelakuan Baik');
+        }else if(arguments.length>0 && (arguments[0] instanceof Date)){
+            par = db.dbSuratKeluar.filter(s=>new Date(s.tglsurat).getFullYear() == new Date(arguments[0]).getFullYear() && s.indekssurat =='Surat Keterangan Berkelakuan Baik' );
+        }else{
+            par= db.dbSuratKeluar.filter((s,i)=> s.indekssurat =='Surat Keterangan Berkelakuan Baik');
+        }
+        
+        let data = {db:par,judul:this.htmlJudul};
+        
+        this.workplace.innerHTML = tabelSuratKeluar(data);
+
+        let tb = new TableProperties(document.querySelector('#tabel-suratkeluar'));
+            tb.addScrollUpDown();
+
+        this.listenerDataShow(par,'showSuratKeteranganBerkelakuanBaik',[...arguments]);
     }
     showSuratKeteranganDiterima(){
         const db = this.ormSuratkeluar() ;
@@ -204,7 +224,7 @@ export default class SuratFeature{
         const db = this.ormSuratMasuk();
 
         let par = db.dbSuratMasuk;
-
+        
         if(arguments.length>0 && typeof(arguments[0])=='number'){
             par= db.dbSuratMasuk.filter((s,i)=> i < arguments[0]);
         }else if(arguments.length>0 && (arguments[0] instanceof Date)){
@@ -221,7 +241,6 @@ export default class SuratFeature{
     }
     listenerDataShow(db,firstmethod,arg){
         const btns = document.querySelectorAll('[data-show]');
-        console.log('argmen', arg)
         btns.forEach(btn=>{
             btn.onclick = (e)=> {
                 let atr = btn.getAttribute('data-show');
@@ -229,8 +248,8 @@ export default class SuratFeature{
                 let camelCase_atr = atr.replace(/(\s+)/g,'_');
                 let camelCase_atr_lower = camelCase_atr.toLocaleLowerCase();
                 let metod = 'lds_'+camelCase_atr_lower;
-                let arraySuratTemplate = ['Surat Keterangan Aktif','Surat Keterangan NISN','Surat Keterangan Diterima','Surat Keterangan Pindah']
-                console.log('first method',metod)
+                let arraySuratTemplate = ['Surat Keterangan Aktif','Surat Keterangan NISN','Surat Keterangan Diterima','Surat Keterangan Pindah','Surat Keterangan Berkelakuan Baik']
+                
                 if(this[metod]){
                     //untuk method yang dibuatkan methodnya
                     this[metod](db,idsuratkeluar,firstmethod,arg)
@@ -546,34 +565,71 @@ export default class SuratFeature{
             id:'show-siswa-all'
         }
         
-    let  view = this.formulirSuratKeluar({'namatarget':'target_siswa','opsipersonal':opsipersonal,'indekssurat':'Surat Keterangan NISN'});
-    this.Modal.settingHeder('Tambah Surat Keterangan NISN');
-    this.Modal.showBodySaveButton(view);
-    this.eventFormulirSuratKeluar('Modal');
-    this.eventShowTargetSuratSiswa([]);
-    const btnSave = document.getElementById('btn-modal-savebutton');
-    btnSave.onclick = async()=>{
-        let data = this.autoDetectedFormWithMultiple('data-formulircreate','name="checkboxpersonal"','target_siswa');
-        let c = Object.values(data).filter(s=>s!=="").length;
-        
-        if(c<=5){
-            alert('Input tidak boleh kosong!');
-            return ;
-        }
-        let conf = confirm('Anda yakin?');
-        if(!conf) return;
-        
-        let dataUpdateSuratkeluar = new SuratKeluar(data).sanitize().data;
-        dataUpdateSuratkeluar.oleh = this.user.namaUser;
-        dataUpdateSuratkeluar.user = this.user.idUser;
-        
-        await this.service.saveSuratKeluar(dataUpdateSuratkeluar);
-        this.Modal.toggle();
-        this[firstmethod](...arg);
+        let  view = this.formulirSuratKeluar({'namatarget':'target_siswa','opsipersonal':opsipersonal,'indekssurat':'Surat Keterangan NISN'});
+        this.Modal.settingHeder('Tambah Surat Keterangan NISN');
+        this.Modal.showBodySaveButton(view);
+        this.eventFormulirSuratKeluar('Modal');
+        this.eventShowTargetSuratSiswa([]);
+        const btnSave = document.getElementById('btn-modal-savebutton');
+        btnSave.onclick = async()=>{
+            let data = this.autoDetectedFormWithMultiple('data-formulircreate','name="checkboxpersonal"','target_siswa');
+            let c = Object.values(data).filter(s=>s!=="").length;
+            
+            if(c<=5){
+                alert('Input tidak boleh kosong!');
+                return ;
+            }
+            let conf = confirm('Anda yakin?');
+            if(!conf) return;
+            
+            let dataUpdateSuratkeluar = new SuratKeluar(data).sanitize().data;
+            dataUpdateSuratkeluar.oleh = this.user.namaUser;
+            dataUpdateSuratkeluar.user = this.user.idUser;
+            
+            await this.service.saveSuratKeluar(dataUpdateSuratkeluar);
+            this.Modal.toggle();
+            this[firstmethod](...arg);
         
     }
     
     this.Modal.show();
+    }
+    
+    new_showSuratKeteranganBerkelakuanBaik(firstmethod,arg){
+        let opsipersonal={
+            label:'ceklis semua',
+            value:'all',
+            id:'show-siswa-all'
+        }
+        
+        let  view = this.formulirSuratKeluar({'namatarget':'target_siswa','opsipersonal':opsipersonal,'indekssurat':'Surat Keterangan Berkelakuan Baik'});
+        this.Modal.settingHeder('Tambah Surat Keterangan Berkelakuan Baik');
+        this.Modal.showBodySaveButton(view);
+        this.eventFormulirSuratKeluar('Modal');
+        this.eventShowTargetSuratSiswa([]);
+        const btnSave = document.getElementById('btn-modal-savebutton');
+        btnSave.onclick = async()=>{
+            let data = this.autoDetectedFormWithMultiple('data-formulircreate','name="checkboxpersonal"','target_siswa');
+            let c = Object.values(data).filter(s=>s!=="").length;
+            
+            if(c<=5){
+                alert('Input tidak boleh kosong!');
+                return ;
+            }
+            let conf = confirm('Anda yakin?');
+            if(!conf) return;
+            
+            let dataUpdateSuratkeluar = new SuratKeluar(data).sanitize().data;
+            dataUpdateSuratkeluar.oleh = this.user.namaUser;
+            dataUpdateSuratkeluar.user = this.user.idUser;
+            
+            await this.service.saveSuratKeluar(dataUpdateSuratkeluar);
+            this.Modal.toggle();
+            this[firstmethod](arg);
+            
+        }
+        
+        this.Modal.show();
     }
     
     new_showSuratKeteranganDiterima(firstmethod,arg){
@@ -762,7 +818,7 @@ export default class SuratFeature{
                 olehSuratKeluar: ormSuratkeluar.oleh,
                 canAcces:permision
             }
-            console.log('data sppd',data)
+            
             let viewModal = modalPtkDiperintah(data);
             
             this.Modal.settingHeder('Daftar SPPD');
@@ -777,7 +833,7 @@ export default class SuratFeature{
                     let idSppd = btn.getAttribute('data-idsppd');
                     let idSuratKeluar = btn.getAttribute('data-idsuratkeluar');
                     let currentSppdPerson = sppdItem.data.filter(s=>s.idbaris == idSppd)[0];
-                    console.log('data currentSppdPerson',currentSppdPerson)
+                    
                     if(tipeShow == 'show'){
                         let datamodal = {
                             sppd:currentSppdPerson,
@@ -1001,8 +1057,8 @@ export default class SuratFeature{
             template:snakeCaseTemplate,
             canAcces:permision,
             tapel:this.user.tapel
-
         };
+
         let viewModal = modalSuratSiswa(data);
         this.Modal.settingHeder(template);
         this.Modal.showBodyHtml(viewModal);
@@ -1076,7 +1132,7 @@ export default class SuratFeature{
                         this.Modal.show();
                         this.Modal1.toggle();
                         };
-                }else if(atr = 'delete_id'){
+                }else if(atr == 'delete_id'){
                     let conf = confirm('Anda yakin?');
                     if(!conf) return;
                     ob.html = atr;

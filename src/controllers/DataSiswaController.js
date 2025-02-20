@@ -172,6 +172,15 @@ export default class DataSiswaController extends Fitur{
         this.btnSuratKeluar();
     }
 
+    sk_kelakuanbaik(){
+        this.settingHeaderPage('Daftar Surat Keterangan Berkelakuan baik',false);
+        this.maincontrol.innerHTML = this.dev.view.controlSuratKeterangan({value:"Surat Keterangan Berkelakuan Baik",target:'target_siswa',text:"Surat Keterangan Berkelakuan baik"});
+        // this.maincontrol.innerHTML = filteringSuratKeluarByTahun(this.service.dbSuratKeluar,true,'Surat Berkelakuan Baik')
+        this.dev.SuratFitur.htmlJudul = this.#judulHalaman;
+        this.dev.SuratFitur.showSuratKeteranganBerkelakuanBaik();
+        // this.listenerFilter_suratKeluar('showSuratKeteranganBerkelakuanBaik');
+        this.btnSuratKeluar();
+    }
     btnSuratKeluar(){
         let btn = document.getElementById('btnshow-suratkeluar');
         let btnCreate = document.getElementById('btncreate_suratketerangan');
@@ -193,6 +202,9 @@ export default class DataSiswaController extends Fitur{
             }else if(atr=='Surat Keterangan Pindah Sekolah'){
                 
                 this.dev.SuratFitur.createSurat('showSuratKeteranganPindahSekolah',20);
+            }else if(atr=='Surat Keterangan Berkelakuan Baik'){
+                this.dev.SuratFitur.createSurat('showSuratKeteranganBerkelakuanBaik',20);
+
             }
         };
     }

@@ -1102,11 +1102,11 @@ const Surat_Keterangan_NISN = (data)=>{
                         html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
                         html+=`<td class="p-1 border-0">${identitas.namasekolah}</td>`;
                     html+=`</tr>`;
-                    html+=`<tr>`;
-                        html+=`<td class="p-1 border-0">Telp./HP/WA</td>`;
-                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
-                        html+=`<td class="p-1 border-0">${data.kepsekbytgl.length===0?'-':data.kepsekbytgl[0].akun.no_wa_user}</td>`;
-                    html+=`</tr>`;
+                    // html+=`<tr>`;
+                    //     html+=`<td class="p-1 border-0">Telp./HP/WA</td>`;
+                    //     html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                    //     html+=`<td class="p-1 border-0">${data.kepsekbytgl.length===0?'-':data.kepsekbytgl[0].akun.no_wa_user}</td>`;
+                    // html+=`</tr>`;
                 html+=`</tbody>`;
             html+=`</table>`;
         html+=`</div>`;
@@ -1144,7 +1144,7 @@ const Surat_Keterangan_NISN = (data)=>{
                 html+=`</tbody>`;
             html+=`</table>`;
         html+=`</div>`;
-        html+=`<p class="mt-2 mb-0" contentediable="true" spellcheck="false" style="text-indent: 2em;">Adalah <b>benar</b> siswa tersebut adalah siswa ${data.identitas.namasekolah} dan tercatat masih aktif sebagai siswa pada tahun pelajaran ${tapelByTgl(suratkeluar.tglsurat).tapel} dengan Nomor Induk Siswa (NISN) yang terdata di DAPODIK adalah:</p>`;
+        html+=`<p class="mt-2 mb-0" contenteditable="true" spellcheck="false" style="text-indent: 2em;">Adalah <b>benar</b> siswa tersebut adalah siswa ${data.identitas.namasekolah} dan tercatat masih aktif sebagai siswa pada tahun pelajaran ${tapelByTgl(suratkeluar.tglsurat).tapel} dengan Nomor Induk Siswa (NISN) yang terdata di DAPODIK adalah:</p>`;
         html+=`<p class="mb-0 text-center border rounded border-dark p-3 fs-3 fw-bold">${data.targetperson.nisn}</p>`;
         html+=`<p class="mb-3" style="text-indent: 2em;">Demikian Surat Keterangan NISN ini dibuat, agar dapat dipergunakan sebagaimana mestinya</p>`;
         html+=`<div class="d-flex justify-content-end mt-5">`;
@@ -1161,6 +1161,98 @@ const Surat_Keterangan_NISN = (data)=>{
     
     return html;
 }
+const Surat_Keterangan_Berkelakuan_Baik = (data)=>{
+    const {suratkeluar, identitas,logoSekolah,logokotadepok } = data;
+    let html = "";
+    html+=`<div class="min-vh-100 shadow-sm mb-2 p-1  tnr">`;
+        html+= kopsuratEdurasa.versi2(logokotadepok,identitas,logoSekolah);
+        html+=`<h3 class="text-center text-decoration-underline fw-bolder mb-0 mt-3 text-uppercase">Surat Keterangan Berkelakuan Baik</h3>`;
+        html+=`<h5 class="text-center mb-3 text-capitalize">No. ${suratkeluar.nosurat}</h5>`;
+        
+        html+=`<p class="mt-5" style="text-indent: 2em;">Yang bertanda tangan di bawah ini,  </p>`;
+        html+=`<div class="overflow-hidden">`;
+            html+=`<table class="table table-borderless ms-3 lh-sm">`;
+                html+=`<tbody>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0" style="width:200px">Nama Lengkap</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.kepsekbytgl.length===0?'-':data.kepsekbytgl[0].namaguru}</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">NIP</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.kepsekbytgl.length===0?'-':data.kepsekbytgl[0].nip}</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Jabatan</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">Kepala Sekolah</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Sekolah</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${identitas.namasekolah}</td>`;
+                    html+=`</tr>`;
+                    // html+=`<tr>`;
+                    //     html+=`<td class="p-1 border-0">Telp./HP/WA</td>`;
+                    //     html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                    //     html+=`<td class="p-1 border-0">${data.kepsekbytgl.length===0?'-':data.kepsekbytgl[0].akun.no_wa_user}</td>`;
+                    // html+=`</tr>`;
+                html+=`</tbody>`;
+            html+=`</table>`;
+        html+=`</div>`;
+        html+=`<p style="text-indent: 2em;">Menerangkan dengan sesungguhnya bahwa Peserta Didik berikut:</p>`
+        html+=`<div class="overflow-hidden">`;
+            html+=`<table class="table table-borderless ms-3 lh-sm">`;
+            html+=`<tbody>`;
+                
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Nama</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.targetperson.pd_nama}</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Tempat, Tanggal lahir</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.targetperson.pd_tl}, ${new Date(data.targetperson.pd_tanggallahir).toLocaleString('id-ID',{dateStyle:'long'})}</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Nomor Induk Siswa</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.targetperson.nis}</td>`;
+                    html+=`</tr>`;
+
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Kelas</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.targetperson.jenjang} (${data.targetperson.nama_rombel})</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="p-1 border-0">Nama Orang tua</td>`;
+                        html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                        html+=`<td class="p-1 border-0">${data.targetperson.pd_namaayah} / ${data.targetperson.pd_namaibu}</td>`;
+                    html+=`</tr>`;
+                html+=`</tbody>`;
+            html+=`</table>`;
+        html+=`</div>`;
+        html+=`<p class="mt-2 mb-0" contenteditable="true" spellcheck="false" style="text-indent: 2em;">Sepanjang pengetahuan / Pemantauan kami, peserta didik tersebut selama dalam pendidikan, berakhlaq baik / berkelakuan baik dan tidak terlibat dalam penyalahgunaan obat - obatan terlarang / Narkoba.</p>`;
+        // html+=`<p class="mb-0 text-center border rounded border-dark p-3 fs-3 fw-bold">${data.targetperson.nisn}</p>`;
+        html+=`<p class="mb-3" style="text-indent: 2em;">Demikian Surat Keterangan Berkelakuan Baik ini dibuat, agar dapat dipergunakan sebagaimana mestinya</p>`;
+        html+=`<div class="d-flex justify-content-end mt-5">`;
+            html+=`<div class="col-6 text-center">`;
+            html+=`Depok, ${new Date(data.suratkeluar.tglsurat).toLocaleString('id-ID',{dateStyle:'long'})}<br/>`;
+            // html+=`<br/><br/><br/><br/><br/>`
+            html+=`Kepala <span class="sppdcreate_ttdnamasekolah">${identitas.namasekolah}</span>
+            <br><br><br><br>
+            <u><b>${data.kepsekbytgl.length===0?'-':data.kepsekbytgl[0].namaguru}</b></u><br>
+                    ${data.kepsekbytgl.length===0?'-':'NIP. '+data.kepsekbytgl[0].nip} `
+            html+=`</div>`;
+        html+=`</div>`;
+    html+=`</div>`;
+    
+    return html;
+}
+const Surat_Keterangan_Berkelakuan_Baik_lampiran = (data)=>'Tidak ada format skkb lampiran';
 const Surat_Keterangan_NISN_lampiran = (data)=>{
     const {suratkeluar, identitas,logoSekolah,logokotadepok,targetpersonlampiran,kepsekbytgl } = data;
     let html = "";
@@ -1936,7 +2028,9 @@ const sppdView={
     'Surat_Keterangan_Diterima':Surat_Keterangan_Diterima,
     'Surat_Keterangan_Diterima_lampiran':Surat_Keterangan_Diterima_lampiran,
     'Surat_Keterangan_Pindah':Surat_Keterangan_Pindah,
-    'Surat_Keterangan_Pindah_lampiran':Surat_Keterangan_Pindah_lampiran
+    'Surat_Keterangan_Pindah_lampiran':Surat_Keterangan_Pindah_lampiran,
+    'Surat_Keterangan_Berkelakuan_Baik':Surat_Keterangan_Berkelakuan_Baik,
+    'Surat_Keterangan_Berkelakuan_Baik_lampiran':Surat_Keterangan_Berkelakuan_Baik_lampiran
 }
 
 export default sppdView;

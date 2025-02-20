@@ -136,7 +136,7 @@ export class TableProperties{
                 shadowScrol.childNodes[0].setAttribute('style','width:'+this.wrapperTable.lastElementChild.offsetWidth+'px;height:5px');
             }
         }
-        console.log(divShadowScrol);
+        
         if(divShadowScrol){
             divShadowScrol.onscroll = ()=>{
                 this.wrapperTable.scrollLeft = divShadowScrol.scrollLeft; 

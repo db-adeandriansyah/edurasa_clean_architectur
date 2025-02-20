@@ -160,4 +160,11 @@ export class ArsipSuratController extends Fitur{
         this.suratFitur.showSuratKeteranganPindahSekolah();
         this.listenerFilter_suratKeluar('showSuratKeteranganPindahSekolah');
     }
+sk_kelakuanbaik(){
+        this.settingHeaderPage('Daftar Surat Keterangan Berkelakuan baik',false);
+        this.maincontrol.innerHTML = filteringSuratKeluarByTahun(this.service.dbSuratKeluar,true,'Surat Berkelakuan Baik')
+        this.suratFitur.htmlJudul = this.#judulHalaman;
+        this.suratFitur.showSuratKeteranganBerkelakuanBaik();
+        this.listenerFilter_suratKeluar('showSuratKeteranganBerkelakuanBaik');
+    }
 }

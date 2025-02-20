@@ -19,6 +19,7 @@ export const arsipSuratSidebar = [
             {value:'sk_NISN',text:'Surat Keterangan NISN',name:'menusidebar'},
             {value:'sk_diterimasekolah',text:'Surat Keterangan Diterima Sekolah',name:'menusidebar'},
             {value:'sk_pindah',text:'Surat Keterangan Pindah',name:'menusidebar'},
+            {value:'sk_kelakuanbaik',text:'Surat Berkelakuan Baik',name:'menusidebar'},
         ]
     },
 ]

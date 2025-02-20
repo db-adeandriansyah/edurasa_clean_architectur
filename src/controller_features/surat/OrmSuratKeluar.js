@@ -173,11 +173,14 @@ export default class OrmSuratKeluar{
                     let arraySiswa = [];
                     let stringTargetSiswa = item.target_siswa;
                     let spliting_targetsiswa = stringTargetSiswa.toString().replace(/(\s+)/g,'').split(',');
+                    
                     if(spliting_targetsiswa.length>0){
                         let mapIntegerIds = spliting_targetsiswa.map(n=>parseInt(n));
                         mapIntegerIds.forEach(n=>{
                             let data = this.siswa.filter(s=>s.id == n);
-                            arraySiswa.push(data[0]);
+                            if(data.length){
+                                arraySiswa.push(data[0]);
+                            }
 
                         })
                     }
