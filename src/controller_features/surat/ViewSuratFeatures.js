@@ -19,7 +19,7 @@ const selectRombel = (rombel='1A')=>{
 }
 
 export const tabelSuratKeluar = (data)=>{
-    const {db,judul} = data;
+    const {db,judul,tapel} = data;
     let konfigTabel = {
         tableAtribut:{
             id:'tabel-suratkeluar',
@@ -190,6 +190,7 @@ export const modalPtkDiperintah = (req)=>{
 }
 
 export const modalSuratSiswa = (req)=>{
+    console.log('req', req)
     const {judul,suratkeluar,datasiswa,template,canAcces} = req;
     let data ={
         judulmodal : judul,//`<h3 class="text-center">${judul}</h3>`,
@@ -230,7 +231,9 @@ export const kepsekbytgl = (tgl)=>{
 
 }
 export const modalViewSppd =(data)=>{
-    return sppdView.buildPageSppd(data);
+    console.log('modalViewSppd',data,data.sppd.ptk_diperintah);
+    // if(data.sppd.ptk_diperintah == 2){ 
+    return sppdView.buildPageSppd(data); 
 };
 
 export const detailSppd = (data)=>{

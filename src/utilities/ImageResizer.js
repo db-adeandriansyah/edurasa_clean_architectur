@@ -32,7 +32,52 @@ export default class ImageResizer {
             img.src = URL.createObjectURL(file);
         }
     }
+    resizeImageToDataURLCallback(file) {
+        if (this.keepOriginalSize) {
+            return this.getFileDataURLCallback(file);
+        } else {
+            return new Promise((resolve,reject)=>{
+                const img = new Image();
+                img.onload = () => {
+                    const { width, height } = this.calculateAspectRatioFit(
+                    img.width,
+                    img.height,
+                    this.maxWidth,
+                    this.maxHeight
+                    );
+    
+                    const canvas = document.createElement("canvas");
+                    canvas.width = width;
+                    canvas.height = height;
+    
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, width, height);
+    
+                    resolve(this.getCanvasDataURLCallback(canvas, file.type));//.then(dataUrl=>resolve(dataUrl)).catch(error=>reject(error));
 
+                };
+                img.onerror = error=>reject(error)
+                img.src = URL.createObjectURL(file);
+            })
+
+        }
+    }
+
+    getFileDataURLCallback(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+        
+            reader.onload = (event) => {
+              resolve(event.target.result); // Resolve promise with dataURL
+            };
+        
+            reader.onerror = error => reject(error); // Handle errors
+        
+            reader.readAsDataURL(file);
+          });
+
+        
+    }
     getFileDataURL(file, callback) {
         const reader = new FileReader();
         reader.onload = (event) => {
@@ -41,6 +86,13 @@ export default class ImageResizer {
         reader.readAsDataURL(file);
     }
 
+    getCanvasDataURLCallback(canvas, mimeType, callback) {
+        const dataURL = canvas.toDataURL(mimeType);
+        // return new Promise((resolve,reject))
+        return dataURL;
+
+        // callback(mimeType, dataURL);
+    }
     getCanvasDataURL(canvas, mimeType, callback) {
         const dataURL = canvas.toDataURL(mimeType);
         callback(mimeType, dataURL);

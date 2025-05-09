@@ -1,10 +1,3 @@
-// import { Dropdown } from "bootstrap";
-// const dropdownElementList = document.querySelectorAll('.dropdown-toggle');
-// [...dropdownElementList].map(dropdownToggleEl => {
-//     new Dropdown(dropdownToggleEl);
-    
-// });
-
 export { PrintCetak }                   from "../controller_features/Printer";
 export { EdaToExcel }                   from "../controller_features/excel";
 export { print2WordGlobal }             from "../controller_features/htmlWord";

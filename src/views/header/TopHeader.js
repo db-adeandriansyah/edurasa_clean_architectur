@@ -48,7 +48,7 @@ export class TopHeader{
         return `<a href="/" class="btn btn-sm bg-white btn-outline-danger rounded-circle fs-5"><i class="bi bi-house-fill  neon-lite-transisi scrolled text-clip"></i></a>`
     }
     mobile_menuLogin(){
-        return `<a href="/login" class="btn btn-sm  fs-5 rounded-circle"><i class="bi-person-circle neon-lite-transisi scrolled text-clip"></i></a>`;
+        return `<a href="/login" class="btn btn-sm  fs-5 rounded-circle"><i class="bi-person-circle bg-color1 border scrolled text-clip"></i></a>`;
     }
     mobile_menuBtnDashboard(){
         return `<button class="btn btn-sm p-0  overflow-hidden btn-collapse" data-target-collapse="navbarToggleExternalContent2" aria-expanded="false" aria-label="Toggle navigation"> <svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" fill="currentColor" class="bi bi-grid-3x3-gap-fill" viewBox="0 0 16 16"> <path d="M1 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2zM1 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V7zM1 12a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2z"></path> </svg> </button>`;
@@ -85,8 +85,8 @@ export class TopHeader{
     anchorLink(url,text){
         return `<a href="${url}" class="nav-link cool-link text-white">${text}</a>`;
     }
-    btnControlDropdown(namaUser, imgUser){
-        return `<button class="btn dropdown-toggle akun" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"> <span class="text-white cool-link">${namaUser}</span> <img src="${this.urlImage(imgUser)}" width="30" height="30" alt="profil ${namaUser}" style="object-fit:cover" class="rounded-circle d-none d-md-inline-block" referrerpolicy="no-referrer"> </button>`;
+    btnControlDropdown(namaUser, imgUser,kelas=''){
+        return `<button class="btn dropdown-toggle akun" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><span class="text-white cool-link">${namaUser} ${kelas}</span> <img src="${this.urlImage(imgUser)}" width="30" height="30" alt="profil ${namaUser}" style="object-fit:cover" class="rounded-circle d-none d-md-inline-block" referrerpolicy="no-referrer"> </button>`;
     }
     menuStaticDropdown(isDashboard=false){
         let htmldashbord = `<li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>`;
@@ -101,8 +101,9 @@ export class TopHeader{
         return new UrlImg(id).urlImg;
     }
     profilNavbar(dataUser,isDashboard){
-        let {namaUser, imgUser} = dataUser;
-        return this.dropdown(this.btnControlDropdown(namaUser,imgUser),this.menuStaticDropdown(isDashboard));
+        let {namaUser, imgUser,typeUser,tugasUser} = dataUser;
+        let kelas = typeUser=='siswa'?` (${tugasUser})`:'';
+        return this.dropdown(this.btnControlDropdown(namaUser,imgUser,kelas),this.menuStaticDropdown(isDashboard));
     }
     staticMenu(){
         let html = "";

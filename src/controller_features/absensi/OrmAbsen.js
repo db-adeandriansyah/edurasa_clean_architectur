@@ -361,16 +361,16 @@ export default class OrmAbsen{
     }
     siswaByBetweenCheckinCheckout(refStartDate, refEndDate){
         return this.siswa.simpleFilter({'nama_rombel':this.rombel}).sortByProperty(this.sorterSiswa_key,this.sorterSiswa_tipe).data.filter(s=>{
-            let checkIn     = s.masuk_tgl ==""?0:parseInt(new FormatTanggal(s.masuk_tgl).stringYYYYMMDD());
-            let checkOut    = s.keluar_tgl ==""?parseInt(new FormatTanggal(new Date()).stringYYYYMMDD())+1:parseInt(new FormatTanggal(s.keluar_tgl).stringYYYYMMDD());
+                let checkIn     = s.masuk_tgl ==""?0:parseInt(new FormatTanggal(s.masuk_tgl).stringYYYYMMDD());
+                let checkOut    = s.keluar_tgl ==""?parseInt(new FormatTanggal(new Date()).stringYYYYMMDD())+1:parseInt(new FormatTanggal(s.keluar_tgl).stringYYYYMMDD());
+                let r1    = parseInt(new FormatTanggal(refStartDate).stringYYYYMMDD()); //R1
+                let r2      = parseInt(new FormatTanggal(refEndDate).stringYYYYMMDD());//R2
 
-            let r1    = parseInt(new FormatTanggal(refStartDate).stringYYYYMMDD()); //R1
-            let r2      = parseInt(new FormatTanggal(refEndDate).stringYYYYMMDD());//R2
-            return  (checkIn < r1 && checkOut == r1)||
-                    (checkIn < r1 && checkOut >= r2)||
-                    (checkIn >=r1 && checkIn <= r2 && checkOut >= r2) ||
-                    (checkIn >=r1 && checkIn <= r2 && checkOut <= r2) 
-        })
+                return  (checkIn < r1 && checkOut == r1)||
+                        (checkIn < r1 && checkOut >= r2)||
+                        (checkIn >=r1 && checkIn <= r2 && checkOut >= r2) ||
+                        (checkIn >=r1 && checkIn <= r2 && checkOut <= r2) 
+            })
     }
     
     get kodehariini(){

@@ -1,28 +1,41 @@
 import mapelkdcp_kurikulum from "../../models/mapel";
 import { JenisKurikulum, faseKey } from "../../routes/settingApp";
-import { FormatTanggal } from "../../utilities/FormatTanggal";
+
 import controlbanksoal from "../../views/banksoal/controlBankSoal";
+import { CanvasFabricEditor } from "../editor/CavasFabricEditor";
 import CustomTextEditor from "../editor/CustomTextEditor";
+import { FormulirBankSoal } from "../editor/FormulirBankSoal";
 import TextEditorEdurasa from "../editor/TextEditorEdurasa";
-// import { createTemplatePerItemBankSoal } from "../editor/viewTextEditorEdurasa";
 import OrmKurikulumSoal from "./OrmKurikulumSoal";
-import { controlFiturBuatPerItemSoal, previewBentukSoal, previewSoalPilihanGandaWithProperty, previewSoalWithProperty } from "./viewBankSoal";
+import { canvasEditor, controlFiturBuatPerItemSoal, previewSoalWithProperty, tabelResultCanvasEditor } from "./viewBankSoal";
 
 export default class BanksoalFitur{
     #jenjangActive;
+    #rombelActive;
     #judulHalaman;
     #mapelAplikasi;
-    constructor(banksoalserv,Modal, Modal1,currentUser,tooltipkan){
+    //service,printarea,maincontrol,user,siswa
+    constructor(
+            banksoalserv,
+            printarea, 
+            bartoolarea,
+            currentUser,
+            tooltipkan)
+    {
         this.banksoalservice = banksoalserv;
-        this.Modal = Modal;
-        this.Modal1 = Modal1;
+        //ga kepake
+        // this.Modal = Modal;
+        // this.Modal1 = Modal1;
+        //------------
         this.user = currentUser;
         this.tooltipkan = tooltipkan;
-        this.workplace =document.getElementById('printarea');
+        this.workplace =printarea;//document.getElementById('printarea');
         this.footerarea =document.getElementById('footerarea');
-        this.maincontrol =document.getElementById('maincontrol');
+        this.maincontrol =bartoolarea;//document.getElementById('maincontrol');
         this.#judulHalaman = '';
         this.#jenjangActive = 1;
+        this.#rombelActive ='1A'        
+
         // this.relationalFitur = null;
         this.ormKurikulum = null;
         this.#mapelAplikasi=mapelkdcp_kurikulum;
@@ -62,7 +75,12 @@ export default class BanksoalFitur{
     set jenjang(x){
         this.#jenjangActive = x;;
     }
-    
+    set rombel(x){
+        this.#rombelActive = x;
+    }
+    get rombel(){
+        return this.#rombelActive;
+    }
     get jenjang(){
         return this.#jenjangActive.toString();;
     }
@@ -112,10 +130,10 @@ export default class BanksoalFitur{
         return ar;
     }
     get tinggirendahjenjang(){
-        return this.jenjang>3?'tinggi':'rendah';;
+        return this.jenjang>2?'tinggi':'rendah';;
     }
     get currentMapelOnClassRoomWithTema(){
-        let tinggiRendah = this.jenjang>3?'tinggi':'rendah';;
+        let tinggiRendah = this.jenjang>2?'tinggi':'rendah';;
         let teks = 'mapel'+this.shortKurikulum + tinggiRendah;;
         let dataAsal = {};
         let mapelReal =  this.#mapelAplikasi[teks]();
@@ -128,9 +146,9 @@ export default class BanksoalFitur{
         return dataAsal;
     }
     get currentMapelOnClassRoom(){
-        let tinggiRendah = this.jenjang>3?'tinggi':'rendah';;
+        let tinggiRendah = this.jenjang>2?'tinggi':'rendah';;
         let teks = 'mapel'+this.shortKurikulum + tinggiRendah;;
-        let dataAsal = {};
+        
         return  this.#mapelAplikasi[teks]();
         
     }
@@ -201,8 +219,8 @@ export default class BanksoalFitur{
             },
             {
                 id:'fc_pgkomplek',
-                bentuksoalspesifik:'Essay',
-                bentuksoal:'Isian',
+                bentuksoalspesifik:'PG Kompleks',
+                bentuksoal:'PG Kompleks',
                 editorinput:'editorpgkompleks',
                 teks:'PG Kompleks',
                 value:'PG Kompleks',
@@ -226,6 +244,15 @@ export default class BanksoalFitur{
                 editorinput:'canvas',
                 teks:'Menjodohkan',
                 value:'Menjodohkan',
+                otomatis:false,
+                carakoreksi:'Manual'
+            },{
+                id:'fc_menulisrapih',
+                bentuksoalspesifik:'Menulis Rapih',
+                bentuksoal:'Menulis Rapih',
+                editorinput:'none',
+                teks:'Menulis Rapih',
+                value:'Menulis Rapih',
                 otomatis:false,
                 carakoreksi:'Manual'
             },
@@ -283,12 +310,105 @@ export default class BanksoalFitur{
         if(this.ar.length>0){
             await this.banksoalservice.callPropertiMultiple(this.ar);
         }
-
+        
         return this;
     }
     async init(){
-        await this.settingKurikulum().callMultipe();
+        await this.callMultipe();
         this.ormKurikulum = new OrmKurikulumSoal(this.banksoalservice,this.#jenjangActive,this.currentMapelOnClassRoom).settingKurikulum(this.shortKurikulum).init().collection;
+        return this;
+    }
+    settingDesain(jenjang){
+        let ar = [
+            {
+                'idss': this.banksoalservice.repo.ss_banksoal_must_call,
+                'tab':'banksoal',
+            },
+            {
+                'idss': this.banksoalservice.repo.ss_banksoal_must_call,
+                'tab':'simpandesainsoal',
+            },
+            {
+                'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                'tab':this.callKDorTP,
+            },
+            {
+                'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                'tab':'taksonomibloom',
+            },
+            {
+                'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                'tab':'kkmkktp',
+            },
+            {
+                'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                'tab':'lingkupmateri',
+            },
+        ];
+        if(this.shortKurikulum == 'kurmer'){
+            let arTambahan = [
+                {
+                    'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                    'tab':'faseTPATP',
+                },
+                {
+                    'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                    'tab':'elemencp',
+                }
+            ];
+            ar.push(...arTambahan);
+        }
+        ar = ar.filter(n=>!this.banksoalservice.isExist(n.tab));
+        this.ar = ar;
+        
+        
+        return this;
+    }
+    settingArsipNaskah(){
+        let ar = [ {
+                'idss': this.banksoalservice.repo.ss_banksoal_must_call,
+                'tab':'banksoal',
+            },
+            {
+                'idss': this.banksoalservice.repo.ss_banksoal_must_call,
+                'tab':'simpandesainsoal',
+            },
+            {
+                'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                'tab':this.callKDorTP,
+            },
+            {
+                'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                'tab':'taksonomibloom',
+            },
+            {
+                'idss':  this.banksoalservice.repo.ss_kurikulum_must_call,
+                'tab':'datamateri',
+            },
+            {
+                'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                'tab':'kkmkktp',
+            },
+            {
+                'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                'tab':'lingkupmateri',
+            },
+        ];
+        if(this.shortKurikulum == 'kurmer'){
+            let arTambahan = [
+                {
+                    'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                    'tab':'faseTPATP',
+                },
+                {
+                    'idss': this.banksoalservice.repo.ss_kurikulum_must_call,
+                    'tab':'elemencp',
+                }
+            ];
+            ar.push(...arTambahan);
+        }
+        
+        this.ar = ar.filter(n=>!this.banksoalservice.isExist(n.tab));;
         
         return this;
     }
@@ -308,7 +428,7 @@ export default class BanksoalFitur{
             '_htmlkoleksimapel':this.labelingSelectMapel,
             'kurikulum':this.ormKurikulum
         }
-        console.log(needData);
+        
         this.maincontrol.innerHTML = controlFiturBuatPerItemSoal(needData);//controlbanksoal.wrapermenu(teksInfo);
         this.workplace.innerHTML = "";//controlbanksoal.templateCreatePerItemBankSoal();
         this.listener_fitur_item_soal(needData);
@@ -329,31 +449,66 @@ export default class BanksoalFitur{
             }else if(el.type=='select-one'){
                 datadesain[el.getAttribute('data-pradesain')]=el.value;
                 
-                console.log(this.currentMapelOnClassRoom)
+                
                 datadesain['tekskodemapel']=this.currentMapelOnClassRoom[el.value];
             }
         });
         return datadesain;
     }
-    listener_fitur_item_soal(){
+    createNew(){
+        this.workplace.innerHTML = controlbanksoal.templateCreatePerItemBankSoal();
+            this.createTextEditor();
+    }
+    listener_fitur_item_soal(needData){
         let elemencek = document.querySelectorAll('[data-pradesain]');
-        
+        let divMode = document.getElementById('modecanvas');
         elemencek.forEach(el=>{
             el.onchange = (e)=>{
                 let pradesain = this.cek_fitur_pradesain();
-                
+                if(el.getAttribute('data-pradesain')=='kodemapel'){
+                    let divwrap = document.getElementById('resultefekpilihmapel');
+                    let html = controlbanksoal.menuPilihPropertiKurikulum(needData.shortKurikulum,needData.kurikulum.simpleFilter({'kodemapel':e.target.value}).data)
+                    divwrap.innerHTML = html;
+                    pradesain = this.cek_fitur_pradesain();
+                }
+                console.log('pradesain',pradesain);
                 if(pradesain.mode =='bycopast' && pradesain.editor == 'editor'){
-                    console.log('mode pradesain', pradesain.mode)
                     this.workplace.innerHTML = controlbanksoal.templateCreatePerItemBankSoal();
                     this.createTextEditor(pradesain);
-                }else{
+                    divMode.classList.remove('d-none');
+                }else if(pradesain.mode =='formulir' && pradesain.editor == 'editor'){
                     this.workplace.innerHTML = controlbanksoal.templateCreatePerItemBankSoal();
+                    divMode.classList.remove('d-none');
+                    let te = new FormulirBankSoal(pradesain,this.banksoalservice);
+                    te.imageLoading = this.user.barloading;
+                    te.createForm();
+                    te.addRespons(this.respontekseditor);
+                    te.init()
+                    
+                }else if(pradesain.mode =='bycopast' && pradesain.editor == 'canvas'){
+                    this.workplace.innerHTML = controlbanksoal.templateCreatePerItemBankSoal();
+                    divMode.classList.add('d-none');
+                    this.createCanvas(pradesain);
+                }else{
+                    divMode.classList.remove('d-none');
+                    this.workplace.innerHTML = "";//controlbanksoal.templateCreatePerItemBankSoal();
+
                 }
             }
         });
         elemencek[0].dispatchEvent(new Event('change'));
 
     }
+    createCanvas(pradesain){
+        let lingkupmateri = this.banksoalservice.data.lingkupmateri.filter(s=> s.kodemapel == pradesain.kodemapel);
+        
+        document.getElementById('divTextEditor').innerHTML = canvasEditor();
+        document.getElementById('realtimeInputTextEditor').innerHTML = tabelResultCanvasEditor(lingkupmateri);
+
+        new CanvasFabricEditor(this.banksoalservice,pradesain).init();
+        
+    }
+    
     createTextEditorBankSoal(parentSelector='#divTextEditor',idiframe='iframeTextEditor',contectMenu = 'PG'){
         let testWrap = new CustomTextEditor(
             {
@@ -369,21 +524,25 @@ export default class BanksoalFitur{
         testWrap.initWraper(true);
     }
     createTextEditor(){
-        const TE = new TextEditorEdurasa(this.cek_fitur_pradesain(),'#divTextEditor').addService(this.banksoalservice).addRespons(this.respontekseditor).init();
-        console.log(TE.service.data.taksonomibloom);
+        const TE = new TextEditorEdurasa(this.cek_fitur_pradesain(),'#divTextEditor','editorcustom',this.user.barloading).addService(this.banksoalservice).addRespons(this.respontekseditor).init();
+        
+    }
+    
+    createTextEditorModal(pradesain){
+        return new TextEditorEdurasa(pradesain,'#divTextEditor','editorcustom',this.user.barloading).addService(this.banksoalservice);//
+        
+        //.addRespons(this.respontekseditor).init();
     }
     respontekseditor(test){
         
         let teksInptu = document.getElementById('sorotUpdate_tampilansoal');
-        console.log(test);
+        
         teksInptu.innerHTML = previewSoalWithProperty(test);//test.pertanyaan?test.pertanyaan:'belum ada data';
         let simpan = document.getElementById('simpanItemSoal');
         let reset = document.getElementById('resetItemSoal');
         simpan.onclick = async()=>{
-            console.log(test);
-
-            console.log(this.service.simpanItemSoal);
             let bol = true ;
+            
             if(test.bentuksoal === 'Pilihan Ganda'){
                 let cek = Object.keys(test).filter(k=>['indikatorsoal','pertanyaan','opsiA','opsiB','opsiC','materi','levelkognitif','ruanglingkup','kuncijawaban','penskoran'].includes(k))
                 if(cek.length !==10){
@@ -391,16 +550,17 @@ export default class BanksoalFitur{
                 }
             }else{
                 let cek = Object.keys(test).filter(k=>['indikatorsoal','pertanyaan','materi','levelkognitif','ruanglingkup','penskoran'].includes(k))
-                if(cek.length !==9){
+                if(cek.length !==6){
                     bol = false;
                 }
+                
             }
             if(!bol) {
                 alert('Ada yang belum dipilih');
                 return;
             }
             await this.service.simpanItemSoal(test);
-            console.log(this.service.data);
+            
         }
         reset.onclick = ()=>{
             Object.entries(test).forEach(([k,v])=> {
@@ -409,11 +569,8 @@ export default class BanksoalFitur{
                 }
                 
             });
-            console.log(test);
+            
         }
     }
-    
-
-
-
+ 
 }

@@ -40,7 +40,7 @@ module.exports = {
             { test: /\.json$/, 
                 type:'json'
             },
-            { test: /\.(png|jpe?g|gif|webp)$/i,
+            { test: /\.(png|jpe?g|gif|webp|svg)$/i,
                 type: 'asset/resource',
             },
             { test: /\.woff2?$/,
@@ -155,8 +155,9 @@ module.exports = {
         runtimeChunk: 'single',
         // runtimeChunk: {
         //     name: (entrypoint) => `runtimechunk~${entrypoint.name}`,
-        //   },
+        // },
         splitChunks: {
+            
             cacheGroups: {
 
                 commons: {
@@ -183,7 +184,9 @@ module.exports = {
 					enforce: true,
                     reuseExistingChunk: true,
                     minSize: 0
-				}
+				},
+                
+
             }
         },
         

@@ -1,13 +1,14 @@
-// import { createElement, qs, qsAll, stringToDom } from "../../views/components/doms";
 import UrlImg from "../../controllers/UrlImg";
+import ImageResizer from "../../utilities/ImageResizer";
 import { debounce } from "../../views/components/doms";
 import { IframeTextEditor, ToolbarEditor, contextMenu, previewBentukSoal, styleIframe } from "./viewTextEditorEdurasa";
 
 export default class TextEditorEdurasa{
-    constructor(praDesain,queryTarget,idiframe='editorcustom'){
+    constructor(praDesain,queryTarget,idiframe='editorcustom',load){
         this.praDesain = praDesain;
         this.targetDom = document.querySelector(queryTarget);
         this.idIframe = idiframe;
+        this.imageLoading = load;
         this.iframeDom = null;
         this.contextMenu = null;
         this.resspon =null;
@@ -126,6 +127,24 @@ export default class TextEditorEdurasa{
             el.classList.add(leftMenuContextFormating);
         })
         
+        //maslaah over;
+        const listover = document.querySelectorAll('[data-aksimouse]');
+        listover.forEach(lis=>{
+            lis.onmouseover = (e)=>{
+                let id = lis.getAttribute('data-aksimouse');
+                let sibling = lis.querySelector('#'+id);
+                sibling.classList.remove('d-none');
+                
+            };
+            lis.onmouseout = (e)=>{
+                let id = lis.getAttribute('data-aksimouse');
+                let sibling = lis.querySelector('#'+id);
+                sibling.classList.add('d-none');
+                // setTimeout(()=>{
+                // },500)
+                
+            };
+        })
     }
     createToolbar(){
         return ToolbarEditor(this.idIframe);
@@ -140,15 +159,69 @@ export default class TextEditorEdurasa{
         const dom = this.iframeDom;
         const spanFormat = this.targetDom.querySelectorAll('[data-keycmd]');
         const domContext = document.querySelector(`#menucontext_${this.idIframe}`);
+        const check = document.querySelector('#checkdesainmagicsoal_' +this.idIframe);
         dom.oninput = (e)=>{
+            
+            let cekImgs = dom.querySelectorAll('.resizer');
+            cekImgs.forEach((img)=>{
+                if(img.firstChild){
+                    img.firstChild.style.removeProperty('border');
+                    if(img.firstChild.style.length ==0) img.firstChild.removeAttribute('style');
+                    img.parentNode.insertBefore(img.firstChild,img);
+                }
+                if(img.className == 'resizer'||img.className == 'resizer-tb') img.remove();
+            });
             if(!domContext.classList.contains('d-none')){
                 domContext.classList.add('d-none');
             }
+            this.replacingDataSrcToUrl(e);
             
             document.querySelector('#'+this.idIframe).style.height = dom.body.scrollHeight + 'px';
             
             this.resspon(this.request);
         }
+
+        dom.onpaste = (e)=>{
+            const type = e.clipboardData.types;
+            if(type.includes('Files')){
+                const selection = dom.getSelection();
+                let teks = e.clipboardData.getData('text/plain');
+                let parser = new DOMParser();
+                    let htmldoc = parser.parseFromString(teks,'text/html');
+                    let div = document.createDocumentFragment();
+                    while (htmldoc.body.childNodes.length > 0){
+                        div.appendChild(htmldoc.body.childNodes[0]);
+                    }
+                    selection.deleteFromDocument();
+                    selection.getRangeAt(0).insertNode(div);
+                    selection.collapseToEnd()
+                
+                // this.onmouseup(e);
+            }else{
+
+                let teks = e.clipboardData.getData('text/plain');
+                const selection = dom.getSelection();
+                if(check.checked){
+                    teks = this.CleanWordFormatting(teks);
+                    selection.deleteFromDocument();
+                    selection.getRangeAt(0).insertNode(document.createTextNode(teks));
+                    selection.collapseToEnd();
+                }else{
+                    teks = this.CleanWordFormatting(teks);
+                    let parser = new DOMParser();
+                    let htmldoc = parser.parseFromString(teks,'text/html');
+                    let div = document.createDocumentFragment();
+                    while (htmldoc.body.childNodes.length > 0){
+                        div.appendChild(htmldoc.body.childNodes[0]);
+                    }
+                    selection.deleteFromDocument();
+                    selection.getRangeAt(0).insertNode(div);
+                    selection.collapseToEnd();
+                }
+                e.preventDefault();
+            }
+        }
+
         dom.onkeyup = dom.onmouseup = (e)=>{
             if(!domContext.classList.contains('d-none')){
                 domContext.classList.add('d-none');
@@ -172,7 +245,163 @@ export default class TextEditorEdurasa{
             }else{
                 spanFormat.forEach(n=>n.classList.remove('active'));
             }
+            let cekImgs = dom.querySelectorAll('.resizer');
+            cekImgs.forEach((img)=>{
+                if(img.firstChild){
+                    img.firstChild.style.removeProperty('border');
+                    if(img.firstChild.style.length ==0) img.firstChild.removeAttribute('style');
+                    img.parentNode.insertBefore(img.firstChild,img);
+                }
+                if(img.className == 'resizer'||img.className == 'resizer-tb') img.remove();
+            })
         }
+        dom.ondblclick = (e)=>{
+            if(e.target.nodeName == 'IMG'|| e.target.nodeName == 'img'){
+                
+                let img = e.target;
+                e.target.style.border ='1px dashed #000';
+                let div = dom.createElement('div');
+                    div.className="resizer";
+                    div.style.width= img.offsetWidth+"px";
+                    div.style.height=img.offsetHeight+"px";
+                    div.style.position ="relative";
+                    div.style.display ="inline-block";
+                    img.parentNode.insertBefore(div,img);
+                    div.appendChild(img);
+                let tb = dom.createElement('div');
+                    tb.className="resizer-br"
+                    tb.style.width= '10px'; 
+                    tb.style.height= "10px"; 
+                    tb.style.background= "white"; 
+                    tb.style.position="absolute"; 
+                    tb.style.border= "3px solid #4286f4";
+                    tb.style.borderRadius="50%"; 
+                    tb.style.right= "-5px"; 
+                    tb.style.bottom= "-5px"; 
+                    tb.style.cursor= "nwse-resize"; 
+                    div.appendChild(tb);
+                tb = dom.createElement('div');
+                    tb.className="resizer-bl"
+                    tb.style.width= '10px'; 
+                    tb.style.height= "10px"; 
+                    tb.style.background= "white"; 
+                    tb.style.position="absolute"; 
+                    tb.style.border= "3px solid #4286f4";
+                    tb.style.borderRadius="50%"; 
+                    tb.style.left= "-5px"; 
+                    tb.style.bottom= "-5px"; 
+                    tb.style.cursor= "nwse-resize"; 
+                    div.appendChild(tb);
+                tb = dom.createElement('div');
+                    tb.className="resizer-tl"
+                    tb.style.width= '10px'; 
+                    tb.style.height= "10px"; 
+                    tb.style.background= "white"; 
+                    tb.style.position="absolute"; 
+                    tb.style.border= "3px solid #4286f4";
+                    tb.style.borderRadius="50%"; 
+                    tb.style.left= "-5px"; 
+                    tb.style.top= "-5px"; 
+                    tb.style.cursor= "nwse-resize"; 
+                    div.appendChild(tb);
+                tb = dom.createElement('div');
+                    tb.className="resizer-tr"
+                    tb.style.width= '10px'; 
+                    tb.style.height= "10px"; 
+                    tb.style.background= "white"; 
+                    tb.style.position="absolute"; 
+                    tb.style.border= "3px solid #4286f4";
+                    tb.style.borderRadius="50%"; 
+                    tb.style.right= "-5px"; 
+                    tb.style.top= "-5px"; 
+                    tb.style.cursor= "nwse-resize"; 
+                    div.appendChild(tb);
+                const minimum_size = 20;
+                let original_width = 0;
+                let original_height = 0;
+                let original_x = 0;
+                let original_y = 0;
+                let original_mouse_x = 0;
+                let original_mouse_y = 0;
+                
+                const element = div;
+                dom.onmousedown = (e)=>{
+                    // e.preventDefault();
+                    original_width = parseFloat(getComputedStyle(element, null).getPropertyValue('width').replace('px', ''));
+                    original_height = parseFloat(getComputedStyle(element, null).getPropertyValue('height').replace('px', ''));
+                    original_x = element.getBoundingClientRect().left;
+                    original_y = element.getBoundingClientRect().top;
+                    original_mouse_x = e.pageX;
+                    original_mouse_y = e.pageY;
+                    dom.onmousemove = resize;
+                    dom.addEventListener('mouseup',stopResize); ;//onmouseup = stopResize;
+                };
+                function resize(e){
+                    const currentResizer = e.target;//.closest('div');
+                    if (currentResizer.classList.contains('resizer-br')) {
+                        const width = original_width + (e.pageX - original_mouse_x);
+                        const height = original_height + (e.pageY - original_mouse_y)
+                        if (width > minimum_size) {
+                            element.style.width = width + 'px'
+                        }
+                        if (height > minimum_size) {
+                            element.style.height = height + 'px'
+                        }
+                        }
+                    else if (currentResizer.classList.contains('resizer-bl')) {
+                        const height = original_height + (e.pageY - original_mouse_y)
+                        const width = original_width - (e.pageX - original_mouse_x)
+                        if (height > minimum_size) {
+                            element.style.height = height + 'px'
+                        }
+                        if (width > minimum_size) {
+                            element.style.width = width + 'px'
+                            element.style.left = original_x + (e.pageX - original_mouse_x) + 'px'
+                        }
+                        }
+                    else if (currentResizer.classList.contains('resizer-tr')) {
+                        const width = original_width + (e.pageX - original_mouse_x)
+                        const height = original_height - (e.pageY - original_mouse_y)
+                        if (width > minimum_size) {
+                            element.style.width = width + 'px'
+                        }
+                        if (height > minimum_size) {
+                            element.style.height = height + 'px'
+                            element.style.top = original_y + (e.pageY - original_mouse_y) + 'px'
+                        }
+                        }
+                    else {
+                        const width = original_width - (e.pageX - original_mouse_x)
+                        const height = original_height - (e.pageY - original_mouse_y)
+                        if (width > minimum_size) {
+                            element.style.width = width + 'px';
+                            element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
+                        }
+                        if (height > minimum_size) {
+                            element.style.height = height + 'px'
+                            element.style.top = original_y + (e.pageY - original_mouse_y) + 'px'
+                        }
+                    }   
+                    img.style.width  = element.style.width
+                    img.style.height = element.style.height;
+                }
+                
+                function stopResize(e) {
+                    dom.removeEventListener('mouseup',stopResize); ;//onmouseup = stopResize;
+                    dom.removeEventListener('mousemove',resize); ;//onmouseup = stopResize;
+                    dom.onmousemove= null;
+                    dom.onmousedown = null;
+                    dom.onmouseup();
+                }
+                
+            }
+        }
+    }
+    CleanWordFormatting(input) {
+        let output = input.replace(/(<[^>]*>)|\t+/gm, ' ');
+        //ganti semua breakline
+        output = output.replace(/\r?\n|\r/g,'<br>');
+        return output;
     }
     btnActivity(){
         const formatHTML = document.querySelector('#checkdesainmagicsoal_' +this.idIframe);
@@ -213,7 +442,7 @@ export default class TextEditorEdurasa{
 
                     if(['insertOrderedList','insertunOrderedList'].includes(atrib)){
                         dom.execCommand(atrib,false,null)
-                        const thisparent = this.status.elemenParent;
+                        const thisparent = this.getCurrentBlock().elemenParent;//;this.status.elemenParent;
                         this.unwrap(thisparent);
                     }else if(atrib=='createLink'){
                         let prom = prompt('masukkan url','https://edurasa.com');
@@ -244,13 +473,14 @@ export default class TextEditorEdurasa{
                     this[el.getAttribute('data-aksi')]();
                 };
             }else{
+
                 el.onclick = () => {
                     if(formatHTML.checked) {
                         alert('Anda dalam moda penginputan format HTML, fitur ini tidak tereksekusi.');
                         e.preventDefault();
                         return;
                     };
-                    console.log(el.getAttribute('data-aksi'), 'tunggu aja nanti')
+                    
                 }
             }
         });
@@ -261,11 +491,13 @@ export default class TextEditorEdurasa{
                     e.preventDefault();
                     return;
                 };
+                
                 this.iframeDom.execCommand(e.target.getAttribute('data-cmd'),false,e.target.value);
                 this.iframeDom.body.focus();
             };
             
         });
+        
         let hasElemenContetxt = document.querySelectorAll('[data-aksicontext]');
         hasElemenContetxt.forEach(btn=>{
             btn.onclick = (e)=>{
@@ -307,6 +539,10 @@ export default class TextEditorEdurasa{
                 }
             }
         });
+
+        let inputImage = document.getElementById('input_editorcustom');
+        inputImage.onchange = (e)=> this.addDomActivityOnInput(e);
+
     }
     lingkupmateri(e){
         return e.target.innerHTML;
@@ -322,8 +558,19 @@ export default class TextEditorEdurasa{
         if(this.praDesain.namakurikulum == 'kurmer'){
             orm = this.praDesain.ormkurikulum.filter(s=> s.idbaris == this.praDesain.kd)[0];
             tekskd = orm.atp;
+            
+            this.request.elemen = orm.elemen;
+            this.request.tp = orm.tp;
+            this.request.atp = orm.atp;
         }else{
-            orm = this.praDesain.ormkurikulum.filter(s=> (s.kd3 == this.praDesain.kd || s.kd4 ==this.praDesain.kd) && s.mapel == this.praDesain.kodemapel)[0];
+            if(this.praDesain.mode=='modal'){
+                orm = this.praDesain.ormkurikulum.filter(s=> s.baris == this.praDesain.kd)[0];
+
+            }else{
+                orm = this.praDesain.ormkurikulum.filter(s=> (s.kd3 == this.praDesain.kd || s.kd4 ==this.praDesain.kd) && s.mapel == this.praDesain.kodemapel)[0];
+
+            }
+            
             tekskd = orm.kd3+' '+orm.indikatorkd3;
         }
         this.request.bentuksoalspesifik=this.praDesain.bentuksoal;
@@ -340,7 +587,7 @@ export default class TextEditorEdurasa{
         }
 
         this.request.bentuksoal = this.praDesain.bentuksoal =='Essay'?'Isian':this.praDesain.bentuksoal;
-        console.log('praDesain',this.praDesain);
+        
         debounce(this.btnActivity());
         debounce(this.domActivity());
         
@@ -434,7 +681,7 @@ export default class TextEditorEdurasa{
                 // sr = new UrlImg(sr).convertUrlToLatexLatest()
                 img.src =  new UrlImg(sr).convertUrlToLatexLatest()
                 img.style.verticalAlign='middle';
-                img.alt = `pecahan ${arr[0]} per ${arr[1]}`;    
+                img.alt = `pecahan ${arr[0]}/${arr[1]}`;    
                     selection.deleteFromDocument();
                     selection.getRangeAt(0).insertNode(img);
             }
@@ -596,7 +843,7 @@ export default class TextEditorEdurasa{
                     dom.append(selection.getRangeAt(i).cloneContents());
                 }
         if(dom.childNodes.length>1 && dom.childNodes[0].nodeType !==3) this.unwrap(dom.childNodes[0]);
-        //console.log(dom.innerHTML);
+        
         let data = {
             idbaris:'',
             tipe:'',
@@ -662,7 +909,7 @@ export default class TextEditorEdurasa{
     html +=`</table>`;
     this.iframeDom.execCommand("insertHTML",null, html);
     
-    const thisparent = this.status.elemenParent;
+    const thisparent = this.getCurrentBlock().elemenParent;//;this.status.elemenParent;
     
     this.unwrap(thisparent);
     
@@ -694,7 +941,7 @@ export default class TextEditorEdurasa{
                     }
                 })
                 let img = new Image();
-                let sr = `https://chart.apis.google.com/chart?cht=tx&chl=%7B%5Csqrt%20%7B${encodeURIComponent(teks)}%7D`;
+                let sr = `https://latex.codecogs.com/png.latex?%5Cdpi%7B0%7D%20%5Cbg_white%20%7B%5Csqrt%5B%7B2%7D%5D%20%7B${encodeURIComponent(teks)}%7D%7D`;
                     img.src = sr;
                     img.style.verticalAlign='middle';
                     img.alt = `akar kuadrat ${teks}`;
@@ -737,7 +984,7 @@ export default class TextEditorEdurasa{
                     }
                 })
                 let img = new Image();
-                let sr = `https://chart.apis.google.com/chart?cht=tx&chl=%7B%5Csqrt%5B3%5D%20%7B${encodeURIComponent(teks)}%7D`;
+                let sr = `https://latex.codecogs.com/png.latex?%5Cdpi%7B0%7D%20%5Cbg_white%20%7B%5Csqrt%5B%7B3%7D%5D%20%7B${encodeURIComponent(teks)}%7D%7D`;
                     img.src = sr;
                     img.style.verticalAlign='middle';
                     img.alt = `akar kuadrat ${teks}`;
@@ -824,6 +1071,64 @@ export default class TextEditorEdurasa{
         return obj;
     }
                     
-                    // dom.append(selection.getRangeAt(i).cloneContents());
+    addDomActivityOnInput(e){
+        let file = e.target.files[0];
+        let imgResize = new ImageResizer(150,Infinity,false);
+        // let namafileinput = 'gambar_soal'+new Date().getTime();
+        if(file){
+            imgResize.resizeImageToDataURL(file, async (mimeType, dataURL)=>{
+                let src = dataURL;//"https://lh3.googleusercontent.com/d/"+respon.data.idfile;
+                let params = {
+                    action:'uploadFile',
+                    folder:'GAMBAR MENJODOHKAN',
+                    // subfolder:,
+                    // namafile:namafileinput.replace(/[^\w\s.-]/g, "_"),
+                    "namafile":'gambarmenjodohkan'+new Date().getTime()+'.png',
+                    "base64":src.replace(/^.*,/, ''),//.replace(/^.*,/, '');
+                    "mimeType":src.match(/^.*(?=;)/)[0],//dataURL.match(/^.*(?=;)/)[0],//
+                }
                 
+                const respon = await this.service.simpanImage(params);
+                
+                let rsrc = new UrlImg(respon.idfile).urlImg;//"https://lh3.googleusercontent.com/d/"+respon.data.idfile;
+                
+                this.iframeDom.execCommand("insertImage",false,rsrc);
+                
+                document.querySelector('#'+this.idIframe).style.height = this.iframeDom.body.scrollHeight + 'px';
+                
+                this.iframeDom.body.focus();
+                
+            })
+        }
+        
+    }   
+    replacingDataSrcToUrl(e){
+        let inputTeks = e.target.innerHTML;
+            if(inputTeks.indexOf('data:image')==-1) return;
+            let imgs = e.target.querySelectorAll('img');
+                imgs.forEach(async el=>{
+                    let src = el.getAttribute('src');
+                    if(src.indexOf('data:image')==-1) return;
+                    let param = src.replace(/^.*,/, '');
+                    
+                    let tipe = src.match(/^.*(?=;)/)[0];
+                    let params = {
+                        action:'uploadFile',
+                        folder:'GAMBAR MATERI SOAL',
+                        subfolder:'Gambar Paste',
+                        // namafile:namafileinput.replace(/[^\w\s.-]/g, "_"),
+                        "namafile":'upload_paste_'+new Date().getTime(),//+'.'+ekstnsi,
+                        "base64":param,//.replace(/^.*,/, '');
+                        "mimeType":tipe,//dataURL.match(/^.*(?=;)/)[0],//
+                    }
+                    el.src = this.imageLoading;
+                    const respon =  await this.service.simpanImage(params);
+                    
+                    
+                    let newurl = new UrlImg(respon.idfile).urlImg; ;//`https://lh3.googleusercontent.com/d/${respon.data.idfile}`;
+                    el.src = newurl;
+                    el.alt = "Gambar Upload";
+                    this.iframeDom.body.focus();
+                });
+    }
 }

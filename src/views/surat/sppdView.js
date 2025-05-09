@@ -165,7 +165,7 @@ const rekapItemsSuratKeluar = (data)=>{
 
 }
 
-const tabelSPPDHalaman2 = (data)=>{
+const tabelSPPDHalaman2 = (data,ttdAtasan)=>{
     const {sppd,identitas,suratkeluar} = data;
     let html="";
     html=`<table class="table table-bordered border-dark">
@@ -300,11 +300,7 @@ const tabelSPPDHalaman2 = (data)=>{
                                         Pada tanggal : ${new Date(sppd.ptk_starttgl).toLocaleString('id-ID',{dateStyle:'long'})}<br>
                                         Telah diperiksa, dengan keterangan bahwa perjalanan tersebut diatas benar dilakukan atas perintahnya dan semata-mata untuk kepentingan jabatan dalam waktu yang sesingkat-singkatnya.
                                     </li>
-                                </ol>
-                                Kepala <span class="sppdcreate_ttdnamasekolah">${identitas.namasekolah}</span>
-                                <br><br><br><br>
-                                <u><b>${sppd.kepsekbytgl.length===0?'-':sppd.kepsekbytgl[0].namaguru}</b></u><br>
-                                        ${sppd.kepsekbytgl.length===0?'-':'NIP. '+sppd.kepsekbytgl[0].nip}   
+                                </ol> ${ttdAtasan}                                                             
                             </div>
                             <div class="col-12">
                                 <ol style="list-style-type: upper-roman" start="6">
@@ -320,7 +316,139 @@ const tabelSPPDHalaman2 = (data)=>{
         </table>`;
     return html;
 }
+const suratTugasKepsek = (data)=>{
+    const {suratkeluar, sppd,logokotadepok,identitas,logoSekolah}= data;
+    let html = "";
+    console.log('suratTugasKepsek',data);
+    console.log('suratTugasKepsek cek surat masuk',suratkeluar.suratmasuk);
+    const refrensiSuratUndangan = suratkeluar.suratmasuk;
+    let datarefrensi = {}
+    if(refrensiSuratUndangan.length>0){
+        datarefrensi = refrensiSuratUndangan[0] ;
+    }else{
+        datarefrensi = {
+            asalsurat: 'belum ada surat masuk',
+            perihal:'-',
+            nosurat:''
+        }
 
+    }
+    html+=`<div class="row">`;
+    html+=`<div class="col-2 d-flex justify-content-center align-items-center">`;
+    //logo
+        html+=`<img src="${logokotadepok}" alt="logo kota depok" class="img-thumbnail border-0"/>`;
+    html+=`</div>`;
+    html+=`<div class="col-10">`;
+    //teks
+        html+=`<h3 class="text-center mb-0 fw-bolder">PEMERINTAH DAERAH KOTA DEPOK</h3>`;
+        html+=`<h1 class="text-center mb-0 fw-bolder">DINAS PENDIDIKAN</h1>`;
+        html+=`<p class="m-0 text-center">Komplek Balaikota Depok, Gedung Dibaleka II Lantai 4<br>Jalan Margonda Raya Nomor 54 Depok, Jawa Barat<br>Telp./Fax.  021 -  29402287      http://disdik.depok.go.id</p>`;
+    html+=`</div>`;
+    html+=`<div style="border-top:5px double black"></div>`;
+    html+='</div>'
+    html+=`<h3 class="text-center text-uppercase mt-5 mb-0 text-decoration-underline fw-bolder">Surat Perintah Tugas</h3>`;
+    html+=`<p class="text-center mb-3 pt-0 font12">No. 421.2/  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /${['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'][new Date(sppd.ptk_starttgl).getMonth()]} /${new Date(sppd.ptk_starttgl).getFullYear()}</p>`;
+    html+=`<table class="table table-sm table-borderless lh-1 mx-1"><tbody>`;
+    html+=`<tr>`;
+        html+=`<td style="width:100px">Dasar</td>`;
+        html+=`</td>`;
+        html+=`<td style="width:5px">:</td>`;
+        html+=`<td>`;
+            html+=`Surat Undangan dari ${datarefrensi.asalsurat} Nomor: ${datarefrensi.nosurat} tentang ${datarefrensi.perihal}`
+        html+=`</td>`;
+    html+=`</tr>`;
+    html+=`<tr>`;
+        html+=`<td style="width:100px">Nama</td>`;
+        html+=`</td>`;
+        html+=`<td style="width:5px">:</td>`;
+        html+=`<td class="fw-bold">`;
+            html+=atasanKepsek.nama;
+        html+=`</td>`;
+    html+=`</tr>`;
+    html+=`<tr>`;
+        html+=`<td style="width:100px">Jabatan</td>`;
+        html+=`</td>`;
+        html+=`<td style="width:5px">:</td>`;
+        html+=`<td class="fw-bold">`;
+            html+=atasanKepsek.jabatan;
+        html+=`</td>`;
+    html+=`</tr>`;
+    html+=`<tr><td colspan="3" class="text-center fw-bold">&nbsp;</td></tr>`
+    html+=`<tr><td colspan="3" class="text-center fw-bold">MEMERINTAHKAN</td></tr>`
+    html+=`<tr>`;
+        html+=`<td>Nama</td><td>:</td>`;
+        html+=`<td class="fw-bold">`;
+            html+=sppd.namaptk.guru_namalengkap;
+        html+=`</td>`
+    html+=`</tr>`;
+    html+=`<tr>`;
+        html+=`<td>NIP</td><td>:</td>`;
+        html+=`<td class="fw-bold">`;
+            html+=sppd.namaptk.guru_nip;
+        html+=`</td>`
+    html+=`</tr>`;
+    html+=`<tr>`;
+        html+=`<td>Jabatan</td><td>:</td>`;
+        html+=`<td class="fw-bold">`;
+            html+=sppd.namaptk.gurukelas_gmp;
+        html+=`</td>`
+    html+=`</tr>`;
+    html+=`<tr><td colspan="3" class="text-center fw-bold">&nbsp;</td></tr>`
+    html+=`<tr>`;
+        html+=`<td>Untuk</td><td>:</td>`;
+        html+=`<td>`;
+            html+=sppd.ptk_maksudsppd;
+        html+=`</td>`
+    html+=`</tr>`;
+    html+=`<tr><td colspan="3" class="text-center fw-bold">&nbsp;</td></tr>`
+    html+=`<tr>`;
+        html+=`<td>Hari</td><td>:</td>`;
+        html+=`<td>`;
+            html+= new Date(sppd.ptk_starttgl).toLocaleString('id-ID',{weekday:'long'});
+        html+=`</td>`
+    html+=`</tr>`;
+    html+=`<tr>`;
+        html+=`<td>Tanggal</td><td>:</td>`;
+        html+=`<td>`;
+            html+= new Date(sppd.ptk_starttgl).toLocaleString('id-ID',{dateStyle:'long'});
+        html+=`</td>`
+    html+=`</tr>`;
+    html+=`<tr>`;
+        html+=`<td>Tempat</td><td>:</td>`;
+        html+=`<td>`;
+            html+=sppd.ptk_tempatsppd;
+        html+=`</td>`
+    html+=`</tr>`;
+    html+=`</tbody></table>`;
+    html+=`<div class="row mt-3 justify-content-end">`;
+        html+= `<div class="col-6">`;
+            html+=`<table class="table  table-sm lh-1 table-borderless">`;
+                html+=`<tbody>`;
+                    html+=`<tr>`;
+                        html+=`<td style="width:100px">Ditetapkan di</td>`;
+                        html+=`<td style="width:15px">:</td>`;
+                        html+=`<td>Depok</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td>Tanggal</td><td>:</td>`
+                        html+=`<td contenteditable="true"> Juli 2024</td>`
+                    html+=`</tr>`;
+                    html+=`<tr><td colspan="3" class="pb-3">`;
+                    html+=`<br>a.n Kepala Dinas Pendidikan`;
+                    html+=`<br>`
+                    html+=atasanKepsek.jabatan;
+                    html+=`<br><br><br><br><br><br>`;
+                    html+=`<u><b>`;
+                        html+=atasanKepsek.nama;
+                    html+=`</b></u><br>`;
+                    html+=`NIP. `+atasanKepsek.nip;
+                    html+=`</td></tr>`
+                html+=`</tbody>`;
+            html+=`</table>`;
+        html+=`</div>`
+    html+=`</div>`;
+    return html
+}
 const suratTugasSPPD = (data)=>{
     const {suratkeluar, sppd,logokotadepok,identitas,logoSekolah}= data;
     let html = "";
@@ -417,7 +545,7 @@ const lembarNotulen = (data)=>{
                             <tr>
                                 <td>Pelaksanaan</td>
                                 <td>:</td>
-                                <td class="w3-border-bottom"><span class="sppddcreate_input_starttanggal">29 Januari 2024</span></td>
+                                <td class="w3-border-bottom"><span class="sppddcreate_input_starttanggal">${new Date(sppd.ptk_starttgl).toLocaleString('id-ID',{dateStyle:'full'})}</span></td>
                             </tr>
                         </tbody>
                     </table>`;
@@ -471,10 +599,11 @@ const lembarNotulen = (data)=>{
 }
 
 const Surat_Keterangan_Aktif = (data)=>{
+    console.log('data pada view surt keterangan aktif',data)
     const {suratkeluar, identitas,logoSekolah,logokotadepok } = data;
     let html = "";
     
-    html+=`<div class="min-vh-100 shadow-sm mb-2 p-1  tnr">`;
+    html+=`<div class="min-vh-100 shadow-sm mb- 2 p-1  tnr">`;
         html+= kopsuratEdurasa.versi2(logokotadepok,identitas,logoSekolah);
         html+=`<h3 class="text-center text-decoration-underline fw-bolder mb-0 mt-3 text-uppercase">Surat Keterangan Siswa Aktif</h3>`;
         html+=`<h4 class="text-center mb-3 text-capitalize">No. ${suratkeluar.nosurat}</h4>`;
@@ -1177,10 +1306,16 @@ const Surat_Keterangan_NISN_lampiran = (data)=>{
     html+=`</div>`;
     return html;
 }
+const atasanKepsek = {
+    nama: "Wawang Buang, S.Pd.SD",
+    nip: "19750826 200501 1004",
+    jabatan:"Kepala Bidang Pembinaan Sekolah Dasar",
+    instansi:"Dinas Pendidikan Kota Depok"
+}
 const buildPageSppd = (data)=>{
     let html = "";
     const {sppd, suratkeluar, logokotadepok,identitas } = data;
-
+    console.log('buildPageSppd',sppd.ptk_diperintah)
     //halaman1;
     html+=`<div class="min-vh-100 shadow-sm mb-2 p-1  d-flex flex-column justify-content-between tnr">`;
         //kop
@@ -1225,14 +1360,17 @@ const buildPageSppd = (data)=>{
         
         
             //title
-            html+=`<h3 class="text-center text-decoration-underline fw-bolder mb-0 mt-3 text-uppercase">Surat perintah perjalanan dinas</h3>`;
+            let pejabatPemberiPerintah= sppd.ptk_diperintah==2?atasanKepsek.jabatan:"KEPALA DINAS PENDIDIKAN KOTA DEPOK"
+             console.log(pejabatPemberiPerintah);
+            console.log(atasanKepsek)
+             html+=`<h3 class="text-center text-decoration-underline fw-bolder mb-0 mt-3 text-uppercase">Surat perintah perjalanan dinas</h3>`;
             html+=`<h4 class="text-center mb-3 text-capitalize">(SPPD)</h4>`;
             //konten
             html+=`<table style="margin:15px auto;width:98%;" class="tabelsppd table border-dark">
                         <tbody><tr class="border-top border-5 border-start-0 border-end-0 border-bottom-0 border-dark">
                             <td>1.</td>
                             <td>Pejabat yang memberi perintah</td>
-                            <td class="border-dark border-start border-top-0 border-end-0">KEPALA DINAS PENDIDIKAN KOTA DEPOK</td>
+                            <td class="border-dark border-start border-top-0 border-end-0">${pejabatPemberiPerintah}</td>
                         </tr>
                         <tr>
                             <td>2.</td>
@@ -1314,7 +1452,7 @@ const buildPageSppd = (data)=>{
                             <td class="border-dark border-start border-top-0 border-end-0"><br>
                                 <ol style="list-style-type:none">
                                     <li class="border-bottom">Dinas Pendidikan</li>
-                                    <li class="border-bottom">5.2.2.15.02</li>
+                                    <li class="border-bottom">5.1.02.04.01.0003</li>
                                 </ol>
                             </td>
                         </tr>
@@ -1326,6 +1464,7 @@ const buildPageSppd = (data)=>{
                     </tbody></table>`
         html+=`</div>`;
         // tanda tangan
+        let ttdAtasan = sppd.ptk_diperintah==2?`${atasanKepsek.jabatan}<br>${atasanKepsek.instansi}<br><br><br><br><u><b>${atasanKepsek.nama}</b></u><br>NIP. ${atasanKepsek.nip}`:`Kepala <span class="sppdcreate_ttdnamasekolah">${identitas.namasekolah}</span> <br><br><br><br> <u><b>${sppd.kepsekbytgl.length===0?'-':sppd.kepsekbytgl[0].namaguru}</b></u><br> ${sppd.kepsekbytgl.length===0?'-':'NIP. '+sppd.kepsekbytgl[0].nip}   `;
         html+=`<div class="d-flex justify-content-end">`;
             html+=`<div class="col-6">`;
                 html+=`<table style="margin:5px auto">
@@ -1340,11 +1479,7 @@ const buildPageSppd = (data)=>{
                     <td>${new Date(sppd.ptk_starttgl).toLocaleString('id-ID',{dateStyle:'long'})}</td>
                 </tr>
                 <tr>
-                    <td colspan="3" class="w3-center">
-                        Kepala <span class="sppdcreate_ttdnamasekolah">${identitas.namasekolah}</span>
-                        <br><br><br><br>
-                        <u><b>${sppd.kepsekbytgl.length===0?'-':sppd.kepsekbytgl[0].namaguru}</b></u><br>
-                        ${sppd.kepsekbytgl.length===0?'-':'NIP. '+sppd.kepsekbytgl[0].nip}   
+                    <td colspan="3" class="w3-center">${ttdAtasan}
                     </td>
                 </tr>
             </tbody></table>`
@@ -1389,12 +1524,17 @@ const buildPageSppd = (data)=>{
             html+=`</div>`;
         html+=`</div>`;
         html+=`<div>`
-        html+=tabelSPPDHalaman2(data);
+        html+=tabelSPPDHalaman2(data,ttdAtasan);
         html+=`</div>`
     html+=`</div>`;
     //halaman3;
     html+=`<div class="min-vh-100 shadow-sm p-1 tnr">`;
-        html+=suratTugasSPPD(data);
+        if(sppd.ptk_diperintah==2){
+            html+=suratTugasKepsek(data);
+        }else{
+            html+=suratTugasSPPD(data);
+
+        }
     html+=`</div>`;
     //halaman 4:notula;
     html+=`<div class="min-vh-100 shadow-sm mb-2 p-1 font14 tnr">`;

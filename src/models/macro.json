@@ -1,4 +1,118 @@
 {
+    "t_2425_s_2":{ 
+                "email":"databaseadeandriansyah@gmail.com",
+                "exec_user"     :"AKfycbz0tQfvKxtM02GVb_bj6uFR645cjBkNftFzmvwox6WrnT4ruTYKRLebKZhAWKlvoJBC",
+                "ss_user"       :"1WjyLiEvjuGbyho9h0o4MQ74SNZ5OFzAzIQq3vgXwj3Q",
+                "trial_ss_user" :"1RRb9wlZ7F3KDS_kCYT1d-8J8hadNvvVoElOKYuosXLI",
+                
+                "prefix_nilai"  :"nilai_raport_",
+                "exec_kalender" :"AKfycbz1C_d342y6TzjOEV-7eZkfdo0wMYHmXsioDjrmqAkjVTF4KmiArY72MfvB_riIDdsi",
+                "ss_kalender"   :"1SAeo4Wga52-BRLVZ8JZu1f9aWph_UlyamTAN12MjaDs",
+                "trial_ss_kalender"   :"1fQ1AE5toz5Y1DigZecHpvmlmTBTc7eyJR-xmEpOi7TA",
+
+                "exec_kepsek"   :"AKfycbysBOYTu-n3H0yNPGoD-SWAeyZzEEBaKHYRG7xrrpFaDxNbNWK3DlKf-vY47NWW9NAd2g",
+                "ss_kepsek"     :"18vLm5qLHKNXLbzbh6zggTgWz5I8wlD2Rp3YUA4PiL4Y",
+                "trial_ss_kepsek"     :"16OR6CMkvEfI-kPWFlG-IwQfUzDzVqyS3JGkczEzspWQ",
+                
+                "ss_materi"     :"1hNO9r0QeQ2qB596alR6bfbtCtPwf_iCS9Oycy9loJNw",
+                "trial_ss_materi"     :"1KRA6enYuWLbArZ3ir8VJxiAm-ZoQIqssP1SPc0l9_z4",
+
+                "absen_1"       :"",
+                "absen_2"       :"",
+                "absen_3"       :"",
+                "absen_4"       :"",
+                "absen_5"       :"",
+                "absen_6"       :"",
+                
+                "ss_absen_1"    :"182rPFaeciat1s4pmkIqiZ12t00hdI0_9-W5SrZQUBEQ",
+                "ss_absen_2"    :"1fVnID69-aqdKStNQQ0y4M4L9cjgrZse2JJhonhcR8HE",
+                "ss_absen_3"    :"1y16XDWRPCzTXhq1UlBI8WKSawkbYz-2jqNfxaWwWlOo",
+                "ss_absen_4"    :"1Ah5n35zMN4NI4jsg2db1-7pNhhzZ2BJXG9BOEGstxNU",
+                "ss_absen_5"    :"1PfUbdOK0xnVv9LO-s5AJPEvWsc-hFaYYjxcg6DMpVjg",
+                "ss_absen_6"    :"1ED6KgvPjPSs7VrpUk7bnolThJvudf6tX8KoNHHFTNIo",
+
+                "trial_ss_absen_1"    :"1CHWQQlyFYK7ex-OGiL3ZZUyY-lFeQJNgjunToIe57X8",
+                "trial_ss_absen_2"    :"1VmdOiZEKYaYqi5unv2gwmW0wAsndqIAdpgXjzPxrVZg",
+                "trial_ss_absen_3"    :"1xef3X_-V3hCdsSAT2kU_JBVPQkeApOc2CLBuSMcRrtw",
+                "trial_ss_absen_4"    :"1zKmJGG9dTJM4iA_sLwfvMjxG1FtOShs6VWRlYmzovig",
+                "trial_ss_absen_5"    :"15x1j1yxV4Qb79ReIZvOHlKJjRlY-5IZ61Ourptvdmh8",
+                "trial_ss_absen_6"    :"1GQyEg9CYE833WUF_u9DqiUzJmkEMCrwsxmtOLqNHTTk",
+                
+
+                "ss_nilai_1"    :"1kBte2MzbmKZ2-VcG4qXKiwme1sW3jY5yYTGqAmH-FfQ",
+                "ss_nilai_2"    :"1PcerhnaxM8TDAEmGEqIo7G74l6wpKdx41E_UNX4loI8",
+                "ss_nilai_3"    :"1AX5NGMh0G5Iad7_JPtZbrBRAIK0xnluZfu_yIKdBUew",
+                "ss_nilai_4"    :"1jr-Ur9o4p01qgKgpDLAxZf33ZMK2Ps1gR0uAYbiETuI",
+                "ss_nilai_5"    :"1_Gyo9IlcngVluGemCe5JEyIlmBAkYb6Mhx4_ZkFFrOM",
+                "ss_nilai_6"    :"1Nv6MFOoAaFOghQIVg-PP-mYsUKRLvX4EPhkzl2yYNF0",
+
+                
+                "trial_ss_nilai_1"    :"1pe6E_j-0KtIF9HOFr0sfTHbkEHvn4FhJ5L6qF-VxyJA",
+                "trial_ss_nilai_2"    :"1mf21z0Q7zGN2426RsdDe5PtczJCsIApBqCUsPcmTTSk",
+                "trial_ss_nilai_3"    :"1HK18yRp_jx_mA8y3eumL23X_iIdKntiotv-Hk3ZbFIQ",
+                "trial_ss_nilai_4"    :"1b6pKHK8s_fgRfLb5Lik8865xAiR0p_IMaaJLVLhBCak",
+                "trial_ss_nilai_5"    :"1SP6TGqLx1i4fewS5jD8JCg9oUvxvucU7NTz6Ne0fWy4",
+                "trial_ss_nilai_6"    :"1jrwOii5wa3D3UHV4ICc57JdkiDg76f2_rTKK1NpuGv0",
+                
+                "exec_crud"     :"AKfycbxIpHLJ4TZs22XxAEdGIseZzrqdcF2DYLT4F1BHtg8CoVI6jorp6h34JL325aUbQzOt"
+    },
+    "t_2425_s_1":{ 
+                "email":"databaseadeandriansyah@gmail.com",
+                "exec_user"     :"AKfycbz0tQfvKxtM02GVb_bj6uFR645cjBkNftFzmvwox6WrnT4ruTYKRLebKZhAWKlvoJBC",
+                "ss_user"       :"1WjyLiEvjuGbyho9h0o4MQ74SNZ5OFzAzIQq3vgXwj3Q",
+                "trial_ss_user" :"1RRb9wlZ7F3KDS_kCYT1d-8J8hadNvvVoElOKYuosXLI",
+                
+                
+                "exec_kalender" :"AKfycbz1C_d342y6TzjOEV-7eZkfdo0wMYHmXsioDjrmqAkjVTF4KmiArY72MfvB_riIDdsi",
+                "ss_kalender"   :"12Ns5cGUggCys04rpfelrC4BG9QIVAKByjdZfxzPmDng",
+                "trial_ss_kalender"   :"1fQ1AE5toz5Y1DigZecHpvmlmTBTc7eyJR-xmEpOi7TA",
+
+                "exec_kepsek"   :"AKfycbysBOYTu-n3H0yNPGoD-SWAeyZzEEBaKHYRG7xrrpFaDxNbNWK3DlKf-vY47NWW9NAd2g",
+                "ss_kepsek"     :"18vLm5qLHKNXLbzbh6zggTgWz5I8wlD2Rp3YUA4PiL4Y",
+                "trial_ss_kepsek"     :"16OR6CMkvEfI-kPWFlG-IwQfUzDzVqyS3JGkczEzspWQ",
+                
+                "ss_materi"     :"1w4SSUjERJ8gODXdpEZknMP8Q5lasFU9LRKg2vbr4cfk",
+                "trial_ss_materi"     :"1KRA6enYuWLbArZ3ir8VJxiAm-ZoQIqssP1SPc0l9_z4",
+
+                "absen_1"       :"",
+                "absen_2"       :"",
+                "absen_3"       :"",
+                "absen_4"       :"",
+                "absen_5"       :"",
+                "absen_6"       :"",
+                
+                "ss_absen_1"    :"182rPFaeciat1s4pmkIqiZ12t00hdI0_9-W5SrZQUBEQ",
+                "ss_absen_2"    :"1fVnID69-aqdKStNQQ0y4M4L9cjgrZse2JJhonhcR8HE",
+                "ss_absen_3"    :"1y16XDWRPCzTXhq1UlBI8WKSawkbYz-2jqNfxaWwWlOo",
+                "ss_absen_4"    :"1Ah5n35zMN4NI4jsg2db1-7pNhhzZ2BJXG9BOEGstxNU",
+                "ss_absen_5"    :"1PfUbdOK0xnVv9LO-s5AJPEvWsc-hFaYYjxcg6DMpVjg",
+                "ss_absen_6"    :"1ED6KgvPjPSs7VrpUk7bnolThJvudf6tX8KoNHHFTNIo",
+
+                "trial_ss_absen_1"    :"1CHWQQlyFYK7ex-OGiL3ZZUyY-lFeQJNgjunToIe57X8",
+                "trial_ss_absen_2"    :"1VmdOiZEKYaYqi5unv2gwmW0wAsndqIAdpgXjzPxrVZg",
+                "trial_ss_absen_3"    :"1xef3X_-V3hCdsSAT2kU_JBVPQkeApOc2CLBuSMcRrtw",
+                "trial_ss_absen_4"    :"1zKmJGG9dTJM4iA_sLwfvMjxG1FtOShs6VWRlYmzovig",
+                "trial_ss_absen_5"    :"15x1j1yxV4Qb79ReIZvOHlKJjRlY-5IZ61Ourptvdmh8",
+                "trial_ss_absen_6"    :"1GQyEg9CYE833WUF_u9DqiUzJmkEMCrwsxmtOLqNHTTk",
+                
+                "prefix_nilai"  :"nilai_raport_",
+                
+                "ss_nilai_1"    :"1WS9O8pkE5KXtW2yOwuCgrr7cbLB4P8NR1HAnjnV2vwQ",
+                "ss_nilai_2"    :"1HbzV8lWrA6-7g4BnLOBrRvDz5MlQbzc6jyT-PSlEGG8",
+                "ss_nilai_3"    :"1DJTOmdLnjg92wcdFS92tUjLyzA6_5Mks-UQV8A8bNAI",
+                "ss_nilai_4"    :"1XxwY3Rt4FCqhFzGz27Snp1vzpSjA8U8FRl2kUnEG3zY",
+                "ss_nilai_5"    :"13nszXR9rc-Tpr-pVFdkwIrwb3u--RC7feGY2TsxE1KU",
+                "ss_nilai_6"    :"15OGeaseLHm_3LwuM2iRVpDaODAAR2QTSkg8L7IZ_IsI",
+                
+                "trial_ss_nilai_1"    :"1pe6E_j-0KtIF9HOFr0sfTHbkEHvn4FhJ5L6qF-VxyJA",
+                "trial_ss_nilai_2"    :"1mf21z0Q7zGN2426RsdDe5PtczJCsIApBqCUsPcmTTSk",
+                "trial_ss_nilai_3"    :"1HK18yRp_jx_mA8y3eumL23X_iIdKntiotv-Hk3ZbFIQ",
+                "trial_ss_nilai_4"    :"1b6pKHK8s_fgRfLb5Lik8865xAiR0p_IMaaJLVLhBCak",
+                "trial_ss_nilai_5"    :"1SP6TGqLx1i4fewS5jD8JCg9oUvxvucU7NTz6Ne0fWy4",
+                "trial_ss_nilai_6"    :"1jrwOii5wa3D3UHV4ICc57JdkiDg76f2_rTKK1NpuGv0",
+                
+                "exec_crud"     :"AKfycbxIpHLJ4TZs22XxAEdGIseZzrqdcF2DYLT4F1BHtg8CoVI6jorp6h34JL325aUbQzOt"
+            },
     "t_2324_s_2":{ 
                 "email":"databaseadeandriansyah@gmail.com",
                 "exec_user"     :"AKfycbz0tQfvKxtM02GVb_bj6uFR645cjBkNftFzmvwox6WrnT4ruTYKRLebKZhAWKlvoJBC",
@@ -24,6 +138,8 @@
                 "ss_absen_4"    :"1B5WczgD6q1IWXLjbgn--NHGrqk84_KHQ8VNkS3xLjNs",
                 "ss_absen_5"    :"11bztTonvtbJFa_Ec8bI9-lByIxf-Z4eH4UY4PWYO0jQ",
                 "ss_absen_6"    :"1qVu6FYj1ISKrlIXI57lHETmMs8dzJaIDNg53RqkNsSg",
+
+                "prefix_nilai"  :"nilai_raport_",
                 "ss_nilai_1"    :"1URpbkxeEBQ1Ozdn0RDck5sncAPrfLdfyErAuShKJmPo",
                 "ss_nilai_2"    :"1uVE6bS4fU6Ef3rYmdO998oHpOEf9jID4a01eUcuTCg8",
                 "ss_nilai_3"    :"1hVLE6zM3uvJ2ARpwOFh4H7220L8wcx4cvFaw6JjYXzc",
@@ -42,7 +158,7 @@
 
                     "exec_kepsek"   :"AKfycbysBOYTu-n3H0yNPGoD-SWAeyZzEEBaKHYRG7xrrpFaDxNbNWK3DlKf-vY47NWW9NAd2g",
                     "ss_kepsek"     :"1jZecUUtmOtBDg-VJn4UI5Y4krFO7QxsEamfNDB6-lBY",
-
+                    
                     "ss_materi"     :"13l1GOnBkYssMDK3VLtUv03g0kvTw2XH79udz0P-97ck",
 
                     "absen_1"       :"AKfycby5VzkI9pKfdzadwFL6m9hAZRpnB412VcHpXRs8EeY-8ovjaBJ1p8nlzMzdWnP0BdIk",
@@ -58,7 +174,7 @@
                     "ss_absen_4"    :"1B5WczgD6q1IWXLjbgn--NHGrqk84_KHQ8VNkS3xLjNs",
                     "ss_absen_5"    :"11bztTonvtbJFa_Ec8bI9-lByIxf-Z4eH4UY4PWYO0jQ",
                     "ss_absen_6"    :"1qVu6FYj1ISKrlIXI57lHETmMs8dzJaIDNg53RqkNsSg",
-
+                    "prefix_nilai"  :"nilai_raport_",
                     "ss_nilai_1"    :"1f1TD-UfrvIW5gj8e_LATHf1mijgbMRIePG-p6uqn798",
                     "ss_nilai_2"    :"181jJoTZ6tr6NqzBaMw4_JG6s6dxlzKPtnF5ABE72ZqI",
                     "ss_nilai_3"    :"1jy_8GOUe6pXCpWNl2iKTb7IiEbnJz7_rAgAk3RP3-m0",
@@ -94,6 +210,8 @@
                     "ss_absen_6"    :"1jSpDGnbot6FeobSSdsUKa0kKM_wV7AMixWJUxmlXx7E",
 
                     "ss_materi"     :"11s_Pr5sx1S6w3DRzSPrx8AyUneEprBzUpiLUndV9-Bc",
+
+                    "prefix_nilai"  :"Induksemetara_",
                     "ss_nilai_1"    :"1F4tH2IIW8vuls4LSZlychtlFbzBn5ciWuQGdS-mnCSM",
                     "ss_nilai_2"    :"1kiXMb-Vb7y7XmV1eAHlPuv3KUHs6nNlOEU3wLKc7jSI",
                     "ss_nilai_3"    :"1EaEoHQenocQ0jYLV0e58oQ1TKP0WSHvVYsTLZiRDN3Q",
@@ -129,7 +247,7 @@
 
                     "ss_materi":"1ha35qZGKxkIjuR3SyBz9ViPFSr-PViKNKZgx1CdqTDc",
 
-                    
+                    "prefix_nilai"  :"Induksemetara_",
                     "ss_nilai_1":"1d2Xj4qi-5v9xqR-byfLYigSrssOrJ1wTt1ZS_K4arPo",
                     "ss_nilai_2":"1g-RFH0jEovmLXasPSl7T3XLODCJh5GqYTMyDlYCrO6Q",
                     "ss_nilai_3":"1VIV-v6vw0r-VsckRTfe9YZgtxps5BHrKgNo_YMUO_AI",
@@ -164,7 +282,7 @@
                     "ss_absen_6":"",
 
                     "ss_materi":"1n3nYiApaERmS2tRDBCOcXfWVVOXJdDNGXheTL-rc0Nc",
-
+                    "prefix_nilai"  :"Induksemetara_",
                     "ss_nilai_1":"1Uiqa4T5qalZLdS1poWZY3XDprgUycRYybmx1IN9Zetg",
                     "ss_nilai_2":"1IkmjI6pujBDtcQuTqLcH90nZOZLgQPTLfLRa6NxPBt4",
                     "ss_nilai_3":"1Bs2LdtV7vQ_MMH29X22okQTNZlXUoUFR-8YxVWE9eUU",
@@ -199,7 +317,7 @@
                     "ss_absen_6":"",
 
                     "ss_materi":"1-takdeCs1ecDH_LiXyhIowF_IVLPNCjgnf0LUrQRhzI",
-
+                    "prefix_nilai"  :"Induksemetara_",
                     "ss_nilai_1":"1jkgQwzJ_9k_RFpqmJaKGvsDfh0sHSU6MgEKlpv5Ihug",
                     "ss_nilai_2":"1TWZ0PCTSsSPjvJpx9oTsDQsKR3we7ou9IKCHhoiUeQI",
                     "ss_nilai_3":"1lGDnCx31DPGjeGdXU8L5NoUn1GtC38baCwmOxUcpYfU",

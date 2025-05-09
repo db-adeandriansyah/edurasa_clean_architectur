@@ -196,4 +196,91 @@ export default class DataSiswaController extends Fitur{
             }
         };
     }
+    async berkasppdb(){
+        let neededData = [];
+        console.log(this.siswaService.berkasppdb)
+        if(this.siswaService.berkasppdb.length == 0){
+            await this.siswaService.callberkasppdb();
+
+        }
+        neededData = this.siswaService.berkasppdb;
+        console.log(neededData);
+        let datapendaftar = neededData.filter(s=> s.hapus!=='hapus');
+        this.workplace.innerHTML = this.dev.view.tabelBerkasPPDB(datapendaftar);
+        this.registerAksiBerkasPPDB(datapendaftar)
+    }
+    registerAksiBerkasPPDB(datapendaftar){
+        const tambah = document.getElementById('tambahberkas');
+        const edit = document.querySelectorAll('[data-aksi]');
+        edit.forEach(btn=>{
+            btn.onclick = async()=>{
+                let tipeaksi = btn.getAttribute('data-aksi');
+                let id = btn.getAttribute('data-id');
+                if(tipeaksi == 'edit'){
+                    let currentData = datapendaftar.filter(s=> s.idbaris == id)[0];
+                    this.dev.Modal.settingHeder('Edit Calon Siswa');
+                    this.dev.Modal.showBodyHtml(this.dev.view.formulirBerkasPPdb(currentData,false));
+                    this.dev.Modal.showHideFooter(false);
+                    this.dev.Modal.show();
+                    this.updateBerkas(currentData);
+                }else{
+                    let conf = confirm('Anda yakin akan menghapus data ini?');
+                    let currentData = datapendaftar.filter(s=> s.idbaris == id)[0];
+                    if(!conf){
+                        alert('batal');
+                        return;
+                    }
+                    let withhapus = Object.assign({},currentData,{'hapus':'hapus'})
+                    await this.siswaService.edithapusberkas(withhapus)
+                    this.berkasppdb();
+
+                }
+            }
+        });
+        
+        tambah.onclick = (e)=>{
+            this.dev.Modal.settingHeder('tambah Calon Siswa');
+            this.dev.Modal.settingHeder('Tambah Data');
+            this.dev.Modal.showBodyHtml(this.dev.view.formulirBerkasPPdb([],true));
+            this.dev.Modal.showHideFooter(false);
+            this.dev.Modal.show();
+            this.updateBerkas();
+        }
+    }
+    updateBerkas(){
+        let btn = document.getElementById('btnupdatedata');
+        let q = document.querySelectorAll('[data-formulir]');
+
+        let ob = {};
+        if(arguments.length>0){
+            ob = arguments[0];
+        }
+        btn.onclick = async()=>{
+            this.dev.Modal.hide()
+            console.log('deteksi edit atau tambah', arguments.length>0?'edit':'tambah');
+            q.forEach(n=>{
+                let key = n.getAttribute('data-formulir')
+                
+                if(n.type=='checkbox'){
+                    if(n.checked){
+                        ob[key] = 1
+                    }else{
+                        ob[key] = 0
+                    }
+                }else{
+                    ob[key] = n.value;
+                }
+                
+            });
+            console.log(ob);
+            if(arguments.length==0){
+                await this.siswaService.tambahberkasppdb(ob)
+                this.berkasppdb();
+            }else{
+                await this.siswaService.edithapusberkas(ob)
+                    this.berkasppdb();
+
+            }
+        }
+    }
 }

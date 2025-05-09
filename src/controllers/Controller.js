@@ -1,4 +1,5 @@
-import UrlImg from "./UrlImg";
+// import UrlImg from "./UrlImg";
+const UrlImg = await import ('./UrlImg').then(module=>module.default);
 export class Controller{
     #db;
     #User;
@@ -42,6 +43,9 @@ export class Controller{
     urlImg(x){
         return new UrlImg(x);
     }
+    replacingImage(string){
+        return UrlImg.replacingImg(string); 
+    }
     get isAdmin(){
         return this.#User.typeUser === 'admin';
     }
@@ -71,6 +75,7 @@ export class Controller{
         if(param.length==0){
             return new devClass();
         }else{
+            
             return new devClass(...param);
         }
     }

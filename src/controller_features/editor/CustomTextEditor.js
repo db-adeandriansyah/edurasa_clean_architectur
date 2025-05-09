@@ -760,10 +760,8 @@ export default class CustomTextEditor{
             }
         }
         dom.onselectionchange = (e)=>{
-            // //console.log('=============== onselectionchange =================',this.status);
             if(dom.getSelection().anchorNode.nodeName === 'BODY'){
                 dom.execCommand("formatBlock", false,'<div>');
-                // //console.log('----------jika parentNode ini BODY, seharusnya baris elemen ini dibungkus div');
             
             }
             if(this.getCurrentBlock()) this.status = this.getCurrentBlock();
@@ -814,12 +812,7 @@ export default class CustomTextEditor{
                     }
                 })
             }
-            // if(this.ControlObjekSorotan){
-            //     this.objekSorotan = this.ControlObjekSorotan();
-            //     //console.log('-----objek sorotan dicontrol dari class Replace:',this.objekSorotan)
-            // }
-            // //console.log('----aksi disetiap text editor---',this.objekSorotan);
-
+            
         };
 
 
@@ -846,11 +839,9 @@ export default class CustomTextEditor{
             iframe:$(`#${settings.id}`),
             menuContext:$('#menucontext_'+settings.id)
         }
-        // //console.log(this.el)
         const dom = this.el.doc;
         this.el.iframe.style.height = dom.body.scrollHeight + 'px';
             let cekImgs = $all('.resizer',this.el.doc);
-            // //console.log(cekImgs.length);
             cekImgs.forEach((img)=>{
                 if(img.firstChild){
                     img.firstChild.style.removeProperty('border');
@@ -959,7 +950,6 @@ export default class CustomTextEditor{
         }
         if (y < 0) {
             y = 0;
-            // //console.log('e.clientY y<0 ',y);
         }
         if (x + boundingBox.width *1.5 > iframeWidth) {
             x = iframeWidth - boundingBox.width ;
@@ -967,32 +957,16 @@ export default class CustomTextEditor{
         }
         if (y+boundingBox.height > iframeHeight) {
             y = iframeHeight - boundingBox.height;
-            // y = boundingBox.height;
-            //console.log('y+boundingBox.height > iframeHeight',y);
+        
         }
-        // //console.log({
-        //     'e.clienX':e.clientX,
-        //     'e.clienY':e.clientY,
-        //     'bounding-x':boundingBox.x,
-        //     'bounding-y':boundingBox.y,
-        //     'bounding-width':boundingBox.width,
-        //     'bounding-height':boundingBox.height,
-        //     'bounding-left':boundingBox.height,
-        //     'bounding-bottom':boundingBox.bottom,
-        //     'bounding-top':boundingBox.top,
-        //     'bounding-right':boundingBox.right,
-        //     'bounding':boundingBox,
 
-        // })
         elemenYangAkanDiletakkan.style.left = x + 'px';
         elemenYangAkanDiletakkan.style.top = y + 'px';
-        //console.log(y)
         /**jika menu toolbar ditiadakan */
         if(!this.modeToolbar){
             const menuoverlay = document.getElementById("menucontextoverlay_"+this.settings.id);
             if(menuoverlay){
                 menuoverlay.classList.remove('start-100','end-100');
-                // menuoverlay.classList.remove('start-100','end-100');
                 menuoverlay.classList.add(leftMenuContextFormating);
             }
 
@@ -1052,10 +1026,8 @@ export default class CustomTextEditor{
             btn.onclick = (e)=>{
                 
                 let aksi = btn.getAttribute('data-aksicontext');
-                // //console.log('cek this.objectSorotan sebelum disorot',this.objekSorotan);
                 if(this[aksi]){
                     
-                    // this[aksi]();
                     if(['insertOrderedList','insertunOrderedList','pecahan','akarkuadrat','akarkubik'].indexOf(aksi)>=0){
                         this[aksi]()
                     }else if(aksi=='levelkognitif'){
@@ -1069,7 +1041,6 @@ export default class CustomTextEditor{
                             ada.forEach(n=>{
                                 Object.entries(n).forEach(([k,v])=>{
                                     this.objekSorotan[k]=v;
-
                                 })
                             })
                             delete this.objekSorotan.allpg;
@@ -1081,9 +1052,7 @@ export default class CustomTextEditor{
                     }
 
                 }else{
-                    //console.log('belum ada '+aksi);
                 }
-                // //console.log(this.objekSorotan);
                 if(this.CallBackObjekSorotan){
                     this.CallBackObjekSorotan(this.objekSorotan,this.db,this.cekKKO);
                 }
@@ -1204,7 +1173,7 @@ export default class CustomTextEditor{
                             }
                             
                         
-                        console.log(aksi)
+                        
                     }
                     
                     if(!$(`#menucontext_${this.settings.id}`).classList.contains('d-none')){
@@ -1212,7 +1181,7 @@ export default class CustomTextEditor{
                     }
 
                 }else{
-                    //console.log('belum ada '+aksi);
+                    
                 }
                 
                 if(this.CallBackObjekSorotan){
@@ -1223,13 +1192,7 @@ export default class CustomTextEditor{
     }
     btnActivity(){
         const formatHTML = $('#checkdesainmagicsoal_' +this.settings.id);
-        // this.el={
-        //     ...this.el,
-        //     checkHTML:formatHTML.checked
-        // }
-        // //console.log(formatHTML.checked);
         const dom = this.el.doc;
-        // let spanFormat = document.querySelectorAll('[data-keycmd]');
         let spanFormat = $(this.settings.parentSelector).querySelectorAll('[data-keycmd]');
         spanFormat.forEach(span=>{
             let atrib = span.getAttribute('data-keycmd');
@@ -1266,17 +1229,9 @@ export default class CustomTextEditor{
                         
                         dom.execCommand(atrib,false,null)
                         const thisparent = this.status.elemenParent;
-                        // //console.log(thisparent);
                         this.unwrap(thisparent);
     
-                        // const selection = this.el.doc.getSelection();
-                        //     if (selection && selection.rangeCount) {
-                        //     const container = selection.getRangeAt(0).commonAncestorContainer;
-                        //     this.unwrap(container, this.settings.defParagraphSeparator);
-                        // }
-                        
                     }else if(atrib=='createLink'){
-                        // this.mountFormInsertLink();
                         let prom = prompt('masukkan url','https://edurasa.com');
                         dom.execCommand(atrib,false,prom);
                     }else{
@@ -1304,7 +1259,6 @@ export default class CustomTextEditor{
                         e.preventDefault();
                         return;
                     };
-                    //console.log(el.getAttribute('data-aksi'), 'tunggu aja nanti')
                 }
             }
         });
@@ -1348,7 +1302,7 @@ export default class CustomTextEditor{
                         delete this.objekSorotan.allpg;
                     }
                 }else{
-                    //console.log('belum ada '+aksi);
+                
                 }
                 if(this.CallBackObjekSorotan){
                     this.CallBackObjekSorotan(this.objekSorotan,this.db);
@@ -1362,9 +1316,6 @@ export default class CustomTextEditor{
     }
     resetObjectSorotan(obj){
         this.objekSorotan =obj;
-        console.log(this.objekSorotan);
-        // //console.log('resetObjectSorotan dijalankan dari class ReplaceEditItemSoal',obj,this.objekSorotan);
-        
         
     }
     pertanyaan(){
@@ -1372,8 +1323,6 @@ export default class CustomTextEditor{
             const selection = this.el.doc.getSelection();
                 if (!selection.rangeCount) return;
                 for (let i = 0; i < selection.rangeCount; i++) {
-                    // let cek = selection.getRangeAt(i).anchorNode.parentNode.closest('body>div');//.innerHTML;
-                    // //console.log(i,cek.innerHTML);
                     dom.append(selection.getRangeAt(i).cloneContents());
                 }
         if(dom.childNodes.length>1 && dom.childNodes[0].nodeType !==3) this.unwrap(dom.childNodes[0]);
@@ -1385,8 +1334,6 @@ export default class CustomTextEditor{
                 if (!selection.rangeCount) return;
                 
                 for (let i = 0; i < selection.rangeCount; i++) {
-                    // let cek = selection.getRangeAt(i).anchorNode.parentNode.closest('body>div');//.innerHTML;
-                    // //console.log(i,cek.innerHTML);
                     dom.append(selection.getRangeAt(i).cloneContents());
                     
                 }
@@ -1404,8 +1351,6 @@ export default class CustomTextEditor{
             const selection = this.el.doc.getSelection();
                 if (!selection.rangeCount) return;
                 for (let i = 0; i < selection.rangeCount; i++) {
-                    // let cek = selection.getRangeAt(i).anchorNode.parentNode.closest('body>div');//.innerHTML;
-                    // //console.log(i,cek.innerHTML);
                     dom.append(selection.getRangeAt(i).cloneContents());
                 }
         if(dom.childNodes.length>1 && dom.childNodes[0].nodeType !==3) this.unwrap(dom.childNodes[0]);
@@ -1446,8 +1391,6 @@ export default class CustomTextEditor{
             const selection = this.el.doc.getSelection();
                 if (!selection.rangeCount) return;
                 for (let i = 0; i < selection.rangeCount; i++) {
-                    // let cek = selection.getRangeAt(i).anchorNode.parentNode.closest('body>div');//.innerHTML;
-                    // //console.log(i,cek.innerHTML);
                     dom.append(selection.getRangeAt(i).cloneContents());
                 }
         if(dom.childNodes.length>1 && dom.childNodes[0].nodeType !==3) this.unwrap(dom.childNodes[0]);
@@ -1458,8 +1401,6 @@ export default class CustomTextEditor{
             const selection = this.el.doc.getSelection();
                 if (!selection.rangeCount) return;
                 for (let i = 0; i < selection.rangeCount; i++) {
-                    // let cek = selection.getRangeAt(i).anchorNode.parentNode.closest('body>div');//.innerHTML;
-                    // //console.log(i,cek.innerHTML);
                     dom.append(selection.getRangeAt(i).cloneContents());
                 }
         if(dom.childNodes.length>1 && dom.childNodes[0].nodeType !==3) this.unwrap(dom.childNodes[0]);
@@ -1470,8 +1411,6 @@ export default class CustomTextEditor{
             const selection = this.el.doc.getSelection();
                 if (!selection.rangeCount) return;
                 for (let i = 0; i < selection.rangeCount; i++) {
-                    // let cek = selection.getRangeAt(i).anchorNode.parentNode.closest('body>div');//.innerHTML;
-                    // //console.log(i,cek.innerHTML);
                     dom.append(selection.getRangeAt(i).cloneContents());
                 }
         if(dom.childNodes.length>1 && dom.childNodes[0].nodeType !==3) this.unwrap(dom.childNodes[0]);
@@ -1482,8 +1421,6 @@ export default class CustomTextEditor{
             const selection = this.el.doc.getSelection();
                 if (!selection.rangeCount) return;
                 for (let i = 0; i < selection.rangeCount; i++) {
-                    // let cek = selection.getRangeAt(i).anchorNode.parentNode.closest('body>div');//.innerHTML;
-                    // //console.log(i,cek.innerHTML);
                     dom.append(selection.getRangeAt(i).cloneContents());
                 }
         if(dom.childNodes.length>1 && dom.childNodes[0].nodeType !==3) this.unwrap(dom.childNodes[0]);
@@ -1494,8 +1431,6 @@ export default class CustomTextEditor{
             const selection = this.el.doc.getSelection();
                 if (!selection.rangeCount) return;
                 for (let i = 0; i < selection.rangeCount; i++) {
-                    // let cek = selection.getRangeAt(i).anchorNode.parentNode.closest('body>div');//.innerHTML;
-                    // //console.log(i,cek.innerHTML);
                     dom.append(selection.getRangeAt(i).cloneContents());
                 }
         if(dom.childNodes.length>1 && dom.childNodes[0].nodeType !==3) this.unwrap(dom.childNodes[0]);
@@ -1506,8 +1441,6 @@ export default class CustomTextEditor{
             const selection = this.el.doc.getSelection();
                 if (!selection.rangeCount) return;
                 for (let i = 0; i < selection.rangeCount; i++) {
-                    // let cek = selection.getRangeAt(i).anchorNode.parentNode.closest('body>div');//.innerHTML;
-                    // //console.log(i,cek.innerHTML);
                     dom.append(selection.getRangeAt(i).cloneContents());
                 }
         if(dom.childNodes.length>1 && dom.childNodes[0].nodeType !==3) this.unwrap(dom.childNodes[0]);
@@ -1518,8 +1451,6 @@ export default class CustomTextEditor{
             const selection = this.el.doc.getSelection();
                 if (!selection.rangeCount) return;
                 for (let i = 0; i < selection.rangeCount; i++) {
-                    // let cek = selection.getRangeAt(i).anchorNode.parentNode.closest('body>div');//.innerHTML;
-                    // //console.log(i,cek.innerHTML);
                     dom.append(selection.getRangeAt(i).cloneContents());
                 }
         if(dom.childNodes.length>1 && dom.childNodes[0].nodeType !==3) this.unwrap(dom.childNodes[0]);
@@ -1530,12 +1461,10 @@ export default class CustomTextEditor{
             const selection = this.el.doc.getSelection();
                 if (!selection.rangeCount) return;
                 for (let i = 0; i < selection.rangeCount; i++) {
-                    // let cek = selection.getRangeAt(i).anchorNode.parentNode.closest('body>div');//.innerHTML;
-                    // //console.log(i,cek.innerHTML);
                     dom.append(selection.getRangeAt(i).cloneContents());
                 }
         if(dom.childNodes.length>1 && dom.childNodes[0].nodeType !==3) this.unwrap(dom.childNodes[0]);
-        //console.log(dom.innerHTML);
+        
         let data = {
             idbaris:'',
             tipe:'',
@@ -1557,8 +1486,6 @@ export default class CustomTextEditor{
             const selection = this.el.doc.getSelection();
                 if (!selection.rangeCount) return;
                 for (let i = 0; i < selection.rangeCount; i++) {
-                    // let cek = selection.getRangeAt(i).anchorNode.parentNode.closest('body>div');//.innerHTML;
-                    // //console.log(i,cek.innerHTML);
                     dom.append(selection.getRangeAt(i).cloneContents());
                 }
         if(dom.childNodes.length>1 && dom.childNodes[0].nodeType !==3) this.unwrap(dom.childNodes[0]);
@@ -1569,8 +1496,6 @@ export default class CustomTextEditor{
             const selection = this.el.doc.getSelection();
                 if (!selection.rangeCount) return;
                 for (let i = 0; i < selection.rangeCount; i++) {
-                    // let cek = selection.getRangeAt(i).anchorNode.parentNode.closest('body>div');//.innerHTML;
-                    // //console.log(i,cek.innerHTML);
                     dom.append(selection.getRangeAt(i).cloneContents());
                 }
         if(dom.childNodes.length>1 && dom.childNodes[0].nodeType !==3) this.unwrap(dom.childNodes[0]);
@@ -1587,26 +1512,24 @@ export default class CustomTextEditor{
     }
     buattabel(){
         let promp = prompt("Masukkan jumlah baris, contoh 3 x 4 (3 baris, 4 kolom) tanpa spasi","3x4");
-    if(!promp){return }
-    let teks = promp.replace(/\s+/g,"");
-    let ang = teks.toLowerCase().split("x");
-    let brs = parseInt(ang[0]);
-    let cols = parseInt(ang[1]);
-    let html = `<table style="border-collapse:collapse;border-spacing:0">`
-    for(let i = 0 ; i < brs ; i++){
-        html +=`<tr>`
-        for (let j = 0 ; j <cols; j++){
-            html +=`<td style="border:.5pt solid #000;padding:4px 8px;line-height:1em">teks</td>`
+        if(!promp){return }
+        let teks = promp.replace(/\s+/g,"");
+        let ang = teks.toLowerCase().split("x");
+        let brs = parseInt(ang[0]);
+        let cols = parseInt(ang[1]);
+        let html = `<table style="border-collapse:collapse;border-spacing:0">`
+        for(let i = 0 ; i < brs ; i++){
+            html +=`<tr>`
+            for (let j = 0 ; j <cols; j++){
+                html +=`<td style="border:.5pt solid #000;padding:4px 8px;line-height:1em">teks</td>`
+            }
+            html +=`</tr>`
         }
-        html +=`</tr>`
-    }
-    html +=`</table>`;
-    this.el.doc.execCommand("insertHTML",null, html);
-    
-    const thisparent = this.status.elemenParent;
-    // //console.log(thisparent);
-    this.unwrap(thisparent);
-    // this.unwrap(this.el.doc.parentElement)
+        html +=`</table>`;
+        this.el.doc.execCommand("insertHTML",null, html);
+        
+        const thisparent = this.status.elemenParent;
+        this.unwrap(thisparent);
     }
     pecahan(){
         
@@ -1760,10 +1683,9 @@ export default class CustomTextEditor{
             type:type,
             text: selection.textContent,
             innerHTML :selection.innerHTML,
-            // parentInnerHTML:parentnya.parentNode.closest('div').innerHTML,
-            // parentOuterHTML:parentnya.parentNode.closest('div').outerHTML,
+            
         };
-        // //console.log(currentBlock);
+        
         return currentBlock;
     }
     getCurrentBlockAsal() {
@@ -1783,7 +1705,6 @@ export default class CustomTextEditor{
             type,
             text: selection.textContent
         };
-        // //console.log(currentBlock);
         return currentBlock;
     }
     applyContextMenu(){
@@ -1930,7 +1851,7 @@ export default class CustomTextEditor{
                         menuTanpaToolbar+=`<li class="list-group-item d-flex justify-content-between"><div>${d.title[0]}</div><div>${d.title[1]}</div></li>`;
                     })
                     menuTanpaToolbar+=`</ul>`;
-                menuTanpaToolbar+=`</li>`
+                menuTanpaToolbar+=`</li>`;
             })
         }
         const matematikaContextMenu = `
@@ -1987,18 +1908,15 @@ export default class CustomTextEditor{
         this.taksonomibloom = db;
     }
     addCallBackObjekSorotan(cb){
-        // //console.log('this.addCallBack didaftarkan')
         this.CallBackObjekSorotan = cb;
     }
     addControlObjekSorotan(param){
         this.ControlObjekSorotan = param
     }
     callSimpanItemSoal(datatest){
-        //console.log(datatest);
         return datatest()
     }
     addcallSimpanItemSoal(datatest){
-        //console.log(typeof datatest);
         this.callSimpanItemSoal = datatest
     }
 

@@ -8,8 +8,12 @@ function btnPrimary (atr="", label='Label'){
 function btnSecondary (atr="",label="label"){
     return btn('border-3 border-top-0 border-start-0 mini border-end-0 border-warning border-bottom rounded-pill',atr,label);
 }
+function btnTersier (atr="",label="label"){
+    return btn('border-3 border-top-0 border-start-0 bg-color1 border-end-0 border-warning border-bottom rounded-pill',atr,label);
+}
 const buttonEdu = {
     'primary':btnPrimary,
-    'secondary':btnSecondary
+    'secondary':btnSecondary,
+    'third':btnTersier
 };
 export default buttonEdu;

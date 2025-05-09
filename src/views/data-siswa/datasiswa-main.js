@@ -139,6 +139,159 @@ const controlMenuSPPD = (data)=>`<div class="row pt-3 justify-content-center">
         <button class="btn btn-sm border-4 border-dark border-bottom border-top-0 border-start-0 border-end-0 rounded-pill btn-success m-1" id="btncreate_suratketerangan" data-create="${data.value}" data-targetsurat="${data.target}">Buat ${data.text}</button>
     </div>
 </div>`;
+
+const formulirBerkasPPdb = (data,modeTambah=true)=>{
+    let html="";
+    html+=`<ol class="list-group-flush">`;
+        html+=`<li class="list-group-item">`
+            html+=inputsElements.floatingNumber('idcalonsiswa','id',modeTambah?'':data.idbaris,' data-formulir="idbaris" disabled');
+            html+=inputsElements.floatingText('idcalonsiswa','Nama siswa',modeTambah?'':data.pd_nama,' data-formulir="pd_nama"',true);
+            /**
+             * data-server="idbaris">${n.idbaris}</td
+data-server="pd_nama">${n.pd_nama}</td
+data-server="cekasli_buktipendaftaran"
+data-server="cekasli_sptjm">${n.cekasl
+data-server="cekasli_akte">${n.cekasli
+data-server="cekfc_akte">${n.cekfc_akt
+data-server="cekasli_kartukeluarga">${
+data-server="cekfc_kartukeluarga">${n.
+data-server="cekasli_ktp">${n.cekasli_
+data-server="cekfc_ktp">${n.cekfc_ktp}
+data-server="cekasli_ktp">${n.cekasli_
+data-server="cekasli_skl">${n.cekasli_
+data-server="keterangan">${n.keteranga
+             */
+        html+=`</li>`;
+        html+=`<li class="list-group-item">`
+        if(modeTambah){
+            html+=inputsElements.formInputCheckbox('idcekasli_bukti','Bukti Pendaftaran',true,false,'koleksi_ceklis', ' data-formulir="cekasli_buktipendaftaran"')
+            html+=inputsElements.formInputCheckbox('idcekasli_sptjm','SPTJM',true,false,'koleksi_ceklis', ' data-formulir="cekasli_sptjm"')
+            html+=inputsElements.formInputCheckbox('idcekasli_akte','Akte Asli',true,false,'koleksi_ceklis', ' data-formulir="cekasli_akte"')
+            html+=inputsElements.formInputCheckbox('idcekfc_akte','Akte Potokopi',true,false,'koleksi_ceklis', ' data-formulir="cekfc_akte"')
+            html+=inputsElements.formInputCheckbox('idcekasli_kartukeluarga','Kartu Keluarga Asli',true,false,'koleksi_ceklis', ' data-formulir="cekasli_kartukeluarga"')
+            html+=inputsElements.formInputCheckbox('idcekfc_kartukeluarga','Kartu Keluarga Potokopi',true,false,'koleksi_ceklis', ' data-formulir="cekfc_kartukeluarga"')
+            html+=inputsElements.formInputCheckbox('idcekasli_ktp','KTP Asli',true,false,'koleksi_ceklis', ' data-formulir="cekasli_ktp"')
+            html+=inputsElements.formInputCheckbox('idcekfc_ktp','KTP Potokopi',true,false,'koleksi_ceklis', ' data-formulir="cekfc_ktp"')
+            html+=inputsElements.formInputCheckbox('idcekasli_pkh','PKH',true,false,'koleksi_ceklis', ' data-formulir="cekasli_pkh"')
+            html+=inputsElements.formInputCheckbox('idcekasli_skl','SKL',true,false,'koleksi_ceklis', ' data-formulir="cekasli_skl"')
+        }else{
+            html+=inputsElements.formInputCheckbox('idcekasli_bukti','Bukti Pendaftaran',true,false,'koleksi_ceklis', `${data.cekasli_buktipendaftaran==0?'':'checked'} data-formulir="cekasli_buktipendaftaran"`)
+            html+=inputsElements.formInputCheckbox('idcekasli_sptjm','SPTJM',true,false,'koleksi_ceklis', `${data.cekasli_sptjm==0?'':'checked'} data-formulir="cekasli_sptjm"`)
+            html+=inputsElements.formInputCheckbox('idcekasli_akte','Akte Asli',true,false,'koleksi_ceklis', `${data.cekasli_akte==0?'':'checked'} data-formulir="cekasli_akte"`)
+            html+=inputsElements.formInputCheckbox('idcekfc_akte','Akte Potokopi',true,false,'koleksi_ceklis', `${data.cekfc_akte==0?'':'checked'} data-formulir="cekfc_akte"`)
+            html+=inputsElements.formInputCheckbox('idcekasli_kartukeluarga','Kartu Keluarga Asli',true,false,'koleksi_ceklis', `${data.cekasli_kartukeluarga==0?'':'checked'}  data-formulir="cekasli_kartukeluarga"`)
+            html+=inputsElements.formInputCheckbox('idcekfc_kartukeluarga','Kartu Keluarga Potokopi',true,false,'koleksi_ceklis', `${data.cekfc_kartukeluarga==0?'':'checked'}  data-formulir="cekfc_kartukeluarga"`)
+            html+=inputsElements.formInputCheckbox('idcekasli_ktp','KTP Asli',true,false,'koleksi_ceklis', `${data.cekasli_ktp==0?'':'checked'}  data-formulir="cekasli_ktp"`)
+            html+=inputsElements.formInputCheckbox('idcekfc_ktp','KTP Potokopi',true,false,'koleksi_ceklis', `${data.cekfc_ktp==0?'':'checked'}  data-formulir="cekfc_ktp"`)
+            html+=inputsElements.formInputCheckbox('idcekasli_pkh','PKH',true,false,'koleksi_ceklis', `${data.cekasli_pkh==0?'':'checked'}  data-formulir="cekasli_pkh"`)
+            html+=inputsElements.formInputCheckbox('idcekasli_skl','SKL',true,false,'koleksi_ceklis', `${data.cekasli_skl==0?'':'checked'}   data-formulir="cekasli_skl"`)
+        
+
+        }
+
+            /**
+data-server="cekasli_sptjm">${n.cekasl
+data-server="cekasli_akte">${n.cekasli
+data-server="cekfc_akte">${n.cekfc_akt
+data-server="cekasli_kartukeluarga">${
+data-server="cekfc_kartukeluarga">${n.
+data-server="cekasli_ktp">${n.cekasli_
+data-server="cekfc_ktp">${n.cekfc_ktp}
+data-server="cekasli_ktp">${n.cekasli_
+data-server="cekasli_skl">${n.cekasli_
+data-server="keterangan">${n.keteranga */
+        html+=`</li>`;
+        html+=`<li class="list-group-item">`;
+            html+=inputsElements.floatingText('idketeranganform','Keterangan',modeTambah?'':data.keterangan,' data-formulir="keterangan"')
+        html+=`</li>`
+    html+=`</ol>`;
+    if(modeTambah){
+        html+=buttonEdu.primary('id="btnupdatedata"','Tambah Data')
+        
+        }else{
+        html+=buttonEdu.secondary('id="btnupdatedata"','Simpan Edit')
+
+    }
+    return html;
+
+}
+const tabelBerkasPPDB = (data)=>{
+    let html = "";
+    html+=`<h3 class="text-center mt-3 mb-5">Kelengkapan Berkas PPDB 2024</h3>`;
+    html+=`<div class="table-responsive">`;
+        html+=`<table class="table table-sm font10 table-bordered border-dark toExcel">`;
+            html+=`<thead>`;
+                html+=`<tr>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">No</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">Id Data</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">Nama Calon Peserta Didik</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">Kartu/Bukti Pendaftaran</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">SPTJM</th>`;
+                    html+=`<th colspan="2" class="text-center text-bg-secondary align-middle">Dokumen Akte</th>`;
+                    html+=`<th colspan="2" class="text-center text-bg-secondary align-middle">Dokumen Kartu Keluarga</th>`;
+                    html+=`<th colspan="2" class="text-center text-bg-secondary align-middle">Dokumen KTP</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">Dokumen PKH</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">Dokumen SKL</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">Keterangan</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">Aksi</th>`;
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<th class="text-center align-middle text-bg-secondary">Asli</th>`
+                    html+=`<th class="text-center align-middle text-bg-secondary">Fotocopy</th>`
+                    html+=`<th class="text-center align-middle text-bg-secondary">Asli</th>`
+                    html+=`<th class="text-center align-middle text-bg-secondary">Fotocopy</th>`
+                    html+=`<th class="text-center align-middle text-bg-secondary">Asli</th>`
+                    html+=`<th class="text-center align-middle text-bg-secondary">Fotocopy</th>`
+                html+=`</tr>`;
+                    
+            html+=`</thead>`;
+            html+=`<tbody>`;
+                if(data.length>0){
+                    data.forEach((n,i)=>{
+                        html+=`<tr>`;
+                            html+=`<td class="text-center ">${i+1}</td>`;
+                            html+=`<td class="text-center" data-server="idbaris">${n.idbaris}</td>`;
+                            html+=`<td class="text-center" data-server="pd_nama">${n.pd_nama}</td>`;
+                            html+=`<td class="text-center" data-server="cekasli_buktipendaftaran">${n.cekasli_buktipendaftaran==1?'Ada':'-'}</td>`;
+                            html+=`<td class="text-center" data-server="cekasli_sptjm">${n.cekasli_sptjm==1?'Ada':'-'}</td>`;
+                            html+=`<td class="text-center" data-server="cekasli_akte">${n.cekasli_akte==1?'Ada':'-'}</td>`;
+                            html+=`<td class="text-center" data-server="cekfc_akte">${n.cekfc_akte==1?'Ada':'-'}</td>`;
+                            html+=`<td class="text-center" data-server="cekasli_kartukeluarga">${n.cekasli_kartukeluarga==1?'Ada':'-'}</td>`;
+                            html+=`<td class="text-center" data-server="cekfc_kartukeluarga">${n.cekfc_kartukeluarga==1?'Ada':'-'}</td>`;
+                            html+=`<td class="text-center" data-server="cekasli_ktp">${n.cekasli_ktp==1?'Ada':'-'}</td>`;
+                            html+=`<td class="text-center" data-server="cekfc_ktp">${n.cekfc_ktp==1?'Ada':'-'}</td>`;
+                            html+=`<td class="text-center" data-server="cekasli_pkh">${n.cekasli_pkh==1?'Ada':'-'}</td>`;
+                            html+=`<td class="text-center" data-server="cekasli_skl">${n.cekasli_skl==1?'Ada':'-'}</td>`;
+                            html+=`<td class="text-center" data-server="keterangan">${n.keterangan}</td>`;
+                            html+=`<td class="text-center">`;
+                                html+=`<button class="btn btn-sm btn-primary p-0" data-aksi="edit" data-id="${n.idbaris}" title="EDIT">`;
+                                    html+=`<i class="bi bi-pencil"></i>`
+                                html+=`</button>`;
+                                html+=`<button class="btn btn-sm btn-danger p-0" data-aksi="hapus" data-id="${n.idbaris}" title="HAPUS">`;
+                                    html+=`<i class="bi bi-trash"></i>`
+                                html+=`</button>`;
+                            html+=`</td>`
+                        html+=`</tr>`;
+                    })
+                    html+=`<tr>`
+                        html+=`<td colspan="15" class="text-center">`;
+                            html+=buttonEdu.primary('id="tambahberkas"','Tambah Data')
+                        html+=`</td>`;
+                    html+=`<tr>`
+
+                }else{
+                    html+=`<tr>`
+                        html+=`<td colspan="15" class="text-center">`;
+                            html+=buttonEdu.primary('id="tambahberkas"','Tambah Data')
+                        html+=`</td>`;
+                    html+=`<tr>`
+
+                }
+            html+=`</tbody>`;
+        html+=`</table>`;
+    html+=`</div>`;
+    return html;
+}
 const dataSiswaViews={
     'tambahsiswa' :tambahSiswaView,
     'menucari':menuCari,
@@ -148,6 +301,8 @@ const dataSiswaViews={
     'kontenLaporanMutasi':kontenLaporanMutasi,
     'identitasLaporanMutasi':judulLaporanMutasi,
     'controlSuratKeterangan':controlSuratKeterangan,
-    'controlMenuSPPD':controlMenuSPPD
+    'controlMenuSPPD':controlMenuSPPD,
+    'tabelBerkasPPDB':tabelBerkasPPDB,
+    'formulirBerkasPPdb':formulirBerkasPPdb
 }
 export {dataSiswaViews};

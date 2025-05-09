@@ -34,12 +34,25 @@ export class CallHttp{
         return access;
     }
     callWithProses(){
+        if(this.animationProgress){
+            this.animationProgress.stopProses;
+        }
+
         this.animationProgress = new ProsesBar(0);
         
     }
     stopProgressBar(){
-        this.animationProgress.stopProses;
+        if(this.animationProgress){
+            this.animationProgress.stopProses;
+        }
+
         this.animationProgress = null;
+    }
+    jsonMacro(){
+        return this.#macro;
+    }
+    otherMacro(x){
+        return this.#macro[x]
     }
     set appscript(x){
         this.#apitapel = this.#macro[x];
@@ -68,9 +81,13 @@ export class CallHttp{
         let tahunAwal = thAwal.toString();
         let tahunAkhir = thAkhir.toString();
         return 't_'+tahunAwal.slice(2,4)+tahunAkhir.slice(2,4)+'_s_'+semester;
+        // return 't_2324_s_2';//+tahunAwal.slice(2,4)+tahunAkhir.slice(2,4)+'_s_'+semester;
     }
     get crud (){
         return `https://script.google.com/macros/s/${this.appscript['exec_crud']}/exec`; 
+    }
+    otherCrud (idcrud){
+        return `https://script.google.com/macros/s/${idcrud}/exec`; 
     }
     get urilogin (){
         return `https://script.google.com/macros/s/${this.appscript['exec_user']}/exec?`; 
@@ -91,10 +108,21 @@ export class CallHttp{
     }
     async post(uri,param){
         // if(!this.csrf()) return;
-        const parameter = this.paramFormData(param);
-        const f = await fetch(uri,{body:parameter,method:'post'});
-        const t = await f.json();
-        return t;
+        try{
+            const parameter = this.paramFormData(param);
+            const f = await fetch(uri,{body:parameter,method:'post'});
+            
+            const t = await f.json();
+            return t;
+        }catch(er){
+            if(document.getElementById('printarea')){
+                document.getElementById('printarea').innerHTML = "ERROR, PERIKSA KONEKSI INTERNETNYA! <br>Massage Server: <br>"+er;
+            }else{
+                document.getElementById('infosiswa').innerHTML = "ERROR, PERIKSA KONEKSI INTERNETNYA! <br>Massage Server: <br>"+er;
+
+            }
+        }
+        
     }
     async postAuto(param){
         /**

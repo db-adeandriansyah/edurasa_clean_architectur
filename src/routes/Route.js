@@ -3,13 +3,10 @@ import logo from "../img/lamaso.webp";
 import barloading from "../img/barloading.gif"
 import kotadepok from "../img/kotadepok.webp";
 import ratujaya1 from "../img/ratujaya1.png";
-// import { images } from "../assets/assetFunction";
-// import { headerNavigationAuto } from "../views/header-navigation";
-// import { menubar } from "./SidebarController";
 import { TopHeader } from "../views/header/TopHeader";
 import { Collapse, Tooltip } from "bootstrap";
 import { cardMenu, radioMenu } from "../views/sidebar/cardSidebar";
-import { koleksiRombel } from "./settingApp";
+import { koleksiRombel , JenisKurikulum, faseKey, jenjangFase, faseNameTeks,faseAbjadKarakter, riwayatApiTapel, riwayatApiTapelReal} from "./settingApp";
 
 
 export default class Route{
@@ -19,6 +16,7 @@ export default class Route{
     #fnPermision;
     #objPermision;
     #allowedByUserTypes;
+    #keyApp;
     constructor(){
         this.routes = {};
         this.#User = {};
@@ -29,6 +27,22 @@ export default class Route{
         this.#allowedByUserTypes=[]
         this.checkUserType();
         this.initializeUser();
+        this.koleksiRombel = koleksiRombel;
+        this.riwayatApi = riwayatApiTapel;
+        this.riwayatApiReal = riwayatApiTapelReal;
+        this.JenisKurikulum  =JenisKurikulum; 
+        this.faseKey  =faseKey; 
+        this.jenjangFase  =jenjangFase; 
+        this.faseNameTeks =faseNameTeks;
+        this.faseAbjadKarakter =faseAbjadKarakter;
+        this.#keyApp='';
+    }
+    get RiwayatApi(){
+        return this.riwayatApi;
+        
+    }
+    get key(){
+        return this.#keyApp;
     }
     set UserApp(x){
         this.#User = x;
@@ -69,6 +83,9 @@ export default class Route{
         let tahunAkhir = thAkhir.toString();
         // let currentCode =  't_'+tahunAwal.slice(2,4)+tahunAkhir.slice(2,4)+'_s_'+semester;
         let teksTitle = ' Tapel '+ tahunAwal+'/'+tahunAkhir +' Semester ' + semester;
+        this.#keyApp ='t_'+tahunAwal.slice(2,4)+tahunAkhir.slice(2,4)+'_s_'+semester;
+        // this.#keyApp ='t_2324_s_1'
+        
         this.#User =  {
                 logo                        : logo,
                 barloading                  : barloading,
@@ -162,19 +179,30 @@ export default class Route{
             //halaman Beranda
             if(this.#UserRoles === 'guest'){
                 html = dom.homePage();
+                html+=dom.headerMobile(
+                    dom.mobile_menuProfile()+
+                    dom.mobile_menuDashboard()+
+                    dom.navMobile(
+                            dom.mobile_menuHome()+
+                            // dom.mobile_menuBtnDashboard()+
+                            // dom.mobile_menuBtnProfile(this.#User.imgUser),
+                            dom.mobile_menuLogin(),
+                            true
+                        )
+                    );
             }else{
                 // html = dom.homePageHasLogin(this.#User);
                 html=dom.dashboardHeaderMenu(false);
+                html+=dom.headerMobile(
+                    dom.mobile_menuProfile()+
+                    dom.mobile_menuDashboard()+
+                    dom.navMobile(
+                            dom.mobile_menuHome()+
+                            dom.mobile_menuBtnDashboard()+
+                            dom.mobile_menuBtnProfile(this.#User.imgUser),true
+                        )
+                    );
             }
-            html+=dom.headerMobile(
-                dom.mobile_menuProfile()+
-                dom.mobile_menuDashboard()+
-                dom.navMobile(
-                        dom.mobile_menuHome()+
-                        dom.mobile_menuBtnDashboard()+
-                        dom.mobile_menuBtnProfile(this.#User.imgUser),true
-                    )
-                );
         }else if(url==='/login'){
             html = dom.loginPage()
             //sudah pasti Usernya adalah 'guest'
@@ -182,9 +210,10 @@ export default class Route{
                 dom.mobile_menuProfile()+
                 dom.mobile_menuDashboard()+
                 dom.navMobile(
-                        dom.mobile_menuHome()+
-                        dom.mobile_menuBtnDashboard()+
-                        dom.mobile_menuBtnProfile(this.#User.imgUser),false
+                        dom.mobile_menuHome()
+                        // dom.mobile_menuBtnDashboard()+
+                        // dom.mobile_menuBtnProfile(this.#User.imgUser),
+                        ,false
                     )
                 );
         }else if(url === '/dashboard'){
@@ -262,7 +291,7 @@ export default class Route{
     
     tooltipkan(){
         let doms = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-        [...doms].map(n=> new Tooltip(n))
+        [...doms].map(n=> new Tooltip(n,{trigger:'hover'}))
     }
     redirectHomePage() {
         window.location.href = "/";
@@ -309,6 +338,9 @@ export default class Route{
     getValInLocal(namelocal,key){
         return this.LocalJson(namelocal)[key];
     
+    }
+    LocalJsonNonEncoded(nama){
+        return JSON.parse(window.localStorage.getItem(nama));
     }
     hasLocal(key){
         return window.localStorage.hasOwnProperty(key);

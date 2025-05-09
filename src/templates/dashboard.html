@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
     <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
@@ -11,10 +13,28 @@
     <main class="min-vh-100 bg-tirai pt-0 pt-lg-5">
         <div class="container d-flex justify-content-start flex-column  min-vh-100">
             <div class="blur-box py-5 mt-5 mb-0">
+
+                <div class="bg-light mb-4 mx-2 p-3 rounded d-none" id="infosiswa"></div>
                 <div class="text-wrap d-flex flex-wrap overflow-y-hidden scrol-h-custom shadow-lg m-1" id="datamenuuser"></div>
             </div>
         </div>
 
     </main>
+    <div class="modal fade" id="modalAuto">
+        <div class="modal-dialog modal-lg widthmodal">
+            <div class="modal-content rounded">
+                <div class="modal-header modal-header-sm accord-bg border-bottom">
+                    <h3 class="modal-title fs-4 text-center py-0 judulmodal">Judul Modal</h3>
+                    <button type="button" class="btn-close"  id="btnCloseModal" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="main-content modal-body modalAuto_body">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet alias eos eum, recusandae harum obcaecati?
+                </div>
+                <div class="modal-footer justify-content-end">
+                    <button class="btn btn-sm py-0 btn-secondary rounded-pill button-footer" data-bs-target="#modalAuto2" data-bs-toggle="modal">Open second modal</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

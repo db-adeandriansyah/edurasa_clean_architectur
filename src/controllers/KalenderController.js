@@ -36,7 +36,7 @@ export default class KalenderController extends Fitur{
         //     this.#dbsiswa = response.data;
         // }
         if(!this.App.hasLocal('ptkAlltime')){
-            let response = await this.service.repo.riwayatPtk();
+            let response = await this.kaldikService.repo.riwayatPtk();
             
             this.App.writeLocal('ptkAlltime',JSON.stringify(response.data));
             this.#ptkalltime = response.data;

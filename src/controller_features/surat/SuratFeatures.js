@@ -1,4 +1,4 @@
-// import { tabelDom } from "../../entries/vendor";
+ // import { tabelDom } from "../../entries/vendor";
 import Sppd from "../../domains/SPPD";
 import  SuratKeluar  from "../../domains/SuratKeluar";
 import { SuratMasuk } from "../../models/SuratMasuk";
@@ -130,8 +130,8 @@ export default class SuratFeature{
             par = db.dbSuratKeluar.filter(s=>new Date(s.tglsurat).getFullYear() == new Date(arguments[0]).getFullYear() && s.indekssurat =='Surat Keterangan Aktif' );
         }
         
-        let data = {db:par,judul:this.htmlJudul};
-        
+        let data = {db:par,judul:this.htmlJudul,tapel:this.user.tapel};
+        console.log(this.user.tapel)
         this.workplace.innerHTML = tabelSuratKeluar(data);
 
         let tb = new TableProperties(document.querySelector('#tabel-suratkeluar'));
@@ -221,7 +221,7 @@ export default class SuratFeature{
     }
     listenerDataShow(db,firstmethod,arg){
         const btns = document.querySelectorAll('[data-show]');
-        
+        console.log('argmen', arg)
         btns.forEach(btn=>{
             btn.onclick = (e)=> {
                 let atr = btn.getAttribute('data-show');
@@ -230,7 +230,7 @@ export default class SuratFeature{
                 let camelCase_atr_lower = camelCase_atr.toLocaleLowerCase();
                 let metod = 'lds_'+camelCase_atr_lower;
                 let arraySuratTemplate = ['Surat Keterangan Aktif','Surat Keterangan NISN','Surat Keterangan Diterima','Surat Keterangan Pindah']
-                
+                console.log('first method',metod)
                 if(this[metod]){
                     //untuk method yang dibuatkan methodnya
                     this[metod](db,idsuratkeluar,firstmethod,arg)
@@ -762,6 +762,7 @@ export default class SuratFeature{
                 olehSuratKeluar: ormSuratkeluar.oleh,
                 canAcces:permision
             }
+            console.log('data sppd',data)
             let viewModal = modalPtkDiperintah(data);
             
             this.Modal.settingHeder('Daftar SPPD');
@@ -776,7 +777,7 @@ export default class SuratFeature{
                     let idSppd = btn.getAttribute('data-idsppd');
                     let idSuratKeluar = btn.getAttribute('data-idsuratkeluar');
                     let currentSppdPerson = sppdItem.data.filter(s=>s.idbaris == idSppd)[0];
-                    
+                    console.log('data currentSppdPerson',currentSppdPerson)
                     if(tipeShow == 'show'){
                         let datamodal = {
                             sppd:currentSppdPerson,
@@ -998,7 +999,8 @@ export default class SuratFeature{
             suratkeluar:ormSuratkeluar,
             datasiswa:ormSuratkeluar.detail_target_siswa,
             template:snakeCaseTemplate,
-            canAcces:permision
+            canAcces:permision,
+            tapel:this.user.tapel
 
         };
         let viewModal = modalSuratSiswa(data);

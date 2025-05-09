@@ -9,7 +9,8 @@ const KodeMapelKumer = {
     "RUPA":"Seni Rupa",
     // "TARI":"Seni Tari",
     "PJOK":"Pendidikan Jasmani, Olahraga, dan Kesehatan",
-    "BSUND":"Bahasa dan Sastra Sunda"
+    "BSUND":"Bahasa dan Sastra Sunda",
+    "BING"  :"Bahasa Inggris"
 }
 const KodeMapelKurtilas = {
     "PAI":"Pendidikan Agama Islam dan Budi Pekerti",
@@ -22,7 +23,8 @@ const KodeMapelKurtilas = {
     "IPS":"Ilmu Pengetahuan Sosial",
     "SBDP":"Seni Budaya dan Prakarya",
     "PJOK":"Pendidikan Jasmani, Olahraga, dan Kesehatan",
-    "BSUND":"Bahasa dan Sastra Sunda"
+    "BSUND":"Bahasa dan Sastra Sunda",
+    "BING"  :"Bahasa Inggris"
 }
 const MapelKurtilasRendah =()=>{
     let mapelKurtilas = Object.assign({},KodeMapelKurtilas);
@@ -41,6 +43,8 @@ const MapelKurmerTinggi =()=>{
 const MapelKurmerRendah =()=>{
     let mapelKurtilas = Object.assign({},KodeMapelKumer);
     delete mapelKurtilas.IPAS;
+    
+    delete mapelKurtilas.BING;
     return mapelKurtilas
 }
 const mapelkdcp_kurikulum={

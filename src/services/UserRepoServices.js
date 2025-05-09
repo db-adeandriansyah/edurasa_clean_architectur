@@ -19,7 +19,8 @@ export default class UserService extends UserRepositories{
         }
         let data = null;
         let result = false;
-        if(tokensiswa.length == 10){
+        
+        if(token.length == 10){
             data = await this.loginSiswaByNISN(token);
         }else{
             data = await this.loginSiswaByToken(token);
@@ -54,9 +55,10 @@ export default class UserService extends UserRepositories{
     }
     
     async allSiswa(){
-        const dataSiswa = await this.callSiswa()
+        const dataSiswa = await this.callSiswa();
+        console.log(dataSiswa)
         // this.stopProgressBar();
-        window.localStorage.setItem('dbSiswa',JSON.stringify(dataSiswa.datasiswa));
+        window.localStorage.setItem('dbSiswa',JSON.stringify(dataSiswa.data));
     }
 
 
