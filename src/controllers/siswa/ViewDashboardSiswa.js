@@ -6,6 +6,7 @@ export default class ViewDashboardSiswa{
     constructor(service, currentSiswa){
         this.service=service;
         this.currentSiswa = currentSiswa;
+        this.dontClose = null;
 
     }
 

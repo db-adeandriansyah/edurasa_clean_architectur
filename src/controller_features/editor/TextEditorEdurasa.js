@@ -1128,6 +1128,7 @@ export default class TextEditorEdurasa{
                     let newurl = new UrlImg(respon.idfile).urlImg; ;//`https://lh3.googleusercontent.com/d/${respon.data.idfile}`;
                     el.src = newurl;
                     el.alt = "Gambar Upload";
+                    el.setAttribute('referrerpolicy','no-referrer')
                     this.iframeDom.body.focus();
                 });
     }

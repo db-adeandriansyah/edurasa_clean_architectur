@@ -8,6 +8,7 @@ const EntriePoint=  {
     'absensi'       :{import:'./src/entries/absensi.js'   ,dependOn:['app','vendor','pdf']},
     'kurikulum'     :{import:'./src/entries/kurikulum.js'   ,dependOn:['app','vendor','pdf']},
     'kalender'      :{import:'./src/entries/kalender.js'   ,dependOn:['app','vendor','pdf']},
+    // 'profil'      :{import:'./src/entries/profil.js'   ,dependOn:['app','vendor','pdf']},
     'banksoal'      :{import:'./src/entries/newBankSoal.js'   ,dependOn:['app','vendor','pdf','vendorsoal']},
     //versi lama
     // 'banksoal'      :{import:'./src/entries/banksoal.js'   ,dependOn:['app','vendor','pdf']},
@@ -223,6 +224,21 @@ const pagesConfig = [
         chunks:['style','indukview','bukuinduk','pdf','app','vendor','raportview','pagination'],
         publicPath:'/'
     },
+    // {
+    //     title:'Profil',
+    //     filename:'profil/index.html',
+    //     template:'./src/templates/fitur.html',
+    //     inject:'body',
+    //     favicon:'./src/img/lamaso.ico',
+    //     // chunks:['style','indukview','bukuinduk','pdf','app','vendor','raportview','pagination'],
+    //     chunks:['style','app','profil','vendor'],
+    //     meta: {
+    //         'description':'Aplikasi Manajemen Berbasis Sekolah SDN Ratujaya 1',
+    //         'theme-color': '#ffffff',
+    //         'apple-mobile-web-app-status-bar':'#ffffff'
+    //     },
+    //     publicPath:'/'
+    // },
 ];
 
 

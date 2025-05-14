@@ -154,7 +154,7 @@ export default class BukuIndukFitur{
         const select = document.querySelector('[data-keyedit="aktif"]');
         select.onchange = (e)=> viewInduk.createRowByActivation(e.target.value);
         const btnSave = document.getElementById('btnSave');
-        const btnUploads = document.querySelectorAll('[data-upload]')
+        // const btnUploads = document.querySelectorAll('[data-upload]')
         if(btnSave){
             btnSave.onclick = async()=>{
                 const elementData = this.Modal2.body.querySelectorAll('[data-keyedit]');

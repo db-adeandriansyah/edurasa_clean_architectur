@@ -31,7 +31,8 @@ export default class BuildHtmlNaskah{
                 mapel+=this.pradesain.mapelTema.join(', ');
             }
             
-            let elemendurasi = document.getElementById('durasi');
+            let elemendurasi = document.getElementById('durasi')?.value??this.pradesain.durasi;
+            console.log(elemendurasi);
             let teksend = new Intl.DateTimeFormat('id-ID', {
                             hour: "numeric",
                             minute: "numeric",
@@ -42,7 +43,7 @@ export default class BuildHtmlNaskah{
                                 minute: "numeric",
                                 // timeZoneName: "short",
                             }).format(new Date(this.pradesain.start_waktu));
-            let durasi = `${teks_start}-${teksend} (${elemendurasi.value} Menit)`;
+            let durasi = `${teks_start}-${teksend} (${elemendurasi} Menit)`;
             let dataidentitas={
                 'mapelidentitas':mapel,
                 'namakurikulum':this.pradesain.longKurikulum,

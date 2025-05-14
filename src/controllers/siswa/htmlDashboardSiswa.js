@@ -90,9 +90,9 @@ const viewAbsen = (data)=>{
                 }
             ],'Hadir');
         html+=`<hr class="border-bottom"/>`;
-        html+=inputsElements.grupInputFile('grupInput','','Cara 1','pilihpoto','Pilih Poto','',' accept="image/*" capture="user"');
+        html+=inputsElements.grupInputFile('grupInput','',`<i clss="bi bi-camera"></i> Ambil Poto`,'pilihpoto','Pilih Poto','',' accept="image/*" capture="user"');
         // html+=inputsElements.grupInputFile('grupInput','','Cara 2','pilihpoto','Pilih Poto','',' accept="image/*" capture="user"');
-        html+= buttonEdu.primary('data-aksi="uploadstreamer" id="uploadfile2"','Cara 2')
+        // html+= buttonEdu.primary('data-aksi="uploadstreamer" id="uploadfile2"','Cara 2')
         
         html+=`</div>`;
     html+=`</div>`;
