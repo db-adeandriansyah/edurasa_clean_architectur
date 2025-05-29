@@ -1,6 +1,6 @@
-// @import './_shake.scss';
-@import './sticky-table';
-@import './w3-table';
+// @use './_shake.scss';
+@use './sticky-table';
+@use './w3-table';
 .papantulis{
     background-image: url('../img/papantulis.png');
     background-repeat: no-repeat;

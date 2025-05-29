@@ -58,6 +58,7 @@ export default class KbmService{
         this.repo.callWithProses();
 
         const respon = await this.repo.callPropertiMultiple(arrayTab);
+        
         respon.forEach(n=>{
             let tabrespon = n.info.namaTab;
             let cek = arrayTab.filter(s=> s.tab == tabrespon)[0];
@@ -68,6 +69,7 @@ export default class KbmService{
                 this.#db = Object.assign(this.#db, {[cek.tabdb]:n.data,['blangko_'+cek.tabdb]:n.info.objKosong});
             }
         });
+       
         
         this.repo.stopProgressBar();
     }

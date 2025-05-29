@@ -1,4 +1,5 @@
 import IjazahFitur from "../controller_features/ijazah/IjazahFitur";
+import IjazahFiturKurmer from "../controller_features/ijazah/IjazahFiturKurmer";
 import KbmFitur from "../controller_features/kbm/KbmFitur";
 import OrmMapel from "../controller_features/mapel/OrmMapel";
 import viewOrmMapel from "../controller_features/mapel/viewOrmMapel";
@@ -26,7 +27,8 @@ export default class RaporIjazahController extends Fitur{
         this.reload = null;
         this.arrayReload = [];
         this.controlApi = [];
-        this.dataTabMundurSatu = []
+        this.dataTabMundurSatu = [];
+        this.instanceOlahIjazah = null;
     }
     
     settingHeaderPage(){
@@ -1911,7 +1913,92 @@ export default class RaporIjazahController extends Fitur{
         this.saveToNilaiRapor(btnSave,'setting_perkembangan',this.fokusMenu,'data-key');
 
     }
+    sumberRefrensiOlahIjazah(){
+        let _kelas5semester1 = this.defineSemesterSemesterSebelumnya(3);
+        
+        let _kelas5semester1_prefik     = 'kelas5semester1_';
+        let _kelas5semester1_rombel     = _kelas5semester1.rombelMundur;
+        let _kelas5semester1_tabnilai    ='newRekapRaport_'+_kelas5semester1.rombelMundur +'_k3_'+_kelas5semester1.rombelMundur;
+        let _kelas5semester1_tabnilai2   ='newRekapRaport_'+_kelas5semester1.rombelMundur+'_k4_'+_kelas5semester1.rombelMundur;
+        let _kelas5semester1_ss         = 'ss_nilai_'+_kelas5semester1.jenjangMundur;
+        let _kelas5semester1_api        = this.service.repo.otherMacro(_kelas5semester1.api.api);
+        let _kelas5semester1_crud       = this.service.repo.otherCrud(_kelas5semester1_api.exec_crud);
+        
+        let _kelas5semester2 = this.defineSemesterSemesterSebelumnya(2);
+        
+        let _kelas5semester2_prefik = 'kelas5semester2_';
+        let _kelas5semester2_rombel     = _kelas5semester2.rombelMundur;
+        let _kelas5semester2_tabnilai   =  'newRekapRaport_k3_'+_kelas5semester2.rombelMundur;
+        let _kelas5semester2_tabnilai2   =  'newRekapRaport_K4_'+_kelas5semester2.rombelMundur;
+        let _kelas5semester2_ss         = 'ss_nilai_'+_kelas5semester2.jenjangMundur;
+        let _kelas5semester2_api        = this.service.repo.otherMacro(_kelas5semester2.api.api);
+        let _kelas5semester2_crud       = this.service.repo.otherCrud(_kelas5semester2_api.exec_crud);
+        let param_k5s2 = [
+        ];
+        let param_k5s1 = [
+            {
+            idss    : _kelas5semester1_api[_kelas5semester1_ss],
+            tab     : _kelas5semester1_tabnilai,
+            },
+            {
+            idss    : _kelas5semester1_api[_kelas5semester1_ss],
+            tab     : _kelas5semester1_tabnilai2,
+            },
+            
+            {
+            idss    : _kelas5semester2_api[_kelas5semester2_ss],
+            tab     : _kelas5semester2_tabnilai,
+            },
+            {
+            idss    : _kelas5semester2_api[_kelas5semester2_ss],
+            tab     : _kelas5semester2_tabnilai2,
+            },
+        ];
+    }
     async dataolahijazah(){
+        this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
+        if(this.fokusJenjang == 6 && this.setApp.semester == 1){
+            this.workplace.innerHTML = 'Hanya bisa diakses di semester 2';
+            return;
+        }else{
+            if(this.fokusJenjang!=6){
+                this.workplace.innerHTML = 'Hanya bisa diakses oleh guru kelas 6';
+                return;
+            }
+        }
+        this.kbmFitur.settingRombel(this.fokusRombel)
+        this.conditionalSubemenu();
+        // await this.kbmFitur.init_raport();
+        this.ormMapel.createLabelMapel();
+        // this.maincontrol.innerHTML = 'rekap nilai asli';// viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="rapor_sementara" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        // this.ormMapel.init();
+        // this.ormMapel.ormSiswaOnlyRaporAsli();
+        // this.ormMapel.withNilaiRaporSiap();
+        this.maincontrol.innerHTML ="";// viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="selection-mapel" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        this.workplace.innerHTML = this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
+        //
+        // // panggil semua data;
+        // console.log('auth',this.Auth);
+        // console.log('this.App',this.App)
+        // console.log('ormMapel', this.ormMapel);
+        
+        if(!this.instanceOlahIjazah){
+            this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
+        }
+        await this.instanceOlahIjazah.init();
+        let db = this.instanceOlahIjazah.collectionSiswa.simpleFilter({'nama_rombel':this.fokusRombel}).selectProperties(['id','pd_nama','nama_rombel','olah_ijazah']).sortByProperty('nama_rombel','asc').data;
+        
+        let identitas = {
+            'tapel':this.setApp.tapel,
+            'judul' : 'Kelas '+this.fokusRombel,
+            'mapelnon': this.ormMapel.labelNonAgamaIncludeMulok.filter(s=>s.value!=='BING')
+        }
+        this.workplace.innerHTML = viewRapor.viewPengolahanIjazahBaru(db,identitas,false);
+        let tb = new TableProperties(document.querySelector('#rekapijazah'));
+            tb.freezeColumn([1]);
+            tb.addScrollUpDown();
+    }
+    async dataolahijazah_(){
         this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
         if(this.fokusJenjang == 6 && this.setApp.semester == 1){
             this.workplace.innerHTML = 'Hanya bisa diakses di semester 2';
@@ -2000,11 +2087,10 @@ export default class RaporIjazahController extends Fitur{
         await this.service.nilaiRaporOtherMacro(_kelas6semester1_crud,param_k6s1,_kelas6semester1_prefik);
         
         
-
         
         const ijazah = new IjazahFitur(this.service,this.ormMapel.collectionsSiswa).init();
         const testSiswa = this.ormMapel.collectionsSiswa.data;
-        
+        console.log('collection ormMapel',this.ormMapel.collectionsSiswa)
         const selecting = document.querySelector('[data-pradesain="selection-mapel"]');
         selecting.onchange = (e)=>{
             let identitas = {
@@ -2017,6 +2103,43 @@ export default class RaporIjazahController extends Fitur{
         selecting.dispatchEvent(new Event('change'));
     }
     async ijazahAll(){
+        this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
+        if(this.fokusJenjang == 6 && this.setApp.semester == 1){
+            this.workplace.innerHTML = 'Hanya bisa diakses di semester 2';
+            return;
+        }else{
+            if(this.fokusJenjang!=6){
+                this.workplace.innerHTML = 'Hanya bisa diakses oleh guru kelas 6';
+                return;
+            }
+        }
+        // let cekapi =this.service.repo.otherMacro(satuSemesterSebelumnya.api.api);
+        // let httpOtherCrud = this.service.repo.otherCrud(cekapi.exec_crud);
+        this.conditionalSubemenu();
+        this.kbmFitur.settingRombel(this.fokusRombel);
+        
+        if(!this.instanceOlahIjazah){
+            this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.Auth)
+        }
+        // console.log(this.instanceOlahIjazah)
+        
+        if(!this.instanceOlahIjazah){
+            this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
+        }
+        await this.instanceOlahIjazah.init();
+        let db = this.instanceOlahIjazah.collectionSiswa.selectProperties(['id','pd_nama','nama_rombel','olah_ijazah']).sortByProperty('nama_rombel','asc').data;
+        
+        let identitas = {
+            'tapel':this.setApp.tapel,
+            'judul' : 'Kelas 6',
+            'mapelnon': this.ormMapel.labelNonAgamaIncludeMulok.filter(s=>s.value!=='BING')
+        }
+        this.workplace.innerHTML = viewRapor.viewPengolahanIjazahBaru(db,identitas,true);
+        let tb = new TableProperties(document.querySelector('#rekapijazah'));
+            tb.freezeColumn([1]);
+            tb.addScrollUpDown();
+    }
+    async ijazahAll_(){
         this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
         if(this.fokusJenjang == 6 && this.setApp.semester == 1){
             this.workplace.innerHTML = 'Hanya bisa diakses di semester 2';

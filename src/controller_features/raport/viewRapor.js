@@ -2747,7 +2747,9 @@ const tabelDataRapoIjazah = (fokusmapel, db,withClass=false)=>{
     return html;
 }
 const tabelIjazahOlah = (data,db,all)=>{
-    
+    console.log(data);
+        console.log(db);
+            console.log(all);
     let html = "";
     html+=`<h3 class="text-center mb-0">Pengolahan Nilai Ijazah</h3>`;
     html+=`<h4 class="text-center mb-0">${data.fokusmapel_teks}</h4>`;
@@ -3270,7 +3272,79 @@ const tabelCek = (arrayObjek)=>{
     html+=`</div>`;
     return html;
 }
+const viewPengolahanIjazahBaru = (db,data,showClassroom=false)=>{
+    let html = "";
+    html+=`<h3 class="text-center mb-0">Pengolahan Nilai Ijazah</h3>`;
+    html+=`<h3 class="text-center mb-0">${data.judul??data.judul}</h3>`;
+    html+=`<h4 class="text-center mb-3">Tahun Pelajaran ${data.tapel}</h4>`;
+    html+=`<div class="table-responsive">`;
+     html+=`<table class="table table-sm table-bordered border-dark lh-1 font10 toExcel" id="rekapijazah">`;;
+        html+=`<thead>`;
+            html+=`<tr>`;
+                html+=`<th rowspan="4" class="text-center align-middle text-bg-secondary" style="width:20px">No</td>`;
+                html+=`<th rowspan="4" class="text-center align-middle text-bg-secondary">Nama Siswa</td>`;
+                if(showClassroom) html+=`<th rowspan="4" class="text-center align-middle text-bg-secondary">Kelas</td>`;
+                html+=`<th colspan="40" class="text-center align-middle text-bg-secondary">Mata Pelajaran</td>`;
+                html+=`<th rowspan="4" class="text-center align-middle text-bg-secondary">Nilai Ijazah</td>`;
+            html+=`</tr>`;
+            html+=`<tr>`;
+                html+=`<th colspan="5" class="text-center align-middle text-bg-secondary">Pendidikan Agama</th>`;
+                data.mapelnon.forEach(n=>{
+                    html+=`<th colspan="5" class="text-center align-middle text-bg-secondary">${n.label}</th>`;
+                })
+            html+=`</tr>`;
+            html+=`<tr>`;
+            [...Array(8)].forEach(item=>{
+                [5,6].forEach(k=>{
+                    html+=`<th colspan="2" class="text-center align-middle text-bg-secondary">Kelas ${k}</th>`;
+                })
+                html+=`<th rowspan="2" class="text-center align-middle text-bg-secondary">Rerata</th>`;
 
+            })
+            html+=`</tr>`;
+            html+=`<tr>`;
+            [...Array(8)].forEach(item=>{
+                [1,2,1,2].forEach(k=>{
+                    html+=`<th class="text-center align-middle text-bg-secondary">semester ${k}</th>`;
+                    
+                })
+
+            });
+            html+=`</tr>`;
+            
+        html+=`</thead>`;
+        html+=`<tbody>`;
+        db.forEach((dbs,i)=>{
+            let olahijazah = dbs.olah_ijazah;
+            html+=`<tr>`;
+                html+=`<td class="border border-secondary-subtle text-center">${(i+1)}</td>`;
+                html+=`<td class="border border-secondary-subtle bg-white text-nowrap">${(dbs.pd_nama)}</td>`;
+                if(showClassroom) html+=`<td class="border border-secondary-subtle bg-white text-center">${(dbs.nama_rombel)}</td>`;
+                //agama;
+                olahijazah.filter(s=>s.kategori =='Agama').forEach(agama=>{
+                    html+=`<td class="border border-secondary-subtle text-center">${Number(agama.n_k5_s1).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center">${Number(agama.n_k5_s2).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center">${Number(agama.n_k6_s1).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center">${Number(agama.n_k6_s2).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center bg-primary-subtle">${(agama.n_rerata)}</td>`;
+                })
+                //nonAgama;
+                olahijazah.filter(s=>s.kategori !=='Agama').forEach(mp=>{
+                    html+=`<td class="border border-secondary-subtle text-center">${Number(mp.n_k5_s1).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center">${Number(mp.n_k5_s2).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center">${Number(mp.n_k6_s1).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center">${Number(mp.n_k6_s2).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center bg-primary-subtle">${(mp.n_rerata)}</td>`;
+                })
+                html+=`<td class="border border-secondary-subtle text-center"/>`
+            html+=`</tr>`;
+        })
+        html+=`</tbody>`;
+    html+='</table>';
+
+    html+=`</div>`;
+    return html;
+}
 const viewRapor = {
     'viewDepanRapor'            : viewDepanRapor,
     'tabelRekapRapor'           : tabelRekapRapor,
@@ -3301,7 +3375,8 @@ const viewRapor = {
     'controlHTMLPrint'          :controlHTMLPrint,
     'guidesIjazah'              :guidesIjazah,
     'html_control_riwayat_raport'   :html_control_riwayat_raport,
-    'tabelCek'                  :tabelCek
+    'tabelCek'                  :tabelCek,
+    'viewPengolahanIjazahBaru' : viewPengolahanIjazahBaru
 
 }
 

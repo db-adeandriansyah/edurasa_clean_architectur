@@ -175,7 +175,7 @@ export default class AlgoritmaNilai {
                         predikat = 'Baik';
                     }
                     result.raporAsli_nilaiMax_number = cariMax;
-                    result.raporAsli_kdMax_object = dataKdMax.objek_kd[0];
+                    result.raporAsli_kdMax_object = dataKdMax?.objek_kd[0];
                     result.raporAsli_kdMax_predikat_string = predikat;
     
                     result.raporAsli_nilaiMin_number = '';
@@ -222,13 +222,13 @@ export default class AlgoritmaNilai {
                     }
                     let notDuplicate = true;
                     
-                    if(dataKdMax.kd == dataKdMin.kd){
+                    if(dataKdMax?.kd == dataKdMin?.kd){
                         notDuplicate = false;
                         dataKdMin = propertikurikulummapel.filter((s,i)=>i!= cariIndex)[0];
                     }
                     
                     result.raporAsli_nilaiMaks_number = cariMax;
-                    result.raporAsli_kdMax_object = dataKdMax.objek_kd[0];
+                    result.raporAsli_kdMax_object = dataKdMax?.objek_kd[0];
                     result.raporAsli_kdMax_predikat_string = predikat;
     
                     result.raporAsli_nilaiMin_number = cariMin;
