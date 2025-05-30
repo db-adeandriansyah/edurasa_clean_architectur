@@ -2980,7 +2980,7 @@ const skl = (data,identitas,withnilai=false)=>{
         html+=`<div class="table-responsive">`;
             html+=`<table class="table table-sm table-borderless lh-1">`;
                 html+=`<tr>`;
-                    html+=`<td>Nama</td><td style="width:10px">:</td>`;
+                    html+=`<td style="250px">Nama</td><td style="width:10px">:</td>`;
                     html+=`<td data-skl="pd_nama"></td>`
                 html+=`</tr>`;
                 html+=`<tr>`;
