@@ -1986,17 +1986,21 @@ export default class RaporIjazahController extends Fitur{
             this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
         }
         await this.instanceOlahIjazah.init();
-        let db = this.instanceOlahIjazah.collectionSiswa.simpleFilter({'nama_rombel':this.fokusRombel}).selectProperties(['id','pd_nama','nama_rombel','olah_ijazah']).sortByProperty('nama_rombel','asc').data;
-        
+        let db = this.instanceOlahIjazah.collectionSiswa.simpleFilter({'nama_rombel':this.fokusRombel}).selectProperties(['id','pd_nama','nama_rombel','olah_ijazah','nilai_akhir_ijazah']).sortByProperty('nama_rombel','asc').data;
+        console.log(db);
         let identitas = {
             'tapel':this.setApp.tapel,
             'judul' : 'Kelas '+this.fokusRombel,
-            'mapelnon': this.ormMapel.labelNonAgamaIncludeMulok.filter(s=>s.value!=='BING')
+            'mapelnon': this.ormMapel.labelNonAgamaIncludeMulok//.filter(s=>s.value!=='BING')
         }
         this.workplace.innerHTML = viewRapor.viewPengolahanIjazahBaru(db,identitas,false);
         let tb = new TableProperties(document.querySelector('#rekapijazah'));
             tb.freezeColumn([1]);
             tb.addScrollUpDown();
+            
+        this.maincontrol.innerHTML = viewRapor.menuIjazah('refresh','Refresh Data');// viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="rapor_sementara" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        this.refreshIjazah('rekapijazah');
+        
     }
     async dataolahijazah_(){
         this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
@@ -2119,7 +2123,7 @@ export default class RaporIjazahController extends Fitur{
         this.kbmFitur.settingRombel(this.fokusRombel);
         
         if(!this.instanceOlahIjazah){
-            this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.Auth)
+            this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
         }
         // console.log(this.instanceOlahIjazah)
         
@@ -2127,17 +2131,20 @@ export default class RaporIjazahController extends Fitur{
             this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
         }
         await this.instanceOlahIjazah.init();
-        let db = this.instanceOlahIjazah.collectionSiswa.selectProperties(['id','pd_nama','nama_rombel','olah_ijazah']).sortByProperty('nama_rombel','asc').data;
+        let db = this.instanceOlahIjazah.collectionSiswa.selectProperties(['id','pd_nama','nama_rombel','olah_ijazah','nilai_akhir_ijazah']).sortByProperty('nama_rombel','asc').data;
         
         let identitas = {
             'tapel':this.setApp.tapel,
             'judul' : 'Kelas 6',
-            'mapelnon': this.ormMapel.labelNonAgamaIncludeMulok.filter(s=>s.value!=='BING')
+            'mapelnon': this.ormMapel.labelNonAgamaIncludeMulok//.filter(s=>s.value!=='BING')
         }
         this.workplace.innerHTML = viewRapor.viewPengolahanIjazahBaru(db,identitas,true);
         let tb = new TableProperties(document.querySelector('#rekapijazah'));
             tb.freezeColumn([1]);
             tb.addScrollUpDown();
+        this.maincontrol.innerHTML = viewRapor.menuIjazah('refresh','Refresh Data');// viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="rapor_sementara" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        this.refreshIjazah('rekapijazah');
+        
     }
     async ijazahAll_(){
         this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
@@ -2323,6 +2330,227 @@ export default class RaporIjazahController extends Fitur{
                 }
     }
     async cetakskl2(){
+        this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
+        if(this.fokusJenjang == 6 && this.setApp.semester == 1){
+            this.workplace.innerHTML = 'Hanya bisa diakses di semester 2';
+            return;
+        }else{
+            if(this.fokusJenjang!=6){
+                this.workplace.innerHTML = 'Hanya bisa diakses oleh guru kelas 6';
+                return;
+            }
+        }
+        // let cekapi =this.service.repo.otherMacro(satuSemesterSebelumnya.api.api);
+        // let httpOtherCrud = this.service.repo.otherCrud(cekapi.exec_crud);
+        this.conditionalSubemenu();
+        this.kbmFitur.settingRombel(this.fokusRombel);
+        
+        if(!this.instanceOlahIjazah){
+            this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
+        }
+        // console.log(this.instanceOlahIjazah)
+        
+        if(!this.instanceOlahIjazah){
+            this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
+        }
+        await this.instanceOlahIjazah.init();
+        let db = this.instanceOlahIjazah.collectionSiswa.selectProperties(['id','pd_nama','pd_namaayah','pd_namaibu','nis','nisn','tempat_tanggal_lahir','nama_rombel','olah_ijazah','nilai_akhir_ijazah']).sortByProperty('nama_rombel','asc').data;
+        console.log(db);
+        const identitas = {
+            'nosurat' :'036',
+            'tahunsurat':'2025',
+            'dasarhukum':'Berdasarkan SK Kelulusan Kepala Sekolah No. 421.2/B.2-098/SKL/RJ1/V/2025 Tanggal 28 Mei 2025',
+            'tanggal_kelulusan':'2 Juni 2025'
+
+        }
+        this.workplace.innerHTML = viewRapor.skl(db,identitas,true);
+        this.controlPrintSkl(db,viewRapor.viewSkl);
+    }
+    async cetak_transkip(){
+        this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
+        if(this.fokusJenjang == 6 && this.setApp.semester == 1){
+            this.workplace.innerHTML = 'Hanya bisa diakses di semester 2';
+            return;
+        }else{
+            if(this.fokusJenjang!=6){
+                this.workplace.innerHTML = 'Hanya bisa diakses oleh guru kelas 6';
+                return;
+            }
+        }
+        // let cekapi =this.service.repo.otherMacro(satuSemesterSebelumnya.api.api);
+        // let httpOtherCrud = this.service.repo.otherCrud(cekapi.exec_crud);
+        this.conditionalSubemenu();
+        this.kbmFitur.settingRombel(this.fokusRombel);
+        
+        if(!this.instanceOlahIjazah){
+            this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
+        }
+        // console.log(this.instanceOlahIjazah)
+        
+        if(!this.instanceOlahIjazah){
+            this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
+        }
+        await this.instanceOlahIjazah.init();
+        let db = this.instanceOlahIjazah.collectionSiswa.selectProperties(['id','pd_nama','nis','nisn','tempat_tanggal_lahir','nama_rombel','olah_ijazah','nilai_akhir_ijazah','no_ijazah','tanggal_kelulusan','no_surat']).sortByProperty('nama_rombel','asc').data;
+        console.log(db);
+        const identitas = {
+            'nosurat' :'036',
+            'tahunsurat':'2025',
+            'dasarhukum':'Berdasarkan SK Kelulusan Kepala Sekolah No. 421.2/B.2-098/SKL/RJ1/V/2025 Tanggal 28 Mei 2025',
+            'tanggal_kelulusan':'2 Juni 2025'
+
+        }
+        this.workplace.innerHTML = viewRapor.sklTranskip(db,identitas,true);
+        this.controlPrintSkl(db,viewRapor.viewSkl);
+    }
+    async transkipijazah(){
+        this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
+        if(this.fokusJenjang == 6 && this.setApp.semester == 1){
+            this.workplace.innerHTML = 'Hanya bisa diakses di semester 2';
+            return;
+        }else{
+            if(this.fokusJenjang!=6){
+                this.workplace.innerHTML = 'Hanya bisa diakses oleh guru kelas 6';
+                return;
+            }
+        }
+        // let cekapi =this.service.repo.otherMacro(satuSemesterSebelumnya.api.api);
+        // let httpOtherCrud = this.service.repo.otherCrud(cekapi.exec_crud);
+        this.conditionalSubemenu();
+        this.kbmFitur.settingRombel(this.fokusRombel);
+        
+        if(!this.instanceOlahIjazah){
+            this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
+        }
+        // console.log(this.instanceOlahIjazah)
+        
+        if(!this.instanceOlahIjazah){
+            this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
+        }
+        await this.instanceOlahIjazah.init();
+        let db = this.instanceOlahIjazah.collectionSiswa.selectProperties(['id','pd_nama','nis','nisn','tempat_tanggal_lahir','nama_rombel','olah_ijazah','nilai_akhir_ijazah','no_ijazah','tanggal_kelulusan','no_surat']).sortByProperty('nama_rombel','asc').data;
+        console.log(db);
+        this.workplace.innerHTML = viewRapor.EditIdentitasTranskip(db);
+        this.maincontrol.innerHTML = viewRapor.menuTranskip();
+        let tb = new TableProperties(document.querySelector('#tabel_transkip'));
+            tb.freezeColumn([2]);
+            tb.addScrollUpDown();
+        const tomboltanggal = document.getElementById('id_tanggal');
+        const tabel = document.getElementById('tabel_transkip').querySelector('tbody');
+        const btnSave = document.getElementById('simpan_server_ijazah');
+        const inputmasal = document.getElementById('id_prefix');
+        const inputsurat = document.getElementById('id_nosurat');
+        tomboltanggal.onchange = (e)=>{
+            
+            for(let i = 0 ; i < tabel.rows.length ; i++){
+                tabel.rows[i].cells[6].innerHTML = new Date(e.target.value).toLocaleString('id-ID',{dateStyle:'long'});
+            };
+        }
+        inputsurat.oninput = (e)=>{
+            
+            for(let i = 0 ; i < tabel.rows.length ; i++){
+                tabel.rows[i].cells[7].innerHTML = `421.2/${e.target.value}/${(i+1).toString().padStart(3,'0')}/SdnRaja1/VI/2025`;
+            };
+            let tb = new TableProperties(document.querySelector('#tabel_transkip'));
+            tb.freezeColumn([2]);
+            tb.addScrollUpDown();
+        }
+        inputmasal.oninput = (e)=>{
+            
+            for(let i = 0 ; i < tabel.rows.length ; i++){
+                tabel.rows[i].cells[5].innerHTML = e.target.value;
+            };
+            let tb = new TableProperties(document.querySelector('#tabel_transkip'));
+            tb.freezeColumn([2]);
+            tb.addScrollUpDown();
+        }
+        btnSave.onclick = async()=>{
+             let arr = db;
+            let mapel = arr[0].olah_ijazah.map(n=>n.title);
+            let arHeader = ['id','pd_nama','nis','nisn','no_surat','tanggal_kelulusan', ...mapel,'no_ijazah','rerataijazah'];
+            let arrKontent = [];
+            arr.forEach(item=>{
+                let data = {};
+                arHeader.forEach(dbt=>{
+                    if(dbt =='tanggal_kelulusan'){
+                        data[dbt] = document.getElementById('id_tanggal').value;
+                    }else if(dbt =='no_surat'){
+                        data[dbt] = document.querySelector(`[data-nosurat="${item.id}"]`).innerHTML;
+                    }else if(dbt =='rerataijazah'){
+
+                        data[dbt] = item.nilai_akhir_ijazah.nilai??"";
+                    }else if(dbt =='no_ijazah'){
+
+                        data[dbt] = document.querySelector(`[data-noijazah="${item.id}"]`).innerHTML;
+                    }else if(mapel.includes(dbt)){
+
+                        data[dbt] = item.olah_ijazah.find(s=>s.title==dbt)?.n_rerata;
+                    }else{
+                        data[dbt]=item[dbt];
+                    }
+                    
+                })
+                
+                arrKontent.push(data);
+            });
+            console.log(arrKontent);
+            await this.service.saveNilaiRaporMasal(arrKontent,6,'nilai_ijazah_6','id');
+            await this.instanceOlahIjazah.init();
+        }
+            
+    }
+    controlPrintSkl(db,cb){
+        let tag = 0;
+        let value = 0
+        const btnPrev = document.getElementById('btnLeft');
+        const btnNext = document.getElementById('btnRight');
+        const btnPrint = document.getElementById('btnPrintKelulusan');
+        const targetSiswa = document.getElementById('selectTargetSiswa');
+        btnPrev.onclick = ()=>{
+            const selector = document.getElementById('selectTargetSiswa');
+            if(selector.selectedIndex == 0){
+                return
+            }
+            selector.selectedIndex-- ;
+            tag = selector.selectedIndex;
+            value = selector[tag].value;
+            targetSiswa.dispatchEvent(new Event('change'));
+        }
+
+        btnNext.onclick = ()=>{
+            const selector = document.getElementById('selectTargetSiswa');
+            if(selector.selectedIndex == (db.length-1)){
+                return
+            }
+            selector.selectedIndex++ ;
+            tag = selector.selectedIndex;
+            value = selector[tag].value;
+            targetSiswa.dispatchEvent(new Event('change'));
+        }
+        
+        targetSiswa.onchange = (e)=>{
+            let datasiswa = db.find(s=>s.id == e.target.value);
+            let domskl = document.querySelectorAll('[data-skl]');
+            domskl.forEach(el=>{
+                let atr = el.getAttribute('data-skl');
+                if(atr=='index'){
+                    el.innerHTML = (e.target.selectedIndex+1);
+                }else if(atr == 'tabelbody_skl'){
+                    el.innerHTML = cb(datasiswa);
+                }else if(atr == 'tanggal_kelulusan'){
+                    el.innerHTML = new Date(datasiswa[atr]).toLocaleString('id-ID',{dateStyle:'long'});
+                }else{
+                    el.innerHTML = datasiswa[atr]??'';
+                }
+            })
+
+        }
+        targetSiswa.dispatchEvent(new Event('change'));
+        btnPrint.onclick = ()=>{
+            this.printPortraitDom(this.workplace)
+        }
+    }
+    async cetakskl2_(){
         if(this.fokusJenjang == 6 && this.setApp.semester == 1){
             this.workplace.innerHTML = 'Hanya bisa diakses di semester 2';
             return;
@@ -2487,6 +2715,74 @@ export default class RaporIjazahController extends Fitur{
                 }
     }
     async rekapijazah(){
+        this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
+        if(this.fokusJenjang == 6 && this.setApp.semester == 1){
+            this.workplace.innerHTML = 'Hanya bisa diakses di semester 2';
+            return;
+        }else{
+            if(this.fokusJenjang!=6){
+                this.workplace.innerHTML = 'Hanya bisa diakses oleh guru kelas 6';
+                return;
+            }
+        }
+        this.kbmFitur.settingRombel(this.fokusRombel)
+        this.conditionalSubemenu();
+        // await this.kbmFitur.init_raport();
+        this.ormMapel.createLabelMapel();
+        this.maincontrol.innerHTML = viewRapor.menuIjazah('refresh','Refresh Data');// viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="rapor_sementara" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        // this.ormMapel.init();
+        // this.ormMapel.ormSiswaOnlyRaporAsli();
+        // this.ormMapel.withNilaiRaporSiap();
+        // this.maincontrol.innerHTML ="";// viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="selection-mapel" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        this.workplace.innerHTML = this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
+        
+        //
+        // // panggil semua data;
+        // console.log('auth',this.Auth);
+        // console.log('this.App',this.App)
+        // console.log('ormMapel', this.ormMapel);
+        
+        if(!this.instanceOlahIjazah){
+            this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
+        }
+        await this.instanceOlahIjazah.init();
+        
+        let db = this.instanceOlahIjazah.collectionSiswa.selectProperties(['id','pd_nama','nama_rombel','olah_ijazah','nilai_akhir_ijazah']).sortByProperty('nama_rombel','asc').data;
+        let identitas = {
+            'tapel':this.setApp.tapel,
+            'judul' : 'Kelas '+this.fokusRombel,
+            'mapelnon': this.ormMapel.labelNonAgamaIncludeMulok//.filter(s=>s.value!=='BING')
+        }
+        this.workplace.innerHTML = viewRapor.rekapijazahkurmer(db,identitas);
+        const mapelNonAgama = this.ormMapel.labelNonAgamaIncludeMulok;
+        let arrayIndex = [3]; // start kolom3;
+        let arrayImport = ['id','namasiswa'];
+        mapelNonAgama.forEach((colmp, i_colmp)=>{
+            arrayIndex.push((i_colmp+3));
+            arrayImport.push(colmp.value);
+        });
+        arrayImport.push('rerata');
+        arrayImport.push('rangking');
+        let datarangking = new StatistikRangking(db)
+                    .FromTable(document.getElementById('rekapijazah'))
+                    .fromIndexRerata(arrayIndex)
+                    .calculateRerata()
+                    .calculateRangking();
+        // datarangking.fillRerataInIndexColoumn(arrayIndex.length+2);
+        datarangking.fillRangkinInIndexColoumn(arrayIndex.length+4);
+        this.maincontrol.innerHTML = viewRapor.menuIjazah('refresh','Refresh Data');// viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="rapor_sementara" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        this.refreshIjazah('rekapijazah');
+        
+    }
+    refreshIjazah(method){
+        const btn = document.querySelector('[data-klikbutton="refresh"');
+        btn.onclick = async ()=>{
+            await this.instanceOlahIjazah.forceInit();
+            await this[method]();
+
+        }
+    }
+    async rekapijazah_(){
         if(this.fokusJenjang == 6 && this.setApp.semester == 1){
             this.workplace.innerHTML = 'Hanya bisa diakses di semester 2';
             return;
@@ -2630,6 +2926,44 @@ export default class RaporIjazahController extends Fitur{
             tb.freezeColumn([1]);
             tb.addScrollUpDown();
         
+    }
+    async rapor5semester(){
+        this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
+        if(this.fokusJenjang == 6 && this.setApp.semester == 1){
+            this.workplace.innerHTML = 'Hanya bisa diakses di semester 2';
+            return;
+        }else{
+            if(this.fokusJenjang!=6){
+                this.workplace.innerHTML = 'Hanya bisa diakses oleh guru kelas 6';
+                return;
+            }
+        }
+        // let cekapi =this.service.repo.otherMacro(satuSemesterSebelumnya.api.api);
+        // let httpOtherCrud = this.service.repo.otherCrud(cekapi.exec_crud);
+        this.conditionalSubemenu();
+        this.kbmFitur.settingRombel(this.fokusRombel);
+        
+        if(!this.instanceOlahIjazah){
+            this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
+        }
+        // console.log(this.instanceOlahIjazah)
+        
+        if(!this.instanceOlahIjazah){
+            this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
+        }
+        await this.instanceOlahIjazah.init();
+        let db = this.instanceOlahIjazah.collectionSiswa.selectProperties(['id','pd_nama','nama_rombel','nilai_5_semester','rerata_akhir_5_semester','is_pindahan']).sortByProperty('nama_rombel','asc').data;
+        console.log(db);
+        console.log(db.filter(s=>s.is_pindahan!==false));
+        const identitas = {
+            'judul':'Sebagai Nilai Prestasi Siswa',
+            'tapel':this.setApp.tapel,
+        }
+        this.workplace.innerHTML = viewRapor.viewRapor5Semester(db,identitas,true);
+        let tb = new TableProperties(document.querySelector('#rekapijazah'));
+            tb.freezeColumn([1]);
+            tb.addScrollUpDown();
+
     }
     async loadIjazahIfNeeded(){
         

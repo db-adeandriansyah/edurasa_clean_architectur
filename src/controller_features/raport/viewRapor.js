@@ -1,4 +1,4 @@
-import controlbanksoal from "../../views/banksoal/controlBankSoal";
+//import controlbanksoal from "../../views/banksoal/controlBankSoal";
 import buttonEdu from "../../views/components/buttons";
 import inputsElements from "../../views/components/input-elements";
 import rowCols from "../../views/components/row-cols";
@@ -2759,7 +2759,24 @@ const tabelIjazahOlah = (data,db,all)=>{
     html+=`</div>`;
     return html;
 }
-const viewSkl = (data)=>{
+const viewSkl =(data)=>{
+    let html="";
+    let nilai = data.olah_ijazah;
+    nilai.forEach((mp,i)=>{
+        html+=`<tr>`;
+            html+=`<td class="text-center">${(i+1)}</td>`
+            html+=`<td class="text-start">${mp.mapel}</td>`
+            html+=`<td class="text-center">${mp.n_rerata}</td>`
+        html+=`</tr>`;
+    });
+    
+        html+=`<tr>`;
+            html+=`<td class="text-center" colspan="2">Rata-rata</td>`;
+            html+=`<td class="text-center">${data.nilai_akhir_ijazah.nilai}</td>`
+        html+=`</tr>`;
+    return html;
+}
+const viewSkl2324 = (data)=>{
     let html="";
     html+=`<tr><td colspan="3">Kelompok A</td></tr>`;
     data.filter(s=>['AGAMA','PKN','BINDO','MTK','IPA','IPS'].includes(s.kodemapel_umum)).forEach((n,i)=>{
@@ -2796,7 +2813,7 @@ const viewSkl = (data)=>{
     html+=`<tr><td colspan="2" class="text-center">Rata-rata</td><td class="text-center">${rerata}</td></tr>`;
     return html;
 }
-const skl = (data,htmlkop,withnilai=false)=>{
+const skl2324 = (data,htmlkop,withnilai=false)=>{
     let html="";
     html+=`<div id="areaprint" class="tnr p-2">`;
         html+=htmlkop
@@ -2868,6 +2885,236 @@ const skl = (data,htmlkop,withnilai=false)=>{
                     html+=`<tr><td></td><td><br/><br/><br/><br/><br/></td></tr>`
                     html+=`<tr><td colspan="2" class="text-center fw-bold"><u>Yoce Magdalena, S.Pd.SD</u></td></tr>`
                     html+=`<tr><td colspan="2" class="text-center">NIP. 19730720 200003 2 005</td></tr>`
+                html+=`</table>`;
+            html+=`</div>`;
+        html+=`</div>`
+        
+    html+=`</div>`;
+    html+=controlHTMLPrint(data);
+    return html;
+}
+const sklTranskip = (data,identitas,withnilai=false)=>{
+    let html="";
+    html+=`<div id="areaprint" class="tnr p-2">`;
+        html+=`<h3 class="mb-0 mt-4 text-center fw-bold text-uppercase text-decoration-underline">TRANSKIP NILAI</h3>`;
+        html+=`<p class="mb-4 text-center">Nomor :<span data-skl="no_surat"></span></p>`;
+        
+        
+        html+=`<div class="table-responsive">`;
+            html+=`<table class="table table-sm table-borderless lh-1">`;
+                html+=`<tr>`;
+                    html+=`<td style="width:250px">Satuan Pendidikan</td><td style="width:10px">:</td>`;
+                    html+=`<td>SD Negeri Ratujaya 1 - Kec. Cipayung - Kota Depok</td>`
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td>Nomor Pokok Sekolah Nasional</td><td style="width:10px">:</td>`;
+                    html+=`<td>20228914</td>`
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td>Nama Lengkap</td><td style="width:10px">:</td>`;
+                    html+=`<td data-skl="pd_nama"></td>`
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td class="text-nowrap">Tempat,Tanggal Lahir</td><td style="width:10px">:</td>`;
+                    html+=`<td><span data-skl="tempat_tanggal_lahir"></span></span></td>`;
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td>Nomor Induk Siswa Nasional</td><td style="width:10px">:</td>`;
+                    html+=`<td data-skl="nisn"></td>`;
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td>Nomor Ijazah</td><td style="width:10px">:</td>`;
+                    html+=`<td data-skl="no_ijazah"></td>`;
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td>Tanggal Kelulusan</td><td style="width:10px">:</td>`;
+                    html+=`<td data-skl="tanggal_kelulusan"></td>`;
+                html+=`</tr>`;
+            html+=`</table>`;
+        html+=`</div>`;
+        
+        if(withnilai){
+            html+=`<table class="table table-sm table-bordered border-dark llh-1">`;
+                html+=`<thead>`;
+                    html+=`<tr>`;
+                        html+=`<th class="text-center align-middle" style="width:30px">No</th>`;
+                        html+=`<th class="text-center align-middle">Mata Pelajaran</th>`;
+                        html+=`<th class="text-center align-middle" style="width:120px">Nilai</th>`;
+                    html+=`</tr>`;
+                html+=`</thead>`;
+                html+=`<tbody data-skl="tabelbody_skl">`;
+                html+=`</tbody>`;
+            html+=`</table>`;
+
+        }
+        html+=`<div class="row mt-5 justify-content-end">`;
+            html+=`<div class="col-6">`;
+                html+=`<table class="table table-sm table-borderless lh-1">`;
+                    html+=`<tr>`;
+                        html+=`<td colspan="2" class="text-center">Kota Depok, <span data-skl="tanggal_kelulusan"></span></td>`;
+                    html+=`</tr>`;
+                    html+=`<tr><td colspan="2" class="text-center">Kepala UPTD SDN Ratujaya 1</td></tr>`
+                    html+=`<tr><td></td><td><br/><br/><br/><br/><br/></td></tr>`
+                    html+=`<tr><td colspan="2" class="text-center fw-bold"><u>Yoce Magdalena, S.Pd.SD</u></td></tr>`
+                    html+=`<tr><td colspan="2" class="text-center">NIP. 19730720 200003 2 005</td></tr>`
+                html+=`</table>`;
+            html+=`</div>`;
+        html+=`</div>`
+        
+    html+=`</div>`;
+    html+=controlHTMLPrint(data);
+    return html;
+}
+const skl = (data,identitas,withnilai=false)=>{
+    let html="";
+    html+=`<div id="areaprint" class="tnr p-2">`;
+        html+=`<h3 class="mb-0 mt-4 text-center fw-bold text-uppercase text-decoration-underline">SURAT KETERANGAN KELULUSAN</h3>`;
+        html+=`<h5 class="mb-4 text-center">No.: 421.2/${identitas.nosurat}.<span data-skl="index"></span>/SDNRAJA1/VI/${identitas.tahunsurat}</h5>`;
+        html+=`<p>Kepala SD Negeri Ratujaya 1 selaku penyelenggara Penilaian Sumatif Akhir Jenjang Tahun Pelajaran 2023/2024 berdasarkan:</p>`;
+        html+=`<ol>`
+            html+=`<li>Ketuntasan dari seluruh program pembelajaran pada Kurikulum Nasional yang ditetapkan dan dijalankan di sekolah</li>`;
+            html+=`<li>Kriteria kelulusan dari satuan pendidikan sesuai dengan peraturan perundang-undangan</li>`
+            html+=`<li>${identitas.dasarhukum}</li>`
+        html+=`</ol>`
+        html+=`<p>menerangkan bahwa:</p>`;
+        html+=`<div class="table-responsive">`;
+            html+=`<table class="table table-sm table-borderless lh-1">`;
+                html+=`<tr>`;
+                    html+=`<td>Nama</td><td style="width:10px">:</td>`;
+                    html+=`<td data-skl="pd_nama"></td>`
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td class="text-nowrap">Tempat dan Tanggal Lahir</td><td style="width:10px">:</td>`;
+                    html+=`<td><span data-skl="tempat_tanggal_lahir"></span></span></td>`;
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td class="text-nowrap">Nama Orang Tua/wali</td><td style="width:10px">:</td>`;
+                    html+=`<td><span data-skl="pd_namaayah"></span> / <span data-skl="pd_namaibu"></span></td>`;
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td>Nomor Induk Siswa</td><td style="width:10px">:</td>`;
+                    html+=`<td data-skl="nis"></td>`;
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td>Nomor Induk Siswa Nasional</td><td style="width:10px">:</td>`;
+                    html+=`<td data-skl="nisn"></td>`;
+                html+=`</tr>`;
+            html+=`</table>`;
+        html+=`</div>`;
+        html+=`<p>dinyatakan</p>`;
+        // html+=`<div class="row justify-content-center">`;
+        //     html+=`<div class="col-4 fs-1 text-center align-middle border fw-bolder shadow-lg rounded p-3">L U L U S</div>`
+        // html+=`</div>`
+        html+=`<div style="padding:2px 15px;text-align:center;font-weight:900;font-size:28px">---LULUS /<s>TIDAK LULUS</s>---</div>`
+        if(withnilai){
+            html+= `<p>Dengan nilai sebagai berikut:</p>`;
+            html+=`<table class="table table-sm table-bordered border-dark llh-1">`;
+                html+=`<thead>`;
+                    html+=`<tr>`;
+                        html+=`<th class="text-center align-middle" style="width:30px">No</th>`;
+                        html+=`<th class="text-center align-middle">Mata Pelajaran</th>`;
+                        html+=`<th class="text-center align-middle" style="width:120px">Nilai</th>`;
+                    html+=`</tr>`;
+                html+=`</thead>`;
+                html+=`<tbody data-skl="tabelbody_skl">`;
+                html+=`</tbody>`;
+            html+=`</table>`;
+
+        }
+        html+=`<div class="row mt-5 justify-content-end">`;
+            html+=`<div class="col-6">`;
+                html+=`<table class="table table-sm table-borderless lh-1">`;
+                    html+=`<tr>`;
+                        html+=`<td>Ditetapkan di</td>`;
+                        html+=`<td>: Depok</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td>Pada Tanggal</td>`;
+                        html+=`<td>: ${identitas.tanggal_kelulusan}</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr><td colspan="2">Kepala UPTD SDN Ratujaya 1</td></tr>`
+                    html+=`<tr><td></td><td><br/><br/><br/><br/><br/></td></tr>`
+                    html+=`<tr><td colspan="2" class="text-start fw-bold"><u>Yoce Magdalena, S.Pd.SD</u></td></tr>`
+                    html+=`<tr><td colspan="2" class="text-start">NIP. 19730720 200003 2 005</td></tr>`
+                html+=`</table>`;
+            html+=`</div>`;
+        html+=`</div>`
+        
+    html+=`</div>`;
+    html+=controlHTMLPrint(data);
+    return html;
+}
+const TranskipIjzah = (data,identitas,withnilai=false)=>{
+    let html="";
+    html+=`<div id="areaprint" class="tnr p-2">`;
+        html+=`<h3 class="mb-0 mt-4 text-center fw-bold text-uppercase text-decoration-underline">SURAT KETERANGAN KELULUSAN</h3>`;
+        html+=`<h5 class="mb-4 text-center">No.: 421.2/${identitas.nosurat}.<span data-skl="index"></span>/SdnRaja1/VI/${identitas.tahunsurat}</h5>`;
+        html+=`<p>Kepala SD Negeri Ratujaya 1 selaku penyelenggara Penilaian Sumatif Akhir Jenjang Tahun Pelajaran 2023/2024 berdasarkan:</p>`;
+        html+=`<ol>`
+            html+=`<li>Ketuntasan dari seluruh program pembelajaran pada Kurikulum Nasional yang ditetapkan dan dijalankan di sekolah</li>`;
+            html+=`<li>Kriteria kelulusan dari satuan pendidikan sesuai dengan peraturan perundang-undangan</li>`
+            html+=`<li>${identitas.dasarhukum}</li>`
+        html+=`</ol>`
+        html+=`<p>menerangkan bahwa:</p>`;
+        html+=`<div class="table-responsive">`;
+            html+=`<table class="table table-sm table-borderless lh-1">`;
+                html+=`<tr>`;
+                    html+=`<td style="width:230px">Nama</td><td style="width:10px">:</td>`;
+                    html+=`<td data-skl="pd_nama"></td>`
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td class="text-nowrap">Tempat dan Tanggal Lahir</td><td style="width:10px">:</td>`;
+                    html+=`<td><span data-skl="tempat_tanggal_lahir"></span></span></td>`;
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td class="text-nowrap">Nama Orang Tua/wali</td><td style="width:10px">:</td>`;
+                    html+=`<td><span data-skl="pd_namaayah"></span> / <span data-skl="pd_namaibu"></span></td>`;
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td>Nomor Induk Siswa</td><td style="width:10px">:</td>`;
+                    html+=`<td data-skl="nis"></td>`;
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td>Nomor Induk Siswa Nasional</td><td style="width:10px">:</td>`;
+                    html+=`<td data-skl="nisn"></td>`;
+                html+=`</tr>`;
+            html+=`</table>`;
+        html+=`</div>`;
+        html+=`<p>dinyatakan</p>`;
+        // html+=`<div class="row justify-content-center">`;
+        //     html+=`<div class="col-4 fs-1 text-center align-middle border fw-bolder shadow-lg rounded p-3">L U L U S</div>`
+        // html+=`</div>`
+        html+=`<div style="padding:2px 15px;text-align:center;font-weight:900;font-size:28px">---LULUS /<s>TIDAK LULUS</s>---</div>`
+        if(withnilai){
+            html+= `<p>Dengan nilai sebagai berikut:</p>`;
+            html+=`<table class="table table-sm table-bordered border-dark llh-1">`;
+                html+=`<thead>`;
+                    html+=`<tr>`;
+                        html+=`<th class="text-center align-middle" style="width:30px">No</th>`;
+                        html+=`<th class="text-center align-middle">Mata Pelajaran</th>`;
+                        html+=`<th class="text-center align-middle" style="width:120px">Nilai</th>`;
+                    html+=`</tr>`;
+                html+=`</thead>`;
+                html+=`<tbody data-skl="tabelbody_skl">`;
+                html+=`</tbody>`;
+            html+=`</table>`;
+
+        }
+        html+=`<div class="row mt-5 justify-content-end">`;
+            html+=`<div class="col-6">`;
+                html+=`<table class="table table-sm table-borderless lh-1">`;
+                    html+=`<tr>`;
+                        html+=`<td>Ditetapkan di</td>`;
+                        html+=`<td>: Depok</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td>Pada Tanggal</td>`;
+                        html+=`<td>: ${identitas.tanggal_kelulusan}</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr><td colspan="2">Kepala UPTD SDN Ratujaya 1</td></tr>`
+                    html+=`<tr><td></td><td><br/><br/><br/><br/><br/></td></tr>`
+                    html+=`<tr><td colspan="2" class="text-start fw-bold"><u>Yoce Magdalena, S.Pd.SD</u></td></tr>`
+                    html+=`<tr><td colspan="2" class="text-start">NIP. 19730720 200003 2 005</td></tr>`
                 html+=`</table>`;
             html+=`</div>`;
         html+=`</div>`
@@ -3284,7 +3531,7 @@ const viewPengolahanIjazahBaru = (db,data,showClassroom=false)=>{
                 html+=`<th rowspan="4" class="text-center align-middle text-bg-secondary" style="width:20px">No</td>`;
                 html+=`<th rowspan="4" class="text-center align-middle text-bg-secondary">Nama Siswa</td>`;
                 if(showClassroom) html+=`<th rowspan="4" class="text-center align-middle text-bg-secondary">Kelas</td>`;
-                html+=`<th colspan="40" class="text-center align-middle text-bg-secondary">Mata Pelajaran</td>`;
+                html+=`<th colspan="45" class="text-center align-middle text-bg-secondary">Mata Pelajaran</td>`;
                 html+=`<th rowspan="4" class="text-center align-middle text-bg-secondary">Nilai Ijazah</td>`;
             html+=`</tr>`;
             html+=`<tr>`;
@@ -3294,7 +3541,7 @@ const viewPengolahanIjazahBaru = (db,data,showClassroom=false)=>{
                 })
             html+=`</tr>`;
             html+=`<tr>`;
-            [...Array(8)].forEach(item=>{
+            [...Array(9)].forEach(item=>{
                 [5,6].forEach(k=>{
                     html+=`<th colspan="2" class="text-center align-middle text-bg-secondary">Kelas ${k}</th>`;
                 })
@@ -3303,7 +3550,7 @@ const viewPengolahanIjazahBaru = (db,data,showClassroom=false)=>{
             })
             html+=`</tr>`;
             html+=`<tr>`;
-            [...Array(8)].forEach(item=>{
+            [...Array(9)].forEach(item=>{
                 [1,2,1,2].forEach(k=>{
                     html+=`<th class="text-center align-middle text-bg-secondary">semester ${k}</th>`;
                     
@@ -3330,13 +3577,13 @@ const viewPengolahanIjazahBaru = (db,data,showClassroom=false)=>{
                 })
                 //nonAgama;
                 olahijazah.filter(s=>s.kategori !=='Agama').forEach(mp=>{
-                    html+=`<td class="border border-secondary-subtle text-center">${Number(mp.n_k5_s1).toFixed(0)}</td>`;
-                    html+=`<td class="border border-secondary-subtle text-center">${Number(mp.n_k5_s2).toFixed(0)}</td>`;
-                    html+=`<td class="border border-secondary-subtle text-center">${Number(mp.n_k6_s1).toFixed(0)}</td>`;
-                    html+=`<td class="border border-secondary-subtle text-center">${Number(mp.n_k6_s2).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center">${mp.n_k5_s1==""?"":Number(mp.n_k5_s1).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center">${mp.n_k5_s2==""?"":Number(mp.n_k5_s2).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center">${mp.n_k6_s1==""?"":Number(mp.n_k6_s1).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center">${mp.n_k6_s2==""?"":Number(mp.n_k6_s2).toFixed(0)}</td>`;
                     html+=`<td class="border border-secondary-subtle text-center bg-primary-subtle">${(mp.n_rerata)}</td>`;
                 })
-                html+=`<td class="border border-secondary-subtle text-center"/>`
+                html+=`<td class="border border-secondary-subtle text-center">${dbs.nilai_akhir_ijazah.nilai}</td>`
             html+=`</tr>`;
         })
         html+=`</tbody>`;
@@ -3344,6 +3591,238 @@ const viewPengolahanIjazahBaru = (db,data,showClassroom=false)=>{
 
     html+=`</div>`;
     return html;
+}
+const viewRapor5Semester = (db,data,showClassroom=false)=>{
+    let mapel = db[0].nilai_5_semester;
+    let html = "";
+    html+=`<h3 class="text-center mb-0">Rekapitulasi Nilai Rapor 5 Semester</h3>`;
+    html+=`<h3 class="text-center mb-0">${data.judul??data.judul}</h3>`;
+    html+=`<h4 class="text-center mb-3">Tahun Pelajaran ${data.tapel}</h4>`;
+    html+=`<div class="table-responsive">`;
+     html+=`<table class="table table-sm table-bordered border-dark lh-1 font10 toExcel" id="rekapijazah">`;;
+        html+=`<thead>`;
+            html+=`<tr>`;
+                html+=`<th rowspan="4" class="text-center align-middle text-bg-secondary" style="width:20px">No</td>`;
+                html+=`<th rowspan="4" class="text-center align-middle text-bg-secondary">Nama Siswa</td>`;
+                if(showClassroom) html+=`<th rowspan="4" class="text-center align-middle text-bg-secondary">Kelas</td>`;
+                //mapelnya [agama, pkn, bindo, mtk, ipas]
+                // @mapel butuh 6 kolom
+                // jadi 6 x 5 = 30
+                html+=`<th colspan="30" class="text-center align-middle text-bg-secondary">Mata Pelajaran</td>`;
+                html+=`<th rowspan="4" class="text-center align-middle text-bg-secondary">Rerata Akhir</td>`;
+            html+=`</tr>`;
+            html+=`<tr>`;
+                mapel.forEach(n=>{
+                    html+=`<th colspan="6" class="text-center align-middle text-bg-secondary">${n.mapel}</th>`;
+                })
+            html+=`</tr>`;
+            html+=`<tr>`;
+            mapel.forEach(item=>{
+                [4,5,6].forEach(k=>{
+                    html+=`<th ${k==6?"":`colspan="2"`} class="text-center align-middle text-bg-secondary">Kelas ${k}</th>`;
+                })
+                html+=`<th rowspan="2" class="text-center align-middle text-bg-secondary">Rerata</th>`;
+
+            })
+            html+=`</tr>`;
+            html+=`<tr>`;
+            mapel.forEach(item=>{
+                [1,2,1,2,1].forEach(k=>{
+                    html+=`<th class="text-center align-middle text-bg-secondary">${k}</th>`;
+                    
+                })
+
+            });
+            html+=`</tr>`;
+            
+        html+=`</thead>`;
+        html+=`<tbody>`;
+        db.forEach((dbs,i)=>{
+            let nilai = dbs.nilai_5_semester;
+            html+=`<tr>`;
+                html+=`<td class="border border-secondary-subtle text-center">${(i+1)}</td>`;
+                html+=`<td class="border border-secondary-subtle bg-white text-nowrap">${(dbs.pd_nama)}</td>`;
+                if(showClassroom) html+=`<td class="border border-secondary-subtle bg-white text-center">${(dbs.nama_rombel)}</td>`;
+                //agama;
+                nilai.filter(s=>s.kategori =='Agama').forEach(agama=>{
+                    html+=`<td class="border border-secondary-subtle text-center">${agama.n_k4_s1==""?"":Number(agama.n_k4_s1).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center">${agama.n_k4_s2==""?"":Number(agama.n_k4_s2).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center">${agama.n_k5_s1==""?"":Number(agama.n_k5_s1).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center">${agama.n_k5_s2==""?"":Number(agama.n_k5_s2).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center">${agama.n_k6_s1==""?"":Number(agama.n_k6_s1).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center bg-primary-subtle">${(agama?.n_rerata)}</td>`;
+                })
+                //nonAgama;
+                nilai.filter(s=>s.kategori !=='Agama').forEach(mp=>{
+                    html+=`<td class="border border-secondary-subtle text-center">${mp.n_k4_s1==""?"":Number(mp.n_k4_s1).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center">${mp.n_k4_s2==""?"":Number(mp.n_k4_s2).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center">${mp.n_k5_s1==""?"":Number(mp.n_k5_s1).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center">${mp.n_k5_s2==""?"":Number(mp.n_k5_s2).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center">${mp.n_k6_s1==""?"":Number(mp.n_k6_s1).toFixed(0)}</td>`;
+                    html+=`<td class="border border-secondary-subtle text-center bg-primary-subtle">${(mp?.n_rerata)}</td>`;
+                })
+                html+=`<td class="border border-secondary-subtle text-center">${dbs.rerata_akhir_5_semester.nilai}</td>`
+            html+=`</tr>`;
+        })
+        html+=`</tbody>`;
+    html+='</table>';
+
+    html+=`</div>`;
+    html+=`<div class="font10 table-responsive">`;
+        html+=`<h3 class="text-center">Siswa yang terindikasi sebagai siswa pindahan</h3>`;
+        html+=`<table class="table table-sm table-bordered">`;
+            html+=`<thead>`;
+                html+=`<tr>`;
+                    html+=`<th class="text-center text-bg-secondary">No</th>`
+                    html+=`<th class="text-center text-bg-secondary">Nama</th>`
+                    html+=`<th class="text-center text-bg-secondary">NIS</th>`
+                    html+=`<th class="text-center text-bg-secondary">Masuk Tanggal</th>`
+                    html+=`<th class="text-center text-bg-secondary">Asal Sekolah</th>`
+                html+=`</tr>`;
+            html+=`</thead>`;
+            html+=`<tbody>`;
+            db.filter(s=>s.is_pindahan).forEach((item,i)=>{
+                html+=`<tr>`;
+                    html+=`<td class="text-center">${(i+1)}</td>`;
+                    html+=`<td class="text-nowrap">${(item.pd_nama)}</td>`;
+                    html+=`<td class="text-center">${(item.is_pindahan.nis)}</td>`;
+                    html+=`<td class="text-center">${(item.is_pindahan.masuk_tgl==""?"":new Date(item.is_pindahan.masuk_tgl).toLocaleString('id-ID',{dateStyle:'long'}))}</td>`;
+                    html+=`<td class="text-center">${item.is_pindahan.sekolah_asal}</td>`;
+                html+=`</tr>`;
+            })
+            html+=`</tbody>`;
+        html+=`</table>`;
+    html+=`</div>`;
+
+    return html;
+}
+const rekapijazahkurmer = (db, identitas)=>{
+    let html = "";
+    const mapel = db[0].olah_ijazah.map(n=>n.title)
+    console.log(mapel);
+    html+=`<h3 class="text-center mb-0">Rekapitulasi Nilai Ijazah</h3>`;
+    html+=`<h3 class="text-center mb-3">Tahun Pelajaran ${identitas.tapel}</h3>`;
+    html+=`<div class="table-responsive">`;
+        html+=`<table class="table table-sm table-bordered border-dark lh-1 font10 toExcel" id="rekapijazah">`;
+            html+=`<thead>`;
+                html+=`<tr>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle" style="width:29px">No</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">Nama Siswa</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">Kelas</th>`;
+                    html+=`<th colspan="9" class="text-center text-bg-secondary align-middle">Nilai Mata Pelajaran</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">Nilai Ijazah</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-secondary align-middle">Rangking</th>`;
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    mapel.forEach(n=>{
+                        html+=`<th class="text-center text-bg-secondary align-middle">${n}</th>`
+                    })
+                html+=`</tr>`;
+            html+=`</thead>`;
+            html+=`<tbody>`;
+                    db.forEach((item,i)=>{
+                        html+=`<tr>`;
+                            html+=`<td class="text-center">${(i+1)}</td>`;
+                            html+=`<td class="text-nowrap">${(item.pd_nama)}</td>`;
+                            html+=`<td class="text-center">${(item.nama_rombel)}</td>`;
+                            let nilai = item.olah_ijazah;
+                            mapel.forEach(mp=>{
+                                let n = nilai.find(s=>s.title == mp)?.n_rerata;
+                                html+=`<td class="text-center">${(n)}</td>`;
+                            });
+                            html+=`<td class="text-center">${item.nilai_akhir_ijazah.nilai}</td>`;
+                            html+=`<td class="text-center"></td>`;
+                        html+=`</tr>`;
+                    })
+            html+=`</tbody>`;
+        html+=`</table>`;
+    html+=`</div>`;
+
+    return html;
+}
+const menuIjazah = (dataklik,title)=>{
+    let html="";
+    html+= rowCols.rows('justify-content-center',
+            rowCols.cols('col-md-6',
+                cardMenu('Menu',
+                    `<button class="btn btn-primary rounded-fill" data-klikbutton="${dataklik}">${title}</button>`,
+                    false 
+                )
+                
+            )
+        )
+        return html;
+}
+const menuTranskip = ()=>{
+    let html ="";
+    html+=`<div class="row justify-content-center">`;
+                
+                html+=`<div class="col-6 p-2">`;
+                html+=cardMenu('Input Masal',
+                    inputsElements.floatingDate('id_tanggal','Tanggal Kelulusan','2025-06-02')
+                    +
+                    inputsElements.floatingText('id_prefix','Prefix No Ijasah (15 Digit)','1-11-2025-000')
+                    +
+                    inputsElements.floatingText('id_nosurat','No Surat','038')
+                    
+                    ,false
+                );
+                html+=`</div>`;
+            html+=`</div>`;
+    return html;
+}
+const EditIdentitasTranskip = (db) =>{
+    let html ="";
+        html+=`<div id="olahasal" class="table-responsive">`;
+        html+=`<h2 class="text-center fw-bold mb-3">Data Identitas Transkip Ijazah</h2>`;
+            html+=`Data Sekolah`;
+            html+=`<table class="table table-sm table-borderless lh-1 font14 mb-3">`;
+                html+=`<tbody>`;
+                    html+=`<tr>`;
+                        html+=`<td class="text-nowarp" style="width:100px">Satuan Pendidikan</td><td style="width:5px">:</td>`;
+                        html+=`<td style="width:100px">SDN Ratujaya 1</td>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<td class="text-nowarp">Nomor Pokok Sekolah Nasional</td><td>:</td>`;
+                        html+=`<td>20228914</td>`;
+                    html+=`</tr>`;
+                html+=`</tbody>`;
+            html+=`</table>`;
+            html+=`</div><div class="table-responsive">`
+            html+=`<table class="table table-sm table-bordered font12" id="tabel_transkip">`;
+                html+=`<thead>`;
+                    html+=`<tr>`;
+                        html+=`<th class="text-center align-middle text-bg-secondary">No</th>`
+                        html+=`<th class="text-center print-hide align-middle text-bg-secondary">Id</th>`
+                        html+=`<th class="text-center text-bg-secondary">Nama Lengkap</th>`
+                        html+=`<th class="text-center align-middle text-bg-secondary">Tempat Tanggal Lahir</th>`
+                        html+=`<th class="text-center text-bg-secondary">Nomor Induk Siswa Nasional</th>`
+                        html+=`<th class="text-center text-bg-secondary">Nomor Ijazah</th>`
+                        html+=`<th class="text-center text-bg-secondary">Tanggal Kelulusan</th>`;
+                        html+=`<th class="text-center text-bg-secondary">No Surat Transkip</th>`;
+                    html+=`</tr>`;
+                html+=`</thead>`;  
+                html+=`<tbody>`;
+                    db.forEach((item,i)=>{
+                        html+=`<tr>`;
+                            html+=`<td class="text-center">${(i+1)}</td>`;
+                            html+=`<td class="text-center print-hide">${item.id}</td>`;
+                            html+=`<td class="text-nowrap">${item.pd_nama}</td>`;
+                            html+=`<td class="text-nowrap">${item.tempat_tanggal_lahir}</td>`;
+                            html+=`<td class="text-center ${item.nisn.length!==10?'text-bg-warning':''}">${item.nisn}</td>`;
+                            html+=`<td class="text-nowrap" data-noijazah="${item.id}" contenteditable="true">${item.no_ijazah}</td>`;
+                            html+=`<td class="text-nowrap">${item.tanggal_kelulusan!==''?new Date(item.tanggal_kelulusan).toLocaleString('id-ID',{dateStyle:'long'}):''}</td>`;
+                            html+=`<td class="text-nowarp" data-nosurat="${item.id}">${item.no_surat}</td>`;
+                        html+=`</tr>`;
+                    })  
+                html+=`</tbody>`;  
+            html+=`</table>`;
+        html+=`</div>`;
+        html+=`<div class="sticky-md-bottom text-center accord-bg print-hide rounded shadow-lg py-2">`;
+        html+=`<button class="btn btn-sm btn-primary" id="simpan_server_ijazah">Simpan</button> <p class="font10">Cetak Transkip berdasarkan penyimpanan data ini, pastikan Anda menyimpannya ketika data nilai raport diupdate! Untuk data pribadi seperti nama, ttl, nisn edit di fitur datasiswa</p> `
+                
+        html+=`</div>`;
+        return html;
 }
 const viewRapor = {
     'viewDepanRapor'            : viewDepanRapor,
@@ -3376,7 +3855,13 @@ const viewRapor = {
     'guidesIjazah'              :guidesIjazah,
     'html_control_riwayat_raport'   :html_control_riwayat_raport,
     'tabelCek'                  :tabelCek,
-    'viewPengolahanIjazahBaru' : viewPengolahanIjazahBaru
+    'viewPengolahanIjazahBaru' : viewPengolahanIjazahBaru,
+    'rekapijazahkurmer':rekapijazahkurmer,
+    'viewRapor5Semester':viewRapor5Semester,
+    'menuIjazah':menuIjazah,
+    'EditIdentitasTranskip':EditIdentitasTranskip,
+    'menuTranskip':menuTranskip,
+    'sklTranskip':sklTranskip
 
 }
 

@@ -23,6 +23,7 @@ export default class RiwayatController{
     }
     async showRekap(){
         const p = await this.provider.showRekapRaport();
+        console.log('showRekap',p)
         const {riwayat,
                 siswaCurrentRombel,        
                 fitur,      
