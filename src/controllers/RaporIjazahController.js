@@ -3243,6 +3243,53 @@ export default class RaporIjazahController extends Fitur{
             }
         })
     }
+    async sknr(){
+        this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
+        if(this.fokusJenjang == 6 && this.setApp.semester == 1){
+            this.workplace.innerHTML = 'Hanya bisa diakses di semester 2';
+            return;
+        }else{
+            if(this.fokusJenjang!=6){
+                this.workplace.innerHTML = 'Hanya bisa diakses oleh guru kelas 6';
+                return;
+            }
+        }
+        this.kbmFitur.settingRombel(this.fokusRombel)
+        this.conditionalSubemenu();
+        // await this.kbmFitur.init_raport();
+        this.ormMapel.createLabelMapel();
+        // this.maincontrol.innerHTML = viewRapor.menuIjazah('refresh','Refresh Data');// viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="rapor_sementara" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        // this.ormMapel.init();
+        // this.ormMapel.ormSiswaOnlyRaporAsli();
+        // this.ormMapel.withNilaiRaporSiap();
+        // this.maincontrol.innerHTML ="";// viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="selection-mapel" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        this.workplace.innerHTML = this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
+        
+        //
+        // // panggil semua data;
+        // console.log('auth',this.Auth);
+        // console.log('this.App',this.App)
+        // console.log('ormMapel', this.ormMapel);
+        
+        if(!this.instanceOlahIjazah){
+            this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
+        }
+        await this.instanceOlahIjazah.init();
+        //selectProperties(['id','pd_nama','nama_rombel','olah_ijazah','nilai_akhir_ijazah'])
+        let db = this.instanceOlahIjazah.collectionSiswa.selectProperties(['id','pd_nama','nis','tempat_tanggal_lahir','nisn','nama_rombel','nilai_5_semester','rerata_akhir_5_semester']).sortByProperty('nama_rombel','asc').data;
+        console.log(db);
+        
+        const identitas = {
+            'nosurat' :'037',
+            'tapel':this.setApp.tapel,
+            'tahunsurat':'2025',
+            'dasarhukum':'Berdasarkan SK Kelulusan Kepala Sekolah No. 421.2/B.2-098/SKL/RJ1/V/2025 Tanggal 28 Mei 2025',
+            'tanggal_kelulusan':'2 Juni 2025'
+
+        }
+        this.workplace.innerHTML = viewRapor.sknr(db,identitas,true);
+        this.controlPrintSkl(db,viewRapor.sknr_fill);
+    }
     updateCetakIjazah(data,dataserverijazah){
         this.workplace.innerHTML = viewRapor.rekapIjazahPraCtak(data, dataserverijazah);
         

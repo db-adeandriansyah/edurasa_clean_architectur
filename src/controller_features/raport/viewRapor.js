@@ -2980,7 +2980,7 @@ const skl = (data,identitas,withnilai=false)=>{
         html+=`<div class="table-responsive">`;
             html+=`<table class="table table-sm table-borderless lh-1">`;
                 html+=`<tr>`;
-                    html+=`<td style="250px">Nama</td><td style="width:10px">:</td>`;
+                    html+=`<td style="width:250px">Nama</td><td style="width:10px">:</td>`;
                     html+=`<td data-skl="pd_nama"></td>`
                 html+=`</tr>`;
                 html+=`<tr>`;
@@ -3003,7 +3003,7 @@ const skl = (data,identitas,withnilai=false)=>{
         html+=`</div>`;
         html+=`<p>dinyatakan</p>`;
         // html+=`<div class="row justify-content-center">`;
-        //     html+=`<div class="col-4 fs-1 text-center align-middle border fw-bolder shadow-lg rounded p-3">L U L U S</div>`
+            html+=`<div class="col-4 fs-1 text-center align-middle border fw-bolder shadow-lg rounded p-3">L U L U S</div>`
         // html+=`</div>`
         html+=`<div style="padding:2px 15px;text-align:center;font-weight:900;font-size:28px">---LULUS /<s>TIDAK LULUS</s>---</div>`
         if(withnilai){
@@ -3043,6 +3043,101 @@ const skl = (data,identitas,withnilai=false)=>{
     html+=`</div>`;
     html+=controlHTMLPrint(data);
     return html;
+}
+const sknr = (data,identitas,withnilai=false)=>{
+    let html="";
+    html+=`<div id="areaprint" class="tnr p-2">`;
+        html+=`<h3 class="mb-0 mt-4 text-center fw-bold text-uppercase text-decoration-underline">SURAT KETERANGAN NILAI RAPORT</h3>`;
+        html+=`<h5 class="mb-4 text-center">No.: 421.2/${identitas.nosurat}.<span data-skl="index"></span>/SDNRAJA1/VI/${identitas.tahunsurat}</h5>`;
+        html+=`<p>Yang bertanda tangan di bawah ini, Kepala UPTD SDN Ratujaya 1 menerangkan bahwa:</p>`;
+        
+        html+=`<div class="table-responsive">`;
+            html+=`<table class="table table-sm table-borderless lh-1">`;
+                html+=`<tr>`;
+                    html+=`<td style="width:250px">Nama</td><td style="width:10px">:</td>`;
+                    html+=`<td data-skl="pd_nama"></td>`
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td class="text-nowrap">Tempat dan Tanggal Lahir</td><td style="width:10px">:</td>`;
+                    html+=`<td><span data-skl="tempat_tanggal_lahir"></span></span></td>`;
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td>Nomor Induk Siswa</td><td style="width:10px">:</td>`;
+                    html+=`<td data-skl="nis"></td>`;
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td>Nomor Induk Siswa Nasional</td><td style="width:10px">:</td>`;
+                    html+=`<td data-skl="nisn"></td>`;
+                html+=`</tr>`;
+            html+=`</table>`;
+        html+=`</div>`;
+        html+=`<p>Adalah <b>benar</b> nama tersebut adalah siswa SDN Ratujaya 1 dan telah menyelesaikan seluruh proses pendidikan yang diselenggarakan hingga pada Tahun Pelajaran ${identitas.tapel}.</p>`;
+        html+=`<p>Serta memiliki daftar nilai raport berikut:</p>`
+        if(withnilai){
+            html+=`<table class="table table-sm table-bordered border-dark lh-1">`;
+                html+=`<thead>`;
+                    html+=`<tr>`;
+                        html+=`<th rowspan="3" class="text-center align-middle" style="width:30px">No</th>`;
+                        html+=`<th rowspan="3" class="text-center align-middle">Mata Pelajaran</th>`;
+                        html+=`<th colspan="5" class="text-center align-middle">Nilai Raport</th>`;
+                        html+=`<th rowspan="3" class="text-center align-middle" style="width:120px">Rerata</th>`;
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<th class="text-center" colspan="2">Kelas 4</th>`
+                        html+=`<th class="text-center" colspan="2">Kelas 5</th>`
+                        html+=`<th class="text-center">Kelas 6</th>`
+                    html+=`</tr>`;
+                    html+=`<tr>`;
+                        html+=`<th class="text-center">1</th>`;
+                        html+=`<th class="text-center">2</th>`;
+                        html+=`<th class="text-center">1</th>`;
+                        html+=`<th class="text-center">2</th>`;
+                        html+=`<th class="text-center">1</th>`;
+                    html+=`</tr>`;
+                html+=`</thead>`;
+                html+=`<tbody data-skl="tabelbody_skl">`;
+                html+=`</tbody>`;
+            html+=`</table>`;
+
+        }
+        html+=`<p>Demikian Surat Keterangan Nilai Raport ini dibuat agar dapat dipergunakan sebagaimana mestinya.</p>`
+        html+=`<div class="row mt-5 justify-content-end">`;
+            html+=`<div class="col-6">`;
+                html+=`<table class="table table-sm table-borderless lh-1">`;
+                    html+=`<tr><td colspan="2">Kota Depok, ${identitas.tanggal_kelulusan}</td>`;
+                    html+=`<tr><td colspan="2">Kepala UPTD SDN Ratujaya 1</td></tr>`
+                    html+=`<tr><td></td><td><br/><br/><br/><br/><br/></td></tr>`
+                    html+=`<tr><td colspan="2" class="text-start fw-bold"><u>Yoce Magdalena, S.Pd.SD</u></td></tr>`
+                    html+=`<tr><td colspan="2" class="text-start">NIP. 19730720 200003 2 005</td></tr>`
+                html+=`</table>`;
+            html+=`</div>`;
+        html+=`</div>`
+        
+    html+=`</div>`;
+    html+=controlHTMLPrint(data);
+    return html;
+}
+const sknr_fill = (data)=>{
+    let html="";
+    let rapor = data.nilai_5_semester;
+    let akhir = data.rerata_akhir_5_semester;
+    rapor.forEach((mp,i)=>{
+        html+=`<tr>`;
+            html+=`<td class="text-center">${(i+1)}</td>`;
+            html+=`<td class="text-nowrap">${mp.mapel}</td>`
+            html+=`<td class="text-nowrap text-center">${Math.round(mp.n_k4_s1).toFixed(0)}</td>`
+            html+=`<td class="text-nowrap text-center">${Math.round(mp.n_k4_s2).toFixed(0)}</td>`
+            html+=`<td class="text-nowrap text-center">${Math.round(mp.n_k5_s1).toFixed(0)}</td>`
+            html+=`<td class="text-nowrap text-center">${Math.round(mp.n_k5_s2).toFixed(0)}</td>`
+            html+=`<td class="text-nowrap text-center">${Math.round(mp.n_k6_s1).toFixed(0)}</td>`
+            html+=`<td class="text-nowrap text-center">${mp.n_rerata}</td>`
+        html+=`</tr>`;
+    });
+    html+=`<tr>`;
+        html+=`<td colspan="7" class="text-center">Rata-rata</td>`;
+        html+=`<td class="text-center">${akhir.nilai}</td>`;
+    html+=`</tr>`;
+    return html;   
 }
 const TranskipIjzah = (data,identitas,withnilai=false)=>{
     let html="";
@@ -3861,7 +3956,10 @@ const viewRapor = {
     'menuIjazah':menuIjazah,
     'EditIdentitasTranskip':EditIdentitasTranskip,
     'menuTranskip':menuTranskip,
-    'sklTranskip':sklTranskip
+    'sklTranskip':sklTranskip,
+    'sknr':sknr,
+    'sknr_fill':sknr_fill
+
 
 }
 
