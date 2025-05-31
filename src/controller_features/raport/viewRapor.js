@@ -2747,9 +2747,7 @@ const tabelDataRapoIjazah = (fokusmapel, db,withClass=false)=>{
     return html;
 }
 const tabelIjazahOlah = (data,db,all)=>{
-    console.log(data);
-        console.log(db);
-            console.log(all);
+    
     let html = "";
     html+=`<h3 class="text-center mb-0">Pengolahan Nilai Ijazah</h3>`;
     html+=`<h4 class="text-center mb-0">${data.fokusmapel_teks}</h4>`;
@@ -3793,8 +3791,7 @@ const viewRapor5Semester = (db,data,showClassroom=false)=>{
 }
 const rekapijazahkurmer = (db, identitas)=>{
     let html = "";
-    const mapel = db[0].olah_ijazah.map(n=>n.title)
-    console.log(mapel);
+    const mapel = db[0].olah_ijazah.map(n=>n.title);
     html+=`<h3 class="text-center mb-0">Rekapitulasi Nilai Ijazah</h3>`;
     html+=`<h3 class="text-center mb-3">Tahun Pelajaran ${identitas.tapel}</h3>`;
     html+=`<div class="table-responsive">`;

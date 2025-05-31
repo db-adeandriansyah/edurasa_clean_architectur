@@ -1978,16 +1978,12 @@ export default class RaporIjazahController extends Fitur{
         this.workplace.innerHTML = this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
         //
         // // panggil semua data;
-        // console.log('auth',this.Auth);
-        // console.log('this.App',this.App)
-        // console.log('ormMapel', this.ormMapel);
-        
         if(!this.instanceOlahIjazah){
             this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
         }
         await this.instanceOlahIjazah.init();
         let db = this.instanceOlahIjazah.collectionSiswa.simpleFilter({'nama_rombel':this.fokusRombel}).selectProperties(['id','pd_nama','nama_rombel','olah_ijazah','nilai_akhir_ijazah']).sortByProperty('nama_rombel','asc').data;
-        console.log(db);
+        
         let identitas = {
             'tapel':this.setApp.tapel,
             'judul' : 'Kelas '+this.fokusRombel,
@@ -2094,7 +2090,7 @@ export default class RaporIjazahController extends Fitur{
         
         const ijazah = new IjazahFitur(this.service,this.ormMapel.collectionsSiswa).init();
         const testSiswa = this.ormMapel.collectionsSiswa.data;
-        console.log('collection ormMapel',this.ormMapel.collectionsSiswa)
+        
         const selecting = document.querySelector('[data-pradesain="selection-mapel"]');
         selecting.onchange = (e)=>{
             let identitas = {
@@ -2125,7 +2121,6 @@ export default class RaporIjazahController extends Fitur{
         if(!this.instanceOlahIjazah){
             this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
         }
-        // console.log(this.instanceOlahIjazah)
         
         if(!this.instanceOlahIjazah){
             this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
@@ -2348,14 +2343,13 @@ export default class RaporIjazahController extends Fitur{
         if(!this.instanceOlahIjazah){
             this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
         }
-        // console.log(this.instanceOlahIjazah)
         
         if(!this.instanceOlahIjazah){
             this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
         }
         await this.instanceOlahIjazah.init();
         let db = this.instanceOlahIjazah.collectionSiswa.selectProperties(['id','pd_nama','pd_namaayah','pd_namaibu','nis','nisn','tempat_tanggal_lahir','nama_rombel','olah_ijazah','nilai_akhir_ijazah']).sortByProperty('nama_rombel','asc').data;
-        console.log(db);
+        
         const identitas = {
             'nosurat' :'036',
             'tahunsurat':'2025',
@@ -2385,14 +2379,13 @@ export default class RaporIjazahController extends Fitur{
         if(!this.instanceOlahIjazah){
             this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
         }
-        // console.log(this.instanceOlahIjazah)
         
         if(!this.instanceOlahIjazah){
             this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
         }
         await this.instanceOlahIjazah.init();
         let db = this.instanceOlahIjazah.collectionSiswa.selectProperties(['id','pd_nama','nis','nisn','tempat_tanggal_lahir','nama_rombel','olah_ijazah','nilai_akhir_ijazah','no_ijazah','tanggal_kelulusan','no_surat']).sortByProperty('nama_rombel','asc').data;
-        console.log(db);
+        
         const identitas = {
             'nosurat' :'036',
             'tahunsurat':'2025',
@@ -2422,14 +2415,13 @@ export default class RaporIjazahController extends Fitur{
         if(!this.instanceOlahIjazah){
             this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
         }
-        // console.log(this.instanceOlahIjazah)
         
         if(!this.instanceOlahIjazah){
             this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
         }
         await this.instanceOlahIjazah.init();
         let db = this.instanceOlahIjazah.collectionSiswa.selectProperties(['id','pd_nama','nis','nisn','tempat_tanggal_lahir','nama_rombel','olah_ijazah','nilai_akhir_ijazah','no_ijazah','tanggal_kelulusan','no_surat']).sortByProperty('nama_rombel','asc').data;
-        console.log(db);
+        
         this.workplace.innerHTML = viewRapor.EditIdentitasTranskip(db);
         this.maincontrol.innerHTML = viewRapor.menuTranskip();
         let tb = new TableProperties(document.querySelector('#tabel_transkip'));
@@ -2493,7 +2485,7 @@ export default class RaporIjazahController extends Fitur{
                 
                 arrKontent.push(data);
             });
-            console.log(arrKontent);
+            
             await this.service.saveNilaiRaporMasal(arrKontent,6,'nilai_ijazah_6','id');
             await this.instanceOlahIjazah.init();
         }
@@ -2738,9 +2730,6 @@ export default class RaporIjazahController extends Fitur{
         
         //
         // // panggil semua data;
-        // console.log('auth',this.Auth);
-        // console.log('this.App',this.App)
-        // console.log('ormMapel', this.ormMapel);
         
         if(!this.instanceOlahIjazah){
             this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
@@ -2946,15 +2935,13 @@ export default class RaporIjazahController extends Fitur{
         if(!this.instanceOlahIjazah){
             this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
         }
-        // console.log(this.instanceOlahIjazah)
         
         if(!this.instanceOlahIjazah){
             this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
         }
         await this.instanceOlahIjazah.init();
         let db = this.instanceOlahIjazah.collectionSiswa.selectProperties(['id','pd_nama','nama_rombel','nilai_5_semester','rerata_akhir_5_semester','is_pindahan']).sortByProperty('nama_rombel','asc').data;
-        console.log(db);
-        console.log(db.filter(s=>s.is_pindahan!==false));
+        
         const identitas = {
             'judul':'Sebagai Nilai Prestasi Siswa',
             'tapel':this.setApp.tapel,
@@ -3267,9 +3254,6 @@ export default class RaporIjazahController extends Fitur{
         
         //
         // // panggil semua data;
-        // console.log('auth',this.Auth);
-        // console.log('this.App',this.App)
-        // console.log('ormMapel', this.ormMapel);
         
         if(!this.instanceOlahIjazah){
             this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
@@ -3277,7 +3261,7 @@ export default class RaporIjazahController extends Fitur{
         await this.instanceOlahIjazah.init();
         //selectProperties(['id','pd_nama','nama_rombel','olah_ijazah','nilai_akhir_ijazah'])
         let db = this.instanceOlahIjazah.collectionSiswa.selectProperties(['id','pd_nama','nis','tempat_tanggal_lahir','nisn','nama_rombel','nilai_5_semester','rerata_akhir_5_semester']).sortByProperty('nama_rombel','asc').data;
-        console.log(db);
+        
         
         const identitas = {
             'nosurat' :'037',
@@ -3313,10 +3297,9 @@ export default class RaporIjazahController extends Fitur{
                     // this.service.editItemIjazah()
                     let namaortu = document.getElementById('update_ortu_di_ijazah');
                     let updatayah = namaortu.value
-                    // console.log(namaortu.value, namaortu);
                     let dataAssign = Object.assign({},currentDataserverijazah,{'ortu_di_ijazah':updatayah});
-                    // console.log(dataAssign)
                     let con=confirm('Anda yakin?');
+                    
                     if(!con) return;
                     this.Modal.hide();
 

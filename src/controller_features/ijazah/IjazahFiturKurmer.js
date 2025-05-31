@@ -79,7 +79,6 @@ export default class IjazahFiturKurmer{
     }
     async onlyCallNeeded(){
         const paramRefrensi = this.createRefrensi();
-        console.log(paramRefrensi);
         const onlyDoesntCalled = paramRefrensi.filter(s=>!s.hasCalled);
         if(onlyDoesntCalled.length>0){
             //semester 1
@@ -94,7 +93,7 @@ export default class IjazahFiturKurmer{
     };
     async shouldCallNeeded(){
         const paramRefrensi = this.createRefrensi();
-        console.log(paramRefrensi);
+        
         const onlyDoesntCalled = paramRefrensi;
         if(onlyDoesntCalled.length>0){
             //semester 1
@@ -117,7 +116,6 @@ export default class IjazahFiturKurmer{
     }
     async init(){
         await this.onlyCallNeeded();
-        console.log(this.service.data);
         const mapel = this.orm.labelNonAgamaIncludeMulok;//.filter(s=>s.value!=='BING');
         //ormSiswa;
         this.collectionSiswa = new this.classEdu(this.allsiswa)
