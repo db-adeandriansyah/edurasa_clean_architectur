@@ -76,7 +76,7 @@ export default class Route{
     initializeUser(){
         let sekarang = new Date();
         let bulan = sekarang.getMonth();
-        let semester = bulan>5?1:2;
+        let semester = bulan>6?1:2;
         let thAwal = semester==1?sekarang.getFullYear():sekarang.getFullYear()-1;
         let thAkhir =semester==1?sekarang.getFullYear()+1:sekarang.getFullYear();
         let tahunAwal = thAwal.toString();

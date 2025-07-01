@@ -501,7 +501,8 @@ export default class NewControllerBankSoal extends Fitur{
                     this.printableModal1(desainnaskahsoal.juduldesain);
                 }else if(aksi=='at_naskahoffline'){
                     if(!htmlApi.hasOwnProperty(idTxtSimpanDesain)){
-                        htmlApi[idTxtSimpanDesain] = await this.service.showTextHTML(idTxtSimpanDesain)
+                        htmlApi[idTxtSimpanDesain] = await this.service.showTextHTML(idTxtSimpanDesain);
+                        
                     }
                     
                     let dom = stringToDom(htmlApi[idTxtSimpanDesain]);

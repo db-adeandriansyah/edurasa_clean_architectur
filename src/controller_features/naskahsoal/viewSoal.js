@@ -99,7 +99,7 @@ const viewIdentitas = (data)=>{
     return html;
 }
 const tabelSebaranKD = (data)=>{
-    console.log('data tabelSebaranKD',data);
+    
     let kelompokBentukSoal = data.kelompokBentuksoal;
     let labelheader = [];
     kelompokBentukSoal.forEach(n=>{
@@ -377,7 +377,7 @@ const viewIsiNaskahSoal = (data)=>{
 const viewIsiNaskahSoalDraft = (data)=>{
     let Urutan = data.kerangka;
     let html = "";
-    console.log(data, Urutan)
+    
     html+=`<table class="tempatnaskahsoal_soal" id="tabelkontendesainnaskah_dariserver" style="border-collapse:collapse;border-spacing;margin-top:0;font-family:'timesNewRoman';border:0;width:95%;font-weight:normal;margin-left:2.1rem"><tbody>`;
     
     Urutan.forEach(n=>{
@@ -1013,12 +1013,13 @@ const htmlkuncijawabanModal1 = (identitas,datasoal)=>{
 
 }
 const templateNaskahOffline = (dom,datahtml)=>{
-    let tbody = dom.querySelector('#tabelkontendesainnaskah_dariserver > tbody');
+    let tbody = dom.querySelector('#tabelkontendesainnaskah_dariserver > tbody');//.firstElementChild();
     let tr = tbody.querySelectorAll('tr');
     
     for(let i = 0 ; i < tr.length ; i++){
         let sel = tr[i].cells;
         let ref = datahtml[i];
+        
         if(sel.length>1){
             let datareplace = {};
 
@@ -1031,7 +1032,10 @@ const templateNaskahOffline = (dom,datahtml)=>{
             }
 
             datareplace.nosoal = ref.nosoal;
-            sel[1].innerHTML = replaceSoalToSel(ref.itemsoal,datareplace,false);
+            if(ref.itemsoal){
+                sel[1].innerHTML = replaceSoalToSel(ref.itemsoal,datareplace,false);
+            }
+            
         }
     }
     

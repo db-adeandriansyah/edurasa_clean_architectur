@@ -2384,17 +2384,18 @@ export default class RaporIjazahController extends Fitur{
             this.instanceOlahIjazah = new IjazahFiturKurmer(this.ormMapel, this.siswa)
         }
         await this.instanceOlahIjazah.init();
-        let db = this.instanceOlahIjazah.collectionSiswa.selectProperties(['id','pd_nama','nis','nisn','tempat_tanggal_lahir','nama_rombel','olah_ijazah','nilai_akhir_ijazah','no_ijazah','tanggal_kelulusan','no_surat']).sortByProperty('nama_rombel','asc').data;
+        let db = this.instanceOlahIjazah.collectionSiswa.selectProperties(['id','pd_nama','nis','nisn','tempat_tanggal_lahir','nama_rombel','olah_ijazah','nilai_akhir_ijazah','no_ijazah','tanggal_kelulusan','no_surat','tanggal_transkip']).sortByProperty('nama_rombel','asc').data;
         
         const identitas = {
             'nosurat' :'036',
             'tahunsurat':'2025',
             'dasarhukum':'Berdasarkan SK Kelulusan Kepala Sekolah No. 421.2/B.2-098/SKL/RJ1/V/2025 Tanggal 28 Mei 2025',
-            'tanggal_kelulusan':'2 Juni 2025'
+            'tanggal_kelulusan':'23 Juni 2025'
 
         }
         this.workplace.innerHTML = viewRapor.sklTranskip(db,identitas,true);
-        this.controlPrintSkl(db,viewRapor.viewSkl);
+        console.log('database transkip',db)
+        this.controlPrintSkl(db,viewRapor.viewSklTranskip);
     }
     async transkipijazah(){
         this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;

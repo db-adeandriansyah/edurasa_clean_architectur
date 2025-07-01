@@ -300,7 +300,13 @@ export default class IjazahFiturKurmer{
                                 let db = this.service.data;
                                 let no_ijazah = db['db_server_ijazah_6'].find(s=>s.id == item.id);
                                 return no_ijazah.tanggal_kelulusan ??'';
-                            }).addProperty('no_surat',item=>{
+                            })
+                            .addProperty('tanggal_transkip',item=>{
+                                let db = this.service.data;
+                                let no_ijazah = db['db_server_ijazah_6'].find(s=>s.id == item.id);
+                                return no_ijazah.tanggal_transkip ??'';
+                            })
+                            .addProperty('no_surat',item=>{
                                 let db = this.service.data;
                                 let no_ijazah = db['db_server_ijazah_6'].find(s=>s.id == item.id);
                                 return no_ijazah.no_surat ??'';

@@ -400,6 +400,7 @@ const replaceSel_menulisrapih = (data, datareplace,withElement)=>{
     html+=`</table>`;
 }
 export const replaceSoalToSel = (datasoal,datareplace,withElement=true)=>{
+    
     const {bentuksoalspesifik,idbaris,ilustrasi,pertanyaan,opsiA,opsiB,opsiC,opsiD} = datasoal;
     
     

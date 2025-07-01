@@ -193,8 +193,8 @@ export default class Fitur extends Controller{
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 1 ,logging:false},
             jsPDF:        { unit: 'in', format: 'A4', orientation: 'landscape' }
-          };
-           
+        };
+        
           // New Promise-based usage:
         //   let html2pdf;
 

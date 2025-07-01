@@ -2762,16 +2762,43 @@ const viewSkl =(data)=>{
     let nilai = data.olah_ijazah;
     nilai.forEach((mp,i)=>{
         html+=`<tr>`;
-            html+=`<td class="text-center">${(i+1)}</td>`
-            html+=`<td class="text-start">${mp.mapel}</td>`
-            html+=`<td class="text-center">${mp.n_rerata}</td>`
+            html+=`<td class="text-center border-start border-bottom-0 border-top-0 border-end border-black">${(i+1)}</td>`
+            html+=`<td class="text-start border-black border-start-0 border-top-0 border-bottom-0 border-end">${mp.mapel}</td>`;
+
+                html+=`<td class="text-center border-black border-end border-start-0 border-bottom-0">${mp.n_rerata.toString().replace('.',',')}</td>`;
+
         html+=`</tr>`;
     });
     
-        html+=`<tr>`;
-            html+=`<td class="text-center" colspan="2">Rata-rata</td>`;
-            html+=`<td class="text-center">${data.nilai_akhir_ijazah.nilai}</td>`
+        // html+=`<tr>`;
+        //     html+=`<td class="text-center" colspan="2">Rata-rata</td>`;
+        //     html+=`<td class="text-center">${data.nilai_akhir_ijazah.nilai}</td>`
+        // html+=`</tr>`;
+    return html;
+}
+
+const viewSklTranskip =(data)=>{
+    let html="";
+    let nilai = data.olah_ijazah;
+    nilai.forEach((mp,i)=>{
+        if(i < nilai.length -1){
+            html+=`<tr>`;
+        }else{
+            html+=`<tr class='border-bottom border-black'>`;
+        }
+        // html+=`<tr ${i < nilai.length - 1 ? '' : "class='border-bottom border-black'"}>`
+            html+=`<td class="text-center border-start border-bottom-0 border-top-0 border-end border-black">${(i+1)}</td>`
+            html+=`<td class="text-start border-black border-start-0 border-top-0 border-bottom-0 border-end">${mp.mapel}</td>`;
+
+                html+=`<td class="text-center border-black border-end border-start-0 border-bottom-0">${mp.n_rerata.toString().replace('.',',')}</td>`
+
         html+=`</tr>`;
+    });
+    
+        // html+=`<tr>`;
+        //     html+=`<td class="text-center" colspan="2">Rata-rata</td>`;
+        //     html+=`<td class="text-center">${data.nilai_akhir_ijazah.nilai}</td>`
+        // html+=`</tr>`;
     return html;
 }
 const viewSkl2324 = (data)=>{
@@ -2855,7 +2882,7 @@ const skl2324 = (data,htmlkop,withnilai=false)=>{
         html+=`<div style="padding:2px 15px;text-align:center;font-weight:900;font-size:28px">---LULUS /<s>TIDAK LULUS</s>---</div>`
         if(withnilai){
             html+= `<p>Dengan nilai sebagai berikut:</p>`;
-            html+=`<table class="table table-sm table-bordered border-dark llh-1">`;
+            html+=`<table class="table table-sm table-borderless border-dark lh-1">`;
                 html+=`<thead>`;
                     html+=`<tr>`;
                         html+=`<th class="text-center align-middle" style="width:30px">No</th>`;
@@ -2893,7 +2920,7 @@ const skl2324 = (data,htmlkop,withnilai=false)=>{
 }
 const sklTranskip = (data,identitas,withnilai=false)=>{
     let html="";
-    html+=`<div id="areaprint" class="tnr p-2">`;
+    html+=`<div id="areaprint" class="roboto p-2">`;
         html+=`<h3 class="mb-0 mt-4 text-center fw-bold text-uppercase text-decoration-underline">TRANSKIP NILAI</h3>`;
         html+=`<p class="mb-4 text-center">Nomor :<span data-skl="no_surat"></span></p>`;
         
@@ -2902,7 +2929,7 @@ const sklTranskip = (data,identitas,withnilai=false)=>{
             html+=`<table class="table table-sm table-borderless lh-1">`;
                 html+=`<tr>`;
                     html+=`<td style="width:250px">Satuan Pendidikan</td><td style="width:10px">:</td>`;
-                    html+=`<td>SD Negeri Ratujaya 1 - Kec. Cipayung - Kota Depok</td>`
+                    html+=`<td>SD NEGERI RATUJAYA 1</td>`
                 html+=`</tr>`;
                 html+=`<tr>`;
                     html+=`<td>Nomor Pokok Sekolah Nasional</td><td style="width:10px">:</td>`;
@@ -2932,12 +2959,12 @@ const sklTranskip = (data,identitas,withnilai=false)=>{
         html+=`</div>`;
         
         if(withnilai){
-            html+=`<table class="table table-sm table-bordered border-dark llh-1">`;
+            html+=`<table class="table table-sm table-borderless border-dark lh-1 mx-auto" style="width:95%">`;
                 html+=`<thead>`;
                     html+=`<tr>`;
-                        html+=`<th class="text-center align-middle" style="width:30px">No</th>`;
-                        html+=`<th class="text-center align-middle">Mata Pelajaran</th>`;
-                        html+=`<th class="text-center align-middle" style="width:120px">Nilai</th>`;
+                        html+=`<th class="text-center border-1 align-middle" style="width:30px">No</th>`;
+                        html+=`<th class="text-center border-1 align-middle">Mata Pelajaran</th>`;
+                        html+=`<th class="text-center border-1 align-middle" style="width:120px">Nilai</th>`;
                     html+=`</tr>`;
                 html+=`</thead>`;
                 html+=`<tbody data-skl="tabelbody_skl">`;
@@ -2949,9 +2976,9 @@ const sklTranskip = (data,identitas,withnilai=false)=>{
             html+=`<div class="col-6">`;
                 html+=`<table class="table table-sm table-borderless lh-1">`;
                     html+=`<tr>`;
-                        html+=`<td colspan="2" class="text-center">Kota Depok, <span data-skl="tanggal_kelulusan"></span></td>`;
+                        html+=`<td colspan="2" class="text-center">Kota Depok, <span data-skl="tanggal_transkip"></span></td>`;
                     html+=`</tr>`;
-                    html+=`<tr><td colspan="2" class="text-center">Kepala UPTD SDN Ratujaya 1</td></tr>`
+                    html+=`<tr><td colspan="2" class="text-center">Kepala,</td></tr>`
                     html+=`<tr><td></td><td><br/><br/><br/><br/><br/></td></tr>`
                     html+=`<tr><td colspan="2" class="text-center fw-bold"><u>Yoce Magdalena, S.Pd.SD</u></td></tr>`
                     html+=`<tr><td colspan="2" class="text-center">NIP. 19730720 200003 2 005</td></tr>`
@@ -2968,7 +2995,7 @@ const skl = (data,identitas,withnilai=false)=>{
     html+=`<div id="areaprint" class="tnr p-2">`;
         html+=`<h3 class="mb-0 mt-4 text-center fw-bold text-uppercase text-decoration-underline">SURAT KETERANGAN KELULUSAN</h3>`;
         html+=`<h5 class="mb-4 text-center">No.: 421.2/${identitas.nosurat}.<span data-skl="index"></span>/SDNRAJA1/VI/${identitas.tahunsurat}</h5>`;
-        html+=`<p>Kepala SD Negeri Ratujaya 1 selaku penyelenggara Penilaian Sumatif Akhir Jenjang Tahun Pelajaran 2023/2024 berdasarkan:</p>`;
+        html+=`<p>Kepala SD Negeri Ratujaya 1 selaku penyelenggara Penilaian Sumatif Akhir Jenjang Tahun Pelajaran 2024/2025 berdasarkan:</p>`;
         html+=`<ol>`
             html+=`<li>Ketuntasan dari seluruh program pembelajaran pada Kurikulum Nasional yang ditetapkan dan dijalankan di sekolah</li>`;
             html+=`<li>Kriteria kelulusan dari satuan pendidikan sesuai dengan peraturan perundang-undangan</li>`
@@ -3955,7 +3982,8 @@ const viewRapor = {
     'menuTranskip':menuTranskip,
     'sklTranskip':sklTranskip,
     'sknr':sknr,
-    'sknr_fill':sknr_fill
+    'sknr_fill':sknr_fill,
+    'viewSklTranskip':viewSklTranskip
 
 
 }
