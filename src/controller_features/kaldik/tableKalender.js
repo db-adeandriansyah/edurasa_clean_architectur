@@ -25,7 +25,8 @@ export class tableKalender {
                 null,
                 null,
                 null,
-                null,
+                {class:'text-danger'},
+                // null,
                 // {class:'text-danger'}
             ],
             indeksTh:[
@@ -35,7 +36,8 @@ export class tableKalender {
                 {style:'border-bottom:.5pt solid #ddd'},
                 {style:'border-bottom:.5pt solid #ddd'},
                 {style:'border-bottom:.5pt solid #ddd'},
-                {style:'border-bottom:.5pt solid #ddd'},
+                {style:'color:red;border-bottom:.5pt solid red'},
+                // {style:'border-bottom:.5pt solid #ddd'},
             ]
         };
         this.atribute = Object.assign({},config,setAtribut);

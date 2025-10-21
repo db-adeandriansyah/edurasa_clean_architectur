@@ -116,7 +116,7 @@ export class ModalConfig extends Modal{
         res+=`<div id="print-area-modal">`;
             res+=html;
         res+=`</div>`;
-        res+=`<div class="fixed-bottom text-center mb-3">`;
+        res+=`<div class="fixed-bottom text-center mb-3 print-hide">`;
             //back
             res+=`<button data-bs-target="${toggleTo}" data-bs-toggle="modal" class="btn btn-sm border-bottom border-5 border-primary border-top-0 border-start-0 border-end-0 neon-lite-top rounded-pill rounded py-0" id="btnkembali" title="Kembali"><i class="bi-arrow-return-left"></i></button>`;
             //prrint

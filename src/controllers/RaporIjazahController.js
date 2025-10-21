@@ -3351,6 +3351,43 @@ export default class RaporIjazahController extends Fitur{
         options[0].dispatchEvent(new Event('change'));
         
     }
+    t_2425_s_2(){
+        this.maincontrol.innerHTML = viewRapor.html_control_riwayat_raport(true);
+        this.workplace.innerHTML = '';
+        
+        const kontrol = new RiwayatController(this.App,this.service,this.fokusMenu,this.fokusRombel).init();
+        
+        const options = document.querySelectorAll('input[name=sorterasli]');
+        const divKeterangan = document.getElementById('deskripsifitur');
+        
+        options.forEach((opsi)=>{
+            opsi.onchange = async (e)=>{
+                if(e.target.value === 'rekap'){
+                    let html = await kontrol.showRekap();
+                    
+                    divKeterangan.innerHTML =  html.fitur;
+                    this.workplace.innerHTML = html.page
+                }else if(e.target.value === 'raport'){
+                    divKeterangan.innerHTML = `Anda Saat ini memillih fitur <b class='text-blue'>Cetak Raport</b> di Tapel ${kontrol.findMakroInduk.target.tapel} Semester ${kontrol.findMakroInduk.target.semester}<br/>Daftar siswa berdasarkan data kelas Anda di Tapel Saat ini.`;
+                    
+                    this.workplace.innerHTML =  'Mohon Tunggu ...';
+                    await kontrol.showRaportRiwayat(this.workplace, this.printPortraitDom);
+                }else if(e.target.value === 'induk'){
+                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2024/2025 Semester 1";
+                    this.workplace.innerHTML =  '';
+                    await kontrol.showInduk(this.workplace, this.printPortraitDom);
+                    let tb = new TableProperties(document.querySelector('.toExcel'));
+                    if(tb){
+                        tb.addScrollUpDown();
+                    }
+                }
+                
+
+            }
+        })
+        options[0].dispatchEvent(new Event('change'));
+        
+    }
     
     t_2324_s_2(){
         this.maincontrol.innerHTML = viewRapor.html_control_riwayat_raport(true);

@@ -56,6 +56,7 @@ export const riwayatApiTapel = [ // riwayatApiTapel Lamaso
   {'tapel':'2223','semester':1,'label':'2022/2023','api':'t_2223_s_1','kurmer':[1,4],'kurtilas':[2,3,5,6]},
   {'tapel':'2324','semester':2,'label':'2023/2024',   'api':'t_2324_s_2','kurmer':[1,2,4,5],       'kurtilas':[3,6]},
   {'tapel':'2324','semester':1,'label':'2023/2024','api':'t_2324_s_1','kurmer':[1,2,4,5],'kurtilas':[3,6]},
+  {'tapel':'2425','semester':2,'label':'2024/2025',   'api':'t_2425_s_2','kurmer':[1,2,3,4,5,6],       'kurtilas':[]},
   {'tapel':'2425','semester':1,'label':'2024/2025',   'api':'t_2425_s_1','kurmer':[1,2,3,4,5,6],       'kurtilas':[]},
 
 ];
@@ -82,7 +83,7 @@ export const riwayatApiTapelReal = [
   {'tapel':'2324','semester':1,'label':'2023/2024',   'api':'t_2324_s_1',      'kurikulum':['kurtilas','kurmer'],          'k2006':[],              'kurmer':[1,2,4,5],       'kurtilas':[3,6]},
   {'tapel':'2324','semester':2,'label':'2023/2024',   'api':'t_2324_s_2',      'kurikulum':['kurtilas','kurmer'],          'k2006':[],              'kurmer':[1,2,4,5],       'kurtilas':[3,6]},
   {'tapel':'2425','semester':1,'label':'2024/2025',   'api':'t_2425_s_1',       'kurikulum':['kurmer'],                   'k2006':[],               'kurmer':[1,2,3,4,5,6],   'kurtilas':[]},
-  {'tapel':'2425','semester':2,'label':'2024/2025',   'api':'t_2425_s_1',       'kurikulum':['kurmer'],                   'k2006':[],               'kurmer':[1,2,3,4,5,6],   'kurtilas':[]},
+  {'tapel':'2425','semester':2,'label':'2024/2025',   'api':'t_2425_s_2',       'kurikulum':['kurmer'],                   'k2006':[],               'kurmer':[1,2,3,4,5,6],   'kurtilas':[]},
 ];
 
 export const sejarahKurikulum = [

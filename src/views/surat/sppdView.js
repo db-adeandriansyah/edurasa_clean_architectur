@@ -1,3 +1,4 @@
+import { kepsekbytgl } from "../../controller_features/surat/ViewSuratFeatures";
 import { koleksiRombel } from "../../routes/settingApp";
 import { umur } from "../../utilities/FormatTanggal";
 import inputsElements from "../components/input-elements";
@@ -167,45 +168,73 @@ const rekapItemsSuratKeluar = (data)=>{
 
 const tabelSPPDHalaman2 = (data,ttdAtasan)=>{
     const {sppd,identitas,suratkeluar} = data;
+    console.log('halaman dua sppd',sppd);
     let html="";
     html=`<table class="table table-bordered border-dark">
             <tbody>
                 <tr>
                     <td style="width:50%;height:200px;" class="position-relative p-1">
+                       
+                    </td>
+                    <td style="height:200px;" class="position-relative p-1">
                         <table class="table table-borderless lh-1">
                             <tbody>
                                 <tr>
-                                    <td rowspan="2">II.</td>
-                                    <td>Tiba di</td>
-                                    <td>:</td>
-                                    <td>${suratkeluar.ditujukkankepada}</td>
+                                    <td class="py-0 px-1">I. Berangkat dari (tempat kedudukan)</td>
+                                    <td class="py-0 px-1">:</td>
+                                    <td class="py-0 px-1">${identitas.namasekolah}</td>
                                 </tr>
                                 <tr>
-                                    <td>Pada Tanggal</td>
-                                    <td>:</td>
-                                    <td>${new Date(sppd.ptk_starttgl).toLocaleString('id-ID',{dateStyle:'long'})}</td>
+                                    <td class="py-0 px-1">ke</td>
+                                    <td class="py-0 px-1">:</td>
+                                    <td class="py-0 px-1">${suratkeluar.ditujukkankepada}</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-0 px-1">Pada Tanggal</td>
+                                    <td class="py-0 px-1">:</td>
+                                    <td class="py-0 px-1">${new Date(sppd.ptk_starttgl).toLocaleString('id-ID',{dateStyle:'long'})}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="position-absolute bottom-0 ps-2 text-center w-100">${sppd.kepsekbytgl[0].namaguru}<br>NIP. ${sppd.kepsekbytgl[0].nip}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:50%;height:200px;" class="position-relative p-1">
+                        <table class="table table-borderless lh-1">
+                            <tbody>
+                                <tr>
+                                    <td class="py-0 px-1" rowspan="2">II.</td>
+                                    <td class="py-0 px-1">Tiba di</td>
+                                    <td class="py-0 px-1">:</td>
+                                    <td class="py-0 px-1">${suratkeluar.ditujukkankepada}</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-0 px-1">Pada Tanggal</td>
+                                    <td class="py-0 px-1">:</td>
+                                    <td class="py-0 px-1">${new Date(sppd.ptk_starttgl).toLocaleString('id-ID',{dateStyle:'long'})}</td>
                                 </tr>
                             </tbody>
                         </table>
                         <div class="text-start position-absolute bottom-0 ps-2">NIP.         </div>
                     </td>
                     <td style="height:200px;" class="position-relative p-1">
-                        <table class="table table-borderless lh-1">
+                        <table class="table table-borderless p-0 lh-1">
                             <tbody>
                                 <tr>
-                                    <td>Berangkat dari</td>
-                                    <td>:</td>
-                                    <td>${suratkeluar.ditujukkankepada}</td>
+                                    <td class="py-0 px-1">Berangkat dari</td>
+                                    <td class="py-0 px-1">:</td>
+                                    <td class="py-0 px-1">${suratkeluar.ditujukkankepada}</td>
                                 </tr>
                                 <tr>
-                                    <td>ke</td>
-                                    <td>:</td>
-                                    <td>${identitas.namasekolah}</td>
+                                    <td class="py-0 px-1">ke</td>
+                                    <td class="py-0 px-1">:</td>
+                                    <td class="py-0 px-1">${identitas.namasekolah}</td>
                                 </tr>
                                 <tr>
-                                    <td>Pada Tanggal</td>
-                                    <td>:</td>
-                                    <td>${new Date(sppd.ptk_starttgl).toLocaleString('id-ID',{dateStyle:'long'})}</td>
+                                    <td class="py-0 px-1">Pada Tanggal</td>
+                                    <td class="py-0 px-1">:</td>
+                                    <td class="py-0 px-1">${new Date(sppd.tglend).toLocaleString('id-ID',{dateStyle:'long'})}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -213,77 +242,77 @@ const tabelSPPDHalaman2 = (data,ttdAtasan)=>{
                     </td>
                 </tr>
                 <tr>
-                    <td style="height:200px;">
+                    <td style="height:120px;">
                         III. <table style="display:inline-block;vertical-align: top;">
                                 <tbody>
                                     <tr>
-                                        <td>Tiba di</td>
-                                        <td>:</td>
-                                        <td></td>
+                                        <td class="py-0 px-1">Tiba di</td>
+                                        <td class="py-0 px-1">:</td>
+                                        <td class="py-0 px-1"></td>
                                     </tr>
                                     <tr>
-                                        <td>Pada Tanggal</td>
-                                        <td>:</td>
-                                        <td></td>
+                                        <td class="py-0 px-1">Pada Tanggal</td>
+                                        <td class="py-0 px-1">:</td>
+                                        <td class="py-0 px-1"></td>
                                     </tr>
                                 </tbody>
                             </table>
                     </td>
-                    <td style="height:200px;">
+                    <td style="height:120px;">
                         <table>
                             <tbody><tr>
-                                <td>Berangkat dari</td>
-                                <td>:</td>
-                                <td></td>
+                                <td class="py-0 px-1">Berangkat dari</td>
+                                <td class="py-0 px-1">:</td>
+                                <td class="py-0 px-1"></td>
                             </tr>
                             <tr>
-                                <td>ke</td>
-                                <td>:</td>
-                                <td></td>
+                                <td class="py-0 px-1">ke</td>
+                                <td class="py-0 px-1">:</td>
+                                <td class="py-0 px-1"></td>
                             </tr>
                             <tr>
-                                <td>Pada Tanggal</td>
-                                <td>:</td>
-                                <td></td>
+                                <td class="py-0 px-1">Pada Tanggal</td>
+                                <td class="py-0 px-1">:</td>
+                                <td class="py-0 px-1"></td>
                             </tr>
                         </tbody></table>
                     </td>
                     
                 </tr>
                 <tr>
-                    <td style="height:200px;">
+                    <td style="height:120px;">
                         IV. <table style="display:inline-block;vertical-align: top;">
                                 <tbody>
                                     <tr>
-                                        <td>Tiba di</td>
-                                        <td>:</td>
-                                        <td></td>
+                                        <td class="py-0 px-1">Tiba di</td>
+                                        <td class="py-0 px-1">:</td>
+                                        <td class="py-0 px-1"></td>
                                     </tr>
                                     <tr>
-                                        <td>Pada Tanggal</td>
-                                        <td>:</td>
-                                        <td></td>
+                                        <td class="py-0 px-1">Pada Tanggal</td>
+                                        <td class="py-0 px-1">:</td>
+                                        <td class="py-0 px-1"></td>
                                     </tr>
                                 </tbody>
                             </table>
                     </td>
-                    <td style="height:200px;">
+                    <td style="height:120px;">
                         <table>
                             <tbody>
                                 <tr>
-                                    <td>Berangkat dari</td>
-                                    <td>:</td>
-                                    <td></td>
+                                    <td class="py-0 px-1">Berangkat dari</td>
+                                    <td class="py-0 px-1">:</td>
+                                    <td class="py-0 px-1"></td>
                                 </tr>
                                 <tr>
-                                    <td>ke</td>
-                                    <td>:</td>
-                                    <td></td>
+                                    <td class="py-0 px-1">ke</td>
+                                    <td class="py-0 px-1">:</td>
+                                    <td class="py-0 px-1"></td>
                                 </tr>
                                 <tr>
-                                    <td>Pada Tanggal</td>
-                                    <td>:</td>
-                                    <td></td>
+                                    <td class="py-0 px-1">Pada Tanggal</td>
+                                    <td class="py-0 px-1">:</td>
+                                    <td class="py-0 px-1"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -291,29 +320,84 @@ const tabelSPPDHalaman2 = (data,ttdAtasan)=>{
                     
                 </tr>
                 <tr>
+                    <td style="height:120px;">
+                        V. <table style="display:inline-block;vertical-align: top;">
+                                <tbody>
+                                    <tr>
+                                        <td class="py-0 px-1">Tiba di</td>
+                                        <td class="py-0 px-1">:</td>
+                                        <td class="py-0 px-1"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-0 px-1">Pada Tanggal</td>
+                                        <td class="py-0 px-1">:</td>
+                                        <td class="py-0 px-1"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                    </td>
+                    <td style="height:120px;">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="py-0 px-1">Berangkat dari</td>
+                                    <td class="py-0 px-1">:</td>
+                                    <td class="py-0 px-1"></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-0 px-1">ke</td>
+                                    <td class="py-0 px-1">:</td>
+                                    <td class="py-0 px-1"></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-0 px-1">Pada Tanggal</td>
+                                    <td class="py-0 px-1">:</td>
+                                    <td class="py-0 px-1"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    
+                </tr>
+                
+                <tr>
+                    <td style="height:160px;">
+                        VI. <table style="display:inline-block;vertical-align: top;">
+                                <tbody>
+                                    <tr>
+                                        <td class="py-0 px-1">Tiba Kembali di</td>
+                                        <td class="py-0 px-1">:</td>
+                                        <td class="py-0 px-1">${identitas.namasekolah}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-0 px-1">Pada Tanggal</td>
+                                        <td class="py-0 px-1">:</td>
+                                        <td class="py-0 px-1">${new Date(sppd.tglend).toLocaleString('id-ID',{dateStyle:'long'})}</td>
+                                    </tr>
+                                </tbody>
+                            </table><div class="text-center">
+                            ${ttdAtasan}</div>
+                    </td>
+                    <td style="height:160px;">
+                        Telah diperiksa, dengan keterangan bahwa perjalanan tersebut diatas benar dilakukan atas perintahnya dan semata-mata untuk kepentingan jabatan dalam waktu yang sesingkat-singkatnya.
+                    </td>
+                    
+                </tr>
+                <tr>
                     <td colspan="2">
-                        <div class="row">
-                            <div class="col-6" style="visibility: hidden;">Mengetahui</div>
-                            <div class="col-6">
-                                <ol style="list-style-type: upper-roman" start="5">
-                                    <li>Tiba kembali di : UPTD SDN ratujaya 1<br>
-                                        Pada tanggal : ${new Date(sppd.ptk_starttgl).toLocaleString('id-ID',{dateStyle:'long'})}<br>
-                                        Telah diperiksa, dengan keterangan bahwa perjalanan tersebut diatas benar dilakukan atas perintahnya dan semata-mata untuk kepentingan jabatan dalam waktu yang sesingkat-singkatnya.
-                                    </li>
-                                </ol> ${ttdAtasan}                                                             
-                            </div>
-                            <div class="col-12">
-                                <ol style="list-style-type: upper-roman" start="6">
-                                    <li>CATATAN LAIN-LAIN</li>
-                                    <li>PERHATIAN<br>Pejabat yang berwenang menerbitkan SPPD, pegawai yang melakukan perjalanan dinas, para pejabat yang mengesahkan tanggal berangkat/tiba serta Bendaharawan bertanggung jawab berdasarkan peraturan-peraturan Keuangan Negara apabila Negara mendapat rugi akibat kesalahan, kealpaannya.
-                                    </li>
-                                </ol>
-                            </div>
-                        </div>
+                        CATATAN LAIN-LAIN
+                                    </td></tr><tr>
+                                    <td colspan="2">
+                                    PERHATIAN<br>Pejabat yang berwenang menerbitkan SPPD, pegawai yang melakukan perjalanan dinas, para pejabat yang mengesahkan tanggal berangkat/tiba serta Bendaharawan bertanggung jawab berdasarkan peraturan-peraturan Keuangan Negara apabila Negara mendapat rugi akibat kesalahan, kealpaannya.
+                                  
                     </td>
                 </tr>
             </tbody>
-        </table>`;
+        </table> 
+        <div class="row">
+        <div class="col-6"></div>
+        <div class="col-6 text-center">
+        ${ttdAtasan}</div></div>`;
     return html;
 }
 const suratTugasKepsek = (data)=>{
@@ -512,20 +596,130 @@ const suratTugasSPPD = (data)=>{
     return html;
 }
 
+const suratTugasSPPD2 = (data)=>{
+    const {suratkeluar, sppd,logokotadepok,identitas,logoSekolah}= data;
+    console.log('suratTugasSPPD2 data',data);
+    let html = "";
+    html+= kopsuratEdurasa.versi2(logokotadepok,identitas,logoSekolah);
+    html+=`<h3 class="text-center text-uppercase mt-5 mb-0 text-decoration-underline fw-bolder">Surat Tugas</h3>`;
+    html+=`<p class="text-center mb-3 pt-0 font12">No. 421.2/${suratkeluar.id_nosurat}-SDN_RATUJAYA 1/${['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'][new Date(sppd.ptk_starttgl).getMonth()]}/${new Date(sppd.ptk_starttgl).getFullYear()}</p>`;
+   
+    html+=`<table class="table table-borderless ms-3 mt-4 lh-sm">`;
+        html+=`<tbody>`;
+            html+=`<tr>`;
+                html+=`<td class="p-1 border-0" style="width:150px;">Dasar</td>`;
+                html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                // html+=`<td class="p-1 border-0">${sppd.namaptk.guru_namalengkap}</td>`;
+                html+=`<td class="p-1 border-0">Surat Undangan/Tugas dari ${suratkeluar.suratmasuk.length>0?suratkeluar.suratmasuk[0].asalsurat:'-'}<br/>Nomor: ${suratkeluar.suratmasuk.length>0?suratkeluar.suratmasuk[0].nosurat:'-'} <br/>tentang ${suratkeluar.suratmasuk.length>0?suratkeluar.suratmasuk[0].perihal:'-'}</td>`;
+            html+=`</tr>`;
+            html+=`<tr>`;
+                html+=`<td class="p-1">Tanggal Surat</td>`;
+                html+=`<td class="p-1">:</td>`;
+                // html+=`<td class="p-1">${sppd.namaptk.guru_nip}</td>`;
+                html+=`<td class="p-1">${suratkeluar.suratmasuk.length>0?new Date(suratkeluar.suratmasuk[0].tglsurat).toLocaleDateString('id-ID',{dateStyle:'long'}):'-'}</td>`;
+            html+=`</tr>`;
+           
+        html+=`</tbody>`;
+    html+=`</table>`;
+    html+=`<p class="text-center fs-4 fw-bold">MEMERINTAHKAN</p>`;
+    html+=`<table class="table table-borderless ms-3 lh-sm">`;
+        html+=`<tbody>`;
+            suratkeluar.sppd.forEach((ptk,index)=>{
+                html+=`<tr>`;
+                    html+=`<td class="p-1 border-0" rowspan="4"><b>${index+1}</b></td>`;
+                    html+=`<td class="p-1" style="width:150px;">Nama</td>`;
+                    html+=`<td class="p-1" style="width:20px">:</td>`;  
+                    html+=`<td class="p-1">${ptk.namaptk.guru_namalengkap}</td>`;
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td class="p-1">Pangkat/Gol</td>`;   
+                    html+=`<td class="p-1">:</td>`;
+                    html+=`<td class="p-1">${ptk.ptk_golongan}</td>`;
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td class="p-1">NIP</td>`;
+                    html+=`<td class="p-1">:</td>`;
+                    html+=`<td class="p-1">${ptk.namaptk.guru_nip}</td>`;
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td class="p-1">Jabatan</td>`;
+                    html+=`<td class="p-1">:</td>`; 
+                    html+=`<td class="p-1">${ptk.ptk_jabatan}</td>`;
+                html+=`</tr>`;
+            });
+            // html+=`<tr>`;
+            //     html+=`<td class="p-1" style="width:150px;">Nama</td>`;
+            //     html+=`<td class="p-1" style="width:20px">:</td>`;
+            //     html+=`<td class="p-1">${suratkeluar.perihal}</td>`;
+            // html+=`</tr>`;
+            // html+=`<tr>`;
+            //     html+=`<td class="p-1">Tempat</td>`;
+            //     html+=`<td class="p-1">:</td>`;
+            //     html+=`<td class="p-1">${suratkeluar.ditujukkankepada}</td>`;
+            // html+=`</tr>`;
+            // html+=`<tr>`;
+            //     html+=`<td class="p-1">Hari/Tanggal</td>`;
+            //     html+=`<td class="p-1">:</td>`;
+            //     html+=`<td class="p-1">${new Date(sppd.ptk_starttgl).toLocaleString('id-ID',{dateStyle:'full'})}</td>`;
+            // html+=`</tr>`;
+        html+=`</tbody>`;
+    html+=`</table>`;
+    // html+=`<p>Demikian Surat Tugas ini dibuat agar dapat dipergunakan sebagaimana mestinya.</p>`;
+    html+=`<table class="table table-borderless ms-3 mt-2 lh-sm">`;
+        html+=`<tbody>`;
+            html+=`<tr>`;
+                html+=`<td class="p-1 border-0" style="width:150px;">Untuk</td>`;
+                html+=`<td class="p-1 border-0" style="width:20px">:</td>`;
+                html+=`<td class="p-1 border-0">${suratkeluar.perihal}</td>`;
+            html+=`</tr>`;
+            html+=`</tbody>`;
+    html+=`</table>`;
+                // html+=`<td class="p-1 border
+    html+=`<div class="d-flex justify-content-end mt-5">`;
+        html+=`<div class="col-6 text-center">`;
+            html+=`Depok, ${new Date(sppd.ptk_starttgl).toLocaleString('id-ID',{dateStyle:'long'})}<br/>`;
+            // html+=`<br/><br/><br/><br/><br/>`
+            html+=`Kepala <span class="sppdcreate_ttdnamasekolah">${identitas.namasekolah}</span>
+            <br><br><br><br>
+            <u><b>${sppd.kepsekbytgl.length===0?'-':sppd.kepsekbytgl[0].namaguru}</b></u><br>
+                    ${sppd.kepsekbytgl.length===0?'-':'NIP. '+sppd.kepsekbytgl[0].nip} `
+        html+=`</div>`;
+    html+=`</div>`;
+    
+
+
+    return html;
+}
+
 const lembarNotulen = (data)=>{
-    const {sppd,suratkeluar} = data;
+    const {sppd,suratkeluar,identitas} = data;
+    let pelaksana = '';
+    suratkeluar.sppd.forEach((ptk,index)=>{
+        pelaksana+=`${index+1}. ${ptk.namaptk.guru_namalengkap} <b>(Pelaksana ${index+1})</b><br/>`;
+    });
+
     let html = "";
         html+=`<div class="row">`;
             html+=`<div class="col-2 text-bg-light bg-light px-0">`;
-                html+=`<div class="flag bg-primary">Resume Perjalanan Dinas</div>`;
+                html+=`<div class="flag bg-primary">Nota Dinas</div>`;
             html+=`</div>`;
             html+=`<div class="col-10">`;
                 html+=`<table style="max-width:1000px;margin:2px 5px">
                         <tbody>
                             <tr>
-                                <td style="width:5%">Nama</td>
+                                <td style="width:5%">Yth</td>
                                 <td style="width:5px">:</td>
-                                <td class="border-bottom border-dark">${sppd.namaptk.guru_namalengkap}</td>
+                                <td class="border-bottom border-dark">Kepala ${identitas.namasekolah}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:5%">Dari</td>
+                                <td style="width:5px">:</td>
+                                <td class="border-bottom border-dark">${pelaksana}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:5%">Tembusan</td>
+                                <td style="width:5px">:</td>
+                                <td class="border-bottom border-dark">-</td>
                             </tr>
                             <tr>
                                 <td>Hari/Tanggal</td>
@@ -533,27 +727,36 @@ const lembarNotulen = (data)=>{
                                 <td class="border-bottom border-dark">${new Date(sppd.ptk_starttgl).toLocaleString('id-ID',{dateStyle:'full'})}</td>
                             </tr>
                             <tr>
-                                <td>Tempat</td>
+                                <td>Nomor</td>
                                 <td>:</td>
-                                <td class="border-bottom border-dark">${suratkeluar.ditujukkankepada}</td>
+                                <td class="border-bottom border-dark">${sppd.ptk_nosppd}</td>
                             </tr>
                             <tr>
-                                <td>Kegiatan</td>
+                                <td>Sifat</td>
+                                <td>:</td>
+                                <td class="border-bottom border-dark">-</td>
+                            </tr>
+                            <tr>
+                                <td>Lampiran</td>
+                                <td>:</td>
+                                <td class="border-bottom border-dark">1</td>
+                            </tr>
+                            <tr>
+                                <td>Hal</td>
                                 <td>:</td>
                                 <td class="border-bottom border-dark">${suratkeluar.perihal}</td>
-                            </tr>
-                            <tr>
-                                <td>Pelaksanaan</td>
-                                <td>:</td>
-                                <td class="w3-border-bottom"><span class="sppddcreate_input_starttanggal">${new Date(sppd.ptk_starttgl).toLocaleString('id-ID',{dateStyle:'full'})}</span></td>
                             </tr>
                         </tbody>
                     </table>`;
             html+=`</div>`;
-            html+=`<div class="col-12 bgsekolah">`;
+            // html+=`</div>`;
+            
+            html+=`<div class="bgsekolah">`;
+            // html+=`<p></p>`; 
             if(sppd.resume == ''){
-                html+=`<table style="border-collapse: collapse;width: 99%;">
-                        <tbody><tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                html+=`<table>
+                        <tbody>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">Berdasarkan tugas yang diberikan kepada saya melalui Surat Tugas Nomor 421.2/${suratkeluar.id_nosurat}-SDN_RATUJAYA 1/${['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'][new Date(sppd.ptk_starttgl).getMonth()]}/${new Date(sppd.ptk_starttgl).getFullYear()} tanggal ${new Date(sppd.ptk_starttgl).toLocaleString('id-ID',{dateStyle:'long'})} tentang ${suratkeluar.perihal},maka dengan ini kami laporkan hasil perjalanan dinas tersebut:</td></tr>
                         <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
                         <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
                         <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
@@ -571,6 +774,7 @@ const lembarNotulen = (data)=>{
                         <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
                         <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
                         <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
                         <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
                         <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
                         <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
@@ -591,9 +795,8 @@ const lembarNotulen = (data)=>{
                     html+=replacingImgLama(sppd.resume);
                 }
                 
-
             html+=`</div>`;
-
+        
         html+=`</div>`;
     return html;
 }
@@ -1399,8 +1602,8 @@ const Surat_Keterangan_NISN_lampiran = (data)=>{
     return html;
 }
 const atasanKepsek = {
-    nama: "Wawang Buang, S.Pd.SD",
-    nip: "19750826 200501 1004",
+    nama: "Raden Muchamad Zakkya Fauzan, SE.,MMSi",
+    nip: "19820721 200501 1 004",
     jabatan:"Kepala Bidang Pembinaan Sekolah Dasar",
     instansi:"Dinas Pendidikan Kota Depok"
 }
@@ -1430,12 +1633,12 @@ const buildPageSppd = (data)=>{
                     html+=`<table class="table table-borderless lh-1">`;
                         html+=`<tbody>`;
                             html+=`<tr>`;
-                                html+=`<td class="p-1">Lampiran</td>`;
+                                html+=`<td class="p-1">Lembar Ke</td>`;
                                 html+=`<td class="p-1">:</td>`;
-                                html+=`<td class="p-1">Ke-1</td>`;
+                                html+=`<td class="p-1">1</td>`;
                             html+=`</tr>`;
                             html+=`<tr>`;
-                                html+=`<td class="p-1">Kode Nomor</td>`;
+                                html+=`<td class="p-1">Kode No</td>`;
                                 html+=`<td class="p-1">:</td>`;
                                 html+=`<td class="p-1">421.2</td>`;
                             html+=`</tr>`;
@@ -1452,35 +1655,35 @@ const buildPageSppd = (data)=>{
         
         
             //title
-            let pejabatPemberiPerintah= sppd.ptk_diperintah==2?atasanKepsek.jabatan:"KEPALA DINAS PENDIDIKAN KOTA DEPOK"
+            let pejabatPemberiPerintah= sppd.ptk_diperintah==2?atasanKepsek.jabatan:"Kepala SDN Ratujaya 1"
              console.log(pejabatPemberiPerintah);
             console.log(atasanKepsek)
-             html+=`<h3 class="text-center text-decoration-underline fw-bolder mb-0 mt-3 text-uppercase">Surat perintah perjalanan dinas</h3>`;
-            html+=`<h4 class="text-center mb-3 text-capitalize">(SPPD)</h4>`;
+             html+=`<h3 class="text-center text-decoration-underline fw-bolder mb-0 mt-3 text-uppercase">Surat perjalanan dinas (SPD)</h3>`;
+            // html+=`<h4 class="text-center mb-3 text-capitalize">(SPD)</h4>`;
             //konten
             html+=`<table style="margin:15px auto;width:98%;" class="tabelsppd table border-dark">
                         <tbody><tr class="border-top border-5 border-start-0 border-end-0 border-bottom-0 border-dark">
                             <td>1.</td>
-                            <td>Pejabat yang memberi perintah</td>
-                            <td class="border-dark border-start border-top-0 border-end-0">${pejabatPemberiPerintah}</td>
+                            <td>Pejabat Pengguna Anggaran</td>
+                            <td colspan="2" class="border-dark border-start border-top-0 border-end-0">${pejabatPemberiPerintah}</td>
                         </tr>
                         <tr>
                             <td>2.</td>
-                            <td>Nama Pegawai yang diperintah<br>NIP.</td>
-                            <td class="border-dark border-start border-top-0 border-end-0">${sppd.namaptk.guru_namalengkap}<br>${sppd.namaptk.guru_nip}</td>
+                            <td>Nama/NIP Pegawai yang melaksanakan perjalanan dinas</td>
+                            <td colspan="2" class="border-dark border-start border-top-0 border-end-0">${sppd.namaptk.guru_namalengkap}<br>${sppd.namaptk.guru_nip}</td>
                         </tr>
                         <tr>
                             <td>3.</td>
                             <td>
                                 <ol style="list-style-type:lower-latin">
-                                    <li>Pangkat dan Golongan<br>menurut PP No. 6 Tahun 1997</li>
-                                    <li>Jabatan</li>
-                                    <li>Tingkat Menurut peraturan perjalanan</li>
+                                    <li>Pangkat dan Golongan</li>
+                                    <li>Jabatan/Instansi</li>
+                                    <li>Tingkat Biaya Perjalanan Dinas</li>
                                 </ol>
                             </td>
-                            <td class="border-dark border-start border-top-0 border-end-0">
+                            <td colspan="2" class="border-dark border-start border-top-0 border-end-0">
                                 <ol style="list-style-type: none;">
-                                    <li class="border-bottom">${sppd.ptk_golongan}<br></li><br>
+                                    <li class="border-bottom">${sppd.ptk_golongan}</li>
                                     <li class="border-bottom">${sppd.ptk_jabatan}</li>
                                     <li class="border-bottom">-</li>
                                 </ol>
@@ -1489,12 +1692,12 @@ const buildPageSppd = (data)=>{
                         <tr>
                             <td>4.</td>
                             <td>Maksud perjalanan Dinas</td>
-                            <td class="border-dark border-start border-top-0 border-end-0">${suratkeluar.perihal}</td>
+                            <td colspan="2" class="border-dark border-start border-top-0 border-end-0">${suratkeluar.perihal}</td>
                         </tr>
                         <tr>
                             <td>5.</td>
                             <td>Alat angkut yang dipergunakan</td>
-                            <td class="border-dark border-start border-top-0 border-end-0">-</td>
+                            <td colspan="2" class="border-dark border-start border-top-0 border-end-0">-</td>
                         </tr>
                         <tr>
                             <td>6.</td>
@@ -1504,7 +1707,7 @@ const buildPageSppd = (data)=>{
                                     <li>Tempat Tujuan</li>
                                 </ol>
                             </td>
-                            <td class="border-dark border-start border-top-0 border-end-0">
+                            <td colspan="2" class="border-dark border-start border-top-0 border-end-0">
                                 <ol style="list-style-type:none">
                                     <li class="border-bottom">${identitas.namasekolah}</li>
                                     <li class="border-bottom">${suratkeluar.ditujukkankepada}</li>
@@ -1517,10 +1720,10 @@ const buildPageSppd = (data)=>{
                                 <ol style="list-style-type: lower-latin;">
                                     <li>Lamanya perjalanan dinas</li>
                                     <li>Tanggal berangkat</li>
-                                    <li>Tanggal harus kembali</li>
+                                    <li>Tanggal harus kembali/tiba di tempat baru<sup>*</sup>)</li>
                                 </ol>
                             </td>
-                            <td class="border-dark border-start border-top-0 border-end-0">
+                            <td colspan="2" class="border-dark border-start border-top-0 border-end-0">
                                 <ol style="list-style-type:none">
                                     <li class="border-bottom">${sppd.ptk_durasisppd} hari</li>
                                     <li class="border-bottom">${new Date(sppd.ptk_starttgl).toLocaleString('id-ID',{dateStyle:'long'})}</li>
@@ -1530,7 +1733,14 @@ const buildPageSppd = (data)=>{
                         </tr>
                         <tr>
                             <td>8.</td>
-                            <td>Pengikut</td>
+                            <td>Pengikut: Nama</td>
+                            <td class="border-dark border-start border-top-0 border-end-0">Tanggal Lahir</td>
+                            <td class="border-dark border-start border-top-0 border-end-0">Keterangan</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>&nbsp;</td>
+                            <td class="border-dark border-start border-top-0 border-end-0">-</td>
                             <td class="border-dark border-start border-top-0 border-end-0">-</td>
                         </tr>
                         <tr>
@@ -1538,20 +1748,20 @@ const buildPageSppd = (data)=>{
                             <td>Pembebanan Anggaran
                                 <ol style="list-style-type:lower-latin">
                                     <li>Instansi</li>
-                                    <li>Mata Anggaran</li>
+                                    <li>Akun</li>
                                 </ol>
                             </td>
-                            <td class="border-dark border-start border-top-0 border-end-0"><br>
+                            <td colspan="2" class="border-dark border-start border-top-0 border-end-0"><br>
                                 <ol style="list-style-type:none">
-                                    <li class="border-bottom">Dinas Pendidikan</li>
-                                    <li class="border-bottom">5.1.02.04.01.0003</li>
+                                    <li class="border-bottom">${identitas.namasekolah}</li>
+                                    <li class="border-bottom">-</li>
                                 </ol>
                             </td>
                         </tr>
                         <tr>
                             <td>10.</td>
                             <td>Keterangan lain-lain</td>
-                            <td class="border-dark border-start border-top-0 border-end-0">Lihat sebelah</td>
+                            <td colspan="2" class="border-dark border-start border-top-0 border-end-0">Lihat sebelah</td>
                         </tr>
                     </tbody></table>`
         html+=`</div>`;
@@ -1581,50 +1791,50 @@ const buildPageSppd = (data)=>{
     html+=`</div>`;
     //halaman2;
     html+=`<div class="min-vh-100 shadow-sm mb-2 p-1 font14 tnr">`;
-        html+=`<div class="d-flex justify-content-end mb-2">`;
-            html+=`<div class="col-5 pe-1">`;
-                html+=`<table class="ms-auto font12">
-                        <tbody>
-                            <tr valign="top">
-                                <td>SPPD No.</td>
-                                <td>:</td>
-                                <td>421.2/${suratkeluar.id_nosurat}-SDN_RATUJAYA 1/${['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'][new Date(sppd.ptk_starttgl).getMonth()]}/${new Date(sppd.ptk_starttgl).getFullYear()}</td>
-                            </tr>
-                            <tr valign="top">
-                                <td>
-                                    Berangkat dari:<br>(tempat kedudukan)
-                                </td>
-                                <td>:</td>
-                                <td>${identitas.namasekolah}</td>
-                            </tr>
-                            <tr valign="top">
-                                <td>
-                                    Pada Tanggal
-                                </td>
-                                <td>:</td>
-                                <td>${new Date(sppd.ptk_starttgl).toLocaleString('id-ID',{dateStyle:'long'})}</td>
-                            </tr>
-                            <tr valign="top">
-                                <td>
-                                    Ke
-                                </td>
-                                <td>:</td>
-                                <td>${suratkeluar.ditujukkankepada}</td>
-                            </tr>
-                        </tbody>
-                    </table>`;
-            html+=`</div>`;
-        html+=`</div>`;
-        html+=`<div>`
+    //     html+=`<div class="d-flex justify-content-end mb-2">`;
+    //         html+=`<div class="col-5 pe-1">`;
+    //             html+=`<table class="ms-auto font12">
+    //                     <tbody>
+    //                         <tr valign="top">
+    //                             <td>SPPD No.</td>
+    //                             <td>:</td>
+    //                             <td>421.2/${suratkeluar.id_nosurat}-SDN_RATUJAYA 1/${['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'][new Date(sppd.ptk_starttgl).getMonth()]}/${new Date(sppd.ptk_starttgl).getFullYear()}</td>
+    //                         </tr>
+    //                         <tr valign="top">
+    //                             <td>
+    //                                 Berangkat dari:<br>(tempat kedudukan)
+    //                             </td>
+    //                             <td>:</td>
+    //                             <td>${identitas.namasekolah}</td>
+    //                         </tr>
+    //                         <tr valign="top">
+    //                             <td>
+    //                                 Pada Tanggal
+    //                             </td>
+    //                             <td>:</td>
+    //                             <td>${new Date(sppd.ptk_starttgl).toLocaleString('id-ID',{dateStyle:'long'})}</td>
+    //                         </tr>
+    //                         <tr valign="top">
+    //                             <td>
+    //                                 Ke
+    //                             </td>
+    //                             <td>:</td>
+    //                             <td>${suratkeluar.ditujukkankepada}</td>
+    //                         </tr>
+    //                     </tbody>
+    //                 </table>`;
+    //         html+=`</div>`;
+    //     html+=`</div>`;
+    //     html+=`<div>`
         html+=tabelSPPDHalaman2(data,ttdAtasan);
-        html+=`</div>`
+        // html+=`</div>`   
     html+=`</div>`;
     //halaman3;
     html+=`<div class="min-vh-100 shadow-sm p-1 tnr">`;
         if(sppd.ptk_diperintah==2){
             html+=suratTugasKepsek(data);
         }else{
-            html+=suratTugasSPPD(data);
+            html+=suratTugasSPPD2(data);
 
         }
     html+=`</div>`;
