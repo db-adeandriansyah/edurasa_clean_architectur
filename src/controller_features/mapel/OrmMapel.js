@@ -1481,7 +1481,7 @@ export default class OrmMapel{
     }
     withNilaiSebelumnya(namatab,namamundur){
         let raportSiap = this.kbmFitur.service.data[namatab];
-        
+        console.log(this.kbmFitur.service.data, raportSiap);
         this.collectionsSiswa.addProperty('dataRapor_Siap_Plus_Sebelumnya',(item)=>{
             let result = [];
             let dataRapor = item.dataRapor_Siap;

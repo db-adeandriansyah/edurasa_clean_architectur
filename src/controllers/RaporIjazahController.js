@@ -49,7 +49,7 @@ export default class RaporIjazahController extends Fitur{
         let ls_siswa = JSON.parse(window.localStorage.getItem('dbSiswa'));
         this.siswa = ls_siswa.filter(s=> s.aktif == 'aktif');
         // this.siswa = JSON.parse(window.localStorage.getItem('dbSiswa'));//ls_siswa;//.filter(s=> s.aktif == 'aktif' && s.jenjang == this.fokusJenjang);
-
+        console.log('service', this.service)
         this.Modal = this.makeInstance(ModalConfig,['#modalAuto',{'backdrop':'static','keyboard':false}]);
         this.Modal1 = this.makeInstance(ModalConfig,['#modalAuto2',{'backdrop':'static','keyboard':false},{
             'printLandscapeDom' : this.printLandscapeDom, // paramaeter (dom)
@@ -590,7 +590,8 @@ export default class RaporIjazahController extends Fitur{
         this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
         this.kbmFitur.settingRombel(this.fokusRombel);
         
-        let satuSemesterSebelumnya = this.defineSemesterSemesterSebelumnya(1)
+        let satuSemesterSebelumnya = this.defineSemesterSemesterSebelumnya(1);
+        console.log('satuSemesterSebelumnya', satuSemesterSebelumnya);
         let api = satuSemesterSebelumnya.api.api;
         let rombelMundur1 = satuSemesterSebelumnya.rombelMundur;
         let tabnilai = 'nilai_raport_'+rombelMundur1;
@@ -615,7 +616,7 @@ export default class RaporIjazahController extends Fitur{
         this.ormMapel.ormSiswaOnlyRaporAsli();
         this.ormMapel.withNilaiRaporSiap();
         this.ormMapel.withNilaiSebelumnya(prefik+tabnilai,'_mundur1');
-        
+        console.log('test ini', this.ormMapel,'\n data mundur keterampilan', prefik, tabnilai);
         const mapelNonAgama = this.ormMapel.labelNonAgamaIncludeMulok;
         const sebaranblangko = this.ormMapel.sebaranDariTagihanBlangko();
         const data = this.ormMapel.collectionsSiswa.data;
@@ -1503,7 +1504,7 @@ export default class RaporIjazahController extends Fitur{
         // const dataDB = await this.postMethodCrudController(this.crud,fd);
         
         let dataAbsen = this.service.data['responses_'+this.fokusJenjang].filter(s=>s.id !=="");
-        
+        console.log(dataAbsen)
         let data= [];
         this.kbmFitur.siswaRombel.forEach((db)=>{
             let ob={};
@@ -1512,13 +1513,13 @@ export default class RaporIjazahController extends Fitur{
             if(this.setApp.semester==1){
                 ob.alpa =   dataAbsen.filter(s=>s.tokensiswa == db.id && s.kehadiran=='Alpa' && s.id!=="").length;
                 ob.ijin =   dataAbsen.filter(s=>s.tokensiswa == db.id && s.kehadiran=='Ijin' && s.id!=="").length;
-                ob.sakit =  dataAbsen.filter(s=>s.tokensiswa == db.id && s.kehadiran=='Ijin' && s.id!=="").length;
+                ob.sakit =  dataAbsen.filter(s=>s.tokensiswa == db.id && s.kehadiran=='Sakit' && s.id!=="").length;
             }else{
                 let time_start = new Date(this.setApp.tahunAkhir, 0,1).getTime();
                 let time_end = new Date(this.setApp.tahunAkhir, 5,30).getTime();
                 ob.alpa =   dataAbsen.filter(s=>s.tokensiswa == db.id && s.kehadiran=='Alpa' && s.id!=="" &&  new Date(s.Time_Stamp).getTime()>=time_start && new Date(s.Time_Stamp).getTime()<=time_end).length;
                 ob.ijin =   dataAbsen.filter(s=>s.tokensiswa == db.id && s.kehadiran=='Ijin' && s.id!=="" &&  new Date(s.Time_Stamp).getTime()>=time_start && new Date(s.Time_Stamp).getTime()<=time_end).length;
-                ob.sakit =  dataAbsen.filter(s=>s.tokensiswa == db.id && s.kehadiran=='Ijin' && s.id!=="" &&  new Date(s.Time_Stamp).getTime()>=time_start && new Date(s.Time_Stamp).getTime()<=time_end).length;
+                ob.sakit =  dataAbsen.filter(s=>s.tokensiswa == db.id && s.kehadiran=='Sakit' && s.id!=="" &&  new Date(s.Time_Stamp).getTime()>=time_start && new Date(s.Time_Stamp).getTime()<=time_end).length;
             }
             data.push(ob);
         })
@@ -1539,7 +1540,7 @@ export default class RaporIjazahController extends Fitur{
         this.ormMapel.withNilaiRaporSiap();
 
         const dataApiAbsen = this.Api_absensi();//this.service.data['responses_'+this.fokusJenjang];
-        
+        console.log('dataApiAbsen',dataApiAbsen);
         let identitas = {
             // 'jenjang':this.fokusJenjang,
             // 'rombel':this.fokusRombel,

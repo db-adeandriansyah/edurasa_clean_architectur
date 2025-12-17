@@ -12,6 +12,48 @@ const KodeMapelKumer = {
     "BSUND":"Bahasa dan Sastra Sunda",
     "BING"  :"Bahasa Inggris"
 }
+const KodeMapelKumer12 = {
+    "PAI":"Pendidikan Agama Islam dan Budi Pekerti",
+    "PKRIS":"Pendidikan Agama Kristen dan Budi Pekerti",
+    "PKATO":"Pendidikan Agama Katholik dan Budi Pekerti",
+    "PKN":"Pendidikan Pancasila",
+    "BINDO":"Bahasa Indonesia",
+    "MTK":"Matematika",
+    // "IPAS":"Ilmu Pengetahuan Alam dan Sosial",
+    "RUPA":"Seni Rupa",
+    // "TARI":"Seni Tari",
+    "PJOK":"Pendidikan Jasmani, Olahraga, dan Kesehatan",
+    "BSUND":"Bahasa dan Sastra Sunda",
+    // "BING"  :"Bahasa Inggris"
+}
+const KodeMapelKumer3 = {
+    "PAI":"Pendidikan Agama Islam dan Budi Pekerti",
+    "PKRIS":"Pendidikan Agama Kristen dan Budi Pekerti",
+    "PKATO":"Pendidikan Agama Katholik dan Budi Pekerti",
+    "PKN":"Pendidikan Pancasila",
+    "BINDO":"Bahasa Indonesia",
+    "MTK":"Matematika",
+    "IPAS":"Ilmu Pengetahuan Alam dan Sosial",
+    "RUPA":"Seni Rupa",
+    // "TARI":"Seni Tari",
+    "PJOK":"Pendidikan Jasmani, Olahraga, dan Kesehatan",
+    "BSUND":"Bahasa dan Sastra Sunda",
+    // "BING"  :"Bahasa Inggris"
+}
+const KodeMapelKumer46 = {
+    "PAI":"Pendidikan Agama Islam dan Budi Pekerti",
+    "PKRIS":"Pendidikan Agama Kristen dan Budi Pekerti",
+    "PKATO":"Pendidikan Agama Katholik dan Budi Pekerti",
+    "PKN":"Pendidikan Pancasila",
+    "BINDO":"Bahasa Indonesia",
+    "MTK":"Matematika",
+    "IPAS":"Ilmu Pengetahuan Alam dan Sosial",
+    "RUPA":"Seni Rupa",
+    // "TARI":"Seni Tari",
+    "PJOK":"Pendidikan Jasmani, Olahraga, dan Kesehatan",
+    "BSUND":"Bahasa dan Sastra Sunda",
+    // "BING"  :"Bahasa Inggris"
+}
 const KodeMapelKurtilas = {
     "PAI":"Pendidikan Agama Islam dan Budi Pekerti",
     "PKRIS":"Pendidikan Agama Kristen dan Budi Pekerti",
@@ -53,7 +95,14 @@ const mapelkdcp_kurikulum={
     'mapelkurmertinggi':MapelKurmerTinggi,
     'mapelkurmerrendah':MapelKurmerRendah,
     'mapelkurtilastinggi':MapelKurtilasTinggi,
-    'mapelkurtilasrendah':MapelKurtilasRendah
+    'mapelkurtilasrendah':MapelKurtilasRendah,
+    '1':KodeMapelKumer12,
+    '2':KodeMapelKumer12,
+    '3':KodeMapelKumer3,
+    '4':KodeMapelKumer46,
+    '5':KodeMapelKumer46,
+    '6':KodeMapelKumer46,
+
 };
 
 export default mapelkdcp_kurikulum;

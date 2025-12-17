@@ -68,33 +68,41 @@ const koleksiMenuNavigasi = [
         tag:['Guru Kelas','admin','Guru Mapel','ptk','Kepala Sekolah',],         tersedia:'<span class="text-muted py-2">tersedia</span>',   icon:'<i class="bi bi-journal-bookmark-fill"></i>',     target:'/kurikulum',                background:images['kurikulum.webp']},
     { 
         title:'Kalender',              
-        tag:['Guru Kelas','admin','Guru Mapel','ptk','Kepala Sekolah','Penjaga Sekolah','Operator Sekolah',],         tersedia:'<span class="text-muted py-2">tersedia</span>',   icon:'<i class="bi bi-calendar-event"></i>',            target:'/kalender',                 background:images['kalender-pendidikan.webp']},
+        tag:['Guru Kelas','admin','Guru Mapel','ptk','Kepala Sekolah','Penjaga Sekolah','Operator Sekolah',],         tersedia:'<span class="text-muted py-2">tersedia</span>',   icon:'<i class="bi bi-calendar-event"></i>',            target:'/kalender',                 
+        background:images['kalender-pendidikan.webp']},
     { 
         title:'Program Pembelajaran',  
-        tag:['Guru Kelas','admin','Guru Mapel','ptk','Kepala Sekolah',],         tersedia:'<span class="text-muted py-2">tersedia</span>',   icon:'<i class="bi bi-newspaper"></i>',                 target:'/program_pembelajaran',     background:images['program-pembelajaran.webp']},
+        tag:['Guru Kelas','admin','Guru Mapel','ptk','Kepala Sekolah',],         tersedia:'<span class="text-muted py-2">tersedia</span>',   icon:'<i class="bi bi-newspaper"></i>',                 target:'/program_pembelajaran',     
+        background:images['program-pembelajaran.webp']},
     { 
         title:'RPP/Modul Ajar',        
-        tag:['Guru Kelas','admin','Guru Mapel','ptk','Kepala Sekolah',],         tersedia:'',                                                icon:'<i class="bi bi-journal-medical"></i>',           target:'/',                         background:images['rpp.webp']},
+        tag:['Guru Kelas','admin','Guru Mapel','ptk','Kepala Sekolah',],         tersedia:'',                                                icon:'<i class="bi bi-journal-medical"></i>',           target:'/',                         
+        background:images['rpp.webp']},
 
 
         { 
         title:'Arsip Surat',           
-        tag:['Guru Kelas','admin','Guru Mapel','ptk','Operator Sekolah','Kepala Sekolah'],         tersedia:'<span class="text-muted py-2">tersedia</span>',                       icon:'<i class="bi bi-envelope"></i>',                  target:'/arsip-surat',              background:images['data_lemari.png']},
+        tag:['Guru Kelas','admin','Guru Mapel','ptk','Operator Sekolah','Kepala Sekolah'],         tersedia:'<span class="text-muted py-2">tersedia</span>',                       icon:'<i class="bi bi-envelope"></i>',                  target:'/arsip-surat',              
+        background:images['data_lemari.png']},
     { 
         title:'Remedial',              
-        tag:['Guru Kelas','admin','Guru Mapel','ptk',],         tersedia:'',                                                icon:'<i class="bi bi-easel2"></i>',                    target:'/',                         background:images['remedial-pengayaan.webp']},
+        tag:['Guru Kelas','admin','Guru Mapel','ptk',],         tersedia:'',                                                icon:'<i class="bi bi-easel2"></i>',                    target:'/',                         
+        background:images['remedial-pengayaan.webp']},
     { 
         title:'Pelajar Pancasila',     
         tag:['Guru Kelas','admin','Guru Mapel','ptk','Kepala Sekolah',],         tersedia:'',                                                icon:'<i class="bi bi-moon-stars-fill"></i>',           target:'/',                         background:images['pelajar-pancasila.webp']},
     { 
         title:'Program Literasi',      
-        tag:['Guru Kelas','admin','Guru Mapel','ptk','Kepala Sekolah',],         tersedia:'',                                                icon:'<i class="bi bi-pencil-fill"></i>',               target:'/',                         background:images['literasi.webp']},
+        tag:['Guru Kelas','admin','Guru Mapel','ptk','Kepala Sekolah',],         tersedia:'',                                                icon:'<i class="bi bi-pencil-fill"></i>',               target:'/',                         
+        background:images['literasi.webp']},
     { 
         title:'Supervisi',             
-        tag:['Guru Kelas','admin','Guru Mapel','ptk','Kepala Sekolah',],         tersedia:'',                                                icon:'<i class="bi bi-eyeglasses"></i>',                target:'/',                         background:images['supervisi.webp']},
+        tag:['Guru Kelas','admin','Guru Mapel','ptk','Kepala Sekolah',],         tersedia:'',                                                icon:'<i class="bi bi-eyeglasses"></i>',                target:'/',                         
+        background:images['supervisi.webp']},
     { 
         title:'Kehadiran Guru',        
-        tag:['Guru Kelas','admin','Guru Mapel','Kepala Sekolah','ptk','Penjaga Sekolah','Operator Sekolah'],         tersedia:'',                                                icon:'<i class="bi bi-person-vcard-fill"></i>',         target:'/',                         background:images['PTK.webp']},//'https://versibaru.edurasa.com/img/lg_kehadiran_2a.png'},
+        tag:['Guru Kelas','admin','Guru Mapel','Kepala Sekolah','ptk','Penjaga Sekolah','Operator Sekolah'],         tersedia:'',                                                icon:'<i class="bi bi-person-vcard-fill"></i>',         target:'/',                         
+        background:images['PTK.webp']},//'https://versibaru.edurasa.com/img/lg_kehadiran_2a.png'},
     { 
         title:'Pengembangan Diri',     
         tag:['Guru Kelas','admin','Guru Mapel','ptk','Kepala Sekolah',],         tersedia:'',                                                icon:'<i class="bi bi-bar-chart-steps"></i>',           target:'/',                         background:images['pengembangan-diri.webp']},

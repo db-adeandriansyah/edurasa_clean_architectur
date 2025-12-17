@@ -65,7 +65,7 @@ export default class OrmAbsen{
                 let countIjin=0;
                 let countSakit=0;
                 let countAlpa=0;
-
+ 
             kaldikbulanini.forEach(n=>{
                 let strkey = siswa.id  +'_'+n.keytgl;
                 let floatTgl = parseInt(new FormatTanggal(new Date(n.tgl)).stringYYYYMMDD());

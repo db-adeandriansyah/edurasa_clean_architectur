@@ -92,27 +92,37 @@ export default class KbmFitur extends BanksoalFitur{
         return ar;
     }
     get tinggirendahjenjang(){
-        return this.jenjang>2?'tinggi':'rendah';;
+        return this.jenjang>3?'tinggi':'rendah';;
     }
     get currentMapelOnClassRoomWithTema(){
-        let tinggiRendah = this.jenjang>2?'tinggi':'rendah';;
-        let teks = 'mapel'+this.shortKurikulum + tinggiRendah;;
-        let dataAsal = {};
-        let mapelReal =  this.#mapelAplikasi[teks]();
-        if(this.shortKurikulum == 'kurtilas'){
-            let mapeling = this.temakurtilas(tinggiRendah)
-            dataAsal = Object.assign({},mapeling,mapelReal);
-        }else{
-            dataAsal = mapelReal;
-        }
-        return dataAsal;
+        return this.#mapelAplikasi[this.jenjang.toString()];
+        // let tinggiRendah = this.jenjang>3?'tinggi':'rendah';;
+        // let teks = 'mapel'+this.shortKurikulum + tinggiRendah;;
+        // let dataAsal = {};
+        // let mapelReal =  this.#mapelAplikasi[teks]();
+        // if(this.shortKurikulum == 'kurtilas'){
+        //     let mapeling = this.temakurtilas(tinggiRendah)
+        //     dataAsal = Object.assign({},mapeling,mapelReal);
+        // }else{
+        //     dataAsal = mapelReal;
+        //     if(this.jenjang == 3){
+        //         dataAsal = Object.assign({},dataAsal,{'IPAS': 'Ilmu Pengetahuan Alam dan Sosial'});
+        //     }
+        // }
+        // return dataAsal;
     }
     get currentMapelOnClassRoom(){
-        let tinggiRendah = this.jenjang>2?'tinggi':'rendah';;
-        let teks = 'mapel'+this.shortKurikulum + tinggiRendah;;
+        // let tinggiRendah = this.jenjang>3?'tinggi':'rendah';;
+        // let teks = 'mapel'+this.shortKurikulum + tinggiRendah;;
         
-        return  this.#mapelAplikasi[teks]();
-        
+        // let map = this.#mapelAplikasi[teks]();
+        // if(this.jenjang == 3){
+        //         if(this.jenjang == 3){
+        //         map = Object.assign({},map,{'IPAS': 'Ilmu Pengetahuan Alam dan Sosial'});
+        //     }
+        //     }
+        // return map;
+        return this.#mapelAplikasi[this.jenjang.toString()];
     }
 
     get labelingSelectMapel(){
@@ -397,6 +407,7 @@ export default class KbmFitur extends BanksoalFitur{
         let banksoal    = this.arrayBankSoal;
         let api = [...kurikulumapi, ...datamateri,...tagihanapi,...banksoal];
         let loadedApi = api.filter(s=>!this.service.isExist(s.tabdb));
+        console.log('loadedApi', loadedApi);
         if(loadedApi.length>0){
             await this.service.callPropertiMultipleWithPrefik(loadedApi);
         }
