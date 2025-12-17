@@ -52,7 +52,7 @@ const KodeMapelKumer46 = {
     // "TARI":"Seni Tari",
     "PJOK":"Pendidikan Jasmani, Olahraga, dan Kesehatan",
     "BSUND":"Bahasa dan Sastra Sunda",
-    // "BING"  :"Bahasa Inggris"
+    "BING"  :"Bahasa Inggris"
 }
 const KodeMapelKurtilas = {
     "PAI":"Pendidikan Agama Islam dan Budi Pekerti",
