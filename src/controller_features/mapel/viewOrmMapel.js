@@ -13,7 +13,7 @@ const titleMapel = (identitas)=>{
 }
 const sebaranKdTagihan = (sebarankd)=>{
     let html = "";
-    html+=`<table class="table table-sm table-bordered border-dark font8">`;
+    html+=`<table class="table toExcel table-sm table-bordered border-dark font8">`;
         html+=`<thead>`;
             html+=`<tr>`;
                 html+=`<th class="text-center align-middle">Kode Elemen</th>`;
@@ -52,7 +52,7 @@ const sebaranKdTagihan = (sebarankd)=>{
 }
 const sebaranKdTagihanKurtilas = (sebarankd)=>{
     let html = "";
-    html+=`<table class="table table-sm table-bordered border-dark font8">`;
+    html+=`<table class="table toExcel table-sm table-bordered border-dark font8">`;
         html+=`<thead>`;
             html+=`<tr>`;
                 html+=`<th class="text-center align-middle">Kode Elemen</th>`;
@@ -78,7 +78,7 @@ const sebaranKdTagihanKurtilas = (sebarankd)=>{
 const viewRekapPH = (identitas, desain,data,sebarankd)=>{
     let html= titleMapel(identitas);
     html+=`<div class="table-responsive">`;
-        html+=`<table class="table table-sm table-bordered border-dark tnr font12" id="tabelnilaiasli">`;
+        html+=`<table class="table toExcel table-sm table-bordered border-dark tnr font12" id="tabelnilaiasli">`;
             html+=`<thead>`;
             if(Object.keys(desain).length == 0){
                         html+=`<tr>`;
@@ -186,7 +186,7 @@ const viewRekapPH = (identitas, desain,data,sebarankd)=>{
 const viewRekapKurtilas= (identitas, desain,data,sebarankd)=>{
     let html= titleMapel(identitas);
     html+=`<div class="table-responsive">`;
-        html+=`<table class="table table-sm table-bordered border-dark tnr font12" id="tabelnilaiasli">`;
+        html+=`<table class="table toExcel table-sm table-bordered border-dark tnr font12" id="tabelnilaiasli">`;
             html+=`<thead>`;
             if(Object.keys(desain).length == 0){
                     
@@ -366,7 +366,7 @@ const viewRekapRaporSementara = (identitas,sebaran, data)=>{
     let refrensi = {};
     html+= titleMapel(identitas);
     html+=`<div class="table-responsive">`;
-        html+=`<table class="table table-sm table-bordered border-dark tnr font12" id="tabelnilaiasli">`;
+        html+=`<table class="table toExcel table-sm table-bordered border-dark tnr font12" id="tabelnilaiasli">`;
             html+=`<thead>`;
             if(identitas.isKurmer){
                 const {dataPH, dataPTS, dataPASPAK} = sebaran;
@@ -508,7 +508,7 @@ const viewRekapRaporSementara = (identitas,sebaran, data)=>{
                         const {dataPH, dataPTS, dataPASPAK,kdMaks_objek, kdMin_objek,niai_rapor} = datamapel.raporAsli_olah;
                                                 
                         if(dataPH.length == 0){
-                            html+=`<td class="text-center"</td>`
+                            html+=`<td class="text-center"></td>`
                         }else{
                             dataPH.forEach(atp=>{
                                 
@@ -617,7 +617,7 @@ const viewRekapRaporSementaraKeterampilan = (identitas,sebaran, data)=>{
     let refrensi = {};
     html+= titleMapel(identitas);
     html+=`<div class="table-responsive">`;
-        html+=`<table class="table table-sm table-bordered border-dark tnr font12" id="tabelnilaiasli">`;
+        html+=`<table class="table toExcel table-sm table-bordered border-dark tnr font12" id="tabelnilaiasli">`;
             html+=`<thead>`;
             html+=`<tr>`;
                 html+=`<th rowspan="3" class="text-center align-middle text-bg-secondary" style="width:20px">No</th>`
@@ -785,13 +785,206 @@ const viewRekapRaporSementaraKeterampilan = (identitas,sebaran, data)=>{
     html+=`</div>`;
     return html;
 }
+
+const viewTpExport=(identitas, data)=>{
+    let html="";
+    html+= titleMapel(identitas);
+    
+    let atpUniq = [];
+    let atpPhZonk = data.groupBy_PH.length===0;
+    let atpAllNotZonk = data.dataAllKbm_unique.length>0;
+    let atpMinDefault = data.predikatMin_objek.idbaris
+    let atpMaksDefault = data.predikatMaks_objek.idbaris;
+    let isTertib = true;
+    let kebutuhankd = data.kebutuhankd > 0;
+    data.dataAllKbm_unique.forEach(({objek_kd},index)=>{
+            atpUniq.push({atp : objek_kd[0].idbaris, text: objek_kd[0].atp, isTambahan:false})
+    });
+    //yang ga ada;
+
+    if(data.dataAllKbm_unique.filter(s=>s.atp == atpMaksDefault).length == 0){
+        atpUniq.push({atp : data.predikatMaks_objek.idbaris, text: data.predikatMaks_objek.atp, isTambahan:true});
+        
+    }; 
+    if(data.dataAllKbm_unique.filter(s=>s.atp == atpMinDefault).length == 0){
+        atpUniq.push({atp : data.predikatMin_objek.idbaris, text: data.predikatMin_objek.atp,isTambahan:true});
+        
+    }; 
+    if((atpPhZonk && atpAllNotZonk) || kebutuhankd){
+        isTertib = false;
+    }
+    html+=`<div class="border-2 p-2">Klik tombol export Excel pada menu sticky, kemudian salin di Format Import e-Raport</div>`
+    html+=`<div class="table-responsive">`;
+        html+=`<table class="table toExcel table-sm table-bordered border-dark tnr font12" id="tabelnilaiasli">`;
+            html+=`<thead>`;
+                html+=`<tr>`;
+                    html+=`<th class="text-center text-bg-info">NO</th>`
+                    html+=`<th class="text-center text-bg-info">TINGKAT</th>`
+                    html+=`<th class="text-center text-bg-info">FASE</th>`;
+                    html+=`<th class="text-center text-bg-info">SEMESTER</th>`;
+                    html+=`<th class="text-center text-bg-info">TUJUAN PEMBELAJARAN</th>`
+                html+='</tr>';
+            html+=`</thead>`;
+            html+=`<tbody>`;          
+                // if(data.dataAllKbm_unique.length == 0){
+                //     data.propertikurikulummapel.forEach(({atp},index)=>{
+                //         html+=`<tr>`;
+                //             html+=`<td class="text-center text-bg-warning">${index+1}</td>`;
+                //             html+=`<td class="text-center text-bg-warning">${identitas.tingkat}</td>`;
+                //             html+=`<td class="text-center text-bg-warning">${identitas.nama_fase}</td>`;
+                //             html+=`<td class="text-center text-bg-warning">${identitas.semester}</td>`;
+                //             html+=`<td class="text-bg-warning">${atp}</td>`;
+                //         html+=`</tr>`
+                //     })
+                // }else{
+                    atpUniq.forEach(({text,isTambahan},index)=>{
+                        html+=`<tr>`;
+                            html+=`<td class="text-center ${isTambahan?'text-bg-warning':''}">${index+1}</td>`;
+                            html+=`<td class="text-center ${isTambahan?'text-bg-warning':''}">${identitas.tingkat}</td>`;
+                            html+=`<td class="text-center ${isTambahan?'text-bg-warning':''}">${identitas.nama_fase}</td>`;
+                            html+=`<td class="text-center ${isTambahan?'text-bg-warning':''}">${identitas.semester}</td>`;
+                            html+=`<td class="text-start ${isTambahan?'text-bg-warning':''}">${text}</td>`;
+                        html+=`</tr>`
+                    })
+                // }
+            html+=`</tbody>`;
+        html+='</table>';
+        html+=`<table class="table table-bordered text-sm font10">`;
+            html+=`<tbody>`;
+                html+=`<tr>`;
+                    html+=`<td>Jumlah KBM atau Tagihan Penilaian</td>`;
+                    html+=`<td>${data.dataAllKbm.length} KBM</td>`;
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td>Jumlah TP/ATP yang dinilai</td>`;
+                    html+=`<td>${data.dataAllKbm_unique.length==0?'Ga pernah bikin KBM/Tagihan Soal makanya selnya warna kuning 😛':`${data.dataAllKbm_unique.length} TP`}</td>`;
+                html+=`</tr>`;
+                html+=`<tr>`;
+                    html+=`<td>TP/ATP diambil dari</td>`;
+                    html+=`<td>${data.dataAllKbm_unique.length>0?"ATP semua KBM/Tagihan Soal":"2 ATP Sampling"}</td>`;
+                html+=`</tr>`;
+                if(!isTertib){
+                    html+=`<tr>`;
+                        html+=`<td class="text-bg-warning">Kasus</td>`;
+                        html+=`<td class="text-bg-warning">`;
+                            html+=`<ol>`;
+                                html+=`Kemungkinan penyebab:`
+                                html+=`<li>`
+                                    html+=`KBM ada 0`;
+                                    html+=`</li>`
+                                    html+=`<li>`
+                                        html+=`ada KBM tapi ga pernah ngoreksi`
+                                    html+=`</li>`
+                                    html+=`<li>`
+                                        html+=`TP diambil bukan dari Peniaian Harian (Lihat peraturan penilaian kurmer, TP tertinggi dan terendah dikalkulasi dari PH)`
+                                    html+=`</li>`
+                                    html+=`<li>`
+                                        html+=`Edurasa akan otomatis menggenarate TP, tapi diambil secara acak dari fitur Kurikulum ATP`
+                                    html+=`</li>`
+                                    html+=`<li>`
+                                        html+=`Sel tabel berwarna kuning ditentukan oleh Edurasa. Bisa juga diambil dari TP non Penilaian Harian atau ada kelas paralel yang menerapkan TP ini`
+                                    html+=`</li>`
+                            html+=`</ol>`;
+                        html+=`</td>`;
+                    html+=`</tr>`;
+
+                }
+
+            html+=`</tbody>`;
+        html+=`</table>`;
+
+    html+=`</div>`;
+    return html;
+}
+const viewNilaiExport=(identitas, data,siswa)=>{
+    let html="";
+    html+= titleMapel(identitas);
+    
+    let atpUniq = [];
+    let atpPhZonk = data.groupBy_PH.length===0;
+    let atpAllNotZonk = data.dataAllKbm_unique.length>0;
+    let atpMinDefault = data.predikatMin_objek.idbaris
+    let atpMaksDefault = data.predikatMaks_objek.idbaris;
+    let isTertib = true;
+    let kebutuhankd = data.kebutuhankd > 0;
+    data.dataAllKbm_unique.forEach(({objek_kd},index)=>{
+            atpUniq.push({atp : objek_kd[0].idbaris, text: objek_kd[0].atp, isTambahan:false})
+    });
+    //yang ga ada;
+
+    if(data.dataAllKbm_unique.filter(s=>s.atp == atpMaksDefault).length === 0){
+        atpUniq.push({atp : data.predikatMaks_objek.idbaris, text: data.predikatMaks_objek.atp, isTambahan:true});
+        
+    }; 
+    if(data.dataAllKbm_unique.filter(s=>s.atp == atpMinDefault).length === 0){
+        atpUniq.push({atp : data.predikatMin_objek.idbaris, text: data.predikatMin_objek.atp,isTambahan:true});
+        
+    }; 
+    if((atpPhZonk && atpAllNotZonk) || kebutuhankd){
+        isTertib = false;
+    }
+    html+=`<div class="border-2 p-2">Klik tombol export Excel pada menu sticky, kemudian salin di Format Import e-Raport</div>`
+    html+=`<div class="table-responsive">`;
+        html+=`<table class="table toExcel table-sm table-bordered border-dark tnr font12" id="tabelnilaiasli">`;
+            html+=`<thead>`;
+                html+=`<tr>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-info align-middle">NO</th>`
+                    html+=`<th rowspan="2" class="text-center text-bg-info align-middle">NISN</th>`
+                    html+=`<th rowspan="2" class="text-center text-bg-info align-middle">NAMA SISWA</th>`;
+                    html+=`<th rowspan="2" class="text-center text-bg-info align-middle">NILAI RAPORT</th>`;
+                    html+=`<th colspan="${atpUniq.length}" class="align-middle text-center text-bg-info">TINGKAT KETERCAPAIAN TP</th>`
+                    
+                    html+=`<th rowspan="2" class="text-center text-bg-info align-middle">VALIDASI NILAI</th>`;
+                html+='</tr>';
+                html+=`<tr>`;
+                
+                atpUniq.forEach(({atp},index)=>{
+                    html+=`<th class="text-center text-bg-info">TP.11${index+1} (${atp})</th>`;
+                })
+                
+                html+=`</tr>`;
+            html+=`</thead>`;
+            html+=`<tbody>`;
+            siswa.forEach(({pd_nama, nisn,dataRapor_Siap},index)=>{
+                let datanilai = dataRapor_Siap.find(s=>s.kodemapel == identitas.kodemapel);
+                
+                html+=`<tr>`;
+                    html+=`<td class="text-center">${index+1}</td>`;
+                    html+=`<td class="text-center">${nisn}</td>`;
+                    html+=`<td class="text-start text-nowrap">${pd_nama}</td>`;
+                    html+=`<td class="text-center">${datanilai[identitas.kodemapel]}</td>`;
+
+                        atpUniq.forEach(({atp,isTambahan},index)=>{
+                            let kd_max = datanilai['kdmaks_'+identitas.kodemapel].idbaris;
+                            let kd_min = datanilai['kdmin_'+identitas.kodemapel].idbaris;
+                            if(atp == kd_max){
+                                html+=`<td class="text-center ${isTambahan?'text-bg-warning':''}">T</tp>`;
+                            }else if(atp == kd_min){
+                                html+=`<td class="text-center ${isTambahan?'text-bg-warning':''}">R</tp>`;
+                            }else{
+                                html+=`<td></tp>`;
+                            }
+                        })
+                    
+                    html+=`<td></tp>`;
+                html+=`</tr>`
+            });
+            html+=`</tbody>`;
+        html+='</table>';
+        
+
+    html+=`</div>`;
+    return html;
+}
 const viewOrmMapel = {
     'cardMapel'                 : cardMapel,
     'viewRekap'                 : viewRekapPH,
     'viewRekapKurtilas'         : viewRekapKurtilas,
     'viewRekapRaporSementara'   : viewRekapRaporSementara,
     'viewRekapRaporSementaraKeterampilan' : viewRekapRaporSementaraKeterampilan,
-    'tombolCetakIjazah'         : tombolCetakIjazah
+    'tombolCetakIjazah'         : tombolCetakIjazah,
+    'viewTpExport'              : viewTpExport,
+    'viewNilaiExport'           :viewNilaiExport
 
 }
 export default viewOrmMapel;

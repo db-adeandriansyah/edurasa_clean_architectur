@@ -90,7 +90,12 @@ export default class UserRepositories extends CallHttp{
             'action':'dataguruall',
         }
         const parameter = this.urilogin+new URLSearchParams(p).toString();
-        return await this.get(parameter);
+
+        const data = await this.get(parameter);
+        console.log('param',parameter)
+        console.log(data)
+        
+        return data;
         // let p = [
         //     {}
         // ]

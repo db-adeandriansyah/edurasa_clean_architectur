@@ -7,7 +7,7 @@ export default class DataSiswaController extends Fitur{
         super(app);
         this.siswaService = service;
         
-        this.#judulHalaman = '';//html
+        this.#judulHalaman = '';//
         this.controlRombel();
     }
 

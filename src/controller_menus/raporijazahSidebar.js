@@ -44,6 +44,14 @@ export const raporSidebar = (arrriwayat=[])=> [
         
     ]
     },
+    
+        {
+            title:'e-rapor Helper',
+            menu:[
+                {value:'tp_erapor', text:'TP Export', name:'menusidebar'},
+                {value:'nilai_erapor', text:'Nilai Export', name:'menusidebar'}
+            ]
+        },
     {
     title:'Ijazah',
     menu:[

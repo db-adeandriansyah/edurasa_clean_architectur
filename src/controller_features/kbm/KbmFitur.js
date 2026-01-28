@@ -5,7 +5,7 @@ import { FormatTanggal } from "../../utilities/FormatTanggal";
 import BanksoalFitur from "../banksoal/BanksoalFitur";
 import OrmKurikulumSoal from "../banksoal/OrmKurikulumSoal";
 
-export default class KbmFitur extends BanksoalFitur{
+export default class KbmFitur extends BanksoalFitur{ 
     #mapelAplikasi;
     constructor(service,printarea,maincontrol,user,tooltip,siswa){
         super(service,printarea,maincontrol,user,tooltip)

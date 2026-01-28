@@ -290,9 +290,10 @@ export default class Fitur extends Controller{
     tandatangan(impersonate=true){
         const ptk= this.App.LocalJson('ptk');
         const kepsek = ptk.filter(s=>s.kelas ==="Kepala Sekolah")[0];
+        console.log(ptk, kepsek, this.fokusRombel);
         
         let objekUserDefault= {
-            nama_kepsek:kepsek.guru_namalengkap,//
+            nama_kepsek:kepsek?.guru_namalengkap,//
             nip_kepsek:"NIP. "+kepsek.guru_nip,
             nama_guru:this.setApp.namaUser,
             nip_guru:this.setApp.nipUser,
@@ -302,8 +303,9 @@ export default class Fitur extends Controller{
         if(impersonate){
             if(['admin','Kepala Sekolah','Staff'].includes(this.setApp.jabatanUser)){
                 let guru = ptk.filter(s=> s.kelas == this.fokusRombel)[0];
-                    objekUserDefault.nama_guru = guru.guru_namalengkap;
-                    objekUserDefault.nip_guru = guru.guru_nip==""?"-":"NIP. "+guru.guru_nip;
+                console.log(guru);
+                    objekUserDefault.nama_guru = guru?.guru_namalengkap;
+                    objekUserDefault.nip_guru = guru?.guru_nip==""?"-":"NIP. "+guru?.guru_nip;
             };
         }
         const select = this.ttdControl;

@@ -129,7 +129,7 @@ export default class AlgoritmaNilai {
              */
             // periksa dulu, apakah datanilai siswa ini memiliki kd unik di tagihan PH atau tidak;
             if(dataAllKbm_unique_nilai.length==0){
-                
+                    
                     //gunakan refrensi dataAllKbm_unique_nilai; result.nilai_maks = cariMax;
                 
                     result.raporAsli_nilaiMax_number = '';

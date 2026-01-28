@@ -732,7 +732,8 @@ export default class OrmMapel{
     sebaranDariTagihanBlangko(){
         let result = [];
         let sebaran = this.sebaranKd();
-        let propertikurikulum = this.kbmFitur.ormKurikulum.data; // sudah dalam bentuk data, bukan orm
+        // let propertikurikulum = this.kbmFitur.ormKurikulum.data; // sudah dalam bentuk data, bukan orm
+        let propertikurikulum = this.kbmFitur.ormKurikulum.data.filter(s=> s.kelas.toString().split(",").indexOf(this.jenjang)>-1); // sudah dalam bentuk data, bukan orm
         let refrensiApiPredikat = this.dataTabSs('predikat_'+this.jenjang);
         
         this.datasebarankd = sebaran;
@@ -756,7 +757,10 @@ export default class OrmMapel{
             // }
             
             let ob_sn = {};
-            ob_sn.propertikurikulummapel = propertikurikulum.filter(s=>s.kodemapel == s_n.kodemapel);
+            const propertikurikulummapel3 = propertikurikulum.filter(s=>s.kodemapel == s_n.kodemapel);
+            ob_sn.propertikurikulummapel = propertikurikulummapel3;
+            
+            // console.log('propertikurikulum',propertikurikulum.filter(s=>s.kodemapel == s_n.kodemapel && s.kelas.split(",").indexOf(this.jenjang)>-1).length,ob_sn.propertikurikulummapel.length);
             ob_sn.tokensiswa = item.id;
             ob_sn.kodemapel = s_n.kodemapel;
             ob_sn.kodemapel_teks = s_n.kodemapel_teks;
@@ -835,12 +839,13 @@ export default class OrmMapel{
             
             result.push(Object.assign({},s_n,ob_sn));
 
-        })
+        });
+        
         return result;
     }
     init(){
         let sebaran = this.sebaranKd();
-        let propertikurikulum = this.kbmFitur.ormKurikulum.data; // sudah dalam bentuk data, bukan orm
+        let propertikurikulum = this.kbmFitur.ormKurikulum.data.filter(s=> s.kelas.toString().split(",").indexOf(this.jenjang)>-1); // sudah dalam bentuk data, bukan orm; // sudah dalam bentuk data, bukan orm
         let refrensiApiPredikat = this.dataTabSs('predikat_'+this.jenjang);
         
         this.datasebarankd = sebaran;
@@ -878,6 +883,8 @@ export default class OrmMapel{
                                         }
                                         
                                         let ob_sn = {};
+                                        // ob_sn.propertikurikulummapel = propertikurikulum.filter(s=>s.kodemapel == s_n.kodemapel);
+                                        //.filter(s=> s.kelas.toString().split(",").indexOf(this.jenjang)>-1); 
                                         ob_sn.propertikurikulummapel = propertikurikulum.filter(s=>s.kodemapel == s_n.kodemapel);
                                         ob_sn.tokensiswa = item.id;
                                         ob_sn.jenjang = item.jenjang;
@@ -1180,9 +1187,81 @@ export default class OrmMapel{
             }
             let desain = sebaranDariTagihanBlangko.filter(s=> s.kodemapel == e.target.value)[0];
 
+            
             this.workplace.innerHTML = viewOrmMapel.viewRekapRaporSementara(identitas,desain.raporAsli_olah,datasiswa);
             let tb = new TableProperties(document.querySelector('#tabelnilaiasli'));
             tb.freezeColumn([2]);
+            tb.addScrollUpDown();
+            
+        };
+        elemenselect.dispatchEvent(new Event('change'));
+    }
+    selectingMapelForTp(){
+        let elemenselect = document.querySelector(`[data-pradesain="rapor_sementara"]`);
+        let sebaranDariTagihanBlangko = this.sebaranDariTagihanBlangko();
+        
+        elemenselect.onchange = (e)=>{
+            this.workplace.innerHTML = e.target.value;
+            // let tipesebaran_nonnilai = tipesebaran.replace('_nilai','');
+            let datasiswa = this.collectionsSiswa.data;
+            let sebaranByMapel = this.datasebarankd.find(s=> s.kodemapel == e.target.value);
+            if(['PAI','PKRIS','PKATO'].includes(e.target.value)){
+                datasiswa = this.collectionsSiswa.data.filter(s=>s.mapel_agama_kode == e.target.value);
+            }
+            let identitas = {
+                title: 'TP SIAP EXPORT',
+                mapelteks : sebaranByMapel.kodemapel_teks,
+                semester :this.kbmFitur.user.semester,
+                tapel: this.kbmFitur.user.tapel,
+                rombel: this.rombel,
+                isKurmer: this.isKurmer,
+                // jenistagihan:tipesebaran,
+                tingkat: this.jenjang,
+                nama_fase: this.kbmFitur.abjadFase[this.jenjang],
+                kodemapel:e.target.value
+            }
+            let desain = sebaranDariTagihanBlangko.find(s=> s.kodemapel == e.target.value);
+            console.log('mapel', e.target.value, '\n desain', desain,'\ndatasiswa', datasiswa)
+            
+            this.workplace.innerHTML = viewOrmMapel.viewTpExport(identitas,desain);
+            // this.workplace.innerHTML = viewOrmMapel.viewRekapRaporSementara(identitas,desain.raporAsli_olah,datasiswa);
+            // let tb = new TableProperties(document.querySelector('#tabelnilaiasli'));
+            // tb.freezeColumn([2]);
+            // tb.addScrollUpDown();
+            
+        };
+        elemenselect.dispatchEvent(new Event('change'));
+    }
+    selectingMapelForTpNilai(){
+        let elemenselect = document.querySelector(`[data-pradesain="rapor_sementara"]`);
+        let sebaranDariTagihanBlangko = this.sebaranDariTagihanBlangko();
+        
+        elemenselect.onchange = (e)=>{
+            this.workplace.innerHTML = e.target.value;
+            // let tipesebaran_nonnilai = tipesebaran.replace('_nilai','');
+            let datasiswa = this.collectionsSiswa.data;
+            let sebaranByMapel = this.datasebarankd.find(s=> s.kodemapel == e.target.value);
+            if(['PAI','PKRIS','PKATO'].includes(e.target.value)){
+                datasiswa = this.collectionsSiswa.data.filter(s=>s.mapel_agama_kode == e.target.value);
+            }
+            let identitas = {
+                title: 'NILAI DAN KODE DESKRIPSI SIAP EXPORT',
+                mapelteks : sebaranByMapel.kodemapel_teks,
+                semester :this.kbmFitur.user.semester,
+                tapel: this.kbmFitur.user.tapel,
+                rombel: this.rombel,
+                isKurmer: this.isKurmer,
+                // jenistagihan:tipesebaran,
+                tingkat: this.jenjang,
+                nama_fase: this.kbmFitur.abjadFase[this.jenjang],
+                kodemapel:e.target.value
+            }
+            let desain = sebaranDariTagihanBlangko.find(s=> s.kodemapel == e.target.value);
+            console.log('mapel', e.target.value, '\n desain', desain,'\ndatasiswa', datasiswa)
+            this.workplace.innerHTML = viewOrmMapel.viewNilaiExport(identitas,desain,datasiswa);
+            // this.workplace.innerHTML = viewOrmMapel.viewRekapRaporSementara(identitas,desain.raporAsli_olah,datasiswa);
+            let tb = new TableProperties(document.querySelector('#tabelnilaiasli'));
+            tb.freezeColumn([0]);
             tb.addScrollUpDown();
             
         };
@@ -1211,7 +1290,7 @@ export default class OrmMapel{
                 kodemapel:e.target.value
             }
             let desain = sebaranDariTagihanBlangko.filter(s=> s.kodemapel == e.target.value)[0];
-            console.log(desain);
+            
 
             this.workplace.innerHTML = viewOrmMapel.viewRekapRaporSementaraKeterampilan(identitas,desain.keterampilan_raporAsli_olah,datasiswa);
             let tb = new TableProperties(document.querySelector('#tabelnilaiasli'));
@@ -1481,7 +1560,7 @@ export default class OrmMapel{
     }
     withNilaiSebelumnya(namatab,namamundur){
         let raportSiap = this.kbmFitur.service.data[namatab];
-        console.log(this.kbmFitur.service.data, raportSiap);
+        
         this.collectionsSiswa.addProperty('dataRapor_Siap_Plus_Sebelumnya',(item)=>{
             let result = [];
             let dataRapor = item.dataRapor_Siap;

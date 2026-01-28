@@ -946,7 +946,8 @@ const tabel_setting_predikat = (data,fokusMapel,editable=false)=>{
                         html+=`<td class="text-center ${cekhasproperti(data.blangkoRapor,`${fokusMapel}_P_DESKRIPSI`)?'':'text-bg-warning'}" data-server="${fokusMapel}_P_DESKRIPSI">${db[0][fokusMapel+'_P_DESKRIPSI']}</td>`;
                     }else{
                         if(data.isKurmer){
-                            html+=`<td class="text-center">${db[0]['kdmaks_'+fokusMapel].idbaris}</td>`;
+                            
+                            html+=`<td class="text-center">${db[0]['kdmaks_'+fokusMapel]?.idbaris||'??'}</td>`;
                             html+=`<td class="text-center">${db[0]['predikat_kdmaks_'+fokusMapel]}</td>`;
                             html+=`<td class="text-center">${db[0]['kdmin_'+fokusMapel].idbaris}</td>`;
                             html+=`<td class="text-center">${db[0]['predikat_kdmin_'+fokusMapel]}</td>`;

@@ -24,7 +24,7 @@ datasiswa.fitur({
     'view'              : dataSiswaViews,
     'tabel'             : tabelDom,
     'modal'             : ModalConfig,
-    // 'bodyModal'         : bodyModeScroll,
+    // 'bodyModal'         : bodyModeScroll, 
     'TableProperties'   : TableProperties,
     'myArray'           : myArray,
     'DataMutasi'        : DataMutasi,

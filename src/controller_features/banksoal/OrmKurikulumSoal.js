@@ -47,6 +47,7 @@ export default class OrmKurikulumSoal{
                 // .customFilter((item)=>{
                 //     return item.kelas.toString().indexOf(this.jenjang)>-1;
                 // })
+                .addProperty('fase',(item)=>this.abjadFase[this.jenjang])
                 .addProperty('tp',(item)=>tp.filter(s=> s.idbaris == item.foreignkey_tp).length>0?tp.filter(s=> s.idbaris == item.foreignkey_tp)[0].tp:'faseTPATP/id_tp bermasalah di baris='+item.idbaris)
                 .addProperty('elemen',(item)=>cp.filter(s=> s.idbaris == item.foreignkey_elemencp).length>0?cp.filter(s=> s.idbaris == item.foreignkey_elemencp)[0].elemen:'faseTPATP/id_elemencp bermasalah di baris='+item.idbaris)
                 .addProperty('cp_utama',(item)=>cp.filter(s=> s.idbaris == item.foreignkey_elemencp).length>0?cp.filter(s=> s.idbaris == item.foreignkey_elemencp)[0].cp_utama:'faseTPATP/id_elemencp bermasalah di baris='+item.idbaris)

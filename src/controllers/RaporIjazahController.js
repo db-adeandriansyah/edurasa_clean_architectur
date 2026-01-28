@@ -16,7 +16,7 @@ import Fitur from "./Fitur";
 
 export default class RaporIjazahController extends Fitur{
     #judulHalaman;
-    constructor(app,service){
+    constructor(app,service){ 
         super(app);
         this.service = service;
         this.#judulHalaman = '';
@@ -49,7 +49,7 @@ export default class RaporIjazahController extends Fitur{
         let ls_siswa = JSON.parse(window.localStorage.getItem('dbSiswa'));
         this.siswa = ls_siswa.filter(s=> s.aktif == 'aktif');
         // this.siswa = JSON.parse(window.localStorage.getItem('dbSiswa'));//ls_siswa;//.filter(s=> s.aktif == 'aktif' && s.jenjang == this.fokusJenjang);
-        console.log('service', this.service)
+        
         this.Modal = this.makeInstance(ModalConfig,['#modalAuto',{'backdrop':'static','keyboard':false}]);
         this.Modal1 = this.makeInstance(ModalConfig,['#modalAuto2',{'backdrop':'static','keyboard':false},{
             'printLandscapeDom' : this.printLandscapeDom, // paramaeter (dom)
@@ -591,7 +591,6 @@ export default class RaporIjazahController extends Fitur{
         this.kbmFitur.settingRombel(this.fokusRombel);
         
         let satuSemesterSebelumnya = this.defineSemesterSemesterSebelumnya(1);
-        console.log('satuSemesterSebelumnya', satuSemesterSebelumnya);
         let api = satuSemesterSebelumnya.api.api;
         let rombelMundur1 = satuSemesterSebelumnya.rombelMundur;
         let tabnilai = 'nilai_raport_'+rombelMundur1;
@@ -616,7 +615,7 @@ export default class RaporIjazahController extends Fitur{
         this.ormMapel.ormSiswaOnlyRaporAsli();
         this.ormMapel.withNilaiRaporSiap();
         this.ormMapel.withNilaiSebelumnya(prefik+tabnilai,'_mundur1');
-        console.log('test ini', this.ormMapel,'\n data mundur keterampilan', prefik, tabnilai);
+        
         const mapelNonAgama = this.ormMapel.labelNonAgamaIncludeMulok;
         const sebaranblangko = this.ormMapel.sebaranDariTagihanBlangko();
         const data = this.ormMapel.collectionsSiswa.data;
@@ -1504,7 +1503,7 @@ export default class RaporIjazahController extends Fitur{
         // const dataDB = await this.postMethodCrudController(this.crud,fd);
         
         let dataAbsen = this.service.data['responses_'+this.fokusJenjang].filter(s=>s.id !=="");
-        console.log(dataAbsen)
+        
         let data= [];
         this.kbmFitur.siswaRombel.forEach((db)=>{
             let ob={};
@@ -1540,7 +1539,7 @@ export default class RaporIjazahController extends Fitur{
         this.ormMapel.withNilaiRaporSiap();
 
         const dataApiAbsen = this.Api_absensi();//this.service.data['responses_'+this.fokusJenjang];
-        console.log('dataApiAbsen',dataApiAbsen);
+        
         let identitas = {
             // 'jenjang':this.fokusJenjang,
             // 'rombel':this.fokusRombel,
@@ -2395,7 +2394,7 @@ export default class RaporIjazahController extends Fitur{
 
         }
         this.workplace.innerHTML = viewRapor.sklTranskip(db,identitas,true);
-        console.log('database transkip',db)
+        
         this.controlPrintSkl(db,viewRapor.viewSklTranskip);
     }
     async transkipijazah(){
@@ -3276,6 +3275,62 @@ export default class RaporIjazahController extends Fitur{
         this.workplace.innerHTML = viewRapor.sknr(db,identitas,true);
         this.controlPrintSkl(db,viewRapor.sknr_fill);
     }
+    
+    async tp_erapor(){
+        this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
+        this.arrayReload.forEach(n=>clearInterval(n));
+        await this.kbmFitur.settingRombel(this.fokusRombel).init_kbmonline();
+        
+        await this.kbmFitur.init_raport();
+        this.ormMapel.createLabelMapel();
+        this.maincontrol.innerHTML = viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="rapor_sementara" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        this.ormMapel.init();
+         this.ormMapel.createLabelMapel();
+        // this.maincontrol.innerHTML = 'rekap nilai asli';// viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="rapor_sementara" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        this.ormMapel.init();
+        
+        this.ormMapel.ormSiswaOnlyRaporAsli();
+        this.ormMapel.withNilaiRaporSiap();
+        this.ormMapel.selectingMapelForTp();
+        
+        
+    }
+    
+    async nilai_erapor(){
+        this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
+        this.kbmFitur.settingRombel(this.fokusRombel)
+        this.conditionalSubemenu();
+        await this.kbmFitur.init_raport();
+        this.ormMapel.createLabelMapel();
+        this.maincontrol.innerHTML = viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="rapor_sementara" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        this.ormMapel.init();
+        this.ormMapel.ormSiswaOnlyRaporAsli();
+        this.ormMapel.withNilaiRaporSiap();
+        this.ormMapel.selectingMapelForTpNilai();
+
+        // const mapelNonAgama = this.ormMapel.labelNonAgamaIncludeMulok;
+        // const sebaranblangko = this.ormMapel.sebaranDariTagihanBlangko();
+        // const blangko_nilai_rapor = this.service.data['blangko_nilai_raport_'+this.fokusRombel];
+        // const data = this.ormMapel.collectionsSiswa.selectProperties(['id','pd_nama','sebaran_mapel','dataRapor','dataRapor_Siap']).data;
+        // const identitas = {
+        //     'tapel'     : this.Auth.tapel,
+        //     'semester'  : this.Auth.semester,
+        //     'kelas'     : this.fokusRombel,
+        //     'data'      : data,
+        //     'labelMapel': this.ormMapel.labelRealMapel,
+        //     'isKurmer'  : this.ormMapel.isKurmer,
+        //     'sebaran'   : sebaranblangko,
+        //     'blangkoRapor':blangkoRapor
+            
+        // }
+        
+        // this.maincontrol.innerHTML = viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="selection-mapel" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        // this.workplace.innerHTML = viewRapor.html_setting_deskripi(identitas,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',true);
+        
+        
+        
+    }
+    
     updateCetakIjazah(data,dataserverijazah){
         this.workplace.innerHTML = viewRapor.rekapIjazahPraCtak(data, dataserverijazah);
         

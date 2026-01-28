@@ -76,7 +76,7 @@ const tabelRekapRapor = (data)=>{
 const tabelDataRapoIjazah = (fokusmapel, db)=>{
     let html="";
     let dataijazah = db[0].olah_ijazah;
-    html+=`<table class="table table-sm table-bordered bordere-dark font12">`;
+    html+=`<table class="table table-sm table-bordered bordered-dark font12">`;
         html+=`<thead>`;
             html+=`<tr>`;
                 html+=`<th rowspan="4" class="text-center align-middle text-bg-secondary" style="width:20px">No</td>`;

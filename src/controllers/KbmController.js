@@ -146,7 +146,64 @@ export default class KbmController extends Fitur{
         this.maincontrol.innerHTML = viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="rapor_sementara" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
         this.ormMapel.init();
         this.ormMapel.selectingMapelRapor();
+        console.log(this.ormMapel)
+    }
+    
+    async tp_erapor(){
+        this.workplace.innerHTML = `<img src="${this.Auth.barloading}" class="w3-tiny"/>`;
+        this.arrayReload.forEach(n=>clearInterval(n));
+        await this.kbmFitur.settingRombel(this.fokusRombel).init_kbmonline();
         
+        await this.kbmFitur.init_raport();
+        this.ormMapel.createLabelMapel();
+        this.maincontrol.innerHTML = viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="rapor_sementara" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        this.ormMapel.init();
+         this.ormMapel.createLabelMapel();
+        // this.maincontrol.innerHTML = 'rekap nilai asli';// viewOrmMapel.cardMapel(['pilihmapel','Pilih Mapel',this.ormMapel.labelRealMapel ,this.kbmFitur.isGuruMapel?this.kbmFitur.mapelAjar:'PAI',` data-pradesain="rapor_sementara" ${this.kbmFitur.isGuruMapel?'disabled':''}`]);
+        this.ormMapel.init();
+        
+        this.ormMapel.ormSiswaOnlyRaporAsli();
+        this.ormMapel.withNilaiRaporSiap();
+        this.ormMapel.selectingMapelForTp();
+        
+        let cekKesiapan  = this.dataSiapRapor();
+        console.log('ormMapel',this.ormMapel)
+        console.log('kbmFitur',this.kbmFitur)
+        console.log('cek kesiapan',cekKesiapan)
+    }
+    dataSiapRapor(){
+        const blangkoNilaiRapor = this.service.data['blangko_nilai_raport_'+this.fokusRombel];
+        let result=[];
+        let koleksimapel = this.ormMapel.labelRealMapel;
+        let isKurmer = this.ormMapel.isKurmer;
+        koleksimapel.forEach(val=>{
+            let ob_m={};
+            let m = val.value;
+            ob_m.mapel =m;
+            ob_m.mapel_teks =val.label;
+            //punyaNilai;
+            ob_m.siapNilai = blangkoNilaiRapor.hasOwnProperty(m)
+            ob_m.siapPredikat = blangkoNilaiRapor.hasOwnProperty(m+"_P_DESKRIPSI")
+            ob_m.nilai = ( blangkoNilaiRapor.hasOwnProperty(m) &&  blangkoNilaiRapor.hasOwnProperty(m+'_P_DESKRIPSI'));
+            
+            if(!isKurmer){
+                ob_m.siapNilaiKeterampilan = blangkoNilaiRapor.hasOwnProperty(m+'_NILAI_KETERAMPILAN')
+                ob_m.siapPredikatKeterampilan = blangkoNilaiRapor.hasOwnProperty(m+"_K_DESKRIPSI")
+                ob_m.nilai = (  blangkoNilaiRapor.hasOwnProperty(m) &&  blangkoNilaiRapor.hasOwnProperty(m+'_P_DESKRIPSI') && blangkoNilaiRapor.hasOwnProperty(m+'_NILAI_KETERAMPILAN') &&  blangkoNilaiRapor.hasOwnProperty(m+'_K_DESKRIPSI'));
+            }
+            result.push(ob_m);
+        });
+        result.tinggibadan = blangkoNilaiRapor.hasOwnProperty('TINGGIBADAN_SEMESTER_'+this.setApp.semester);
+        result.penyakit = blangkoNilaiRapor.hasOwnProperty('PENDENGARAN_SEMESTER_'+this.setApp.semester);
+        result.ekskul = blangkoNilaiRapor.hasOwnProperty('EKSKUL_1_NAMA_SEMESTER_'+this.setApp.semester);
+        result.prestasi = blangkoNilaiRapor.hasOwnProperty('PRESTASI_1_NAMA_SEMESTER_'+this.setApp.semester);
+        result.saran = blangkoNilaiRapor.hasOwnProperty('SARAN_SEMESTER_'+this.setApp.semester);
+        result.titimangsa = blangkoNilaiRapor.hasOwnProperty('TITIMANGSA_RAPORT');
+        if(this.setApp.semester == 2){
+            result.kenaikan = blangkoNilaiRapor.hasOwnProperty('KENAIKAN_KELAS');
+        }
+        let bool = result.map(n=>n.nilai).filter(s=>s==false).length>0;
+        return {datakesiapan:result,kesimpulan:!bool}
     }
     async new_rekapraportketerampilan(){
         
