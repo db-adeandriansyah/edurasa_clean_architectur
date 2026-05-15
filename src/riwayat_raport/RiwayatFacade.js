@@ -14,6 +14,14 @@ export default class RiwayatFacade{
         const currentSemester = splitingCurrentSemester;
         const currentKodeTapel = splitingCurrentTapel;
         const targetKodeTapel = splitingRequestTapel;
+        console.log('riwayat setting',{
+            currentJenjang,
+            targetRombel,
+            selisihTapel,
+            selisihTapelSatuan,
+            splitingCurrentTapel,
+            splitingRequestTapel
+        });
         const abjad = currentRombel.match(/[A-D]/g)[0];
         const indukMakro = MakroInduk.find(item=>item.tapel == splitingRequestTapel);
         const kurikulumTarget = indukMakro['kelas_'+targetRombel+'_kurikulum'];

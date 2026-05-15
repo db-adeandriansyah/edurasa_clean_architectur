@@ -34,7 +34,7 @@ export default class IjazahFiturKurmer{
     }
     createRefrensi(){
         let arKol = [];
-        let currentTapel = 2425;
+        let currentTapel = 2526//2425;
         //TAMBAHAN API_IJAZAH;
         let prefix = 'db_server_ijazah_6';
         let kode = 't_' +currentTapel+'_s_2';
@@ -55,15 +55,16 @@ export default class IjazahFiturKurmer{
             [1,2].forEach(semester=>{
                 let kode = t_ + semester;
                 let findApi = this.service.repo.otherMacro(kode);
-                ['A','B','C'].forEach(abjad=>{
+                ['A','B'].forEach(abjad=>{
                     let prefix = 'db_raport_kelas_'+item+abjad+'_semester_'+semester;
-                    let tabkelas4 = semester ==2?'raportkumer_'+item+abjad:'newRekapRaport_kurmer_'+item+abjad;
+                    // let tabkelas4 = semester ==2?'raportkumer_'+item+abjad:'newRekapRaport_kurmer_'+item+abjad;
+                    let tabkelas4 = 'raportkumer_'+item+abjad;//:'newRekapRaport_kurmer_'+item+abjad;
                     let ob = {
                         'tabdb':prefix,
                         'kelas':item,
                         'hasCalled':this.service.data.hasOwnProperty(prefix),
                         'kode' :kode,
-                        'tab' : item==4?tabkelas4:'nilai_raport_' +item+abjad,
+                        'tab' : 'nilai_raport_' +item+abjad,//item==4?tabkelas4:'nilai_raport_' +item+abjad,
                         'idss' : findApi['ss_nilai_'+item],
                         'findApi':findApi,
                         'semester':semester
@@ -79,6 +80,7 @@ export default class IjazahFiturKurmer{
     }
     async onlyCallNeeded(){
         const paramRefrensi = this.createRefrensi();
+        console.log('param refrensi ijazah kurmer',paramRefrensi);
         const onlyDoesntCalled = paramRefrensi.filter(s=>!s.hasCalled);
         if(onlyDoesntCalled.length>0){
             //semester 1
@@ -118,6 +120,7 @@ export default class IjazahFiturKurmer{
         await this.onlyCallNeeded();
         const mapel = this.orm.labelNonAgamaIncludeMulok;//.filter(s=>s.value!=='BING');
         //ormSiswa;
+        console.log('init fitur ijazah kurmer',this.service.data);
         this.collectionSiswa = new this.classEdu(this.allsiswa)
                             .simpleFilter({'jenjang':6})
                             .setProperty('pd_agama',(item)=>item==""?"ISLAM":item)
@@ -298,18 +301,18 @@ export default class IjazahFiturKurmer{
                             })
                             .addProperty('tanggal_kelulusan',item=>{
                                 let db = this.service.data;
-                                let no_ijazah = db['db_server_ijazah_6'].find(s=>s.id == item.id);
-                                return no_ijazah.tanggal_kelulusan ??'';
+                                let no_ijazah = db?.['db_server_ijazah_6'].find(s=>s.id == item.id);
+                                return no_ijazah?.tanggal_kelulusan ??'';
                             })
                             .addProperty('tanggal_transkip',item=>{
                                 let db = this.service.data;
-                                let no_ijazah = db['db_server_ijazah_6'].find(s=>s.id == item.id);
-                                return no_ijazah.tanggal_transkip ??'';
+                                let no_ijazah = db?.['db_server_ijazah_6'].find(s=>s.id == item.id);
+                                return no_ijazah?.tanggal_transkip ??'';
                             })
                             .addProperty('no_surat',item=>{
                                 let db = this.service.data;
-                                let no_ijazah = db['db_server_ijazah_6'].find(s=>s.id == item.id);
-                                return no_ijazah.no_surat ??'';
+                                let no_ijazah = db?.['db_server_ijazah_6'].find(s=>s.id == item.id);
+                                return no_ijazah?.no_surat ??'';
                             })
                             ;
         //mapelagama

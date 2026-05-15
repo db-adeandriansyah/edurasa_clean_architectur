@@ -84,7 +84,7 @@ export default class Route{
         // let currentCode =  't_'+tahunAwal.slice(2,4)+tahunAkhir.slice(2,4)+'_s_'+semester;
         let teksTitle = ' Tapel '+ tahunAwal+'/'+tahunAkhir +' Semester ' + semester;
         this.#keyApp ='t_'+tahunAwal.slice(2,4)+tahunAkhir.slice(2,4)+'_s_'+semester;
-        // this.#keyApp ='t_2324_s_1'
+        // this.#keyApp ='t_2425_s_2'
         
         this.#User =  {
                 logo                        : logo,
