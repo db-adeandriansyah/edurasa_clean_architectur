@@ -1,15 +1,15 @@
 export const MakroInduk = [
         {
             tapel   : 2526,
-            idss    :'1D9FXC4rr3Jmw9ifAd3U5NgmDNdB46j7NRys9PED69kg',
+            idss    :'1uQISFu5BwgFWb08JYHeHnKiZd30YZcxMdp30_V1N4aY',
             kelas_1_kurikulum : 'kurmer',
             kelas_2_kurikulum : 'kurmer',
             kelas_3_kurikulum : 'kurmer',
             kelas_4_kurikulum : 'kurmer',
             kelas_5_kurikulum : 'kurmer',
             kelas_6_kurikulum : 'kurmer',
-            kelas_1_mapel : ['PA','PKN','BINDO','MTK','RUPA','PJOK','BSUND',],
-            kelas_2_mapel : ['PA','PKN','BINDO','MTK','RUPA','PJOK','BSUND',],
+            kelas_1_mapel : ['PA','PKN','BINDO','MTK','RUPA','PJOK','BSUND'],
+            kelas_2_mapel : ['PA','PKN','BINDO','MTK','RUPA','PJOK','BSUND'],
             kelas_3_mapel : ['PA','PKN','BINDO','MTK','IPAS','RUPA','PJOK','BSUND','BING'],
             kelas_4_mapel : ['PA','PKN','BINDO','MTK','IPAS','RUPA','PJOK','BSUND','BING'],
             kelas_5_mapel : ['PA','PKN','BINDO','MTK','IPAS','RUPA','PJOK','BSUND','BING'],

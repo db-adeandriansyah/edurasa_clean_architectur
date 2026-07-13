@@ -87,8 +87,9 @@ export default class KurikulumFitur{
     get currentMapelOnClassRoom(){
         let tinggiRendah = this.jenjang>2?'tinggi':'rendah';;
         
-        let teks = 'mapel'+this.shortKurikulum + tinggiRendah;;
-        return this.#mapelAplikasi[teks]();;
+        let teks = 'kelas'+this.jenjang;//.toString();//'mapel'+this.shortKurikulum + tinggiRendah;;
+        console.log('mapel yang dipanggil = ' + teks,this.#mapelAplikasi[teks], this.#mapelAplikasi);
+        return this.#mapelAplikasi[teks];//this.#mapelAplikasi[teks]();;
     }
 
     get labelingSelectMapel(){
@@ -502,7 +503,7 @@ export default class KurikulumFitur{
             koleksimapel:this.currentMapelOnClassRoom,
             user:this.user
         }
-        
+        console.log('data kkmkktp yang dipanggil = ',v);
         let ob={
             tipe:'properti_kkmkktp',
             properti:'kkmkktp',

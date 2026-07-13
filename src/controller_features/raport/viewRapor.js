@@ -2844,12 +2844,12 @@ const skl2324 = (data,htmlkop,withnilai=false)=>{
     html+=`<div id="areaprint" class="tnr p-2">`;
         html+=htmlkop
         html+=`<h3 class="mb-0 mt-4 text-center fw-bold text-uppercase text-decoration-underline">SURAT KETERANGAN KELULUSAN</h3>`;
-        html+=`<h5 class="mb-4 text-center">No.: 421.2/030.<span data-skl="index"></span>/SDNRAJA1/VI/2024</h5>`;
-        html+=`<p>Kepala SD Negeri Ratujaya 1 selaku penyelenggara Penilaian Sumatif Akhir Jenjang Tahun Pelajaran 2023/2024 berdasarkan:</p>`;
+        html+=`<h5 class="mb-4 text-center">No.: 421.2/030.<span data-skl="index"></span>/SDNRAJA1/VI/2026</h5>`;
+        html+=`<p>Kepala SD Negeri Ratujaya 1 selaku penyelenggara Penilaian Sumatif Akhir Jenjang Tahun Pelajaran 2025/2026 berdasarkan:</p>`;
         html+=`<ol>`
             html+=`<li>Ketuntasan dari seluruh program pembelajaran pada Kurikulum 2013</li>`;
             html+=`<li>Kriteria kelulusan dari satuan pendidikan sesuai dengan peraturan perundang-undangan</li>`
-            html+=`<li>Rapat Pleno Dewan Guru tentang Kelulusan pada tanggal 4 Juni 2024</li>`
+            html+=`<li>Rapat Pleno Dewan Guru tentang Kelulusan pada tanggal 4 Juni 2025</li>`
         html+=`</ol>`
         html+=`<p>menerangkan bahwa:</p>`;
         html+=`<div class="table-responsive">`;
@@ -2905,7 +2905,7 @@ const skl2324 = (data,htmlkop,withnilai=false)=>{
                     html+=`</tr>`;
                     html+=`<tr>`;
                         html+=`<td>Pada Tanggal</td>`;
-                        html+=`<td>: 10 Juni 2024</td>`;
+                        html+=`<td>: 10 Juni 2026</td>`;
                     html+=`</tr>`;
                     html+=`<tr><td colspan="2">Kepala UPTD SDN Ratujaya 1</td></tr>`
                     html+=`<tr><td></td><td><br/><br/><br/><br/><br/></td></tr>`
@@ -2995,15 +2995,18 @@ const skl = (data,identitas,withnilai=false)=>{
     let html="";
     html+=`<div id="areaprint" class="tnr p-2">`;
         html+=`<h3 class="mb-0 mt-4 text-center fw-bold text-uppercase text-decoration-underline">SURAT KETERANGAN KELULUSAN</h3>`;
-        html+=`<h5 class="mb-4 text-center">No.: 421.2/${identitas.nosurat}.<span data-skl="index"></span>/SDNRAJA1/VI/${identitas.tahunsurat}</h5>`;
-        html+=`<p>Kepala SD Negeri Ratujaya 1 selaku penyelenggara Penilaian Sumatif Akhir Jenjang Tahun Pelajaran 2024/2025 berdasarkan:</p>`;
-        html+=`<ol>`
-            html+=`<li>Ketuntasan dari seluruh program pembelajaran pada Kurikulum Nasional yang ditetapkan dan dijalankan di sekolah</li>`;
-            html+=`<li>Kriteria kelulusan dari satuan pendidikan sesuai dengan peraturan perundang-undangan</li>`
+        // html+=`<h5 class="mb-4 text-center">No.: 421.2/${identitas.nosurat}.<span data-skl="index"></span>/SDNRAJA1/VI/${identitas.tahunsurat}</h5>`;
+        html+=`<h5 class="mb-3 text-center">No.: 400.3.11.1/${identitas.nosurat}.<span data-skl="index"></span>/SDNRAJA1/VI/${identitas.tahunsurat}</h5>`;
+        html+=`<p class="mb-0">Kepala SD Negeri Ratujaya 1 selaku penyelenggara Penilaian Sumatif Akhir Jenjang Tahun Pelajaran 2025/2026 berdasarkan:</p>`;
+        html+=`<ol class="mt-0">`
+            html+=`<li>Peraturan Menteri Pendidikan, Kebudayaan, Riset, dan Teknologi Republik Indonesia Nomor 58 Tahun 2024,  tentang Ijazah Jenjang Pendidikan Dasar dan Pendidikan Menengah.</li>`;
+            // html+=`<li>Peraturan Menteri Pendidikan, Kebudayaan, Riset, dan Teknologi Nomor 21 Tahun 2022 tentang Standar Penilaian Pendidikan pada Pendidikan Anak Usia Dini, Jenjang Pendidikan Dasar, dan Jenjang Pendidikan Menengah serta perubahannya</li>`;
+            html+=`<li>Ketuntasan dari seluruh program pembelajaran pada Kurikulum Merdeka;</li>`
+            // html+=`<li>Kriteria kelulusan dari satuan pendidikan sesuai dengan peraturan perundang-undangan; dan</li>`
             html+=`<li>${identitas.dasarhukum}</li>`
         html+=`</ol>`
         html+=`<p>menerangkan bahwa:</p>`;
-        html+=`<div class="table-responsive">`;
+        html+=`<div class="table-responsive mt-0">`;
             html+=`<table class="table table-sm table-borderless lh-1">`;
                 html+=`<tr>`;
                     html+=`<td style="width:250px">Nama</td><td style="width:10px">:</td>`;
@@ -3029,12 +3032,12 @@ const skl = (data,identitas,withnilai=false)=>{
         html+=`</div>`;
         html+=`<p>dinyatakan</p>`;
         // html+=`<div class="row justify-content-center">`;
-            html+=`<div class="col-4 fs-1 text-center align-middle border fw-bolder shadow-lg rounded p-3">L U L U S</div>`
+            // html+=`<div class="col-4 fs-1 text-center align-middle border fw-bolder shadow-lg rounded p-3">L U L U S</div>`
         // html+=`</div>`
         html+=`<div style="padding:2px 15px;text-align:center;font-weight:900;font-size:28px">---LULUS /<s>TIDAK LULUS</s>---</div>`
         if(withnilai){
-            html+= `<p>Dengan nilai sebagai berikut:</p>`;
-            html+=`<table class="table table-sm table-bordered border-dark llh-1">`;
+            html+= `<p class="mb-0">Dengan nilai sebagai berikut:</p>`;
+            html+=`<table class="table table-sm table-bordered border-dark lh-1">`;
                 html+=`<thead>`;
                     html+=`<tr>`;
                         html+=`<th class="text-center align-middle" style="width:30px">No</th>`;
@@ -3170,7 +3173,7 @@ const TranskipIjzah = (data,identitas,withnilai=false)=>{
     html+=`<div id="areaprint" class="tnr p-2">`;
         html+=`<h3 class="mb-0 mt-4 text-center fw-bold text-uppercase text-decoration-underline">SURAT KETERANGAN KELULUSAN</h3>`;
         html+=`<h5 class="mb-4 text-center">No.: 421.2/${identitas.nosurat}.<span data-skl="index"></span>/SdnRaja1/VI/${identitas.tahunsurat}</h5>`;
-        html+=`<p>Kepala SD Negeri Ratujaya 1 selaku penyelenggara Penilaian Sumatif Akhir Jenjang Tahun Pelajaran 2023/2024 berdasarkan:</p>`;
+        html+=`<p>Kepala SD Negeri Ratujaya 1 selaku penyelenggara Penilaian Sumatif Akhir Jenjang Tahun Pelajaran 2025/2026 berdasarkan:</p>`;
         html+=`<ol>`
             html+=`<li>Ketuntasan dari seluruh program pembelajaran pada Kurikulum Nasional yang ditetapkan dan dijalankan di sekolah</li>`;
             html+=`<li>Kriteria kelulusan dari satuan pendidikan sesuai dengan peraturan perundang-undangan</li>`
@@ -3391,7 +3394,7 @@ const halamanDepanIjazah = (db, dbIjazah,bol=false)=>{
                 html+=`<p class="text-center fs-4 fw-bold mt-5 pt-5">KEMENTRIAN DAN KEBUDAYAAN REPUBLIK INDONESIA</p>`;
                 html+=`<h3 class="text-center fw-bold">I J A Z A H</h3>`;
                 html+=`<p class="text-center mt-2 mb-0">SEKOLAH DASAR</p>`;
-                html+=`<p class="text-center">TAHUN PELAJARAN 2023/2024</p>`;
+                html+=`<p class="text-center">TAHUN PELAJARAN 2025/2026</p>`;
                 html+=`<p class="mt-5">Yang bertanda tangan di bawah ini, Kepala <b class="text-decoration-underline"> UPTD Sekolah Dasar Negeri Ratujaya 1</b></p>`;
                 html+=`<p>Nomor Pokok Sekolah Nasional <b class="text-decoration-underline d-inline-block"> 20228914</b></p>`;
                 html+=`<p>Kabupaten/Kota <b class="text-decoration-underline"> Depok</b></p>`;
@@ -3421,7 +3424,7 @@ const halamanDepanIjazah = (db, dbIjazah,bol=false)=>{
                     html+=`</tbody>`;
                 html+=`</table>`;
                 html+=`<h2 class="text-center fs-1 mt-3">L U L U S</h2>`;
-                html+=`<p>Berdasarkan keputusan kepala <b>UPTD Sekolah Dasar Negeri Ratujaya 1 </p><p>nomor. 421.2/029/SDNRAJA1/VI/2024</b></p>`;
+                html+=`<p>Berdasarkan keputusan kepala <b>UPTD Sekolah Dasar Negeri Ratujaya 1 </p><p>nomor. 421.2/029/SDNRAJA1/VI/2025</b></p>`;
                 html+=`<div class="row">`;
                     html+=`<div class="col-6">`;
                         html+=`<div class="d-flex justify-content-center py-3 ps-5">`
@@ -3429,7 +3432,7 @@ const halamanDepanIjazah = (db, dbIjazah,bol=false)=>{
                         html+=`</div>`;
                     html+=`</div>`;
                     html+=`<div class="col-6 text-center">`;
-                        html+=`<b class="text-decoration-underline">Kota Depok, 26 Juni </b>2024<br>`;
+                        html+=`<b class="text-decoration-underline">Kota Depok, 26 Juni </b>2026<br>`;
                         html+=`<p>Kepala Sekolah</p><br>`;
                         html+=`<p class="mt-5 text-decoration-underline mb-0">Yoce Magdalena, S.Pd.SD</p>`;
                         html+=`<p>NIP. 19730720 200003 2 005</p>`
@@ -3508,7 +3511,7 @@ const guidesIjazah = (db, dbIjazah,index)=>{
         
         html+=`<h4 class="text-center mb-0 fw-bold">DAFTAR NILAI</h4>`;
         html+=`<h5 class="text-center mb-0">SEKOLAH DASAR</h5>`;
-        html+=`<h6 class="text-center mb-5">TAHUN PELAJARAN 2023/2024</h6>`;
+        html+=`<h6 class="text-center mb-5">TAHUN PELAJARAN 2025/2026</h6>`;
         html+=`<table class="table table-sm table-borderless font12">`;
             html+=`<tr>`;
                 html+=`<td style="width:170px">Nama</td>`;
@@ -3551,7 +3554,7 @@ const guidesIjazah = (db, dbIjazah,index)=>{
                         html+=`</div>`;
                     html+=`</div>`;
                     html+=`<div class="col-6 text-center">`;
-                        html+=`<b class="text-decoration-underline">Kota Depok, 26 Juni </b>2024<br>`;
+                        html+=`<b class="text-decoration-underline">Kota Depok, 26 Juni </b>2025<br>`;
                         html+=`<p>Kepala Sekolah</p><br>`;
                         html+=`<p class="mt-5 text-decoration-underline mb-0">Yoce Magdalena, S.Pd.SD</p>`;
                         html+=`<p>NIP. 19730720 200003 2 005</p>`
@@ -3879,9 +3882,9 @@ const menuTranskip = ()=>{
                 
                 html+=`<div class="col-6 p-2">`;
                 html+=cardMenu('Input Masal',
-                    inputsElements.floatingDate('id_tanggal','Tanggal Kelulusan','2025-06-02')
+                    inputsElements.floatingDate('id_tanggal','Tanggal Kelulusan','2026-06-02')
                     +
-                    inputsElements.floatingText('id_prefix','Prefix No Ijasah (15 Digit)','1-11-2025-000')
+                    inputsElements.floatingText('id_prefix','Prefix No Ijasah (15 Digit)','1-11-2026-000')
                     +
                     inputsElements.floatingText('id_nosurat','No Surat','038')
                     

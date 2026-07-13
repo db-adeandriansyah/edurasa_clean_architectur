@@ -335,6 +335,7 @@ export default class OrmKurkulum{
     properti_kkmkktp(v){
         let data = this.#kurikulumService['kkmkktp'];
         let objekmapel = Object.keys(v.koleksimapel);
+        console.log('objek mapel yang dipanggil = ',objekmapel);
         let user = v.user;
         return new CollectionsEdu(data)
             .simpleFilter({jenjang:v.jenjang})

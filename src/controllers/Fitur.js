@@ -290,7 +290,7 @@ export default class Fitur extends Controller{
     tandatangan(impersonate=true){
         const ptk= this.App.LocalJson('ptk');
         const kepsek = ptk.filter(s=>s.kelas ==="Kepala Sekolah")[0];
-        console.log(ptk, kepsek, this.fokusRombel);
+        // console.log(ptk, kepsek, this.fokusRombel);
         
         let objekUserDefault= {
             nama_kepsek:kepsek?.guru_namalengkap,//
@@ -303,7 +303,7 @@ export default class Fitur extends Controller{
         if(impersonate){
             if(['admin','Kepala Sekolah','Staff'].includes(this.setApp.jabatanUser)){
                 let guru = ptk.filter(s=> s.kelas == this.fokusRombel)[0];
-                console.log(guru);
+                //console.log(guru);
                     objekUserDefault.nama_guru = guru?.guru_namalengkap;
                     objekUserDefault.nip_guru = guru?.guru_nip==""?"-":"NIP. "+guru?.guru_nip;
             };

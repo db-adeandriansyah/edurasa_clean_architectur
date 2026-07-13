@@ -108,7 +108,7 @@ export class CallHttp{
     }
     async post(uri,param){
         // if(!this.csrf()) return;
-        console.log('post to ',uri,param);
+        // console.log('post to ',uri,param);
         try{
             const parameter = this.paramFormData(param);
             const f = await fetch(uri,{body:parameter,method:'post'});

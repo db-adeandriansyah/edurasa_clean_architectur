@@ -102,6 +102,12 @@ const mapelkdcp_kurikulum={
     '4':KodeMapelKumer46,
     '5':KodeMapelKumer46,
     '6':KodeMapelKumer46,
+    'kelas1':KodeMapelKumer12,
+    'kelas2':KodeMapelKumer12,
+    'kelas3':KodeMapelKumer3,
+    'kelas4':KodeMapelKumer46,
+    'kelas5':KodeMapelKumer46,
+    'kelas6':KodeMapelKumer46,
 
 };
 

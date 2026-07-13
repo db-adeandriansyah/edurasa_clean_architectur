@@ -2351,10 +2351,11 @@ export default class RaporIjazahController extends Fitur{
         let db = this.instanceOlahIjazah.collectionSiswa.selectProperties(['id','pd_nama','pd_namaayah','pd_namaibu','nis','nisn','tempat_tanggal_lahir','nama_rombel','olah_ijazah','nilai_akhir_ijazah']).sortByProperty('nama_rombel','asc').data;
         
         const identitas = {
-            'nosurat' :'036',
-            'tahunsurat':'2025',
-            'dasarhukum':'Berdasarkan SK Kelulusan Kepala Sekolah No. 421.2/B.2-098/SKL/RJ1/V/2025 Tanggal 28 Mei 2025',
-            'tanggal_kelulusan':'2 Juni 2025'
+            'nosurat' :'035',
+            'tahunsurat':'2026',
+            // 'dasarhukum':'Berdasarkan SK Kelulusan Kepala Sekolah No. 421.2/B.2-098/SKL/RJ1/V/2025 Tanggal 28 Mei 2025',
+            'dasarhukum':'Berdasarkan SK Kelulusan Kepala Sekolah No. 400.3.11.1/034/SKep/SDNRaja1/VI/2026 Tanggal 2 Juni 2026',
+            'tanggal_kelulusan':'2 Juni 2026'
 
         }
         this.workplace.innerHTML = viewRapor.skl(db,identitas,true);
@@ -3267,9 +3268,9 @@ export default class RaporIjazahController extends Fitur{
         const identitas = {
             'nosurat' :'037',
             'tapel':this.setApp.tapel,
-            'tahunsurat':'2025',
-            'dasarhukum':'Berdasarkan SK Kelulusan Kepala Sekolah No. 421.2/B.2-098/SKL/RJ1/V/2025 Tanggal 28 Mei 2025',
-            'tanggal_kelulusan':'2 Juni 2025'
+            'tahunsurat':'2026',
+            'dasarhukum':'Berdasarkan SK Kelulusan Kepala Sekolah No. 421.2/B.2-098/SKL/RJ1/V/2026 Tanggal 11 Mei 2026',
+            'tanggal_kelulusan':'26 Mei 2026'
 
         }
         this.workplace.innerHTML = viewRapor.sknr(db,identitas,true);
@@ -3371,6 +3372,43 @@ export default class RaporIjazahController extends Fitur{
     }
     
     
+    t_2526_s_2(){
+        this.maincontrol.innerHTML = viewRapor.html_control_riwayat_raport(true);
+        this.workplace.innerHTML = '';
+        
+        const kontrol = new RiwayatController(this.App,this.service,this.fokusMenu,this.fokusRombel).init();
+        console.log('riwayatController',kontrol);
+        const options = document.querySelectorAll('input[name=sorterasli]');
+        const divKeterangan = document.getElementById('deskripsifitur');
+        
+        options.forEach((opsi)=>{
+            opsi.onchange = async (e)=>{
+                if(e.target.value === 'rekap'){
+                    let html = await kontrol.showRekap();
+                    
+                    divKeterangan.innerHTML =  html.fitur;
+                    this.workplace.innerHTML = html.page
+                }else if(e.target.value === 'raport'){
+                    divKeterangan.innerHTML = `Anda Saat ini memillih fitur <b class='text-blue'>Cetak Raport</b> di Tapel ${kontrol.findMakroInduk.target.tapel} Semester ${kontrol.findMakroInduk.target.semester}<br/>Daftar siswa berdasarkan data kelas Anda di Tapel Saat ini.`;
+                    console.log('kontrol.findMakroInduk.target',kontrol.findMakroInduk.target);
+                    this.workplace.innerHTML =  'Mohon Tunggu ...';
+                    await kontrol.showRaportRiwayat(this.workplace, this.printPortraitDom);
+                }else if(e.target.value === 'induk'){
+                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2025/2026 Semester 1";
+                    this.workplace.innerHTML =  '';
+                    await kontrol.showInduk(this.workplace, this.printPortraitDom);
+                    let tb = new TableProperties(document.querySelector('.toExcel'));
+                    if(tb){
+                        tb.addScrollUpDown();
+                    }
+                }
+                
+
+            }
+        })
+        options[0].dispatchEvent(new Event('change'));
+        
+    }
     t_2526_s_1(){
         this.maincontrol.innerHTML = viewRapor.html_control_riwayat_raport(true);
         this.workplace.innerHTML = '';
@@ -3389,11 +3427,11 @@ export default class RaporIjazahController extends Fitur{
                     this.workplace.innerHTML = html.page
                 }else if(e.target.value === 'raport'){
                     divKeterangan.innerHTML = `Anda Saat ini memillih fitur <b class='text-blue'>Cetak Raport</b> di Tapel ${kontrol.findMakroInduk.target.tapel} Semester ${kontrol.findMakroInduk.target.semester}<br/>Daftar siswa berdasarkan data kelas Anda di Tapel Saat ini.`;
-                    
+                    console.log('kontrol.findMakroInduk.target',kontrol.findMakroInduk.target);
                     this.workplace.innerHTML =  'Mohon Tunggu ...';
                     await kontrol.showRaportRiwayat(this.workplace, this.printPortraitDom);
                 }else if(e.target.value === 'induk'){
-                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2024/2025 Semester 1";
+                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2025/2026 Semester 1";
                     this.workplace.innerHTML =  '';
                     await kontrol.showInduk(this.workplace, this.printPortraitDom);
                     let tb = new TableProperties(document.querySelector('.toExcel'));
@@ -3467,7 +3505,7 @@ export default class RaporIjazahController extends Fitur{
                     this.workplace.innerHTML =  'Mohon Tunggu ...';
                     await kontrol.showRaportRiwayat(this.workplace, this.printPortraitDom);
                 }else if(e.target.value === 'induk'){
-                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2024/2025 Semester 1";
+                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2024/2025 Semester 2";
                     this.workplace.innerHTML =  '';
                     await kontrol.showInduk(this.workplace, this.printPortraitDom);
                     let tb = new TableProperties(document.querySelector('.toExcel'));
@@ -3505,7 +3543,7 @@ export default class RaporIjazahController extends Fitur{
                     this.workplace.innerHTML =  'Mohon Tunggu ...';
                     await kontrol.showRaportRiwayat(this.workplace, this.printPortraitDom);
                 }else if(e.target.value === 'induk'){
-                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2024/2025 Semester 1";
+                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2023/2024 Semester 2";
                     this.workplace.innerHTML =  '';
                     await kontrol.showInduk(this.workplace, this.printPortraitDom);
                     let tb = new TableProperties(document.querySelector('.toExcel'));
@@ -3542,7 +3580,7 @@ export default class RaporIjazahController extends Fitur{
                     this.workplace.innerHTML =  'Mohon Tunggu ...';
                     await kontrol.showRaportRiwayat(this.workplace, this.printPortraitDom);
                 }else if(e.target.value === 'induk'){
-                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2024/2025 Semester 1";
+                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2023/2024 Semester 1";
                     this.workplace.innerHTML =  '';
                     await kontrol.showInduk(this.workplace, this.printPortraitDom);
                     let tb = new TableProperties(document.querySelector('.toExcel'));
@@ -3580,7 +3618,7 @@ export default class RaporIjazahController extends Fitur{
                     this.workplace.innerHTML =  'Mohon Tunggu ...';
                     await kontrol.showRaportRiwayat(this.workplace, this.printPortraitDom);
                 }else if(e.target.value === 'induk'){
-                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2024/2025 Semester 1";
+                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2022/2023 Semester 2";
                     this.workplace.innerHTML =  '';
                     await kontrol.showInduk(this.workplace, this.printPortraitDom);
                     let tb = new TableProperties(document.querySelector('.toExcel'));
@@ -3618,7 +3656,7 @@ export default class RaporIjazahController extends Fitur{
                     this.workplace.innerHTML =  'Mohon Tunggu ...';
                     await kontrol.showRaportRiwayat(this.workplace, this.printPortraitDom);
                 }else if(e.target.value === 'induk'){
-                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2024/2025 Semester 1";
+                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2022/2023 Semester 1";
                     this.workplace.innerHTML =  '';
                     await kontrol.showInduk(this.workplace, this.printPortraitDom);
                     let tb = new TableProperties(document.querySelector('.toExcel'));
@@ -3656,7 +3694,7 @@ export default class RaporIjazahController extends Fitur{
                     this.workplace.innerHTML =  'Mohon Tunggu ...';
                     await kontrol.showRaportRiwayat(this.workplace, this.printPortraitDom);
                 }else if(e.target.value === 'induk'){
-                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2024/2025 Semester 1";
+                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2021/2022 Semester 2";
                     this.workplace.innerHTML =  '';
                     await kontrol.showInduk(this.workplace, this.printPortraitDom);
                     let tb = new TableProperties(document.querySelector('.toExcel'));
@@ -3694,7 +3732,7 @@ export default class RaporIjazahController extends Fitur{
                     this.workplace.innerHTML =  'Mohon Tunggu ...';
                     await kontrol.showRaportRiwayat(this.workplace, this.printPortraitDom);
                 }else if(e.target.value === 'induk'){
-                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2024/2025 Semester 1";
+                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2021/2022 Semester 1";
                     this.workplace.innerHTML =  '';
                     await kontrol.showInduk(this.workplace, this.printPortraitDom);
                     let tb = new TableProperties(document.querySelector('.toExcel'));
@@ -3731,7 +3769,7 @@ export default class RaporIjazahController extends Fitur{
                     this.workplace.innerHTML =  'Mohon Tunggu ...';
                     await kontrol.showRaportRiwayat(this.workplace, this.printPortraitDom);
                 }else if(e.target.value === 'induk'){
-                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2024/2025 Semester 1";
+                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2021/2022 Semester 2";
                     this.workplace.innerHTML =  '';
                     await kontrol.showInduk(this.workplace, this.printPortraitDom);
                     let tb = new TableProperties(document.querySelector('.toExcel'));
@@ -3769,7 +3807,7 @@ export default class RaporIjazahController extends Fitur{
                     this.workplace.innerHTML =  'Mohon Tunggu ...';
                     await kontrol.showRaportRiwayat(this.workplace, this.printPortraitDom);
                 }else if(e.target.value === 'induk'){
-                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2024/2025 Semester 1";
+                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2020/2021 Semester 1";
                     this.workplace.innerHTML =  '';
                     await kontrol.showInduk(this.workplace, this.printPortraitDom);
                     let tb = new TableProperties(document.querySelector('.toExcel'));
@@ -3806,7 +3844,7 @@ export default class RaporIjazahController extends Fitur{
                     this.workplace.innerHTML =  'Mohon Tunggu ...';
                     await kontrol.showRaportRiwayat(this.workplace, this.printPortraitDom);
                 }else if(e.target.value === 'induk'){
-                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2024/2025 Semester 1";
+                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2019/2020 Semester 2";
                     this.workplace.innerHTML =  '';
                     await kontrol.showInduk(this.workplace, this.printPortraitDom);
                     let tb = new TableProperties(document.querySelector('.toExcel'));
@@ -3844,7 +3882,7 @@ export default class RaporIjazahController extends Fitur{
                     this.workplace.innerHTML =  'Mohon Tunggu ...';
                     await kontrol.showRaportRiwayat(this.workplace, this.printPortraitDom);
                 }else if(e.target.value === 'induk'){
-                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2024/2025 Semester 1";
+                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2019/2020 Semester 1";
                     this.workplace.innerHTML =  '';
                     await kontrol.showInduk(this.workplace, this.printPortraitDom);
                     let tb = new TableProperties(document.querySelector('.toExcel'));
@@ -3881,7 +3919,7 @@ export default class RaporIjazahController extends Fitur{
                     this.workplace.innerHTML =  'Mohon Tunggu ...';
                     await kontrol.showRaportRiwayat(this.workplace, this.printPortraitDom);
                 }else if(e.target.value === 'induk'){
-                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2024/2025 Semester 1";
+                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2018/2019 Semester 2";
                     this.workplace.innerHTML =  '';
                     await kontrol.showInduk(this.workplace, this.printPortraitDom);
                     let tb = new TableProperties(document.querySelector('.toExcel'));
@@ -3919,7 +3957,7 @@ export default class RaporIjazahController extends Fitur{
                     this.workplace.innerHTML =  'Mohon Tunggu ...';
                     await kontrol.showRaportRiwayat(this.workplace, this.printPortraitDom);
                 }else if(e.target.value === 'induk'){
-                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2024/2025 Semester 1";
+                    divKeterangan.innerHTML = "Anda Saat ini memillih fitur <b class='text-blue'>Cetak Buku Induk</b> di Tapel 2018/2019 Semester 1";
                     this.workplace.innerHTML =  '';
                     await kontrol.showInduk(this.workplace, this.printPortraitDom);
                     let tb = new TableProperties(document.querySelector('.toExcel'));

@@ -75,6 +75,7 @@ const rekapRaportRiwayat = (data,target,dataNotFound,siswaSaatIni_notFound_diTap
     const mapel = targetRiwayat.mapel;
     const kurikulum = targetRiwayat.kurikulum
     const guru = data.find(s=>s.rombel===targetRiwayat.rombel);
+    console.log('data rekapRaport Riwayat',data)
     let html ="";
     
     html+=`<h2 class="text-center mb-0">Rekapitulasi Nilai Raport Kelas ${targetRiwayat.rombel}</h2>`;
